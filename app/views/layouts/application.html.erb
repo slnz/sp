@@ -8,7 +8,24 @@
 </head>
 <body>
 
-<%= yield %>
+<div id="global">
+  <div class="pagewidth">
+    <ul id="menu">
+      <li><%= link_to('Dashboard', 'Dashboard', :class => 'selected') %></li>
+      <li><%= link_to('People', 'Dashboard') %></li>
+      <li><%= link_to('Projects', 'Dashboard') %></li>
+      <li><%= link_to('Reports', 'Dashboard') %></li>
+      <li><%= link_to('Search', 'Search') %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div id="primary">
+  <div class="pagewidth">
+    <%= yield %>
+  </div>
+</div>
 
 </body>
 </html>
