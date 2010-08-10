@@ -31,6 +31,6 @@
 
 <div class="dashboardfooter">
   <%= will_paginate %>
-  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]]) %>
+  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page), :rel => admin_projects_path %>
 </div>
 </div>
