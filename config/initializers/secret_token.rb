@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Sp2::Application.config.secret_token = '0d56be28e8035a71101323a863e0cf735fef274f008eb2caa161a838f02f9e1c5bbbd2a14dc13051472aaad2923a99249e7007fa4181a3513f281a5d92dd5b25'
+Sp2::Application.config.secret_token = 'd1ecd5d3e8b8ffc6507473849eb8e5626a392d00d8a76becd178a851de310106245dc6932b2081e8d85dc7ec2d10d13698d34b815d34d3822c729b99dfbf4571'

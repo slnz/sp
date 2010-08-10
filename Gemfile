@@ -1,7 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'arel',  :git => 'git://github.com/rails/arel.git'
+gem 'rails', '3.0.0.rc'
+
+# Bundle edge Rails instead:
+# gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql'
 
