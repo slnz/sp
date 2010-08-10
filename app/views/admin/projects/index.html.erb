@@ -1,0 +1,36 @@
+<div class="pagepad">
+<h1>Dashboard</h1>
+<div id="contextmenu">
+</div>
+
+<div class="dashboardlist">
+
+  <table>
+    <tr>
+      <th></th>
+      <th><%= link_to('Project', '', :class => 'headers sortable') %></th>
+      <th><%= link_to('PD', '', :class => 'headers sortable') %></th>
+      <th><%= link_to('APD', '', :class => 'headers sortable') %></th>
+      <th><%= link_to('OPD', '', :class => 'headers sortable') %></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @projects.each do |project| %>
+    <tr>
+      <td></td>
+      <td><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', '', :class => 'inline edit') %></td>
+      <td><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td><%= link_to(project.opd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td><%= link_to('Stats', '', :class => 'inline stats') %></td>
+      <td><%= link_to('Close', '', :class => 'inline close') %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<div class="dashboardfooter">
+  <%= will_paginate %>
+  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]]) %>
+</div>
+</div>
