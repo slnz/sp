@@ -40,15 +40,14 @@ Sp2::Application.routes.draw do
   #   end
 
   # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  namespace :admin do
+    resources :projects
+  end
+  match '/admin' => "admin/projects#index"
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => "welcome#index"
+  root :to => "admin/projects#index"
 
   # See how all your routes lay out with "rake routes"
 
@@ -56,6 +55,5 @@ Sp2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   
-  root :to => "welcome#index"
   
 end
