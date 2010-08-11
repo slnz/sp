@@ -8,16 +8,16 @@
   <table>
     <tr>
       <th></th>
-      <th><%= sort_by('Project', :class => 'headers sortable') %></th>
-      <th><%= sort_by('PD', :class => 'headers sortable') %></th>
-      <th><%= sort_by('APD', :class => 'headers sortable') %></th>
-      <th><%= sort_by('OPD', :class => 'headers sortable') %></th>
+      <th class="th_project capitalize"><%= sort_by('Project') %></th>
+      <th class="th_pd"><%= sort_by('PD') %></th>
+      <th class="th_apd"><%= sort_by('APD') %></th>
+      <th class="th_opd"><%= sort_by('OPD') %></th>
       <th></th>
       <th></th>
     </tr>
     <% @projects.each do |project| %>
     <tr>
-      <td></td>
+      <td>XX/XX</td>
       <td><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', '', :class => 'inline edit') %></td>
       <td><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
       <td><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
