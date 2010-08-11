@@ -4,14 +4,14 @@
 </div>
 
 <div class="dashboardlist">
-
+  <%= text_field_tag :filter %>
   <table>
     <tr>
       <th></th>
-      <th><%= link_to('Project', '', :class => 'headers sortable') %></th>
-      <th><%= link_to('PD', '', :class => 'headers sortable') %></th>
-      <th><%= link_to('APD', '', :class => 'headers sortable') %></th>
-      <th><%= link_to('OPD', '', :class => 'headers sortable') %></th>
+      <th><%= sort_by('Project', :class => 'headers sortable') %></th>
+      <th><%= sort_by('PD', :class => 'headers sortable') %></th>
+      <th><%= sort_by('APD', :class => 'headers sortable') %></th>
+      <th><%= sort_by('OPD', :class => 'headers sortable') %></th>
       <th></th>
       <th></th>
     </tr>
@@ -31,6 +31,6 @@
 
 <div class="dashboardfooter">
   <%= will_paginate %>
-  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page), :rel => admin_projects_path %>
+  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
 </div>
 </div>
