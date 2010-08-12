@@ -2,74 +2,34 @@
 <h1>Dashboard</h1>
 <div id="contextmenu">
   <ul class="left">
-    <li><%= link_to('2010: Destiny, Epic, Bridges', '', :class => 'down withicon', :id => 'mvmtselector') %></li>
+    <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
     <div class="poptions" id="mvmtfilter" style="display: none;">
-      <p>Select a year and the movements you would like to see:</p>
+      <p>Select which partners' projects you would like to see:</p>
       <hr />
-      <ul>
+      <!-- <ul>
         <li><%= link_to('2008', '') %></li>
         <li><%= link_to('2009', '') %></li>
         <li><%= link_to('2010', '') %></li>
         <li><%= link_to('2011', '', :class => 'selected') %></li>
         <li><%= link_to('2012', '') %></li>
-      </ul>
+      </ul> -->
       
       <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
+        <li><%= link_to_function('All', '', :id => 'filter_all') %></li>
+        <% i = 0
+          partners.each do |partner| 
+          i += 1 %>
+        <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
+          <% if i % 6 == 0 %>
+            </ul><ul><li>&nbsp;</li>
+          <% end %>
+        <% end %>
       </ul>
       <div class="clear"></div>
+      <%= check_box_tag :closed, 1, params[:closed] == 'true' %> Include closed projects
+      <button id="filter_button">Filter</button>
     </div>
   </ul>  
-  
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $("div.poptions li a").toggle(
-        function () {
-          $(this).addClass("selected");
-        },
-        function () {
-          $(this).removeClass("selected");
-        }
-      );
-     });
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-     $('#mvmtselector').mouseover(function(){
-       $('div#mvmtfilter').toggle();
-     });
-    });
-  </script>
-  
   
   <ul class="right">
     <li><%= link_to('Add New Project', '', :class => 'add withicon') %></li>
