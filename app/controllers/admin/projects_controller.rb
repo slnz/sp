@@ -1,5 +1,5 @@
 class Admin::ProjectsController < ApplicationController
-  uses_tiny_mce :options => {:theme_simple_toolbar_location => 'top'}
+  #uses_tiny_mce :options => {:theme_simple_toolbar_location => 'top'}
   
   before_filter :get_project, :only => [:edit, :destroy, :update]
   layout 'admin'

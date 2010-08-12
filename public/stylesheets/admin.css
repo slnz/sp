@@ -96,7 +96,15 @@ h1 { font-size: 26px; }
   background: none;
   padding: 0;
 }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding: 0; }
+.ui-tabs .ui-tabs-nav li { border: none; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+  padding: 0;
+  background: #0b486b;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+  color: #ffffff;
+  cursor: arrow;
+}
 .ui-tabs .ui-corner-all {
   -moz-border-radius: 0;
   border: 0px solid #0b486b;
