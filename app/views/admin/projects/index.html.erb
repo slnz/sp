@@ -73,7 +73,7 @@
   
   <ul class="right">
     <li><%= link_to('Add New Project', '', :class => 'add withicon') %></li>
-    <li><%= link_to('Add a Person', '', :class => 'person withicon') %></li>
+    <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li>
     <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
   </ul>
 </div>
@@ -93,7 +93,7 @@
     <% @projects.each do |project| %>
     <tr>
       <td class="count">XX/XX</td>
-      <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', '', :class => 'inline edit') %></td>
+      <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %></td>
       <td class="pd"><% if project.pd.blank? %><span class="fillit">(Fill this position)</span><% end %><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
       <td class="apd"><% if project.apd.blank? %><span class="fillit">(Fill this position)</span><% end %><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
       <td class="old"><% if project.opd.blank? %><span class="fillit">(Fill this position)</span><% end %><%= link_to(project.opd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
