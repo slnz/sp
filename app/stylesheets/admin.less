@@ -10,7 +10,7 @@
 
 
 body {margin: 0; padding: 0; font-size: 12px; font-family: @global-font; background: @global-bg;}
-a {text-decoration: none; color: @dark-blue;}
+a {text-decoration: none; color: @dark-blue; outline: none;}
 .pagewidth {max-width: @page-width; min-width: 960px; margin: 0 auto;}
 .strip-list{ margin: 0; list-style: none; padding: 0;}
 .pagepad {padding: 15px;}
@@ -84,6 +84,7 @@ h1 {font-size: 26px;}
     td {border-bottom: 1px solid @global-bg; padding: 7px 0;}
     td.close a {color: @dark-gray;}
     }
+    span.fillit {color: silver; font-style: italic;}
   }
   
 
@@ -136,6 +137,7 @@ a.close {text-indent: 0px; width: auto;}
     color: @black;
     font-weight: bold;
     padding: 3px 7px;
+    font-style: normal;
     }
   a:hover {
     background: @global-bg;
@@ -176,13 +178,17 @@ a.close {text-indent: 0px; width: auto;}
     background: @global-bg;
     position: absolute;
     margin-top: 42px;
+    padding: 10px;
     -moz-box-shadow: 0 0 12px #555555;
     -webkit-box-shadow: 0 0 12px #555555;
     box-shadow: 0 0 12px #555555;
     ul {
       .strip-list;
+      float: left;
     }
     ul li { 
+      float: none;
+      line-height: 2.75em;
       a {
         padding: 6px 6px 6px 20px;
         color: @black;

@@ -8,6 +8,7 @@ body {
 a {
   text-decoration: none;
   color: #0b486b;
+  outline: none;
 }
 .pagewidth {
   max-width: 1200px;
@@ -83,6 +84,10 @@ h1 { font-size: 26px; }
   padding: 7px 0;
 }
 .dashboardlist table td.close a { color: #4d4d4d; }
+.dashboardlist span.fillit {
+  color: silver;
+  font-style: italic;
+}
 a.inline {
   background: no-repeat 50% 50%;
   width: 15px;
@@ -141,6 +146,7 @@ a.close {
   color: #000000;
   font-weight: bold;
   padding: 3px 7px;
+  font-style: normal;
 }
 .pagination a:hover { background: #efefef; }
 #contextmenu ul.right {
@@ -217,6 +223,7 @@ a.close {
   background: #efefef;
   position: absolute;
   margin-top: 42px;
+  padding: 10px;
   -moz-box-shadow: 0 0 12px #555555;
   -webkit-box-shadow: 0 0 12px #555555;
   box-shadow: 0 0 12px #555555;
@@ -225,6 +232,11 @@ a.close {
   margin: 0;
   list-style: none;
   padding: 0;
+  float: left;
+}
+#contextmenu .poptions ul li {
+  float: none;
+  line-height: 2.75em;
 }
 #contextmenu .poptions ul li a {
   padding: 6px 6px 6px 20px;
