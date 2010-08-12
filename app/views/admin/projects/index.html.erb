@@ -1,6 +1,48 @@
 <div class="pagepad">
 <h1>Dashboard</h1>
 <div id="contextmenu">
+  <ul class="left">
+    <li><%= link_to('2010: Destiny, Epic, Bridges', '', :class => 'down withicon') %></li>
+    <div class="poptions" id="mvmtfilter">
+      <p>Select a year and the movements you would like to see:</p>
+      <hr />
+      <ul>
+        <li><%= link_to('2008', '', :class => 'selected') %></li>
+        <li><%= link_to('2009', '', :class => 'selected') %></li>
+        <li><%= link_to('2010', '', :class => 'selected') %></li>
+        <li><%= link_to('2011', '', :class => 'selected') %></li>
+        <li><%= link_to('2012', '', :class => 'selected') %></li>
+      </ul>
+      
+      <ul>
+        <li><%= link_to('All', '', :class => '') %></li>
+        <li><%= link_to('Great Lakes', '', :class => '') %></li>
+        <li><%= link_to('Great Planes', '', :class => '') %></li>
+        <li><%= link_to('MA', '', :class => '') %></li>
+      </ul>
+      
+    </div>
+  </ul>  
+  
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $("div.poptions li a").toggle(
+      function () {
+        $(this).addClass("selected");
+      },
+      function () {
+        $(this).removeClass("selected");
+      }
+    );
+   });
+  </script>
+  
+  
+  <ul class="right">
+    <li><%= link_to('Add New Project', '', :class => 'add withicon') %></li>
+    <li><%= link_to('Add a Person', '', :class => 'person withicon') %></li>
+    <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
+  </ul>
 </div>
 
 <div class="dashboardlist">
@@ -17,20 +59,29 @@
     </tr>
     <% @projects.each do |project| %>
     <tr>
-      <td>XX/XX</td>
-      <td><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', '', :class => 'inline edit') %></td>
-      <td><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
-      <td><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
-      <td><%= link_to(project.opd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
-      <td><%= link_to('Stats', '', :class => 'inline stats') %></td>
-      <td><%= link_to('Close', '', :class => 'inline close') %></td>
+      <td class="count">XX/XX</td>
+      <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', '', :class => 'inline edit') %></td>
+      <td class="pd"><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td class="apd"><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td class="old"><%= link_to(project.opd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td class="stats"><%= link_to('Stats', '', :class => 'inline stats') %></td>
+      <td class="close"><%= link_to('Close', '', :class => 'inline close') %></td>
     </tr>
     <% end %>
   </table>
 </div>
 
 <div class="dashboardfooter">
-  <%= will_paginate %>
-  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
+  <div class="pagination_wrapper">
+    Pages: 
+    <%= will_paginate %>
+  </div>
+  <div class="show_select">
+    Show
+    <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
+    of 
+    <%= @projects.count %>
+  </div>
+  <div class="clear"></div>
 </div>
 </div>
