@@ -12,7 +12,7 @@ gem 'will_paginate', '>= 3.0.pre2'
 gem 'google-geocode'
 gem 'acts_as_versioned'
 gem 'acts_as_state_machine'
-
+gem 'tiny_mce'
 # To use debugger
 # gem 'ruby-debug'
 

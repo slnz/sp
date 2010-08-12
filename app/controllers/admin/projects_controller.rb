@@ -1,4 +1,6 @@
 class Admin::ProjectsController < ApplicationController
+  uses_tiny_mce
+  
   before_filter :get_project, :only => [:edit, :destroy, :update]
   layout 'admin'
   def index
