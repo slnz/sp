@@ -44,6 +44,8 @@ Sp2::Application.routes.draw do
     resources :projects
   end
   match '/admin' => "admin/projects#index"
+  
+  match '/admin/dashboard' => "admin/projects#dashboard"
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.

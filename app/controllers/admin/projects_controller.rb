@@ -13,6 +13,10 @@ class Admin::ProjectsController < ApplicationController
     
   end
   
+  def dashboard
+    redirect_to admin_projects_path
+  end
+  
   protected 
   def get_project
     @project = SpProject.find(params[:id])
