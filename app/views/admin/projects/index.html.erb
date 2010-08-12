@@ -1,6 +1,81 @@
 <div class="pagepad">
 <h1>Dashboard</h1>
 <div id="contextmenu">
+  <ul class="left">
+    <li><%= link_to('2010: Destiny, Epic, Bridges', '', :class => 'down withicon', :id => 'mvmtselector') %></li>
+    <div class="poptions" id="mvmtfilter" style="display: none;">
+      <p>Select a year and the movements you would like to see:</p>
+      <hr />
+      <ul>
+        <li><%= link_to('2008', '') %></li>
+        <li><%= link_to('2009', '') %></li>
+        <li><%= link_to('2010', '') %></li>
+        <li><%= link_to('2011', '', :class => 'selected') %></li>
+        <li><%= link_to('2012', '') %></li>
+      </ul>
+      
+      <ul>
+        <li><%= link_to('All', '', :class => '') %></li>
+        <li><%= link_to('GL', '', :class => 'selected') %></li>
+        <li><%= link_to('GP', '', :class => '') %></li>
+        <li><%= link_to('MA', '', :class => '') %></li>
+        <li><%= link_to('DE', '', :class => '') %></li>
+        <li><%= link_to('RD', '', :class => '') %></li>
+      </ul>
+      <ul>
+        <li><%= link_to('All', '', :class => '') %></li>
+        <li><%= link_to('GL', '', :class => 'selected') %></li>
+        <li><%= link_to('GP', '', :class => '') %></li>
+        <li><%= link_to('MA', '', :class => '') %></li>
+        <li><%= link_to('DE', '', :class => '') %></li>
+        <li><%= link_to('RD', '', :class => '') %></li>
+      </ul>
+      <ul>
+        <li><%= link_to('All', '', :class => '') %></li>
+        <li><%= link_to('GL', '', :class => 'selected') %></li>
+        <li><%= link_to('GP', '', :class => '') %></li>
+        <li><%= link_to('MA', '', :class => '') %></li>
+        <li><%= link_to('DE', '', :class => '') %></li>
+        <li><%= link_to('RD', '', :class => '') %></li>
+      </ul>
+      <ul>
+        <li><%= link_to('All', '', :class => '') %></li>
+        <li><%= link_to('GL', '', :class => 'selected') %></li>
+        <li><%= link_to('GP', '', :class => '') %></li>
+        <li><%= link_to('MA', '', :class => '') %></li>
+        <li><%= link_to('DE', '', :class => '') %></li>
+        <li><%= link_to('RD', '', :class => '') %></li>
+      </ul>
+      <div class="clear"></div>
+    </div>
+  </ul>  
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("div.poptions li a").toggle(
+        function () {
+          $(this).addClass("selected");
+        },
+        function () {
+          $(this).removeClass("selected");
+        }
+      );
+     });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+     $('#mvmtselector').mouseover(function(){
+       $('div#mvmtfilter').toggle();
+     });
+    });
+  </script>
+  
+  
+  <ul class="right">
+    <li><%= link_to('Add New Project', '', :class => 'add withicon') %></li>
+    <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li>
+    <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
+  </ul>
 </div>
 
 <div class="dashboardlist">
@@ -8,29 +83,38 @@
   <table>
     <tr>
       <th></th>
-      <th><%= sort_by('Project', :class => 'headers sortable') %></th>
-      <th><%= sort_by('PD', :class => 'headers sortable') %></th>
-      <th><%= sort_by('APD', :class => 'headers sortable') %></th>
-      <th><%= sort_by('OPD', :class => 'headers sortable') %></th>
+      <th class="th_project capitalize"><%= sort_by('Project') %></th>
+      <th class="th_pd"><%= sort_by('PD') %></th>
+      <th class="th_apd"><%= sort_by('APD') %></th>
+      <th class="th_opd"><%= sort_by('OPD') %></th>
       <th></th>
       <th></th>
     </tr>
     <% @projects.each do |project| %>
     <tr>
-      <td></td>
-      <td><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', '', :class => 'inline edit') %></td>
-      <td><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
-      <td><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
-      <td><%= link_to(project.opd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
-      <td><%= link_to('Stats', '', :class => 'inline stats') %></td>
-      <td><%= link_to('Close', '', :class => 'inline close') %></td>
+      <td class="count">XX/XX</td>
+      <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %></td>
+      <td class="pd"><% if project.pd.blank? %><span class="fillit">(Fill this position)</span><% end %><%= link_to(project.pd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td class="apd"><% if project.apd.blank? %><span class="fillit">(Fill this position)</span><% end %><%= link_to(project.apd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td class="old"><% if project.opd.blank? %><span class="fillit">(Fill this position)</span><% end %><%= link_to(project.opd, '') %><%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %></td>
+      <td class="stats"><%= link_to('Stats', '', :class => 'inline stats') %></td>
+      <td class="close"><%= link_to('Close', '', :class => 'inline close') %></td>
     </tr>
     <% end %>
   </table>
 </div>
 
 <div class="dashboardfooter">
-  <%= will_paginate %>
-  <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
+  <div class="pagination_wrapper">
+    Pages: 
+    <%= will_paginate %>
+  </div>
+  <div class="show_select">
+    Show
+    <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
+    of 
+    <%= @projects.count %>
+  </div>
+  <div class="clear"></div>
 </div>
 </div>
