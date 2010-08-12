@@ -43,7 +43,7 @@ Sp2::Application.routes.draw do
   namespace :admin do
     resources :projects
   end
-  match '/admin' => "admin/projects#index"
+  match '/admin' => "admin/projects#dashboard"
   
   match '/admin/dashboard' => "admin/projects#dashboard"
 

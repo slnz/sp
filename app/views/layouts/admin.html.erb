@@ -16,7 +16,9 @@
 <div id="global">
   <div class="pagewidth">
     <ul id="menu">
-      <li><%= link_to('Dashboard', admin_projects_path, :class => 'selected') %></li>
+      <% if sp_user.can_see_dashboard? %>
+        <li><%= link_to('Dashboard', admin_projects_path, :class => 'selected') %></li>
+      <% end %>
       <li><%= link_to('People', 'Dashboard') %></li>
       <li><%= link_to('Projects', 'Dashboard') %></li>
       <li><%= link_to('Reports', 'Dashboard') %></li>
