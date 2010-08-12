@@ -238,15 +238,15 @@ a.close {
   float: none;
   line-height: 2.75em;
 }
-#contextmenu .poptions ul li a {
+#contextmenu .poptions ul li span {
   padding: 6px 6px 6px 20px;
   color: #000000;
 }
-#contextmenu .poptions ul li a.selected {
+#contextmenu .poptions ul li span.selected {
   color: #ffffff;
   background: url(/images/icons/check.png) no-repeat 5px 50% #0b486b;
 }
-#contextmenu .poptions ul li a.hover {
+#contextmenu .poptions ul li span:hover {
   color: #ffffff;
   background: url(/images/icons/check.png) no-repeat 5px 50% #0b486b;
 }
