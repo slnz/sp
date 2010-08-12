@@ -35,8 +35,31 @@
         <li><%= link_to ('Contact', '#contactTab') %></li> 
         <li><%= link_to ('Operations', '#operationsTab') %></li> 
       </ul>
+      
+      
       <div class="tabcontent" id="goSPTab">
-      SPTAB
+        <p>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+        </p>
+      
+        <hr />
+        
+        <div class="field">
+          <label for="project[name]">Project Name</label>
+          <%= text_field "project[]", "name" %>
+        </div>
+        
+        <div class="field">
+          <label for="project[name]">Student Start Date</label>
+          <%= text_field "project[]", "studentstartdate" %>
+        </div>
+        
+        <div class="field">
+          <label for="project[name]">Student Start Date</label>
+          <%= text_field "project[]", "studentenddate" %>
+        </div>
+
+        
       </div>
       
       <div class="tabcontent" id="applicationTab">
@@ -44,16 +67,14 @@
       </div>
       
       <div class="tabcontent" id="contactTab">
-      CONTACTTAB
       </div>
       
       <div class="tabcontent" id="operationsTab">
-      poefasdf
       </div> 
     </div>
   
   
-    <textarea class="mceEditor richeditor" cols="100" rows="20"></textarea>
+    
   </div>
   
   <div class="projectfooter">

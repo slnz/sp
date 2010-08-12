@@ -89,16 +89,25 @@ h1 {font-size: 26px;}
   
 /* Project Edit */
 
+/* Forms */
+
+label {}
+input[type=text] {}
+
+
+
 
 /* Tabs */
 .ui-tabs {
   padding: 0;
   border: none;
+  font-family: @global-font;
 
   .ui-tabs-nav {
     background: none;
     padding: 0;
     li {
+      margin: 0 0.4em 1px 0;
       border: none;
       }
     li.ui-tabs-selected {
@@ -106,7 +115,7 @@ h1 {font-size: 26px;}
       background: @dark-blue;
       a {
         color: @white;
-        cursor: arrow;
+        cursor: default;
         }
       }
     }
@@ -125,6 +134,10 @@ h1 {font-size: 26px;}
   }
 
 
+.tabcontent {
+  hr {border: 0px; border-top: 1px solid @global-bg;}
+  
+  }
 
 
 /* Icons */

@@ -91,19 +91,23 @@ h1 { font-size: 26px; }
 .ui-tabs {
   padding: 0;
   border: none;
+  font-family: Arial, Helvetica, Verdana;
 }
 .ui-tabs .ui-tabs-nav {
   background: none;
   padding: 0;
 }
-.ui-tabs .ui-tabs-nav li { border: none; }
+.ui-tabs .ui-tabs-nav li {
+  margin: 0 0.4em 1px 0;
+  border: none;
+}
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
   padding: 0;
   background: #0b486b;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
   color: #ffffff;
-  cursor: arrow;
+  cursor: default;
 }
 .ui-tabs .ui-corner-all {
   -moz-border-radius: 0;
@@ -113,6 +117,10 @@ h1 { font-size: 26px; }
 .ui-tabs .ui-tabs-panel {
   padding: 0;
   -moz-border-radius: 0;
+}
+.tabcontent hr {
+  border: 0px;
+  border-top: 1px solid #efefef;
 }
 a.inline {
   background: no-repeat 50% 50%;
