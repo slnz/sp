@@ -88,6 +88,24 @@ h1 { font-size: 26px; }
   color: silver;
   font-style: italic;
 }
+.ui-tabs {
+  padding: 0;
+  border: none;
+}
+.ui-tabs .ui-tabs-nav {
+  background: none;
+  padding: 0;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding: 0; }
+.ui-tabs .ui-corner-all {
+  -moz-border-radius: 0;
+  border: 0px solid #0b486b;
+  border-bottom: 3.5px solid #0b486b;
+}
+.ui-tabs .ui-tabs-panel {
+  padding: 0;
+  -moz-border-radius: 0;
+}
 a.inline {
   background: no-repeat 50% 50%;
   width: 15px;
@@ -176,6 +194,8 @@ a.close {
 }
 #contextmenu ul.right li a.person { background-image: url('/images/icons/user.png'); }
 #contextmenu ul.right li a.add { background-image: url('/images/icons/plus-button.png'); }
+#contextmenu ul.right li a.email { background-image: url('/images/icons/mail-open-document.png'); }
+#contextmenu ul.right li a.excel { background-image: url('/images/icons/document-excel.png'); }
 #contextmenu ul.right li a.down {
   background-image: url('/images/icons/down.png');
   background-position: 0 50%;
@@ -210,6 +230,8 @@ a.close {
 }
 #contextmenu ul.left li a.person { background-image: url('/images/icons/user.png'); }
 #contextmenu ul.left li a.add { background-image: url('/images/icons/plus-button.png'); }
+#contextmenu ul.left li a.email { background-image: url('/images/icons/mail-open-document.png'); }
+#contextmenu ul.left li a.excel { background-image: url('/images/icons/document-excel.png'); }
 #contextmenu ul.left li a.down {
   background-image: url('/images/icons/down.png');
   background-position: 0 50%;

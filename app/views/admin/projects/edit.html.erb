@@ -1,89 +1,63 @@
 <div class="pagepad">
-<h1>Dashboard</h1>
-<div id="contextmenu">
-  <ul class="left">
-    <li><%= link_to('2010: Destiny, Epic, Bridges', '', :class => 'down withicon', :id => 'mvmtselector') %></li>
-    <div class="poptions" id="mvmtfilter" style="display: none;">
-      <p>Select a year and the movements you would like to see:</p>
-      <hr />
-      <ul>
-        <li><%= link_to('2008', '') %></li>
-        <li><%= link_to('2009', '') %></li>
-        <li><%= link_to('2010', '') %></li>
-        <li><%= link_to('2011', '', :class => 'selected') %></li>
-        <li><%= link_to('2012', '') %></li>
+  <div id="breadcrumb">
+    <ul>
+      <li>Projects</li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  
+  <h1>Project Title</h1>
+  <div id="contextmenu">
+    <ul class="left">
+      <li><%= link_to('Download Team DB', '', :class => 'excel withicon') %></li>
+      <li><%= link_to('Send Email', '', :class => 'email withicon') %></li>
+      <li><%= link_to('Enter Stats', '', :class => 'stats withicon') %></li>
+      <li><%= link_to('Add a Person', '', :class => 'person withicon') %></li>
+    </ul>  
+    <div class="clear"></div>
+  </div>
+  
+  <div class="projectedit">
+  
+  <script type="text/javascript">
+  	$(function() {
+  		$("#tabs").tabs();
+  	});
+	</script>
+
+  
+  
+    <div id="tabs">
+      <ul class="tabs">
+        <li><%= link_to ('goSP.com', '#goSPTab') %></li>
+        <li><%= link_to ('Application', '#applicationTab') %></li> 
+        <li><%= link_to ('Contact', '#contactTab') %></li> 
+        <li><%= link_to ('Operations', '#operationsTab') %></li> 
       </ul>
+      <div class="tabcontent" id="goSPTab">
+      SPTAB
+      </div>
       
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <ul>
-        <li><%= link_to('All', '', :class => '') %></li>
-        <li><%= link_to('GL', '', :class => 'selected') %></li>
-        <li><%= link_to('GP', '', :class => '') %></li>
-        <li><%= link_to('MA', '', :class => '') %></li>
-        <li><%= link_to('DE', '', :class => '') %></li>
-        <li><%= link_to('RD', '', :class => '') %></li>
-      </ul>
-      <div class="clear"></div>
+      <div class="tabcontent" id="applicationTab">
+      aPPTAB
+      </div>
+      
+      <div class="tabcontent" id="contactTab">
+      CONTACTTAB
+      </div>
+      
+      <div class="tabcontent" id="operationsTab">
+      poefasdf
+      </div> 
     </div>
-  </ul>  
-  
-
   
   
-  <ul class="right">
-    <li><%= link_to('Add New Project', '', :class => 'add withicon') %></li>
-    <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li>
-    <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
-  </ul>
-</div>
-
-<div class="dashboardlist">
-  <table>
-    <tr>
-      <th></th>
-      <th class="th_project capitalize"><%= sort_by('Project') %></th>
-      <th class="th_pd"><%= sort_by('PD') %></th>
-      <th class="th_apd"><%= sort_by('APD') %></th>
-      <th class="th_opd"><%= sort_by('OPD') %></th>
-      <th></th>
-      <th></th>
-    </tr>
-    
-  </table>
-</div>
-
-<div class="dashboardfooter">
-  <div class="pagination_wrapper">
-    Pages: 
-   
+    <textarea class="mceEditor richeditor" cols="100" rows="20"></textarea>
   </div>
-  <div class="show_select">
-    Show
-    
+  
+  <div class="projectfooter">
+    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
-</div>
+
 </div>
