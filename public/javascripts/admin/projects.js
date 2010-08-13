@@ -40,13 +40,16 @@ $(function() {
 	// END Partnership Filter
 	
 	// Find as you type
-	$('#search').keyup(function() {
-		params['search'] = $(this).val();
-		$('#spinner').show();
+	$('.search').keyup(function() {
+		// Clear the other search fields
+		$('.search').not(this).val('');
+		param = $(this).attr('name');
+		params[param] = $(this).val();
+		$('#spinner_' + param).show();
 		$.ajaxCount++;
 		$.ajax({url: $(this).attr('rel') + '?' + $.param(params), dataType: 'script', complete: function() {
 																																															$.ajaxCount--;
-																																															if($.ajaxCount == 0) $('#spinner').hide();
+																																															if($.ajaxCount == 0) $('#spinner_' + param).hide();
 																																														}});
 	})
 	// END Find as you type

@@ -29,18 +29,35 @@
   <div class="clear"></div>
 </div>
 
-<%= text_field_tag :search, params[:search], :rel => admin_projects_path %> <%= spinner %>
 <div id="dashboardlist" class="dashboardlist">
-  <%= render 'projects' %>
+  <table>
+    <tr>
+      <th></th>
+      <th class="th_project capitalize"><%= sort_by('name', 'Project') %></th>
+      <th class="th_pd"><%= sort_by('PD') %></th>
+      <th class="th_apd"><%= sort_by('APD') %></th>
+      <th class="th_opd"><%= sort_by('OPD') %></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th></th>
+      <th><%= text_field_tag :search, params[:search], :class => 'search', :rel => admin_projects_path %> <%= spinner('search') %></th>
+      <th><%= text_field_tag :search_pd, params[:search_pd], :class => 'search', :rel => admin_projects_path %> <%= spinner('search_pd') %></th>
+      <th><%= text_field_tag :search_apd, params[:search_apd], :class => 'search', :rel => admin_projects_path %> <%= spinner('search_apd') %></th>
+      <th><%= text_field_tag :search_opd, params[:search_opd], :class => 'search', :rel => admin_projects_path %> <%= spinner('search_opd') %></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tbody id="projects">
+      <%= render 'projects' %>
+    </tbody>
+  </table>
 </div>
 
 <div class="dashboardfooter">
-  <% if @projects.total_pages > 1 %>
-    <div class="pagination_wrapper">
-      Pages: 
-      <%= will_paginate %>
-    </div>
-  <% end %>
+  <div class="pagination_wrapper" id="pagination"><%= render 'pagination' %></div>
+
   <div class="show_select">
     Show
     <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>

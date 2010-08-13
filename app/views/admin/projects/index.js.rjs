@@ -1,3 +1,4 @@
 page << <<-END
-  $('#dashboardlist').html('#{escape_javascript(render('projects'))}')
+  $('#projects').html('#{escape_javascript(render('projects'))}')
+  $('#pagination').html('#{escape_javascript(render('pagination'))}')
 END

@@ -57,8 +57,15 @@ class Admin::ProjectsController < ApplicationController
       @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", params[:partners], params[:partners], params[:partners])
       @filter_title = params[:partners].sort.join(', ')
     end
-    if params[:search]
+    case
+    when params[:search].present?
       @base = @base.where("name like ?", "%#{params[:search]}%")
+    when params[:search_pd].present?
+      @base = @base.pd_like(params[:search_pd])
+    when params[:search_apd].present?
+      @base = @base.apd_like(params[:search_apd])
+    when params[:search_opd].present?
+      @base = @base.opd_like(params[:search_opd])
     end
   end
   
