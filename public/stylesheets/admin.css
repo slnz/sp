@@ -23,7 +23,10 @@ a {
 .pagepad { padding: 15px; }
 .clear { clear: both; }
 h1, h2, h3, h4, h5, h6 { font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica; }
-h1 { font-size: 26px; }
+h1 {
+  font-size: 26px;
+  margin: 0.5em 0;
+}
 #global { background: #ffffff; }
 #global #menu {
   height: 60px;
@@ -169,6 +172,17 @@ button.save span {
   cursor: pointer;
   color: #0b486b;
 }
+div.module h3 {
+  background: #efefef;
+  padding: 10px;
+}
+div.module table { width: 100%; }
+div.module table th { text-align: left; }
+div.module table td.rightalign { text-align: right; }
+div.module table td.icon {
+  width: 25px;
+  text-align: center;
+}
 .ui-widget input { font-family: Arial, Helvetica, Verdana; }
 .ui-widget select { font-family: Arial, Helvetica, Verdana; }
 .ui-widget textarea { font-family: Arial, Helvetica, Verdana; }
@@ -230,6 +244,7 @@ a.close {
   text-indent: 0px;
   width: auto;
 }
+#breadcrumb { height: 2em; }
 #breadcrumb ul {
   margin: 0;
   list-style: none;
@@ -287,6 +302,7 @@ a.close {
   font-style: normal;
 }
 .pagination a:hover { background: #efefef; }
+#contextmenu { margin-bottom: 1.5em; }
 #contextmenu ul.right {
   float: right;
   margin: 0;

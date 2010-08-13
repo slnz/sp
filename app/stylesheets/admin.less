@@ -18,7 +18,7 @@ a {text-decoration: none; color: @dark-blue; outline: none;}
 .clear {clear: both;}
 
 h1, h2, h3, h4, h5, h6 {font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica;}
-h1 {font-size: 26px;}
+h1 {font-size: 26px;margin: .5em 0;}
 
 /* Global */
 #global {
@@ -204,6 +204,29 @@ button.save span {
   
   }
 
+/* right side column */
+div.module {
+  h3 {
+    background: @global-bg;
+    padding: 10px;
+    }
+  table {
+    width: 100%;
+    th {
+      text-align: left;
+      }
+    td.rightalign {
+      text-align: right;
+      }
+    td.name {
+      }
+    td.icon {
+      width: 25px;
+      text-align: center;
+      }
+      
+    }
+  }
 
 
 /* Tabs */
@@ -273,6 +296,7 @@ a.close {text-indent: 0px; width: auto;}
 /* Breadcrumbs */
 
 #breadcrumb {
+  height: 2em;
   ul {
     .strip-list;
     font-size: 11px;
@@ -331,6 +355,7 @@ a.close {text-indent: 0px; width: auto;}
 
 
 #contextmenu {
+  margin-bottom: 1.5em;
   ul.right, ul.left {
     float: right;
     .strip-list;
