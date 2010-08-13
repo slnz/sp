@@ -24,7 +24,7 @@ module ProjectsHelper
 
       statLink=statLink+"&periodBegin="
       if project_version.start_date && project_version.date_of_departure
-        if project_version.start_date>project_version.date_of_departure
+        if project_version.start_date > project_version.date_of_departure
           pb=project_version.start_date.to_s
         else
           pb=project_version.date_of_departure.to_s

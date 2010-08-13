@@ -1,4 +1,6 @@
 $(function() {
+	$.ajaxCount = 0;
+	
 	$('#projects_per_page').change(function() {
 		params['projects_per_page'] = $(this).val();
 		document.location = $(this).attr('rel') + '?' + $.param(params);
@@ -24,10 +26,10 @@ $(function() {
 	});
 	
 	$('#filter_button').click(function() {
-		// $(this).attr('disabled', true);
+		$(this).attr('disabled', true);
 		filters = {}
 		var partners = [];
-		$('div.poptions li a.selected').each(function(i) {
+		$('div.poptions li a.selected[data-partner]').each(function(i) {
 			partners[i] = $(this).attr('data-partner');
 		});
 		if(partners.length > 0) filters['partners'] = partners;
@@ -48,6 +50,13 @@ $(function() {
 																																														}});
 	})
 	// END Find as you type
-
-	$.ajaxCount = 0;
+	$("#tabs").tabs();
+  $("#sp_project_start_date").datepicker();
+  $("#sp_project_end_date").datepicker();
+ 
+  $("#readmoreless").click(function() {
+    $('#explain1').toggleClass('showall', 500);
+    $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
+  	return false;
+ 	});
 });

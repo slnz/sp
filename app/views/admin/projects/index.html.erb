@@ -23,7 +23,7 @@
   
   <ul class="right">
     <li><%= link_to('Add New Project', new_admin_project_path, :class => 'add withicon') %></li>
-    <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li>
+    <!-- <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li> -->
     <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
   </ul>
 </div>
@@ -34,15 +34,17 @@
 </div>
 
 <div class="dashboardfooter">
-  <div class="pagination_wrapper">
-    Pages: 
-    <%= will_paginate %>
-  </div>
+  <% if @projects.total_pages > 1 %>
+    <div class="pagination_wrapper">
+      Pages: 
+      <%= will_paginate %>
+    </div>
+  <% end %>
   <div class="show_select">
     Show
     <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
     of 
-    <%= @projects.count %>
+    <%= @projects.total_entries %>
   </div>
   <div class="clear"></div>
 </div>

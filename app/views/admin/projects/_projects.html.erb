@@ -2,7 +2,7 @@
 <table>
   <tr>
     <th></th>
-    <th class="th_project capitalize"><%= sort_by('Project') %></th>
+    <th class="th_project capitalize"><%= sort_by('name', 'Project') %></th>
     <th class="th_pd"><%= sort_by('PD') %></th>
     <th class="th_apd"><%= sort_by('APD') %></th>
     <th class="th_opd"><%= sort_by('OPD') %></th>
@@ -27,8 +27,8 @@
 				<%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %>
 			</td>
 		<% end -%>
-    <td class="stats"><%= stat_link(project,project, '', :class => 'inline stats') %></td>
-    <td class="close"><%= link_to('Close', '', :class => 'inline close') %></td>
+    <td class="stats"><%= stat_link(project,project, 'Stats', :class => 'inline stats') %></td>
+    <td class="close"><%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to close #{project}") %></td>
   </tr>
   <% end %>
 </table>

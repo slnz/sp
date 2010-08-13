@@ -41,7 +41,11 @@ Sp2::Application.routes.draw do
 
   # Sample resource route within a namespace:
   namespace :admin do
-    resources :projects
+    resources :projects do
+      member do
+        post :close
+      end
+    end
   end
   match '/admin' => "admin/projects#dashboard"
   

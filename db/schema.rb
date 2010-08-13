@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100812184800) do
+ActiveRecord::Schema.define(:version => 20100813150554) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -5698,8 +5698,8 @@ ActiveRecord::Schema.define(:version => 20100812184800) do
     t.string   "secondary_partner",            :limit => 100
     t.boolean  "partner_region_only"
     t.string   "report_stats_to",              :limit => 50
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.date     "start_date"
+    t.date     "end_date"
     t.integer  "weeks"
     t.integer  "primary_ministry_focus_id"
     t.boolean  "job"
@@ -5718,9 +5718,9 @@ ActiveRecord::Schema.define(:version => 20100812184800) do
     t.integer  "intern_cost"
     t.integer  "student_cost"
     t.string   "departure_city",               :limit => 60
-    t.datetime "date_of_departure"
+    t.date     "date_of_departure"
     t.string   "destination_city",             :limit => 60
-    t.datetime "date_of_return"
+    t.date     "date_of_return"
     t.text     "in_country_contact"
     t.string   "project_contact_name",         :limit => 50
     t.string   "project_contact_role",         :limit => 40
