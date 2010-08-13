@@ -1,9 +1,9 @@
 <div class="pagepad">
   <div id="breadcrumb">
     <ul>
-      <li>Projects</li>
-      <li></li>
-      <li></li>
+      <li><%= link_to ('Projects', '') %></li>
+      <li><%= link_to ('Projects', '') %></li>
+      <li class="last"><%= link_to ('Projects', '') %></li>
     </ul>
   </div>
   
@@ -23,11 +23,20 @@
   <script type="text/javascript">
   	$(function() {
   		$("#tabs").tabs();
+  	  $("#sp_project_start_date").datepicker();
+  	  $("#sp_project_end_date").datepicker();
+  	  
+  	  $("#readmoreless").click(function() {
+  	    $('#explain1').toggleClass('showall', 500);
+  	    $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
+			  return false;
+		  });
+		   	  
   	});
 	</script>
 
   
-  
+  <div class="left">
     <div id="tabs">
       <ul class="tabs">
         <li><%= link_to ('goSP.com', '#goSPTab') %></li>
@@ -49,33 +58,160 @@
           <%= f.text_field :name %>
         </div>
         
+        <div class="multifield">
+          <div class="field">
+            <%= f.label :start_date, 'Project Start Date' %>
+            <%= f.text_field :start_date %>
+          </div>
+          
+          <div class="field">
+            <%= f.label :end_date, 'Project End Date' %>
+            <%= f.text_field :end_date %>
+          </div>
+          <div class="clear"></div>
+        </div>
+  
+        <div class="field select">
+          <label for="ministryfocus">Primary Ministry Focus</label>
+          <select>
+            <option>Ministry Focus</option>
+          </select>
+        </div>
+        
+        <div class="field multiselect">
+          <label for="ministryfocus">Secondary Ministry Focus</label>
+          <select size="3">
+            <option>Ministry Focus</option>
+            <option>Ministry Focus</option>
+            <option>Ministry Focus</option>
+            <option>Ministry Focus</option>
+            <option>Ministry Focus</option>
+          </select>
+        </div>
+        
+        <div class="field multitext">
+          <%= f.label :max_student_men_applicants, 'Max Number of Applicants' %>
+          <%= f.text_field :max_student_men_applicants, :class => 'small' %>
+          <%= f.text_field :max_student_women_applicants, :class => 'small' %>
+        </div>
+        
+        <div class="field checkvertical">
+          <label>Gospel in Action</label>
+          <span class="checkboxwrapper"><input type="checkbox" id="check1" /><label for="check1">Checkbox option</label></span>
+          <span class="checkboxwrapper"><input type="checkbox" id="check2" /><label for="check2">Checkbox option</label></span>
+          <span class="checkboxwrapper"><input type="checkbox" id="check3" /><label for="check3">Checkbox option</label></span>
+          <span class="checkboxwrapper"><input type="checkbox" id="check4" /><label for="check4">Checkbox option</label></span>
+          <span class="checkboxwrapper"><input type="checkbox" id="check5" /><label for="check5">Checkbox option</label></span>
+        </div>
+        
+        <hr />
+        
+        <div class="multifield">
+          <div class="field">
+            <%= f.label :url, 'Website Address' %>
+            <%= f.text_field :url %>
+          </div>
+          <div class="field">
+            <%= f.label :url_title, 'Website Title' %>
+            <%= f.text_field :url_title %>
+          </div>
+          <div class="clear"></div>
+        </div>
+        
+        <div class="multifield">
+          <div class="field">
+            <%= f.label :url, 'Facebook' %>
+            <%= f.text_field :url %>
+          </div>
+          <div class="clear"></div>
+        </div>
+        
+        <div class="multifield">
+          <div class="field">
+            <%= f.label :url, 'Blog Address' %>
+            <%= f.text_field :url %>
+          </div>
+          <div class="field">
+            <%= f.label :url_title, 'Blog Title' %>
+            <%= f.text_field :url_title %>
+          </div>
+          <div class="clear"></div>
+        </div>
+        
+        <hr />
+        
         <div class="field">
-          <label for="project[name]">Student Start Date</label>
-          <%#= text_field "project[]", "studentstartdate" %>
+          <%= f.label :description, 'Project Description' %>
+          <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
+        </div>
+        <div class="inlinetip">
+          <p id="explain1" class="">The 4th Journey Partnership is the name of the initiative of campuses in the Upper Midwest Region to establish an on-going ministry at a university in a predominantly Muslim country. In this Middle Eastern country, 99 percent of the 75 million people consider themselves Muslims. Since the Koran teaches that Jesus is an honorable prophet but not God, most have never heard the truth about Him. Despite a guarantee of religious freedom written into this countrys constitution, the scarce number of known Christians (about 2,000) sometimes experience harassment and even persecution. In 2008 we pioneered a new partnership city with a campus of about 45,000 students. As far as we were aware, at that time, there were *no known believers on this c</p>
+          <span id="readmoreless">Read More</span>
         </div>
         
         <div class="field">
-          <label for="project[name]">Student Start Date</label>
-          <%#= text_field "project[]", "studentenddate" %>
+          <%= f.label :latitude, 'Student Quotes' %>
+          <%= f.text_area(:latitude, :cols => 90, :rows => 10, :class => 'mceEditor') %>
         </div>
-
+      
+        <div class="multifield">
+          <div class="field">
+            <%= f.label :latitude, 'Latitude' %>
+            <%= f.text_field :latitude %>
+          </div>
+          <div class="field">
+            <%= f.label :longitude, 'Longitude' %>
+            <%= f.text_field :longitude %>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="inlinetip">
+           Here is a tip that is inline to the pagepad
+           </div>
+        
+      
+        <div class="field">
+          <label for="ministryfocus">Project Picture</label>
+          <input type="File" />      
+        </div>
+        
+        <button class="save withicon"><span>Save</span></button>
         
       </div>
       
       <div class="tabcontent" id="applicationTab">
-      aPPTAB
+      
+      
+        <button class="save withicon"><span>Save</span></button>
+      
+      
       </div>
       
       <div class="tabcontent" id="contactTab">
+      
+        <button class="save withicon"><span>Save</span></button>
+      
       </div>
       
       <div class="tabcontent" id="operationsTab">
+      
+        <button class="save withicon"><span>Save</span></button>
+      
       </div> 
       <% end %>
     </div>
   
   
+  </div><!-- left -->  
+  
+  
+  <div class="right">
+  
     
+  
+  </div>
+  
+  
   </div>
   
   <div class="projectfooter">

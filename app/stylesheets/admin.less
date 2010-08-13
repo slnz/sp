@@ -4,6 +4,7 @@
 @global-bg: #EFEFEF;
 @white: #fff;
 @black: #000;
+@form-gray: #999;
 @dark-blue: #0B486B;
 @dark-gray: #4D4D4D;
 @lime: #CFF09E;
@@ -89,15 +90,126 @@ h1 {font-size: 26px;}
   
 /* Project Edit */
 
+.projectedit .left {
+  width: 758px;
+  float: left;
+  }
+  
+.projectedit .right {
+  width: 360px;
+  float: right;
+  border-left: 1px solid @global-bg;
+  padding-left: 13px;
+  margin-left: 13px;
+  min-height: 1200px;
+  }
+
 /* Forms */
 
-label {}
-input[type=text] {}
+label {
+  font-size: 11px; 
+  font-weight: bold; 
+  display: block;
+  padding: 4px;
+  }
+    
+input[type=text] {
+  border: 1px solid @form-gray;
+  padding: 4px 3px;  
+  font-family: @global-font;
+  width: 175px;
+  }
+  
+input.small {
+  width: 50px;
+  }
+  
+input.date {
+  width: 50px;
+  }
 
+input.hasDatepicker[type=text] {
+  background: url(/images/icons/calendar.png) no-repeat 98% 50%;
+  width: 100px;
+  
+  }
+  
+div.field {
+  margin-bottom: .75em;
+  select {
+    border: 1px solid @form-gray;
+    padding: 4px 3px;
+    min-width: 330px;
+    }
+  }
+
+div.multifield .field {
+  float: left;
+  margin-right: 0.5em;
+  }
+
+button {
+  background: url(/images/buttonbg.png) repeat-x;
+  border: 1px solid silver;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 8px;
+  }
+
+button.withicon span {
+  padding-left: 31px;
+  }  
+  
+button.save span {
+  padding: 9px 6px 9px 22px;
+  background: url(/images/icons/disk-black.png) no-repeat 0px 50%;
+  display: block;
+  }
+  
+.checkvertical .checkboxwrapper {
+  display: block;
+  label {
+    display: inline;
+    font-weight: normal;
+    padding: 0;
+    line-height: 1em;
+    font-size: 12px;
+    }
+  }
+
+/* Helper */
+.inlinetip {
+  color: @dark-gray;
+  font-size: 11px;
+  display: block;
+  margin-top: 0px;
+  margin-bottom: 15px;
+  margin-left: 4px;
+
+  p {
+    height: 1.25em;
+    overflow: hidden;
+    margin-bottom: 0;
+    }
+  p.showall {
+    height: auto;
+    }
+  span#readmoreless {
+    cursor: pointer;
+    color: @dark-blue;
+    }
+  
+  }
 
 
 
 /* Tabs */
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-family: @global-font;
+  }
 .ui-tabs {
   padding: 0;
   border: none;
@@ -135,7 +247,7 @@ input[type=text] {}
 
 
 .tabcontent {
-  hr {border: 0px; border-top: 1px solid @global-bg;}
+  hr {border: 0px; border-top: 1px solid @global-bg; margin: 1.5em 0;}
   
   }
 
@@ -157,6 +269,27 @@ a.edit {background-image: url('/images/icons/pencil-small.png');}
 a.delete {background-image: url('/images/icons/minus-small-circle.png');}
 a.stats {background-image: url('/images/icons/chart-pie.png'); width: 16px; height: 16px;}
 a.close {text-indent: 0px; width: auto;}
+
+/* Breadcrumbs */
+
+#breadcrumb {
+  ul {
+    .strip-list;
+    font-size: 11px;
+    li {
+      float: left; 
+      background: url('/images/breadcrumbarrow.png') no-repeat 100% 50%;
+      padding-right: 10px;
+      margin-right: 5px;
+    }
+    li.last {
+      background: none;
+      padding-right: 0;
+      margin-right: 0;
+      a {color: @black;}
+      }
+  }
+}
 
 /* Pagination */
 .show_select {

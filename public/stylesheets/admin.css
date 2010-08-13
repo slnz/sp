@@ -88,6 +88,91 @@ h1 { font-size: 26px; }
   color: silver;
   font-style: italic;
 }
+.projectedit .left {
+  width: 758px;
+  float: left;
+}
+.projectedit .right {
+  width: 360px;
+  float: right;
+  border-left: 1px solid #efefef;
+  padding-left: 13px;
+  margin-left: 13px;
+  min-height: 1200px;
+}
+label {
+  font-size: 11px;
+  font-weight: bold;
+  display: block;
+  padding: 4px;
+}
+input[type=text] {
+  border: 1px solid #999999;
+  padding: 4px 3px;
+  font-family: Arial, Helvetica, Verdana;
+  width: 175px;
+}
+input.small, input.date { width: 50px; }
+input.hasDatepicker[type=text] {
+  background: url(/images/icons/calendar.png) no-repeat 98% 50%;
+  width: 100px;
+}
+div.field { margin-bottom: 0.75em; }
+div.field select {
+  border: 1px solid #999999;
+  padding: 4px 3px;
+  min-width: 330px;
+}
+div.multifield .field {
+  float: left;
+  margin-right: 0.5em;
+}
+button {
+  background: url(/images/buttonbg.png) repeat-x;
+  border: 1px solid silver;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 8px;
+}
+button.withicon span { padding-left: 31px; }
+button.save span {
+  padding: 9px 6px 9px 22px;
+  background: url(/images/icons/disk-black.png) no-repeat 0px 50%;
+  display: block;
+}
+.checkvertical .checkboxwrapper { display: block; }
+.checkvertical .checkboxwrapper label {
+  display: inline;
+  font-weight: normal;
+  padding: 0;
+  line-height: 1em;
+  font-size: 12px;
+}
+.inlinetip {
+  color: #4d4d4d;
+  font-size: 11px;
+  display: block;
+  margin-top: 0px;
+  margin-bottom: 15px;
+  margin-left: 4px;
+}
+.inlinetip p {
+  height: 1.25em;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.inlinetip p.showall { height: auto; }
+.inlinetip span#readmoreless {
+  cursor: pointer;
+  color: #0b486b;
+}
+.ui-widget input { font-family: Arial, Helvetica, Verdana; }
+.ui-widget select { font-family: Arial, Helvetica, Verdana; }
+.ui-widget textarea { font-family: Arial, Helvetica, Verdana; }
+.ui-widget button { font-family: Arial, Helvetica, Verdana; }
 .ui-tabs {
   padding: 0;
   border: none;
@@ -121,6 +206,7 @@ h1 { font-size: 26px; }
 .tabcontent hr {
   border: 0px;
   border-top: 1px solid #efefef;
+  margin: 1.5em 0;
 }
 a.inline {
   background: no-repeat 50% 50%;
@@ -144,6 +230,24 @@ a.close {
   text-indent: 0px;
   width: auto;
 }
+#breadcrumb ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  font-size: 11px;
+}
+#breadcrumb ul li {
+  float: left;
+  background: url('/images/breadcrumbarrow.png') no-repeat 100% 50%;
+  padding-right: 10px;
+  margin-right: 5px;
+}
+#breadcrumb ul li.last {
+  background: none;
+  padding-right: 0;
+  margin-right: 0;
+}
+#breadcrumb ul li.last a { color: #000000; }
 .show_select {
   float: right;
   margin-top: 20px;
