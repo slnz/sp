@@ -1,12 +1,14 @@
 class Admin::ProjectsController < ApplicationController
   #uses_tiny_mce :options => {:theme_simple_toolbar_location => 'top'}
-  
   before_filter :get_project, :only => [:edit, :destroy, :update]
+  respond_to :html, :js
+  
   layout 'admin'
   def index
     set_up_pagination
     set_up_filters
-    @projects = @base.includes(:apd, :opd, :pd).paginate(:page => params[:page], :per_page => @per_page)
+    @projects = @base.paginate(:page => params[:page], :per_page => @per_page)
+    respond_with(@products)
   end
   
   def edit
@@ -33,6 +35,9 @@ class Admin::ProjectsController < ApplicationController
     if params[:partners]
       @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", params[:partners], params[:partners], params[:partners])
       @filter_title = params[:partners].sort.join(', ')
+    end
+    if params[:search]
+      @base = @base.where("name like ?", "%#{params[:search]}%")
     end
   end
 end

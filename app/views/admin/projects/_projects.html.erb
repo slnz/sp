@@ -1,0 +1,34 @@
+
+<table>
+  <tr>
+    <th></th>
+    <th class="th_project capitalize"><%= sort_by('Project') %></th>
+    <th class="th_pd"><%= sort_by('PD') %></th>
+    <th class="th_apd"><%= sort_by('APD') %></th>
+    <th class="th_opd"><%= sort_by('OPD') %></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% @projects.each do |project| %>
+  <tr>
+    <td class="count"><%= project.accepted %> / <%= project.capacity %></td>
+    <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %></td>
+    <% [:pd,:apd,:opd].each do |leader| -%>
+			<td class="<%= leader.to_s %>">
+				<% l = project.send(leader) 
+					if l -%>
+						<%=  l.accountNo ? link_to(l, "https://staff.campuscrusadeforchrist.com/servlet/InfoBaseController?action=showStaffInfo&staffid=#{l.accountNo}") : l %>
+					<% else %>
+					  <%= link_to('') do %>
+					    <span class="fillit">(Fill this position)</span>
+					  <% end %>
+					<% end -%>
+				&nbsp;
+				<%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %>
+			</td>
+		<% end -%>
+    <td class="stats"><%= stat_link(project,project, '', :class => 'inline stats') %></td>
+    <td class="close"><%= link_to('Close', '', :class => 'inline close') %></td>
+  </tr>
+  <% end %>
+</table>

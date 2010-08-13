@@ -1,5 +1,8 @@
 class SpUser < ActiveRecord::Base
   belongs_to :user, :foreign_key => :ssm_id
+  before_save :set_role
+  after_initialize :set_acl
+  
   def can_delete_project?() false; end
   def can_edit_roles?() false; end
   def can_change_project_status?() false; end
@@ -30,7 +33,7 @@ class SpUser < ActiveRecord::Base
   def can_upload_ds?() false; end
   def can_see_dashboard?() false; end
   
-  def after_initialize(attributes = nil)
+  def set_acl(attributes = nil)
     @acl = {:projects => [:no_access]}
   end
   
@@ -51,7 +54,7 @@ class SpUser < ActiveRecord::Base
   
   def heading(partner = nil) ''; end;
   
-  def before_save
+  def set_role
     sp_role = SpRole.find_by_user_class(self[:type])
     self[:role] = sp_role.role if sp_role
   end

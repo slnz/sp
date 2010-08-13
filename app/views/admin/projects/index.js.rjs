@@ -1,0 +1,3 @@
+page << <<-END
+  $('#dashboardlist').html('#{escape_javascript(render('projects'))}')
+END

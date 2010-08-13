@@ -8,18 +8,16 @@
       <hr />
       <ul>
         <li><%= link_to_function('All', '', :id => 'filter_all') %></li>
-        <% i = 0
-          partners.each do |partner| 
-          i += 1 %>
+        <% partners.each_with_index do |partner, i| %>
         <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
-          <% if i % 6 == 0 %>
+          <% if (i + 1) % 6 == 0 %>
             </ul><ul><li>&nbsp;</li>
           <% end %>
         <% end %>
       </ul>
       <div class="clear"></div>
       <%= check_box_tag :closed, 1, params[:closed] == 'true' %> Include closed projects
-      <button id="filter_button">Filter</button>
+      <button id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
     </div>
   </ul>  
   
@@ -30,41 +28,9 @@
   </ul>
 </div>
 
-<div class="dashboardlist">
-  <%= text_field_tag :filter %>
-  <table>
-    <tr>
-      <th></th>
-      <th class="th_project capitalize"><%= sort_by('Project') %></th>
-      <th class="th_pd"><%= sort_by('PD') %></th>
-      <th class="th_apd"><%= sort_by('APD') %></th>
-      <th class="th_opd"><%= sort_by('OPD') %></th>
-      <th></th>
-      <th></th>
-    </tr>
-    <% @projects.each do |project| %>
-    <tr>
-      <td class="count"><%= project.accepted %> / <%= project.capacity %></td>
-      <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %></td>
-      <% [:pd,:apd,:opd].each do |leader| -%>
-  			<td class="<%= leader.to_s %>">
-					<% l = project.send(leader) 
-						if l -%>
-							<%=  l.accountNo ? link_to(l, "https://staff.campuscrusadeforchrist.com/servlet/InfoBaseController?action=showStaffInfo&staffid=#{l.accountNo}") : l %>
-						<% else %>
-						  <%= link_to('') do %>
-						    <span class="fillit">(Fill this position)</span>
-						  <% end %>
-						<% end -%>
-  				&nbsp;
-  				<%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %>
-  			</td>
-			<% end -%>
-      <td class="stats"><%= link_to('Stats', '', :class => 'inline stats') %></td>
-      <td class="close"><%= link_to('Close', '', :class => 'inline close') %></td>
-    </tr>
-    <% end %>
-  </table>
+<%= text_field_tag :search, params[:search], :rel => admin_projects_path %> <%= spinner %>
+<div id="dashboardlist" class="dashboardlist">
+  <%= render 'projects' %>
 </div>
 
 <div class="dashboardfooter">

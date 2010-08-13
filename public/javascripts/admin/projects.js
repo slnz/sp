@@ -32,8 +32,22 @@ $(function() {
 		});
 		if(partners.length > 0) filters['partners'] = partners;
 		if($('#closed:checked')[0] != null) filters['closed'] = true;
-		document.location = '/admin/projects?' + $.param(filters);
+		document.location = $(this).attr('rel') + '?' + $.param(filters);
 			
 	});
 	// END Partnership Filter
+	
+	// Find as you type
+	$('#search').keyup(function() {
+		params['search'] = $(this).val();
+		$('#spinner').show();
+		$.ajaxCount++;
+		$.ajax({url: $(this).attr('rel') + '?' + $.param(params), dataType: 'script', complete: function() {
+																																															$.ajaxCount--;
+																																															if($.ajaxCount == 0) $('#spinner').hide();
+																																														}});
+	})
+	// END Find as you type
+
+	$.ajaxCount = 0;
 });

@@ -19,11 +19,11 @@
   <div class="pagewidth">
     <ul id="menu">
       <% if sp_user.can_see_dashboard? %>
-        <li><%= link_to('Dashboard', admin_projects_path, :class => 'selected') %></li>
+        <li><%= link_to('Projects', admin_projects_path, :class => 'selected') %></li>
+      <% elsif current_person.directs_projects.length > 0 %>
+        <li><%= link_to('People', project_path(person.directs_projects.first)) %></li>
       <% end %>
-      <li><%= link_to('People', 'Dashboard') %></li>
-      <li><%= link_to('Projects', 'Dashboard') %></li>
-      <li><%= link_to('Reports', 'Dashboard') %></li>
+      <li><%= link_to('Reports', '') %></li>
       <li class="search withicon"><%= link_to('Search', 'Search') %></li>
     </ul>
   </div>
