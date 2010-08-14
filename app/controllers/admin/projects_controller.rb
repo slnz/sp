@@ -1,6 +1,6 @@
 class Admin::ProjectsController < ApplicationController
   #uses_tiny_mce :options => {:theme_simple_toolbar_location => 'top'}
-  before_filter :get_project, :only => [:edit, :destroy, :update, :close]
+  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open]
   respond_to :html, :js
   
   layout 'admin'
@@ -33,7 +33,16 @@ class Admin::ProjectsController < ApplicationController
 
   def close
     @project.close!
-    redirect_to admin_projects_path, :notice => "#{@project.name} has been closed."
+    redirect_to :back, :notice => "#{@project.name} has been closed."
+  end
+
+  def open
+    if @project.valid?
+      @project.open!
+      redirect_to :back, :notice => "#{@project.name} has been re-opened."
+    else
+      redirect_to edit_admin_project_path(@project, :reopen => true), :notice => 'Please update all necessary fields for this project, then try Re-Opening it again.'
+    end
   end
   
   def new

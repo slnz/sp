@@ -44,6 +44,7 @@ Sp2::Application.routes.draw do
     resources :projects do
       member do
         post :close
+        post :open
       end
     end
   end

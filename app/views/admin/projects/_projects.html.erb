@@ -1,6 +1,10 @@
 <% @projects.each do |project| %>
 <tr>
-  <td class="count"><%= project.accepted %> / <%= project.capacity %></td>
+  <td class="count">
+    <span title="<%= project.current_students_men.to_i %> men, <%= project.current_students_women.to_i %> women">
+      <%= project.accepted %> / <%= project.capacity %>
+    </span>
+  </td>
   <td class="project"><%= link_to(project.name, admin_project_path(project)) %> <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %></td>
   <% [:pd,:apd,:opd].each do |leader| -%>
 		<td class="<%= leader.to_s %>">
@@ -17,6 +21,12 @@
 		</td>
 	<% end -%>
   <td class="stats"><%= stat_link(project,project, 'Stats', :class => 'inline stats') %></td>
-  <td class="close"><%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to close #{project}") %></td>
+  <td class="close">
+    <% if project.closed? %>
+      <%= link_to('Open', open_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to open #{project}") %>
+    <% else %>
+      <%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to close #{project}") %>
+    <% end %>
+  </td>
 </tr>
 <% end %>

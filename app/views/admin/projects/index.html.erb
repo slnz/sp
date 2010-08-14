@@ -7,7 +7,7 @@
       <p>Select which partners' projects you would like to see:</p>
       <hr />
       <ul>
-        <li><%= link_to_function('All', '', :id => 'filter_all') %></li>
+        <li><%= link_to_function('All', '', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
         <% partners.each_with_index do |partner, i| %>
         <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
           <% if (i + 1) % 6 == 0 %>
