@@ -92,6 +92,8 @@ desc "Add linked files after deploy and set permissions"
 task :local_changes, :roles => :app do
   run <<-CMD
     ln -s #{shared_path}/bundle #{release_path}/vendor/bundle &&
+    LD_LIBRARY_PATH=/usr/lib/oracle/10.2.0.4/client/lib/ &&
+    export LD_LIBRARY_PATH &&
     cd #{release_path} && /opt/ruby/bin/bundle install --deployment &&
     ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml &&
     
