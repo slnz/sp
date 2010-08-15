@@ -32,3 +32,4 @@ gem 'dynamic_form'
 #   gem 'webrat'
 # end
 gem 'activerecord-oracle_enhanced-adapter'
+gem 'ruby-oci8'
