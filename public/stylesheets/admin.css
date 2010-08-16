@@ -11,7 +11,7 @@ a {
   outline: none;
 }
 .pagewidth {
-  max-width: 1200px;
+  max-width: 960px;
   min-width: 960px;
   margin: 0 auto;
 }
@@ -113,11 +113,11 @@ h1 {
 .dashboardlist .rollovershow .edit { margin-left: 5px; }
 .dashboardlist .rollovershow:hover { display: block; }
 .projectedit .left {
-  width: 758px;
+  width: 620px;
   float: left;
 }
 .projectedit .right {
-  width: 360px;
+  width: 270px;
   float: right;
   border-left: 1px solid #efefef;
   padding-left: 13px;
@@ -204,10 +204,11 @@ button.save span {
   display: block;
   margin-top: 0px;
   margin-bottom: 15px;
-  margin-left: 4px;
+  margin-left: 0px;
+  width: 594px;
 }
 .inlinetip .explanation {
-  height: 12px;
+  height: 40px;
   padding: 11px;
   background: #fff9dc;
   overflow: hidden;
