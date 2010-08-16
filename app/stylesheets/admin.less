@@ -140,6 +140,37 @@ h1 {font-size: 26px;margin: .5em 0;}
   min-height: 1200px;
   }
 
+.projectedit {
+  .checkboxes {
+    max-height: 190px;
+    overflow: auto;
+    border: 1px solid @form-gray;
+    width: 500px;
+    background: url(/images/checkbox_bg.jpg) repeat-x 100% 100%;
+    div {
+      padding: 4px 0;
+      }
+      
+    div.selected {
+      background: @dark-blue;
+      color: #fff;
+      }
+    div:hover {
+      background: @lime;
+      }
+    label {
+      display: inline;
+      line-height: 1.05em;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: normal;
+      }
+    input {
+      vertical-align: middle;
+      }
+    }
+  }
+
 /* Forms */
 
 label {

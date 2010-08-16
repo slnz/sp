@@ -127,12 +127,24 @@ h1 {
   min-height: 1200px;
 }
 .projectedit .checkboxes {
-  height: 200px;
+  max-height: 190px;
   overflow: auto;
+  border: 1px solid #999999;
+  width: 500px;
+  background: url(/images/checkbox_bg.jpg) repeat-x 100% 100%;
 }
+.projectedit .checkboxes div { padding: 4px 0; }
+.projectedit .checkboxes div.selected {
+  background: #0b486b;
+  color: #ffffff;
+}
+.projectedit .checkboxes div:hover { background: #cff09e; }
 .projectedit .checkboxes label {
   display: inline;
   line-height: 1.05em;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: normal;
 }
 .projectedit .checkboxes input { vertical-align: middle; }
 label {
