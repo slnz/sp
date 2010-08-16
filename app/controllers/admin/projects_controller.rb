@@ -52,6 +52,9 @@ class Admin::ProjectsController < ApplicationController
   
   def new
     @project = SpProject.new
+    3.times do 
+      @project.student_quotes.build
+    end
   end
   
   protected 

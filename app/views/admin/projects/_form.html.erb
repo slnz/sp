@@ -40,7 +40,7 @@
 
       <div class="field select">
         <%= f.label :primary_ministry_focus_id %>
-        <%= f.select :primary_ministry_focus_id, SpMinistryFocus.find(:all, :order => "name").collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
+        <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
       </div>
       
       <div class="field checkvertical">
@@ -48,7 +48,7 @@
         <div class="checkboxes">
           <% SpMinistryFocus.all.each do |sf| %>
             <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row">
-              <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
+              <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= !@project.new_record? && @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
               <%= f.label "ministry_focus_ids_#{sf.id}", sf.name %>
             </div>
           <% end %>
@@ -66,7 +66,7 @@
         <div class="checkboxes">
         <% SpGospelInAction.all.each do |ga| %>
           <div>
-            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
             <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
           </div>
         <% end %>
@@ -132,11 +132,30 @@
         </div>
         <span id="readmoreless" rel="explain1">Read More</span>
       </div>
-      
-      <div class="field">
-        <%= f.label :student_quotes, 'Student Quotes' %>
-        <%= f.text_area(:student_quotes, :cols => 90, :rows => 10, :class => 'mceEditor') %>
-      </div>
+      <% @project.student_quotes.each_with_index do |quote, i| %>
+        <% f.fields_for :student_quotes, quote do |sqf| %>
+          <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
+            <div class="field">
+              <div>
+                <%= sqf.label :name, 'Name' %>
+                <%= sqf.text_field :name %>
+              </div>
+              <div>
+                <%= sqf.check_box :_destroy %>
+                <%= sqf.label :_destroy, 'Remove' %>
+              </div>
+            </div>
+            <div class="field">
+              <%= sqf.label :quote, 'Quote' %>
+              <%= sqf.text_area(:quote, :cols => 60, :rows => 5) %>
+            </div>
+            <div class="clear"></div>
+            <% unless i == 2 || @project.student_quotes[i+1].try(:quote).present?%>
+              <%= link_to_function('Add another quote', "$(this).hide();$('#quote_#{i+1}').show()") %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
     
       <div class="field">
         <label for="sp_project_picture">Project Picture</label>

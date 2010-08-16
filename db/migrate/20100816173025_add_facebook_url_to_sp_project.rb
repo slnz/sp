@@ -1,7 +1,6 @@
 class AddFacebookUrlToSpProject < ActiveRecord::Migration
   def self.up
     add_column :sp_projects, :facebook_url, :string
-    add_column :sp_projects, :student_quotes, :text
     add_column :sp_projects, :picture_file_name,    :string
     add_column :sp_projects, :picture_content_type, :string
     add_column :sp_projects, :picture_file_size,    :integer
@@ -13,7 +12,6 @@ class AddFacebookUrlToSpProject < ActiveRecord::Migration
     remove_column :sp_projects, :picture_file_size
     remove_column :sp_projects, :picture_content_type
     remove_column :sp_projects, :picture_file_name
-    remove_column :sp_projects, :student_quotes
     remove_column :sp_projects, :facebook_url
   end
 end
