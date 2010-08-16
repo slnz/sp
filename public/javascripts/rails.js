@@ -69,7 +69,7 @@ jQuery(function ($) {
 					$('#dialog-confirm-message').html(el.attr('data-confirm'));
 					$("#dialog-confirm").dialog({
 						resizable: false,
-						height:140,
+						height:240,
 						modal: true,
 						buttons: {
 							Cancel: function() {
@@ -82,9 +82,6 @@ jQuery(function ($) {
 						}
 					});
 					return false;
-            // if (!confirm(el.attr('data-confirm'))) {
-            //     return false;
-            // }
         }
     });
 
