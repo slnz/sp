@@ -40,7 +40,25 @@ $(function() {
 	// END Partnership Filter
 	
 	// Find as you type
-	$('.search').keyup(function() {
+	var search_prompt = 'Type here to filter';
+	$('.search').each(function() {
+		if ($(this).val() == '') {
+			$(this).val(search_prompt);
+			$(this).addClass('prompt');
+		}
+	});
+	
+	$('.search').focus(function() {
+		if ($(this).val() == search_prompt) {
+			$(this).val('');
+			$(this).removeClass('prompt');
+		}
+	}).blur(function() {
+		if ($(this).val() == '') {
+			$(this).val(search_prompt);
+			$(this).addClass('prompt');
+		}
+	}).keyup(function() {
 		// Clear the other search fields
 		$('.search').not(this).val('');
 		param = $(this).attr('name');
@@ -53,6 +71,15 @@ $(function() {
 																																														}});
 	})
 	// END Find as you type
+	
+	// Row hover actions
+	$('.project_row').hover(function() {
+		$('.rollovershow', this).show();
+	},function() {
+		$('.rollovershow', this).hide();
+	})
+	// ENF row hover actions
+	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();

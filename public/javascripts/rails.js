@@ -63,9 +63,28 @@ jQuery(function ($) {
     $('a[data-confirm],input[data-confirm]').live('click', function () {
         var el = $(this);
         if (el.triggerAndReturn('confirm')) {
-            if (!confirm(el.attr('data-confirm'))) {
-                return false;
-            }
+					if ($('#dialog-confirm')[0] == null) {
+						$('body').append('<div id="dialog-confirm" title="Are you sure?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-confirm-message"></span></p></div>');
+					}
+					$('#dialog-confirm-message').html(el.attr('data-confirm'));
+					$("#dialog-confirm").dialog({
+						resizable: false,
+						height:140,
+						modal: true,
+						buttons: {
+							Cancel: function() {
+								$(this).dialog('close');
+							},
+							Yes: function() {
+								el.removeAttr('data-confirm');
+								el.click();
+							}
+						}
+					});
+					return false;
+            // if (!confirm(el.attr('data-confirm'))) {
+            //     return false;
+            // }
         }
     });
 
