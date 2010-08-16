@@ -207,15 +207,23 @@ button.save span {
   margin-bottom: 15px;
   margin-left: 4px;
 }
+.inlinetip .explanation {
+  height: 12px;
+  padding: 11px;
+  background: #fff9dc;
+  overflow: hidden;
+}
 .inlinetip p {
   height: 1.25em;
   overflow: hidden;
   margin-bottom: 0;
 }
-.inlinetip p.showall { height: auto; }
+.inlinetip .showall { height: auto; }
 .inlinetip span#readmoreless {
   cursor: pointer;
   color: #0b486b;
+  display: block;
+  padding: 4px 5px;
 }
 div.module h3 {
   background: #efefef;

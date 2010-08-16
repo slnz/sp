@@ -59,7 +59,7 @@ $(function() {
  
   $("#readmoreless").click(function() {
     $('#' + $(this).attr('rel')).toggleClass('showall', 500);
-    $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
+    $(this).text($(this).text() == 'Read More...' ? 'Read Less' : 'Read More');
   	return false;
  	});
 });
