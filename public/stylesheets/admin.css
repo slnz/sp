@@ -22,6 +22,7 @@ a {
 }
 .pagepad { padding: 15px; }
 .clear { clear: both; }
+.spinner { vertical-align: middle; }
 h1, h2, h3, h4, h5, h6 { font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica; }
 h1 {
   font-size: 26px;
@@ -82,15 +83,37 @@ h1 {
 }
 .dashboardlist table th.capitalize { text-transform: capitalize; }
 .dashboardlist table th.th_project { width: 40%; }
+.dashboardlist table th.th_count { width: 65px; }
 .dashboardlist table td {
   border-bottom: 1px solid #efefef;
   padding: 7px 0;
 }
 .dashboardlist table td.close a { color: #4d4d4d; }
+.dashboardlist table td.count { padding-left: 8px; }
 .dashboardlist span.fillit {
   color: silver;
   font-style: italic;
 }
+.dashboardlist th input {
+  font-size: 11px;
+  background: #efefef;
+}
+.dashboardlist th input:focus { background: #ffffff; }
+.dashboardlist th input#search { width: 200px; }
+.dashboardlist .rollovershow {
+  position: absolute;
+  margin: -8px 0 0 -65px;
+  background: #ffffff;
+  padding: 8px 3px 8px 7px;
+  width: 54px;
+  -moz-border-radius: 5px 0 0 5px;
+  display: block;
+  font-size: 11px;
+  border: 1px solid #efefef;
+  border-right: none;
+}
+.dashboardlist .rollovershow .edit { margin-left: 5px; }
+.dashboardlist .rollovershow:hover { display: block; }
 .projectedit .left {
   width: 758px;
   float: left;
@@ -103,6 +126,15 @@ h1 {
   margin-left: 13px;
   min-height: 1200px;
 }
+.projectedit .checkboxes {
+  height: 200px;
+  overflow: auto;
+}
+.projectedit .checkboxes label {
+  display: inline;
+  line-height: 1.05em;
+}
+.projectedit .checkboxes input { vertical-align: middle; }
 label {
   font-size: 11px;
   font-weight: bold;
