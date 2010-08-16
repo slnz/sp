@@ -7,3 +7,6 @@
 [submodule "vendor/plugins/questionnaire_engine"]
 	path = vendor/plugins/questionnaire_engine
 	url = git://github.com/twinge/questionnaire_engine.git
+[submodule "vendor/plugins/paperclip"]
+	path = vendor/plugins/paperclip
+	url = http://github.com/thoughtbot/paperclip.git
