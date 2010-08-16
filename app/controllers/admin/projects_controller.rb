@@ -18,12 +18,21 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def edit
-    
+    (3 - @project.student_quotes.length).times do 
+      @project.student_quotes.build
+    end
+  end
+  
+  def update
+    @project.update_attributes(params[:sp_project])
+    respond_with(@project) do |format|
+      format.html {@project.valid? ? redirect_to(admin_projects_path) : render(:edit)}
+    end
   end
   
   def create
     @project = SpProject.create(params[:sp_project])
-    respond_with(@project)
+    respond_with(@project) 
   end
   
   def dashboard
@@ -46,7 +55,7 @@ class Admin::ProjectsController < ApplicationController
       @project.open!
       redirect_to :back, :notice => "#{@project.name} has been re-opened."
     else
-      redirect_to edit_admin_project_path(@project, :reopen => true), :notice => 'Please update all necessary fields for this project, then try Re-Opening it again.'
+      redirect_to edit_admin_project_path(@project), :notice => 'Please update all necessary fields for this project, then try Re-Opening it again.'
     end
   end
   
