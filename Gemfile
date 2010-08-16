@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
+# source 'http://gems.rubyonrails.org'
 
 gem 'rails', '3.0.0.rc'
 
@@ -30,3 +31,5 @@ gem 'dynamic_form'
 # group :development, :test do
 #   gem 'webrat'
 # end
+gem 'activerecord-oracle_enhanced-adapter'
+gem 'ruby-oci8'

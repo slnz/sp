@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100816173025) do
+ActiveRecord::Schema.define(:version => 20100813150554) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.datetime "dateAdded"
     t.datetime "dateModified"
     t.string   "moderatedYet", :limit => 1
-    t.string   "summary",      :limit => 5000
+    t.string   "summary",      :limit => 4000
     t.string   "quality",      :limit => 256
     t.datetime "expDate"
     t.datetime "lastAccessed"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.datetime "dateAdded"
     t.datetime "dateModified"
     t.string   "moderatedYet",  :limit => 1
-    t.string   "summary",       :limit => 5000
+    t.string   "summary",       :limit => 4000
     t.string   "quality",       :limit => 256
     t.datetime "expDate"
     t.datetime "lastAccessed"
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.datetime "dateAdded"
     t.datetime "dateModified"
     t.string   "moderatedYet",   :limit => 1
-    t.string   "summary",        :limit => 5000
+    t.string   "summary",        :limit => 4000
     t.string   "quality",        :limit => 256
     t.datetime "expDate"
     t.datetime "lastAccessed"
@@ -212,8 +212,10 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "registrant_type_id",                               :null => false
   end
 
+  add_index "crs2_additional_expenses_item", ["expense_id"], :name => "FK385A9FF09F87976B"
   add_index "crs2_additional_expenses_item", ["expense_id"], :name => "fk_additional_expenses_item_expense_id"
   add_index "crs2_additional_expenses_item", ["registrant_type_id", "expense_id"], :name => "unique_registrant_type_expense", :unique => true
+  add_index "crs2_additional_expenses_item", ["registrant_type_id"], :name => "FK385A9FF0BFB88996"
   add_index "crs2_additional_expenses_item", ["registrant_type_id"], :name => "fk_additional_expenses_item_registrant_type_id"
 
   create_table "crs2_additional_info_item", :force => true do |t|
@@ -226,6 +228,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "conference_id"
   end
 
+  add_index "crs2_additional_info_item", ["conference_id"], :name => "FKC01086BD863D9D1F"
   add_index "crs2_additional_info_item", ["conference_id"], :name => "fk_additional_info_item_conference_id"
 
   create_table "crs2_answer", :force => true do |t|
@@ -242,8 +245,10 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "registrant_id",     :null => false
   end
 
+  add_index "crs2_answer", ["question_usage_id"], :name => "FK8F185E4F620BBCDE"
   add_index "crs2_answer", ["question_usage_id"], :name => "fk_answer_question_usage_id"
   add_index "crs2_answer", ["registrant_id", "question_usage_id"], :name => "unique_registrant_question_usage", :unique => true
+  add_index "crs2_answer", ["registrant_id"], :name => "FK8F185E4FE86BBEBF"
   add_index "crs2_answer", ["registrant_id"], :name => "fk_answer_registrant_id"
 
   create_table "crs2_conference", :force => true do |t|
@@ -290,8 +295,10 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.string   "event_zip"
   end
 
+  add_index "crs2_conference", ["creator_id"], :name => "FK6669B32D4EC33E7E"
   add_index "crs2_conference", ["creator_id"], :name => "fk_conference_creator_id"
   add_index "crs2_conference", ["name"], :name => "unique_name", :unique => true
+  add_index "crs2_conference", ["url_base_id"], :name => "FK6669B32D7CD5005C"
   add_index "crs2_conference", ["url_base_id"], :name => "fk_conference_url_base_id"
 
   create_table "crs2_configuration", :force => true do |t|
@@ -302,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "default_url_base_id"
   end
 
+  add_index "crs2_configuration", ["default_url_base_id"], :name => "FK15F201454608DB5E"
   add_index "crs2_configuration", ["default_url_base_id"], :name => "fk_configuration_default_url_base_id"
 
   create_table "crs2_custom_questions_item", :force => true do |t|
@@ -316,8 +324,10 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "question_id"
   end
 
+  add_index "crs2_custom_questions_item", ["question_id"], :name => "FK72AEFAA2FE697289"
   add_index "crs2_custom_questions_item", ["question_id"], :name => "fk_custom_questions_item_question_id"
   add_index "crs2_custom_questions_item", ["registrant_type_id", "question_id"], :name => "unique_registrant_type_question", :unique => true
+  add_index "crs2_custom_questions_item", ["registrant_type_id"], :name => "FK72AEFAA2BFB88996"
   add_index "crs2_custom_questions_item", ["registrant_type_id"], :name => "fk_custom_questions_item_registrant_type_id"
 
   create_table "crs2_custom_stylesheet", :force => true do |t|
@@ -328,6 +338,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "conference_id", :null => false
   end
 
+  add_index "crs2_custom_stylesheet", ["conference_id"], :name => "FKC81CDCAB863D9D1F"
   add_index "crs2_custom_stylesheet", ["conference_id"], :name => "fk_custom_stylesheet_conference_id"
 
   create_table "crs2_expense", :force => true do |t|
@@ -341,6 +352,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.boolean  "disabled"
   end
 
+  add_index "crs2_expense", ["conference_id"], :name => "FK386A7BE7863D9D1F"
   add_index "crs2_expense", ["conference_id"], :name => "fk_expense_conference_id"
 
   create_table "crs2_expense_selection", :force => true do |t|
@@ -352,8 +364,10 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "expense_usage_id", :null => false
   end
 
+  add_index "crs2_expense_selection", ["expense_usage_id"], :name => "FKB9237334168AAE98"
   add_index "crs2_expense_selection", ["expense_usage_id"], :name => "fk_expense_selection_expense_usage_id"
   add_index "crs2_expense_selection", ["registrant_id", "expense_usage_id"], :name => "unique_registrant_expense_usage", :unique => true
+  add_index "crs2_expense_selection", ["registrant_id"], :name => "FKB9237334E86BBEBF"
   add_index "crs2_expense_selection", ["registrant_id"], :name => "fk_expense_selection_registrant_id"
 
   create_table "crs2_module_usage", :force => true do |t|
@@ -364,6 +378,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "conference_id"
   end
 
+  add_index "crs2_module_usage", ["conference_id"], :name => "FK28233DF863D9D1F"
   add_index "crs2_module_usage", ["conference_id"], :name => "fk_module_usage_conference_id"
 
   create_table "crs2_person", :force => true do |t|
@@ -409,10 +424,13 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "ministry_person_id"
   end
 
+  add_index "crs2_profile", ["crs_person_id"], :name => "FK74043D38E20F2579"
   add_index "crs2_profile", ["crs_person_id"], :name => "fk_profile_crs_person_id"
   add_index "crs2_profile", ["crs_person_id"], :name => "unique_crs_person", :unique => true
+  add_index "crs2_profile", ["ministry_person_id"], :name => "FK74043D38E8E728C3"
   add_index "crs2_profile", ["ministry_person_id"], :name => "fk_profile_ministry_person_id"
   add_index "crs2_profile", ["ministry_person_id"], :name => "unique_ministry_person", :unique => true
+  add_index "crs2_profile", ["user_id"], :name => "FK74043D38F3C73A7F"
   add_index "crs2_profile", ["user_id"], :name => "fk_profile_user_id"
   add_index "crs2_profile", ["user_id"], :name => "unique_user", :unique => true
 
@@ -425,6 +443,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "registrant_type_id"
   end
 
+  add_index "crs2_profile_question", ["registrant_type_id"], :name => "FK80688F0DBFB88996"
   add_index "crs2_profile_question", ["registrant_type_id"], :name => "fk_profile_question_registrant_type_id"
 
   create_table "crs2_question", :force => true do |t|
@@ -438,6 +457,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "conference_id"
   end
 
+  add_index "crs2_question", ["conference_id"], :name => "FK2C2FA37863D9D1F"
   add_index "crs2_question", ["conference_id"], :name => "fk_question_conference_id"
   add_index "crs2_question", ["name", "conference_id"], :name => "unique_name_conference", :unique => true
 
@@ -453,6 +473,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
 
   add_index "crs2_question_option", ["option_question_id", "name"], :name => "unique_option_question_name", :unique => true
   add_index "crs2_question_option", ["option_question_id", "value"], :name => "unique_option_question_value", :unique => true
+  add_index "crs2_question_option", ["option_question_id"], :name => "FK5B6AEF7D5D2F9214"
   add_index "crs2_question_option", ["option_question_id"], :name => "fk_question_option_option_question_id"
 
   create_table "crs2_registrant", :force => true do |t|
@@ -478,61 +499,22 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.boolean  "name_disabled"
   end
 
+  add_index "crs2_registrant", ["cancelled_by_id"], :name => "FKCB9B36BC6F044A05"
   add_index "crs2_registrant", ["cancelled_by_id"], :name => "fk_registrant_cancelled_by_id"
   add_index "crs2_registrant", ["profile_id", "registrant_type_id"], :name => "unique_profile_registrant_type", :unique => true
+  add_index "crs2_registrant", ["profile_id"], :name => "FKCB9B36BC2442AF81"
   add_index "crs2_registrant", ["profile_id"], :name => "fk_registrant_profile_id"
+  add_index "crs2_registrant", ["registrant_type_before_cancellation_id"], :name => "FKCB9B36BC33BE6712"
   add_index "crs2_registrant", ["registrant_type_before_cancellation_id"], :name => "fk_registrant_registrant_type_before_cancellation_id"
+  add_index "crs2_registrant", ["registrant_type_id"], :name => "FKCB9B36BCBFB88996"
   add_index "crs2_registrant", ["registrant_type_id"], :name => "fk_registrant_registrant_type_id"
+  add_index "crs2_registrant", ["registration_before_cancellation_id"], :name => "FKCB9B36BC8FD067BB"
   add_index "crs2_registrant", ["registration_before_cancellation_id"], :name => "fk_registrant_registration_before_cancellation_id"
+  add_index "crs2_registrant", ["registration_id"], :name => "FKCB9B36BCA7FD76BF"
   add_index "crs2_registrant", ["registration_id"], :name => "fk_registrant_registration_id"
 
-  create_table "crs2_registrant_type", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "version",                                                                                     :null => false
-    t.boolean  "accept_checks"
-    t.boolean  "accept_credit_cards"
-    t.boolean  "accept_ministry_account_transfers"
-    t.boolean  "accept_scholarships"
-    t.boolean  "accept_staff_account_transfers"
-    t.text     "additional_confirmation_email_text"
-    t.boolean  "allow_children"
-    t.boolean  "allow_commute"
-    t.boolean  "allow_spouse"
-    t.boolean  "ask_arrival_date"
-    t.boolean  "ask_departure_date"
-    t.boolean  "childcare_available"
-    t.date     "default_arrival_date"
-    t.date     "default_departure_date"
-    t.text     "description",                                                                                 :null => false
-    t.boolean  "is_child_type"
-    t.decimal  "married_commuter_cost",                        :precision => 12, :scale => 2
-    t.decimal  "married_commuter_early_reg_discount",          :precision => 12, :scale => 2
-    t.decimal  "married_commuter_full_payment_discount",       :precision => 12, :scale => 2
-    t.datetime "married_discount_early_registration_deadline"
-    t.decimal  "married_onsite_cost",                          :precision => 12, :scale => 2
-    t.decimal  "married_onsite_early_reg_discount",            :precision => 12, :scale => 2
-    t.decimal  "married_onsite_full_payment_discount",         :precision => 12, :scale => 2
-    t.decimal  "married_required_deposit",                     :precision => 12, :scale => 2
-    t.string   "name",                                                                        :default => "", :null => false
-    t.boolean  "offer_childcare"
-    t.text     "registration_complete_email"
-    t.decimal  "single_commuter_cost",                         :precision => 12, :scale => 2
-    t.decimal  "single_commuter_early_reg_discount",           :precision => 12, :scale => 2
-    t.decimal  "single_commuter_full_payment_discount",        :precision => 12, :scale => 2
-    t.datetime "single_discount_early_registration_deadline"
-    t.decimal  "single_onsite_cost",                           :precision => 12, :scale => 2
-    t.decimal  "single_onsite_early_reg_discount",             :precision => 12, :scale => 2
-    t.decimal  "single_onsite_full_payment_discount",          :precision => 12, :scale => 2
-    t.decimal  "single_required_deposit",                      :precision => 12, :scale => 2
-    t.integer  "conference_id",                                                                               :null => false
-    t.boolean  "defer_online_payment"
-    t.boolean  "require_full_payment"
-    t.boolean  "shut_off"
-    t.text     "shut_off_message"
-  end
-
-  add_index "crs2_registrant_type", ["conference_id"], :name => "fk_registrant_type_conference_id"
+# Could not dump table "crs2_registrant_type" because of following StandardError
+#   Unknown type 'bit(1)' for column 'married_require_full_payment'
 
   create_table "crs2_registration", :force => true do |t|
     t.string   "type",            :limit => 31, :default => "", :null => false
@@ -549,6 +531,8 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "cancelled_by_id"
   end
 
+  add_index "crs2_registration", ["cancelled_by_id"], :name => "FK51AB168A6F044A05"
+  add_index "crs2_registration", ["creator_id"], :name => "FK51AB168A4EC33E7E"
   add_index "crs2_registration", ["creator_id"], :name => "fk_registration_creator_id"
 
   create_table "crs2_transaction", :force => true do |t|
@@ -587,16 +571,25 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
   end
 
   add_index "crs2_transaction", ["authorizer_id"], :name => "fk_transaction_authorizer_id"
+  add_index "crs2_transaction", ["charge_cancellation_id"], :name => "FKA5E426ED6E748998"
   add_index "crs2_transaction", ["charge_cancellation_id"], :name => "fk_transaction_charge_cancellation_id"
+  add_index "crs2_transaction", ["conference_id"], :name => "FKA5E426ED863D9D1F"
   add_index "crs2_transaction", ["conference_id"], :name => "fk_transaction_conference_id"
+  add_index "crs2_transaction", ["expense_selection_id"], :name => "FKA5E426ED744633B8"
   add_index "crs2_transaction", ["expense_selection_id"], :name => "fk_transaction_expense_selection_id"
   add_index "crs2_transaction", ["indicated_verifier_id"], :name => "fk_transaction_indicated_verifier_id"
+  add_index "crs2_transaction", ["paid_by_id"], :name => "FKA5E426ED6A74B681"
   add_index "crs2_transaction", ["paid_by_id"], :name => "fk_transaction_paid_by_id"
+  add_index "crs2_transaction", ["payment_cancellation_id"], :name => "FKA5E426EDFBB004F2"
   add_index "crs2_transaction", ["payment_cancellation_id"], :name => "fk_transaction_payment_cancellation_id"
+  add_index "crs2_transaction", ["registrant_id"], :name => "FKA5E426EDE86BBEBF"
   add_index "crs2_transaction", ["registrant_id"], :name => "fk_transaction_registrant_id"
   add_index "crs2_transaction", ["registration_id"], :name => "fk_transaction_registration_id"
+  add_index "crs2_transaction", ["scholarship_charge_id"], :name => "FKA5E426ED4FA3400A"
   add_index "crs2_transaction", ["scholarship_charge_id"], :name => "fk_transaction_scholarship_charge_id"
+  add_index "crs2_transaction", ["user_id"], :name => "FKA5E426EDF3C73A7F"
   add_index "crs2_transaction", ["user_id"], :name => "fk_transaction_user_id"
+  add_index "crs2_transaction", ["verified_by_id"], :name => "FKA5E426ED24360A3C"
   add_index "crs2_transaction", ["verified_by_id"], :name => "fk_transaction_verified_by_id"
 
   create_table "crs2_url_base", :force => true do |t|
@@ -3047,8 +3040,6 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.datetime "updated_at"
   end
 
-  add_index "mail_users", ["guid"], :name => "guid"
-
   create_table "ministries", :force => true do |t|
     t.string "name"
   end
@@ -3375,6 +3366,57 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
   add_index "ministry_person", ["lastName"], :name => "lastname_ministry_Person"
   add_index "ministry_person", ["region"], :name => "region_ministry_Person"
 
+  create_table "ministry_person_aug1", :primary_key => "personID", :force => true do |t|
+    t.string   "accountNo",                      :limit => 11
+    t.string   "lastName",                       :limit => 50
+    t.string   "firstName",                      :limit => 50
+    t.string   "middleName",                     :limit => 50
+    t.string   "preferredName",                  :limit => 50
+    t.string   "gender",                         :limit => 1
+    t.string   "deprecated_birthDate",           :limit => 25
+    t.string   "deprecated_dateBecameChristian", :limit => 35
+    t.string   "region",                         :limit => 5
+    t.boolean  "workInUS",                                             :default => true,  :null => false
+    t.boolean  "usCitizen",                                            :default => true,  :null => false
+    t.string   "citizenship",                    :limit => 50
+    t.boolean  "isStaff",                                              :default => false, :null => false
+    t.string   "title",                          :limit => 5
+    t.string   "campus",                         :limit => 128
+    t.string   "universityState",                :limit => 5
+    t.string   "yearInSchool",                   :limit => 20
+    t.string   "deprecated_graduationDate",      :limit => 25
+    t.string   "major",                          :limit => 70
+    t.string   "minor",                          :limit => 70
+    t.string   "greekAffiliation",               :limit => 50
+    t.string   "maritalStatus",                  :limit => 20
+    t.string   "numberChildren",                 :limit => 2
+    t.boolean  "isChild",                                              :default => false, :null => false
+    t.text     "bio",                            :limit => 2147483647
+    t.string   "image",                          :limit => 100
+    t.string   "occupation",                     :limit => 50
+    t.string   "blogfeed",                       :limit => 200
+    t.datetime "cruCommonsInvite"
+    t.datetime "cruCommonsLastLogin"
+    t.datetime "dateCreated"
+    t.datetime "dateChanged"
+    t.string   "createdBy",                      :limit => 50
+    t.string   "changedBy",                      :limit => 50
+    t.integer  "fk_ssmUserId"
+    t.integer  "fk_StaffSiteProfileID"
+    t.integer  "fk_spouseID"
+    t.integer  "fk_childOf"
+    t.datetime "birth_date"
+    t.datetime "date_became_christian"
+    t.datetime "graduation_date"
+  end
+
+  add_index "ministry_person_aug1", ["accountNo"], :name => "accountNo_ministry_Person"
+  add_index "ministry_person_aug1", ["campus"], :name => "campus"
+  add_index "ministry_person_aug1", ["firstName"], :name => "firstname_ministry_Person"
+  add_index "ministry_person_aug1", ["fk_ssmUserId"], :name => "fk_ssmUserId"
+  add_index "ministry_person_aug1", ["lastName"], :name => "lastname_ministry_Person"
+  add_index "ministry_person_aug1", ["region"], :name => "region_ministry_Person"
+
   create_table "ministry_regionalstat", :primary_key => "RegionalStatID", :force => true do |t|
     t.datetime "periodBegin"
     t.datetime "periodEnd"
@@ -3592,7 +3634,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.string   "altName",                :limit => 100
     t.string   "isSecure",               :limit => 1
     t.string   "isClosed",               :limit => 1
-    t.string   "region"
+    t.string   "region",                 :limit => 2
     t.string   "mpta",                   :limit => 30
     t.string   "urlToLogo"
     t.string   "enrollment",             :limit => 10
@@ -3886,7 +3928,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.string  "altName",           :limit => 100
     t.string  "isSecure",          :limit => 1
     t.string  "isClosed",          :limit => 1
-    t.string  "region"
+    t.string  "region",            :limit => 2
     t.string  "mpta",              :limit => 30
     t.string  "urlToLogo"
     t.string  "enrollment",        :limit => 10
@@ -3949,21 +3991,11 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "mpd_contact_id"
     t.integer  "event_id"
     t.float    "gift_amount"
-    t.boolean  "letter_sent",          :default => false
-    t.boolean  "contacted",            :default => false
-    t.boolean  "thankyou_sent",        :default => false
+    t.boolean  "letter_sent",    :default => false
+    t.boolean  "call_made",      :default => false
+    t.boolean  "thankyou_sent",  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_selected_letter"
-    t.boolean  "is_selected_call"
-    t.boolean  "is_selected_thankyou"
-    t.boolean  "postproject_sent",     :default => false
-    t.boolean  "partner_financial",    :default => false
-    t.boolean  "partner_prayer",       :default => false
-    t.boolean  "gift_pledged",         :default => false
-    t.boolean  "gift_received",        :default => false
-    t.string   "date_received"
-    t.string   "form_received",        :default => "Not Received"
   end
 
   add_index "mpd_contact_actions", ["event_id"], :name => "event_id"
@@ -3974,19 +4006,17 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "mpd_user_id"
     t.integer  "mpd_priority_id"
     t.string   "full_name",                     :default => "", :null => false
-    t.string   "address_1",                     :default => ""
+    t.string   "address_1"
     t.string   "address_2"
-    t.string   "city",                          :default => ""
-    t.string   "state",                         :default => ""
-    t.string   "zip",             :limit => 10, :default => ""
-    t.string   "phone",           :limit => 15, :default => ""
-    t.string   "email_address",                 :default => ""
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip",             :limit => 10
+    t.string   "phone",           :limit => 15
+    t.string   "email_address"
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "salutation"
-    t.string   "phone_2",         :limit => 25, :default => ""
-    t.string   "relationship",                  :default => ""
   end
 
   add_index "mpd_contacts", ["mpd_priority_id"], :name => "mpd_contacts_mpd_priority_id_index"
@@ -4000,7 +4030,6 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "current_letter"
   end
 
   add_index "mpd_events", ["mpd_user_id"], :name => "mpd_user_id"
@@ -4056,12 +4085,9 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.text    "acknowledge_section"
     t.string  "closing",                :default => "Thank you,"
     t.string  "printed_name"
-    t.integer "mpd_user_id"
-    t.string  "name"
   end
 
   add_index "mpd_letters", ["mpd_letter_template_id"], :name => "mpd_letters_mpd_letter_template_id_index"
-  add_index "mpd_letters", ["mpd_user_id"], :name => "mpd_letters_mpd_user_id_index"
 
   create_table "mpd_priorities", :force => true do |t|
     t.integer  "mpd_user_id",                 :default => 0,  :null => false
@@ -4098,6 +4124,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
 
   create_table "mpd_users", :force => true do |t|
     t.integer  "user_id"
+    t.integer  "mpd_letter_id"
     t.integer  "mpd_role_id"
     t.datetime "last_login"
     t.string   "type"
@@ -4110,6 +4137,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
   end
 
   add_index "mpd_users", ["current_event_id"], :name => "current_event_id"
+  add_index "mpd_users", ["mpd_letter_id"], :name => "mpd_users_mpd_letter_id_index"
   add_index "mpd_users", ["mpd_role_id"], :name => "mpd_users_mpd_role_id_index"
   add_index "mpd_users", ["user_id"], :name => "mpd_users_ssm_id_index"
 
@@ -4673,7 +4701,6 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.string   "facebook_hash"
     t.string   "facebook_username"
     t.integer  "fb_user_id",                :limit => 8
-    t.string   "password_plain"
   end
 
   add_index "simplesecuritymanager_user", ["fb_user_id"], :name => "index_simplesecuritymanager_user_on_fb_user_id"
@@ -4998,7 +5025,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "application_id"
     t.integer  "person_id"
     t.string   "status",               :limit => 20
-    t.string   "internType",           :limit => 30
+    t.string   "internType",           :limit => 20
     t.string   "tenure",               :limit => 50
     t.string   "ssn",                  :limit => 50
     t.integer  "teamLeader",           :limit => 1
@@ -5370,7 +5397,7 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer  "position"
     t.string   "description"
     t.string   "type"
-    t.boolean  "involved",    :default => true
+    t.boolean  "involved"
   end
 
   add_index "sn_ministry_roles", ["ministry_id"], :name => "index_sn_ministry_roles_on_ministry_id"
@@ -5495,11 +5522,9 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.integer "question_id"
     t.integer "instance_id"
     t.text    "answer"
-    t.integer "year"
   end
 
   add_index "sp_answers", ["instance_id", "question_id"], :name => "question_id", :unique => true
-  add_index "sp_answers", ["question_id"], :name => "question_id_only"
 
   create_table "sp_applications", :force => true do |t|
     t.integer  "person_id"
@@ -5574,12 +5599,6 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.text    "comments"
   end
 
-  create_table "sp_gospel_in_actions", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "sp_ministry_focuses", :force => true do |t|
     t.string "name"
   end
@@ -5615,13 +5634,6 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.datetime "created_at"
     t.string   "auth_code"
     t.string   "status"
-    t.datetime "updated_at"
-  end
-
-  create_table "sp_project_gospel_in_actions", :force => true do |t|
-    t.integer  "gospel_in_action_id"
-    t.integer  "project_id"
-    t.datetime "created_at"
     t.datetime "updated_at"
   end
 
@@ -5784,12 +5796,6 @@ ActiveRecord::Schema.define(:version => 20100816173025) do
     t.string   "tertiary_partner"
     t.date     "staff_start_date"
     t.date     "staff_end_date"
-    t.string   "facebook_url"
-    t.text     "student_quotes"
-    t.string   "picture_file_name"
-    t.string   "picture_content_type"
-    t.integer  "picture_file_size"
-    t.datetime "picture_updated_at"
   end
 
   add_index "sp_projects", ["name"], :name => "sp_projects_name_index", :unique => true
