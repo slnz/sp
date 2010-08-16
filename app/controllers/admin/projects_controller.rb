@@ -46,7 +46,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def close
-    # @project.close!
+    @project.close!
     redirect_to :back, :notice => "#{@project.name} has been closed."
   end
 

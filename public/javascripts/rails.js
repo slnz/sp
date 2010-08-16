@@ -76,8 +76,10 @@ jQuery(function ($) {
 								$(this).dialog('close');
 							},
 							Yes: function() {
+								confirm = el.attr('data-confirm')
 								el.removeAttr('data-confirm');
 								el.click();
+								el.attr('data-confirm', confirm);
 							}
 						}
 					});
