@@ -18,12 +18,13 @@ gem 'tiny_mce'
 gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
+# gem 'vestal_versions'
 # To use debugger
 # gem 'ruby-debug'
 
 # Bundle the extra gems:
 # gem 'nokogiri', '1.4.1'
-# gem 'aws-s3', :require => 'aws/s3'
+gem 'aws-s3', :require => 'aws/s3'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
