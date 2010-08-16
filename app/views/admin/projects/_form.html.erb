@@ -10,7 +10,7 @@
     
     <div class="tabcontent" id="goSPTab">
       <p>
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+        The fields on this page are directly linked to the gosummerproject.com website. Changes made on this page will immediately show up on the website once you click the Save button.
       </p>
     
       <hr />
@@ -19,36 +19,40 @@
         <%= f.text_field :name %>
       </div>
       
+      <div class="field">
+        <%= f.label :display_location, 'Location' %>
+        <%= f.text_field :display_location %>
+        <%= tip('(ie. "Ocean City, NJ", "Middle East", etc.)') %>
+      </div>
+      
       <div class="multifield">
         <div class="field">
           <%= f.label :start_date, 'Project Start Date' %>
-          <%= calendar_date_select_tag 'sp_project[start_date]', l(@project.start_date) %>
+          <%= calendar_date_select_tag 'sp_project[start_date]', @project.start_date %>
         </div>
         
         <div class="field">
           <%= f.label :end_date, 'Project End Date' %>
-          <%= calendar_date_select_tag 'sp_project[end_date]', l(@project.end_date) %>
+          <%= calendar_date_select_tag 'sp_project[end_date]', @project.end_date %>
         </div>
         <div class="clear"></div>
       </div>
 
       <div class="field select">
-        <label for="ministryfocus">Primary Ministry Focus</label>
-        
-        <select>
-          <option>Ministry Focus</option>
-        </select>
+        <%= f.label :primary_ministry_focus_id %>
+        <%= f.select :primary_ministry_focus_id, SpMinistryFocus.find(:all, :order => "name").collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
       </div>
       
-      <div class="field multiselect">
-        <label for="ministryfocus">Secondary Ministry Focus</label>
-        <select size="3">
-          <option>Ministry Focus</option>
-          <option>Ministry Focus</option>
-          <option>Ministry Focus</option>
-          <option>Ministry Focus</option>
-          <option>Ministry Focus</option>
-        </select>
+      <div class="field checkvertical">
+        <label>Other ministry foci:</label>
+        <div class="checkboxes">
+          <% SpMinistryFocus.all.each do |sf| %>
+            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row">
+              <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
+              <%= f.label "ministry_focus_ids_#{sf.id}", sf.name %>
+            </div>
+          <% end %>
+        </div>
       </div>
       
       <div class="field multitext">
@@ -59,33 +63,32 @@
       
       <div class="field checkvertical">
         <label>Gospel in Action</label>
-        <span class="checkboxwrapper"><input type="checkbox" id="check1" /><label for="check1">Checkbox option</label></span>
-        <span class="checkboxwrapper"><input type="checkbox" id="check2" /><label for="check2">Checkbox option</label></span>
-        <span class="checkboxwrapper"><input type="checkbox" id="check3" /><label for="check3">Checkbox option</label></span>
-        <span class="checkboxwrapper"><input type="checkbox" id="check4" /><label for="check4">Checkbox option</label></span>
-        <span class="checkboxwrapper"><input type="checkbox" id="check5" /><label for="check5">Checkbox option</label></span>
+        <div class="checkboxes">
+        <% SpGospelInAction.all.each do |ga| %>
+          <div>
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
+          </div>
+        <% end %>
+        </div>
       </div>
       
       <hr />
       
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :url, 'Website Address' %>
-          <%= f.text_field :url %>
-        </div>
-        <div class="field">
-          <%= f.label :url_title, 'Website Title' %>
-          <%= f.text_field :url_title %>
-        </div>
-        <div class="clear"></div>
+      <div class="field">
+        <%= f.label :url, 'Website Address' %>
+        <%= f.text_field :url %>
+        <%= tip('(i.e. www.gomets.org/summerproject/ or http://www.myproject.com)') %>
+      </div>
+      <div class="field">
+        <%= f.label :url_title, 'Website Title' %>
+        <%= f.text_field :url_title %>
+        <%= tip('(The actual words of the link they will click on to go to the website enter above. Default is "Project specific website")') %>
       </div>
       
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :url, 'Facebook' %>
-          <%= f.text_field :url %>
-        </div>
-        <div class="clear"></div>
+      <div class="field">
+        <%= f.label :facebook_url, 'Facebook Group link' %>
+        <%= f.text_field :facebook_url %>
       </div>
       
       <div class="multifield">
@@ -107,34 +110,37 @@
         <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
       </div>
       <div class="inlinetip">
-        <p id="explain1" class="">The 4th Journey Partnership is the name of the initiative of campuses in the Upper Midwest Region to establish an on-going ministry at a university in a predominantly Muslim country. In this Middle Eastern country, 99 percent of the 75 million people consider themselves Muslims. Since the Koran teaches that Jesus is an honorable prophet but not God, most have never heard the truth about Him. Despite a guarantee of religious freedom written into this countrys constitution, the scarce number of known Christians (about 2,000) sometimes experience harassment and even persecution. In 2008 we pioneered a new partnership city with a campus of about 45,000 students. As far as we were aware, at that time, there were *no known believers on this c</p>
-        <span id="readmoreless">Read More</span>
+        <div id="explain1" class="">
+          <b>Remember – students will want to know what it is like to be on your
+    			project – help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description.</b><br /><br />
+    			<b><u>Things to include in your desciption:</u></b><br>
+    			<ul><li>Introduce the project and build vision.</li></ul>
+    			<span class="sub">Daytona Beach Summer Project is located right on the "World's Most Famous Beach." It is a destination spot for thousands over the Summer and Spring Break and it's about an hour's drive from all the attractions in Orlando. Campus Crusade has had a long history at Daytona Beach. The Summer Project has been active there for over 30 summers… (Daytona)
+    			<br /><br />
+    			The country we are going to is the largest unreached nation in the world according to Operation World. Their are 73 million people and only an estimated 2,000 believers… (4th Journey)
+    			<br /><br /></span>
+    			<ul><li>Mention various training students will receive on this project, ways they will be invested in, or how they will return to campus equipped for ministry.</li></ul>
+    			<span class="sub">We will also train you in how to reach internationals from many different people groups and religions in your own settings. (New York Tribeca – Bridges)
+    			<br /><br />
+    			We will do lots of evangelism and follow-up, along with plenty of relationship building and encouraging of local Aussie students. Project participants will be able to take the training and experience directly back to their campuses in the US. Join us down under as we reach out to Australian students and help to establish campus ministries. (Australia – Melbourne)
+    			<br /><br /></span>
+    			<ul><li>Ministry Focus Details – help them experience what the outreach they will be doing looks like.</li></ul>
+    			<span class="sub">One of the strategic aspects of our outreaches is that each summer graduating seniors from the surrounding states come to Ocean City, so we find ourselves talking to next year's freshman class! (Ocean City)
+    			<br /><br />
+    			We will be taking some Russian Class, building relationships with students on campus,and inviting them to learn English with us. Through these relationships, we'll have an opportunity to share our faith.  (Russia, RR)
+    			</span>
+        </div>
+        <span id="readmoreless" rel="explain1">Read More</span>
       </div>
       
       <div class="field">
-        <%= f.label :latitude, 'Student Quotes' %>
-        <%= f.text_area(:latitude, :cols => 90, :rows => 10, :class => 'mceEditor') %>
+        <%= f.label :student_quotes, 'Student Quotes' %>
+        <%= f.text_area(:student_quotes, :cols => 90, :rows => 10, :class => 'mceEditor') %>
       </div>
-    
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :latitude, 'Latitude' %>
-          <%= f.text_field :latitude %>
-        </div>
-        <div class="field">
-          <%= f.label :longitude, 'Longitude' %>
-          <%= f.text_field :longitude %>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <div class="inlinetip">
-         Here is a tip that is inline to the pagepad
-         </div>
-      
     
       <div class="field">
-        <label for="ministryfocus">Project Picture</label>
-        <input type="File" />      
+        <label for="sp_project_picture">Project Picture</label>
+        <%= f.file_field :picture %>
       </div>
       
       <button class="save withicon"><span>Save</span></button>

@@ -58,7 +58,7 @@ $(function() {
   $("#sp_project_end_date").datepicker();
  
   $("#readmoreless").click(function() {
-    $('#explain1').toggleClass('showall', 500);
+    $('#' + $(this).attr('rel')).toggleClass('showall', 500);
     $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
   	return false;
  	});

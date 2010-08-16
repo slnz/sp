@@ -1,5 +1,10 @@
 class Admin::ProjectsController < ApplicationController
-  #uses_tiny_mce :options => {:theme_simple_toolbar_location => 'top'}
+  uses_tiny_mce :options => {:theme => 'advanced',
+                             :theme_advanced_buttons1 => "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink",
+                             :theme_advanced_buttons2 => "",
+                             :theme_advanced_buttons3 => "",
+                             :theme_advanced_toolbar_location => "top",
+                             :theme_advanced_toolbar_align => "left"}
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open]
   respond_to :html, :js
   
