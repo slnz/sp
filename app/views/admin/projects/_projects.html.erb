@@ -1,7 +1,7 @@
 <% @projects.each do |project| %>
-<tr>
+<tr class="project_row">
   <td class="count">
-    <div class="rollovershow">
+    <div class="rollovershow" style="display:none">
       <% if project.closed? %>
         <%= link_to('Open', open_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to open #{project}") %>
       <% else %>
