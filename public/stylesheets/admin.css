@@ -94,12 +94,10 @@ h1 {
   color: silver;
   font-style: italic;
 }
-.dashboardlist th input {
-  font-size: 11px;
-  background: #efefef;
-}
+.dashboardlist th input { font-size: 11px; }
 .dashboardlist th input:focus { background: #ffffff; }
 .dashboardlist th input#search { width: 200px; }
+.dashboardlist th input.prompt { color: silver; }
 .dashboardlist .rollovershow {
   position: absolute;
   margin: -8px 0 0 -65px;
@@ -138,6 +136,7 @@ h1 {
   background: #0b486b;
   color: #ffffff;
 }
+.projectedit .checkboxes div.selected:hover { color: #000000; }
 .projectedit .checkboxes div:hover { background: #cff09e; }
 .projectedit .checkboxes label {
   display: inline;
