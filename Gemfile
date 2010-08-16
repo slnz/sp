@@ -18,6 +18,7 @@ gem 'tiny_mce'
 gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
+gem 'paperclip'
 # gem 'vestal_versions'
 # To use debugger
 # gem 'ruby-debug'
