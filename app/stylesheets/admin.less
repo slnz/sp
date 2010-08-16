@@ -16,6 +16,7 @@ a {text-decoration: none; color: @dark-blue; outline: none;}
 .strip-list{ margin: 0; list-style: none; padding: 0;}
 .pagepad {padding: 15px;}
 .clear {clear: both;}
+.spinner {vertical-align: middle; }
 
 h1, h2, h3, h4, h5, h6 {font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica;}
 h1 {font-size: 26px;margin: .5em 0;}
@@ -82,10 +83,45 @@ h1 {font-size: 26px;margin: .5em 0;}
     th.th_pd {}
     th.th_opd {}
     th.th_apd {}
+    th.th_count {width: 65px;}
     td {border-bottom: 1px solid @global-bg; padding: 7px 0;}
     td.close a {color: @dark-gray;}
+    td.count {padding-left: 8px;}
     }
     span.fillit {color: silver; font-style: italic;}
+    th{
+      input {
+        font-size: 11px;
+        background: @global-bg;
+        }
+      input:focus {
+        background: @white;
+        }
+      input#search {
+        width: 200px;
+        }
+      }
+      
+  .rollovershow {
+    position: absolute;
+    margin: -8px 0 0 -65px;
+    background: #fff;
+    padding: 8px 3px 8px 7px;
+    width: 54px;
+    -moz-border-radius: 5px 0 0 5px;
+    display: block;
+    font-size: 11px;
+    border: 1px solid @global-bg;
+    border-right: none;
+    
+    .edit {
+      margin-left: 5px;
+      }
+    }
+  
+  .rollovershow:hover {
+    display: block;
+    }
   }
   
 /* Project Edit */
