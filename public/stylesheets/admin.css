@@ -411,3 +411,23 @@ a.close {
 }
 #contextmenu ul.left { float: left; }
 #contextmenu ul.left li a { margin-left: 0; }
+.flash {
+  border: 2px solid #4d4d4d;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  background: #efefef;
+  padding: 15px 20px 15px 45px;
+  font-family: "Gill Sans MT", Verdana;
+  font-weight: bold;
+  margin-bottom: 1em;
+  font-size: 14px;
+}
+#flash_notice {
+  border-color: #83ce00;
+  background: url("/images/icons/flag-green.png") no-repeat scroll 15px 50% #d3f4a2;
+}
+#flash_error {
+  border-color: #db4f4f;
+  background: url("/images/icons/exclamation-red.png") no-repeat scroll 15px 50% #ffa4a4;
+}

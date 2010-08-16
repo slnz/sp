@@ -421,3 +421,28 @@ a.close {text-indent: 0px; width: auto;}
   float: left;
   li a {margin-left: 0;}
 }
+
+
+/* Errors */
+.flash {
+  border: 2px solid @dark-gray;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  background: @global-bg;
+  padding: 15px 20px 15px 45px;
+  font-family: "Gill Sans MT", Verdana;
+  font-weight: bold;
+  margin-bottom: 1em;
+  font-size: 14px;
+  }
+  
+#flash_notice {
+  border-color: #83CE00;
+  background: url("/images/icons/flag-green.png") no-repeat scroll 15px 50% #D3F4A2;
+  }
+  
+#flash_error {
+  border-color: #DB4F4F;
+  background: url("/images/icons/exclamation-red.png") no-repeat scroll 15px 50% #FFA4A4;
+  }

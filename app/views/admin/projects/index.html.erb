@@ -29,6 +29,14 @@
   <div class="clear"></div>
 </div>
 
+<% if flash[:notice] %>
+  <div id="flash_notice" class="flash notice"><%= flash[:notice] %></div>
+<% end %>
+<% if flash[:error] %>
+  <div id="flash_error" class="flash error"><%= flash[:error] %></div>
+<% end %>
+
+
 <div id="dashboardlist" class="dashboardlist">
   <table>
     <tr>
