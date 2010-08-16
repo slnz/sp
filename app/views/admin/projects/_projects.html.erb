@@ -1,5 +1,5 @@
 <% @projects.each do |project| %>
-<tr class="project_row">
+<tr class="project_row <%= 'closed' if project.closed? %>">
   <td class="count">
     <div class="rollovershow" style="display:none">
       <% if project.closed? %>

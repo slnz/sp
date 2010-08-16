@@ -78,7 +78,13 @@ $(function() {
 	},function() {
 		$('.rollovershow', this).hide();
 	})
-	// ENF row hover actions
+	// END row hover actions
+	
+	// Edit checkboxes
+	$(".checkvertical input[type=checkbox]").click(function() {
+		$(this).closest('div').toggleClass('selected');
+	})
+	// END Edit checkboxes
 	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
@@ -86,7 +92,7 @@ $(function() {
  
   $("#readmoreless").click(function() {
     $('#' + $(this).attr('rel')).toggleClass('showall', 500);
-    $(this).text($(this).text() == 'Read More...' ? 'Read Less' : 'Read More');
+    $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
   	return false;
  	});
 });
