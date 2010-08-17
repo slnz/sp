@@ -18,7 +18,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def edit
-    (3 - @project.student_quotes.length).times do 
+    (5 - @project.student_quotes.length).times do 
       @project.student_quotes.build
     end
   end
@@ -61,7 +61,7 @@ class Admin::ProjectsController < ApplicationController
   
   def new
     @project = SpProject.new
-    3.times do 
+    5.times do 
       @project.student_quotes.build
     end
   end

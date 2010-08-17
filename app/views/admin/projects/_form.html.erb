@@ -47,7 +47,7 @@
         <label>Other ministry foci:</label>
         <div class="checkboxes">
           <% SpMinistryFocus.all.each do |sf| %>
-            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if @project.ministry_focuses.include?(sf) %>">
+            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if !@project.new_record? && @project.ministry_focuses.include?(sf) %>">
               <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= !@project.new_record? && @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
               <%= f.label "ministry_focus_ids_#{sf.id}", sf.name %>
             </div>
@@ -133,7 +133,7 @@
         <span id="readmoreless" rel="explain1">Read More</span>
       </div>
       <% @project.student_quotes.each_with_index do |quote, i| %>
-        <% f.fields_for :student_quotes, quote do |sqf| %>
+        <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
             <div class="field">
               <div>
