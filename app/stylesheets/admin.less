@@ -129,7 +129,7 @@ h1 {font-size: 26px;margin: .5em 0;}
 /* Project Edit */
 
 .projectedit .left {
-  width: 620px;
+  width: 68%;
   float: left;
   }
   
@@ -222,6 +222,42 @@ div.field {
 div.multifield .field {
   float: left;
   margin-right: 0.5em;
+  }
+
+div.quote {
+  textarea {
+    height: 50px;
+    }
+  textarea:focus {
+    height: auto;
+    }
+  a.deletequote {
+    position: absolute;
+    margin-left: 190px;
+    opacity: .6;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 4px;
+    img {
+      border: none;
+      vertical-align: bottom;
+      margin-right: 3px;
+      }
+    }
+  a.deletequote:hover {
+    opacity: 1;
+    }
+  }
+  
+
+a.addanother {
+  font-size: 11px;
+  font-weight: bold;
+  color: #2A7F47;
+  img {
+    border: none;
+    vertical-align: bottom;
+    }
   }
 
 button {
