@@ -135,23 +135,18 @@
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
-            <div class="field">
+            <label>Add student/human quotes</label>
+            <div class="field quote">
               <div>
-                <%= sqf.label :name, 'Name' %>
+                <%#= sqf.check_box :_destroy  %>
+                <%= link_to(image_tag('/images/icons/slash.png') + "Delete this quote", '', :class => 'deletequote') %>
                 <%= sqf.text_field :name %>
               </div>
-              <div>
-                <%= sqf.check_box :_destroy %>
-                <%= sqf.label :_destroy, 'Remove' %>
-              </div>
-            </div>
-            <div class="field">
-              <%= sqf.label :quote, 'Quote' %>
               <%= sqf.text_area(:quote, :cols => 60, :rows => 5) %>
             </div>
             <div class="clear"></div>
             <% unless i == 2 || @project.student_quotes[i+1].try(:quote).present?%>
-              <%= link_to_function('Add another quote', "$(this).hide();$('#quote_#{i+1}').show()") %>
+              <%= link_to_function(image_tag('/images/icons/plus-small.png') + 'Add another quote', "$(this).hide();$('#quote_#{i+1}').show()", :class => 'addanother') %>
             <% end %>
           </div>
         <% end %>
