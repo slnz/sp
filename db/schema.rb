@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100816195510) do
+ActiveRecord::Schema.define(:version => 20100819212753) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -5754,8 +5754,8 @@ ActiveRecord::Schema.define(:version => 20100816195510) do
     t.string   "project_contact_role",         :limit => 40
     t.string   "project_contact_phone",        :limit => 20
     t.string   "project_contact_email",        :limit => 100
-    t.integer  "max_student_men_applicants",                   :default => 0,    :null => false
-    t.integer  "max_student_women_applicants",                 :default => 0,    :null => false
+    t.integer  "max_student_men_applicants",                   :default => 60,   :null => false
+    t.integer  "max_student_women_applicants",                 :default => 60,   :null => false
     t.integer  "max_accepted_men"
     t.integer  "max_accepted_women"
     t.integer  "ideal_staff_men",                              :default => 0,    :null => false
@@ -5789,6 +5789,8 @@ ActiveRecord::Schema.define(:version => 20100816195510) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
+    t.string   "blog_url"
+    t.string   "blog_title"
   end
 
   add_index "sp_projects", ["name"], :name => "sp_projects_name_index", :unique => true

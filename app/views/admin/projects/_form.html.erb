@@ -55,12 +55,6 @@
         </div>
       </div>
       
-      <div class="field multitext">
-        <%= f.label :max_student_men_applicants, 'Max Number of Applicants' %>
-        <%= f.text_field :max_student_men_applicants, :class => 'small' %>
-        <%= f.text_field :max_student_women_applicants, :class => 'small' %>
-      </div>
-      
       <div class="field checkvertical">
         <label>Gospel in Action</label>
         <div class="checkboxes">
@@ -93,14 +87,26 @@
       
       <div class="multifield">
         <div class="field">
-          <%= f.label :url, 'Blog Address' %>
-          <%= f.text_field :url %>
+          <%= f.label :blog_url, 'Blog Address' %>
+          <%= f.text_field :blog_url %>
         </div>
         <div class="field">
-          <%= f.label :url_title, 'Blog Title' %>
-          <%= f.text_field :url_title %>
+          <%= f.label :blog_title, 'Blog Title' %>
+          <%= f.text_field :blog_title %>
         </div>
         <div class="clear"></div>
+      </div>
+      
+      <div class="field">
+        <%= f.label :student_cost %>
+        <%= f.text_field :student_cost %>
+      </div>
+      
+      <div class="field multitext">
+        <%= f.label :max_accepted_men, 'Max Number of Participants' %>
+        <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
+        <%= f.text_field :max_accepted_women, :class => 'small' %> women
+        <%= tip('#s won’t show up on websites, but % will be highlighted on map, affects if project will show up in list of options') %>
       </div>
       
       <hr />
