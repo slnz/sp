@@ -41,6 +41,7 @@ GEM
       mime-types
       xml-simple
     builder (2.1.2)
+    bullet (2.0.0.rc1)
     capistrano (2.5.19)
       highline
       net-scp (>= 1.0.0)
@@ -126,6 +127,7 @@ DEPENDENCIES
   acts_as_state_machine
   acts_as_versioned
   aws-s3
+  bullet (~> 2.0.0.rc1)
   capistrano
   carmen
   dynamic_form

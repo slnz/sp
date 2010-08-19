@@ -47,6 +47,11 @@ Sp2::Application.routes.draw do
         post :open
       end
     end
+    resources :leaders do
+      collection do
+        post :search
+      end
+    end
   end
   match '/admin' => "admin/projects#dashboard"
   

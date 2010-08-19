@@ -1,0 +1,23 @@
+<div class="ui-icon ui-icon-person  " style="float:left; margin:0 7px 20px 0;"></div>
+<div>
+  <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>Name:</td>
+      <td><%= person %></td>
+    </tr>
+    <tr>
+      <td>Phone:</td>
+      <td>
+        <%= raw person.current_address.phone_numbers.join('<br>') %>
+      </td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><%= mail_to(person.current_address.email) %></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td><%= raw person.current_address %></td>
+    </tr>
+  </table>
+</div>

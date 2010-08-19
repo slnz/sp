@@ -75,3 +75,14 @@
   <div class="clear"></div>
 </div>
 </div>
+<!-- Pick director form -->
+<div id="leader_search">
+  <%= form_tag search_admin_leaders_path do %>
+    <%= hidden_field_tag :leader, :id => 'leader_search_type' %>
+    <%= hidden_field_tag :project_id, :id => 'leader_search_project_id' %>
+    <%= text_field_tag :name, '', :id => 'leader_search_name' %>
+  <% end %>
+  <div id="leader_search_results">
+    
+  </div>
+</div>
