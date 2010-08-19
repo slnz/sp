@@ -15,7 +15,7 @@
   </td>
   <td class="project"><%= link_to(project.name, admin_project_path(project)) %></td>
   <% [:pd,:apd,:opd].each do |leader| -%>
-		<%= render 'leader', :project => project, :leader => leader %>
+    <td><%= render 'leader', :project => project, :leader => leader %></td>
 	<% end -%>
   <td class="stats"><%= stat_link(project,project, 'Stats', :class => 'inline stats') %></td>
   <td class="close">

@@ -1,3 +1,4 @@
+<%# encoding: utf-8 %>
 <div class="left">
   <%= error_messages_for :project %>
   <div id="tabs">
@@ -7,6 +8,77 @@
       <li><%= link_to('Contact', '#contactTab') %></li> 
       <li><%= link_to('Operations', '#operationsTab') %></li> 
     </ul>
+    <div class="tabcontent" id="contactTab">
+      <div class="field">
+        <%= f.label :city %>
+        <%= f.text_field :city %>
+      </div>
+      <div class="field">
+        <%= f.label :state %>
+        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
+      </div>
+      <div class="field">
+        <%= f.label :country %>
+        <%= f.select :state, @countries.collect {|c| [c.country]}, :include_blank => true %>
+      </div>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :staff_start_date %>
+          <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date %>
+          <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <hr />
+      <h3>Travel Information (WSN Only)</h3>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :departure_city, 'US City you are Departing From' %>
+          <%= f.text_field :departure_city %>
+        </div>
+        <div class="field">
+          <%= f.label :destination_city, "Int'l City you are Flying To" %>
+          <%= f.text_field :destination_city %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :date_of_departure, 'Date of Departure from the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_departure]', @project.date_of_departure %>
+        </div>
+        <div class="field">
+          <%= f.label :date_of_return, 'Date of Return to the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_return]', @project.date_of_return %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="field">
+        <%= f.label :in_country_contact %>
+        <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
+        <%= tip('Name and Contact Info') %>
+      </div>
+      
+      <hr />
+      <h3>Other Information</h3>
+      <div class="field">
+        <label>Contact Info During Project</label>
+        <%= tip('This person must be available in the states to field calls during the project duration') %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_name, "Name" %>
+        <%= f.text_field :project_contact_name %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_role, "Name" %>
+        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
+      </div>
+      <button class="save withicon"><span>Save</span></button>
+    
+    </div>
     
     <div class="tabcontent" id="goSPTab">
       <p>
@@ -106,7 +178,7 @@
         <%= f.label :max_accepted_men, 'Max Number of Participants' %>
         <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
         <%= f.text_field :max_accepted_women, :class => 'small' %> women
-        <%= tip('#s won’t show up on websites, but % will be highlighted on map, affects if project will show up in list of options') %>
+        <%= tip("#s won't show up on websites, but % will be highlighted on map, affects if project will show up in list of options") %>
       </div>
       
       <hr />
@@ -168,18 +240,24 @@
     </div>
     
     <div class="tabcontent" id="applicationTab">
-    
-    
+      <div class="field">
+        <%= f.label :partner_region_only, 'Accept from Partner Region(s) Only' %>
+        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
+      </div>
+      <div class="field">
+        <%= f.label :use_provided_application, 'Are you using the USCM Summer Project Online Application we provide?' %>
+        <%= f.select :use_provided_application, [['No',false],['Yes',true]] %>
+      </div>
+      <div class="field">
+        <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
+        <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
+      </div>
       <button class="save withicon"><span>Save</span></button>
     
     
-    </div>
+    </div>  
     
-    <div class="tabcontent" id="contactTab">
-    
-      <button class="save withicon"><span>Save</span></button>
-    
-    </div>
+
     
     <div class="tabcontent" id="operationsTab">
     

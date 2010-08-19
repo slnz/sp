@@ -6,6 +6,7 @@ class Admin::ProjectsController < ApplicationController
                              :theme_advanced_toolbar_location => "top",
                              :theme_advanced_toolbar_align => "left"}
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show]
+  before_filter :get_countries, :only => [:new, :edit, :update, :create]
   respond_to :html, :js
   
   layout 'admin'
@@ -102,5 +103,9 @@ class Admin::ProjectsController < ApplicationController
   def set_order
     params[:order] = 'name' and params[:direction] = 'ascend' unless params[:order] && params[:direction]
     @base = @base.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym) 
+  end
+
+  def get_countries
+    @countries = Country.find(:all, :order => :country)
   end
 end

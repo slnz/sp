@@ -1,5 +1,5 @@
 <% edit_name = project.to_s + ' - ' + leader.to_s.upcase  %>
-<td class="<%= leader.to_s %> leader_cell" id="<%= leader %>_for_<%= project.id %>">
+<div class="<%= leader.to_s %> leader_cell" id="<%= leader %>_for_<%= project.id %>">
   <% l = project.send(leader) 
   	if l -%>
   		<%= link_to(l, '',:class => 'leader', 'data-id' => l.id) %>
@@ -12,4 +12,4 @@
       <span class="fillit">(Fill this position)</span>
     <% end %>
   <% end -%>
-</td>
+</div>
