@@ -652,8 +652,12 @@ table.people .name { width: 30%; }
   width: 70px;
   font-weight: bold;
 }
-.ui-icon { background: none; }
-.ui-icon-person-female, .ui-icon-person-male {
+.ui-widget-content .ui-icon { background: none; }
+.ui-widget-content .ui-icon-person-female {
+  background: url("/images/icons/user.png") no-repeat 0 5px;
+  height: 30px;
+}
+.ui-widget-content .ui-icon-person-male {
   background: url("/images/icons/user.png") no-repeat 0 5px;
   height: 30px;
 }
