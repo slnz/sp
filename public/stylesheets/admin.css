@@ -10,8 +10,9 @@ a {
   color: #0b486b;
   outline: none;
 }
+img { border: none; }
 .pagewidth {
-  max-width: 960px;
+  max-width: 1000px;
   min-width: 960px;
   margin: 0 auto;
 }
@@ -212,7 +213,7 @@ button {
 button.withicon span { padding-left: 31px; }
 button.save span {
   padding: 9px 6px 9px 22px;
-  background: url(/images/icons/disk-black.png) no-repeat 0px 50%;
+  background: url(/images/buttongradient.png) no-repeat 0px 50%;
   display: block;
 }
 .checkvertical .checkboxwrapper { display: block; }
@@ -508,3 +509,94 @@ a.close {
   border-color: #db4f4f;
   background: url("/images/icons/exclamation-red.png") no-repeat scroll 15px 50% #ffa4a4;
 }
+.hybriddrop a {
+  padding: 9px 12px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #efefef;
+}
+.hybriddrop a.withicon {
+  padding-left: 32px;
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+}
+.hybriddrop a.person { background-image: url('/images/icons/user.png'); }
+.hybriddrop a.add { background-image: url('/images/icons/plus-button.png'); }
+.hybriddrop a.email { background-image: url('/images/icons/mail-open-document.png'); }
+.hybriddrop a.excel { background-image: url('/images/icons/document-excel.png'); }
+.hybriddrop a.down {
+  background-image: url('/images/icons/down.png');
+  background-position: 0 50%;
+  border: 1px solid silver;
+  position: relative;
+  z-index: 100;
+}
+.hybriddrop .poptions {
+  min-width: 300px;
+  min-height: 200px;
+  background: #efefef;
+  position: absolute;
+  margin-top: 42px;
+  padding: 10px;
+  -moz-box-shadow: 0 0 12px #555555;
+  -webkit-box-shadow: 0 0 12px #555555;
+  box-shadow: 0 0 12px #555555;
+}
+.hybriddrop .poptions ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  float: left;
+}
+.hybriddrop .poptions ul li {
+  float: none;
+  line-height: 2.75em;
+}
+.hybriddrop .poptions ul li a {
+  padding: 6px 6px 6px 20px;
+  color: #000000;
+}
+.hybriddrop .poptions ul li a.selected {
+  color: #ffffff;
+  background: url(/images/icons/check.png) no-repeat 5px 50% #0b486b;
+}
+.hybriddrop .poptions ul li a.hover {
+  color: #ffffff;
+  background: url(/images/icons/check.png) no-repeat 5px 50% #0b486b;
+}
+.hybriddropinline a {
+  float: left;
+  margin: 0 8px 0 0;
+}
+table.people {
+  margin: 15px 0;
+  width: 100%;
+}
+table.people th {
+  text-align: left;
+  font-weight: bold;
+  font-size: 14px;
+}
+table.people th {
+  padding: 4px;
+  overflow: hidden;
+}
+table.people td {
+  padding: 4px;
+  overflow: hidden;
+}
+table.people th.sort_up {
+  background: url("/images/sort_up.png") no-repeat 0 50%;
+  padding-left: 12px;
+}
+table.people th.sort_down {
+  background: url("/images/sort_down.png") no-repeat 0 50%;
+  padding-left: 12px;
+}
+table.people td { border-bottom: 1px solid #efefef; }
+table.people td a { color: #0b486b; }
+table.people .name { width: 30%; }

@@ -1,5 +1,5 @@
 /* Variables */
-@page-width: 960px;
+@page-width: 1000px;
 @global-font: Arial, Helvetica, Verdana;
 @global-bg: #EFEFEF;
 @white: #fff;
@@ -12,6 +12,7 @@
 
 body {margin: 0; padding: 0; font-size: 12px; font-family: @global-font; background: @global-bg;}
 a {text-decoration: none; color: @dark-blue; outline: none;}
+img {border: none;}
 .pagewidth {max-width: @page-width; min-width: 960px; margin: 0 auto;}
 .strip-list{ margin: 0; list-style: none; padding: 0;}
 .pagepad {padding: 15px;}
@@ -277,7 +278,7 @@ button.withicon span {
   
 button.save span {
   padding: 9px 6px 9px 22px;
-  background: url(/images/icons/disk-black.png) no-repeat 0px 50%;
+  background: url(/images/buttongradient.png) no-repeat 0px 50%;
   display: block;
   }
   
@@ -563,4 +564,88 @@ a.close {text-indent: 0px; width: auto;}
 #flash_error {
   border-color: #DB4F4F;
   background: url("/images/icons/exclamation-red.png") no-repeat scroll 15px 50% #FFA4A4;
+  }
+  
+/* Header Drop Down */
+
+
+.hybriddrop {
+  a {
+    padding: 9px 12px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: @global-bg;
+  }
+  a.withicon {
+    padding-left: 32px;
+    background-repeat: no-repeat;
+    background-position: 10px 50%;
+  }
+  a.person { background-image:  url('/images/icons/user.png');}
+  a.add { background-image:  url('/images/icons/plus-button.png');}
+  a.email { background-image:  url('/images/icons/mail-open-document.png');}
+  a.excel { background-image:  url('/images/icons/document-excel.png');}
+  a.down {background-image: url('/images/icons/down.png'); background-position: 0 50%; border: 1px solid silver; position: relative; z-index: 100;}
+  
+  .poptions {
+    min-width: 300px;
+    min-height: 200px;
+    background: @global-bg;
+    position: absolute;
+    margin-top: 42px;
+    padding: 10px;
+    -moz-box-shadow: 0 0 12px #555555;
+    -webkit-box-shadow: 0 0 12px #555555;
+    box-shadow: 0 0 12px #555555;
+    ul {
+      .strip-list;
+      float: left;
+    }
+    ul li { 
+      float: none;
+      line-height: 2.75em;
+      a {
+        padding: 6px 6px 6px 20px;
+        color: @black;
+      }
+      a.selected, a.hover {
+        color: @white;
+        background: url(/images/icons/check.png) no-repeat 5px 50% @dark-blue;
+      }
+    }
+  }
+}
+
+.hybriddropinline {
+  a {
+    float: left;
+    margin: 0 8px 0 0;
+    }
+  }
+  
+/* People Tables */
+table.people {
+  margin: 15px 0;
+  width: 100%;
+  th {
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+    }
+  th, td {
+    padding: 4px;
+    overflow: hidden;
+    }
+  th.sort_up {background: url("/images/sort_up.png") no-repeat 0 50%; padding-left: 12px;}
+  th.sort_down {background: url("/images/sort_down.png") no-repeat 0 50%; padding-left: 12px;}  
+  td {
+    a {color: @dark-blue;}
+    border-bottom: 1px solid @global-bg;
+    }
+  .gender {}
+  .name {width: 30%;}
   }

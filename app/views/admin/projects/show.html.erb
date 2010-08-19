@@ -1,0 +1,80 @@
+<div class="pagepad">
+  <div id="breadcrumb">
+    <ul>
+      <li><%= link_to('Projects', '') %></li>
+      <li><%= link_to('Projects', '') %></li>
+      <li class="last"><%= link_to('Projects', '') %></li>
+    </ul>
+  </div>
+  
+  <div class="hybriddrop hybriddropinline"><%= link_to('2010', '', :class => 'down withicon') %><h1>Project Title</h1></div>
+  <div id="contextmenu">
+    <ul class="left">
+      <li><%= link_to('Download Team DB', '', :class => 'excel withicon') %></li>
+      <li><%= link_to('Send Email', '', :class => 'email withicon', :id => 'sendemailopen') %></li>
+      <li><%= link_to('Enter Stats', '', :class => 'stats withicon') %></li>
+      <li><%= link_to('Add a Person', '', :class => 'person withicon') %></li>
+    </ul>  
+    <div class="clear"></div>
+  </div>
+  
+  <div class="projectedit">
+  
+  <%= form_for @project, :url => admin_project_path(@project) do |f| %>  
+    <%= render 'humanlist', :f => f %>
+  <% end %>
+  
+  
+  
+  <div class="right">
+  
+    <div class="module">
+      <h3>Leadership <span class="controls">Add</span></h3>
+      <table>
+        <tr>
+          <td class="rightalign">PD</td>
+          <td class="name">Michael Henderson</td>
+          <td class="icon">Mail</td>
+          <td class="icon">IB</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="module">
+      <h3>Leadership <span class="controls">Add</span></h3>
+      <table>
+        <tr>
+          <th>Staff</th>
+        </tr>
+        <tr>
+          <td class="name">Michael Henderson</td>
+          <td class="icon">Mail</td>
+          <td class="icon">IB</td>
+          <td class="icon">DEL</td>
+        </tr>
+        
+        
+        <tr>
+          <th>Staff</th>
+        </tr>
+        <tr>
+          <td class="name">Michael Henderson</td>
+          <td class="icon">Mail</td>
+          <td class="icon">IB</td>
+          <td class="icon">DEL</td>
+        </tr>
+        
+      </table>
+    </div>
+    
+  
+  </div>
+  
+  
+  </div>
+  
+  <div class="projectfooter">
+    <div class="clear"></div>
+  </div>
+
+</div>
