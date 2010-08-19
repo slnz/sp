@@ -15,18 +15,7 @@
   </td>
   <td class="project"><%= link_to(project.name, admin_project_path(project)) %></td>
   <% [:pd,:apd,:opd].each do |leader| -%>
-		<td class="<%= leader.to_s %>">
-			<% l = project.send(leader) 
-				if l -%>
-					<%=  l.accountNo ? link_to(l, "https://staff.campuscrusadeforchrist.com/servlet/InfoBaseController?action=showStaffInfo&staffid=#{l.accountNo}") : l %>
-				<% else %>
-				  <%= link_to('') do %>
-				    <span class="fillit">(Fill this position)</span>
-				  <% end %>
-				<% end -%>
-			&nbsp;
-			<%= link_to('Edit', '', :class => 'inline edit') %><%= link_to('Delete', '', :class => 'inline delete') %>
-		</td>
+		<%= render 'leader', :project => project, :leader => leader %>
 	<% end -%>
   <td class="stats"><%= stat_link(project,project, 'Stats', :class => 'inline stats') %></td>
   <td class="close">

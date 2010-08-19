@@ -19,4 +19,9 @@ Sp2::Application.configure do
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
+
+  config.after_initialize do
+    Bullet.enable = false
+    Bullet.bullet_logger = true
+  end
 end

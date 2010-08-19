@@ -5,7 +5,7 @@ class Admin::ProjectsController < ApplicationController
                              :theme_advanced_buttons3 => "",
                              :theme_advanced_toolbar_location => "top",
                              :theme_advanced_toolbar_align => "left"}
-  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open]
+  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show]
   respond_to :html, :js
   
   layout 'admin'
@@ -13,7 +13,7 @@ class Admin::ProjectsController < ApplicationController
     set_up_pagination
     set_up_filters
     set_order
-    @projects = @base.paginate(:page => params[:page], :per_page => @per_page)
+    @projects = @base.includes([:pd, :opd, :apd]).paginate(:page => params[:page], :per_page => @per_page)
     respond_with(@products)
   end
   
@@ -33,6 +33,10 @@ class Admin::ProjectsController < ApplicationController
   def create
     @project = SpProject.create(params[:sp_project])
     respond_with(@project) 
+  end
+  
+  def show
+    
   end
   
   def dashboard

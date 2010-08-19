@@ -1,0 +1,12 @@
+<% edit_name = project.to_s + ' - ' + leader.to_s.upcase  %>
+<td class="<%= leader.to_s %>" id="<%= leader %>_for_<%= project.id %>">
+  <% l = project.send(leader) 
+  	if l -%>
+  		<%= link_to(l, '',:class => 'leader', 'data-id' => l.id) %>
+  		<%= link_to('Edit', '', :class => 'inline edit edit-leader', 'data-project' => edit_name, 'data-id' => project.id) %><%= link_to('Delete', admin_leader_path(project, :leader => leader), :class => 'inline delete delete-leader', :remote => true, :method => :delete, :confirm => "Are you sure you want to remove #{l} as a director?") %>
+  <% else %>
+    <%= link_to(edit_admin_leader_path(project, :leader => leader), :class => 'edit-leader', 'data-project' => edit_name, 'data-id' => project.id) do %>
+      <span class="fillit">(Fill this position)</span>
+    <% end %>
+  <% end -%>
+</td>

@@ -86,6 +86,60 @@ $(function() {
 	})
 	// END Edit checkboxes
 	
+	// Leader Info
+	$("a.leader").click(function() {
+		id = $(this).attr('data-id');
+		name = $(this).html();
+		dom = 'leader_details' + id;
+		if ($('#' + dom)[0] == null) {
+			$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
+			$.ajax({dataType: 'script',
+							type:'GET', 
+							url: '/admin/leaders/' + id
+			 })
+		}
+		$("#" + dom).dialog({
+			resizable: false,
+			height:300,
+			width:400,
+			modal: true,
+			buttons: {
+				Close: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+		return false;
+	})
+	// END Leader Info
+	
+	// Edit Leader
+	$("a.edit-leader").click(function() {
+		id = $(this).attr('data-id');
+		name = $(this).attr('data-project');
+		dom = 'leader_edit' + id;
+		if ($('#' + dom)[0] == null) {
+			$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + dom + '" src="/images/spinner.gif" style="" /></div>');
+			$.ajax({dataType: 'script',
+							type:'GET', 
+							url: '/admin/leaders/' + id + '/edit'
+			 })
+		}
+		$("#" + dom).dialog({
+			resizable: false,
+			height:300,
+			width:400,
+			modal: true,
+			buttons: {
+				Close: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+		return false;
+	})
+	// END Edit Leader
+	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();
