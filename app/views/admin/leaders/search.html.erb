@@ -1,0 +1,13 @@
+<%= form_tag admin_leaders_path, :id => 'create_leader_form' do %>
+  <%= hidden_field_tag :leader, params[:leader] %>
+  <%= hidden_field_tag :person_id, params[:person_id], :id => 'leader_search_person_id' %>
+  <%= hidden_field_tag :project_id, params[:project_id] %>
+  <ul>
+    <% @people.each do |person| %>
+      <li><a href='#' class="new_leader" data-id="<%= person.id %>"><%= person %> (<%= person.user.try(:username) %>)</a></li>
+    <% end %>
+  </ul>
+  <% if @total > @people.length %>
+    Showing <%= @people.length %> of <%= @total %> matches
+  <% end %>
+<% end %>

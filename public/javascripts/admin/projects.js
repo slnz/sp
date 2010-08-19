@@ -46,9 +46,7 @@ $(function() {
 			$(this).val(search_prompt);
 			$(this).addClass('prompt');
 		}
-	});
-	
-	$('.search').focus(function() {
+	}).focus(function() {
 		if ($(this).val() == search_prompt) {
 			$(this).val('');
 			$(this).removeClass('prompt');
@@ -114,30 +112,59 @@ $(function() {
 	// END Leader Info
 	
 	// Edit Leader
-	$("a.edit-leader").click(function() {
+	$("a.edit-leader").live('click', function() {
 		id = $(this).attr('data-id');
-		name = $(this).attr('data-project');
-		dom = 'leader_edit' + id;
-		if ($('#' + dom)[0] == null) {
-			$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + dom + '" src="/images/spinner.gif" style="" /></div>');
-			$.ajax({dataType: 'script',
-							type:'GET', 
-							url: '/admin/leaders/' + id + '/edit'
-			 })
-		}
-		$("#" + dom).dialog({
+		name = $(this).attr('data-name');
+		el = $('#leader_search');
+		el.attr('title', name);
+		form = $('#leader_search_form');
+		$('#leader_search_project_id').val($(this).attr('data-id'));
+		$('#leader_search_type').val($(this).attr('data-leader'));
+		el.dialog({
 			resizable: false,
-			height:300,
+			height:500,
 			width:400,
 			modal: true,
 			buttons: {
-				Close: function() {
+				Cancel: function() {
 					$(this).dialog('close');
 				}
 			}
 		});
 		return false;
-	})
+	});
+	
+	// Search for new leader
+	$('#leader_search_name').keyup(function() {
+		$('#spinner_leader_search').show();
+		form = $('#leader_search_form');
+		$.ajaxCount++;
+		$.ajax({url: form.attr('action'), 
+						data: form.serialize(), 
+						dataType: 'script', 
+						type: 'POST',
+						success: function(data) {
+							$('#leader_search_results').html(data);
+						},
+						complete: function() {
+							$.ajaxCount--;
+							if($.ajaxCount == 0) $('#spinner_leader_search').hide();
+						}});
+	});
+	
+	// Update leader
+	$('a.new_leader').live('click', function() {
+		$('#leader_search_name').val('');
+		$('#leader_search_person_id').val($(this).attr('data-id'));
+		form = $('#create_leader_form');
+		$.ajax({url: form.attr('action'), 
+						data: form.serialize(), 
+						dataType: 'script', 
+						type: 'POST'
+						});
+		$('#leader_search_results').html('<img src="/images/spinner.gif" />')
+		return false;
+	});
 	// END Edit Leader
 	
 	$("#tabs").tabs();
