@@ -108,7 +108,18 @@ $(function() {
 			}
 		});
 		return false;
-	})
+	});
+	
+	$('.leader_cell').live('mouseenter', function() {
+		$('.buttons', this).show();
+	}).live('mouseleave', function() {
+		$('.buttons', this).hide();
+	});
+	// 	$('.leader_cell').hover(function() {
+	// 	$('.buttons', this).show();
+	// }, function() {
+	// 	$('.buttons', this).hide();
+	// });
 	// END Leader Info
 	
 	// Edit Leader
