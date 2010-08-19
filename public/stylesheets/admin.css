@@ -219,7 +219,7 @@ button {
 }
 button.withicon span { padding-left: 31px; }
 button.save span {
-  padding: 9px 6px 9px 22px;
+  padding: 9px 6px 9px 6px;
   background: url(/images/buttonbg.png) no-repeat 0px 50%;
   display: block;
 }

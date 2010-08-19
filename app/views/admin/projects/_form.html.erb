@@ -8,78 +8,8 @@
       <li><%= link_to('Contact', '#contactTab') %></li> 
       <li><%= link_to('Operations', '#operationsTab') %></li> 
     </ul>
-    <div class="tabcontent" id="contactTab">
-      <div class="field">
-        <%= f.label :city %>
-        <%= f.text_field :city %>
-      </div>
-      <div class="field">
-        <%= f.label :state %>
-        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
-      </div>
-      <div class="field">
-        <%= f.label :country %>
-        <%= f.select :state, @countries.collect {|c| [c.country]}, :include_blank => true %>
-      </div>
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :staff_start_date %>
-          <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
-        </div>
-        <div class="field">
-          <%= f.label :staff_end_date %>
-          <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <hr />
-      <h3>Travel Information (WSN Only)</h3>
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :departure_city, 'US City you are Departing From' %>
-          <%= f.text_field :departure_city %>
-        </div>
-        <div class="field">
-          <%= f.label :destination_city, "Int'l City you are Flying To" %>
-          <%= f.text_field :destination_city %>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :date_of_departure, 'Date of Departure from the US' %>
-          <%= calendar_date_select_tag 'sp_project[date_of_departure]', @project.date_of_departure %>
-        </div>
-        <div class="field">
-          <%= f.label :date_of_return, 'Date of Return to the US' %>
-          <%= calendar_date_select_tag 'sp_project[date_of_return]', @project.date_of_return %>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <div class="field">
-        <%= f.label :in_country_contact %>
-        <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
-        <%= tip('Name and Contact Info') %>
-      </div>
-      
-      <hr />
-      <h3>Other Information</h3>
-      <div class="field">
-        <label>Contact Info During Project</label>
-        <%= tip('This person must be available in the states to field calls during the project duration') %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_name, "Name" %>
-        <%= f.text_field :project_contact_name %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_role, "Name" %>
-        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
-      </div>
-      <button class="save withicon"><span>Save</span></button>
     
-    </div>
-    
+        
     <div class="tabcontent" id="goSPTab">
       <p>
         The fields on this page are directly linked to the gosummerproject.com website. Changes made on this page will immediately show up on the website once you click the Save button.
@@ -235,7 +165,7 @@
         <%= f.file_field :picture %>
       </div>
       
-      <button class="save withicon"><span>Save</span></button>
+      <button class="save"><span>Save</span></button>
       
     </div>
     
@@ -252,16 +182,165 @@
         <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
         <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
       </div>
-      <button class="save withicon"><span>Save</span></button>
+      <button class="save"><span>Save</span></button>
     
     
     </div>  
     
-
+    <div class="tabcontent" id="contactTab">
+      <div class="field">
+        <%= f.label :city %>
+        <%= f.text_field :city %>
+      </div>
+      <div class="field">
+        <%= f.label :state %>
+        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
+      </div>
+      <div class="field">
+        <%= f.label :country %>
+        <%= f.select :state, @countries.collect {|c| [c.country]}, :include_blank => true %>
+      </div>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :staff_start_date %>
+          <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date %>
+          <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <hr />
+      <h3>Travel Information (WSN Only)</h3>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :departure_city, 'US City you are Departing From' %>
+          <%= f.text_field :departure_city %>
+        </div>
+        <div class="field">
+          <%= f.label :destination_city, "Int'l City you are Flying To" %>
+          <%= f.text_field :destination_city %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :date_of_departure, 'Date of Departure from the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_departure]', @project.date_of_departure %>
+        </div>
+        <div class="field">
+          <%= f.label :date_of_return, 'Date of Return to the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_return]', @project.date_of_return %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="field">
+        <%= f.label :in_country_contact %>
+        <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
+        <%= tip('Name and Contact Info') %>
+      </div>
+      
+      <hr />
+      <h3>Other Information</h3>
+      <div class="field">
+        <label>Contact Info During Project</label>
+        <%= tip('This person must be available in the states to field calls during the project duration') %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_name, "Name" %>
+        <%= f.text_field :project_contact_name %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_role, "Project Role" %>
+        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_phone, "Phone" %>
+        <%= f.text_field :project_contact_phone %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_email, "Email" %>
+        <%= f.text_field :project_contact_email %>
+      </div>
+      <button class="save"><span>Save</span></button>
+    
+    </div>
     
     <div class="tabcontent" id="operationsTab">
+      <div class="field">
+        <%= f.label :primary_partner %>
+        <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
+      </div>
+      <div class="field">
+        <%= f.label :secondary_partner %>
+        <%= partnership_select(:project, :secondary_partner, [:regions, :ministries]) %>
+      </div>
+      <div class="field">
+        <%= f.label :tertiary_partner %>
+        <%= partnership_select(:project, :tertiary_partner, [:regions, :ministries]) %>
+      </div>
+      <div class="field">
+        <%= f.label :report_stats_to %>
+        <%= f.select(:report_stats_to, ['Campus Ministry - US summer project','Campus Ministry - WSN summer project','Other CCC ministry'], { :include_blank => true }) %>
+      </div>
+      <div class="field">
+        <%= f.label :staff_cost %>
+        <%= f.text_field :staff_cost %>
+      </div>
+      <div class="field">
+        <%= f.label :intern_cost %>
+        <%= f.text_field :intern_cost %>
+      </div>
+      
+      <hr />
+      <h3>Operating Account Information</h3>
+      
+      <div class="field">
+        <%= f.label :operating_business_unit, 'Business Unit' %>
+        <%= f.text_field :operating_business_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_operating_unit, 'Operating Unit' %>
+        <%= f.text_field :operating_operating_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_department, 'Department ID' %>
+        <%= f.text_field :operating_department %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_project, 'Project ID' %>
+        <%= f.text_field :operating_project %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_designation, 'Operating Designation' %>
+        <%= f.text_field :operating_designation %>
+      </div>
+      
+      <hr />
+      <h3>Scholarship Account Information</h3>
     
-      <button class="save withicon"><span>Save</span></button>
+      <div class="field">
+        <%= f.label :scholarship_business_unit, 'Business Unit' %>
+        <%= f.text_field :scholarship_business_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_operating_unit, 'Operating Unit' %>
+        <%= f.text_field :scholarship_operating_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_department, 'Department ID' %>
+        <%= f.text_field :scholarship_department %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_project, 'Project ID' %>
+        <%= f.text_field :scholarship_project %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_designation, 'Operating Designation' %>
+        <%= f.text_field :scholarship_designation %>
+      </div>
+      <button class="save"><span>Save</span></button>
     
     </div> 
   </div>

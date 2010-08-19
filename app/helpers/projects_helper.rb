@@ -1,4 +1,17 @@
 module ProjectsHelper
+  PartnershipOption = Struct.new(:id, :name)
+  class PartnershipType
+    attr_accessor :type_name, :options
+    def initialize(name)
+      @type_name = name
+      @options = []
+    end
+    def <<(option)
+      @options << option
+    end
+  end
+  
+  
   def stat_link(project, project_version,text, options = {})
     pb=Time.now.to_date
     pe=Time.now.to_date
@@ -56,5 +69,46 @@ module ProjectsHelper
 
     end
 
+  end
+
+  def partnership_select(object, method, options = nil, html_options = {})
+    unless options && options.include?(:no_object_tag)
+      html_options["name"] ||= "sp_project[#{method.to_s}]"
+      html_options["id"] ||= "sp_project_#{method.to_s}"
+    else
+      html_options["name"] ||= method
+      html_options["id"] ||= method
+    end
+    none = PartnershipType.new('None')
+    none << PartnershipOption.new('','')
+    collections = [none]
+    if !options || options.include?(:regions)
+      region = PartnershipType.new('Region')
+      @regions ||= Region.find(:all, :order => "region")
+      @regions.each {|r| region << PartnershipOption.new(r.region, r.name) unless r.region.empty?}
+      collections << region
+    end
+    if !options || options.include?(:ministries)
+      ministry = PartnershipType.new('Ministry')
+      @ministries ||= Ministry.find(:all, :order => "name")
+      @ministries.each {|m| ministry << PartnershipOption.new(m.name, m.name)}
+      collections << ministry
+    end
+    if !options || options.include?(:teams)
+      team = PartnershipType.new('Team')
+      @teams ||= MinistryLocalLevel.find(:all, :order => "name", :conditions => "lane IN('SC','CA') AND country = 'USA'")
+      @teams.each {|t| team << PartnershipOption.new(t.name, t.name) unless t.name.empty?}
+      collections << team
+    end
+    record = instance_variable_get("@#{object}")
+    unless options && options.include?(:no_errors)
+      error_wrapping(content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options), record.errors.on(method))
+    else 
+      content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options)
+    end
+  end
+  
+  def error_wrapping(html_tag, has_error)
+    has_error ? ActionView::Base.field_error_proc.call(html_tag, self) : html_tag
   end
 end
