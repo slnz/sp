@@ -21,7 +21,7 @@ class Admin::LeadersController < ApplicationController
     if params[:name].present?
       term = '%' + params[:name] + '%'
       conditions = ["firstName like ? OR lastName like ? OR concat(firstname, ' ', lastname) like ?", term, term, params[:name] + '%']
-      @people = Person.where(conditions).includes(:user).limit(15)
+      @people = Person.where(conditions).includes(:user).limit(10)
       @total = Person.where(conditions).count
       respond_with(@people) do |format|
         format.js {render :layout => false}

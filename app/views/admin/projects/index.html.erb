@@ -4,7 +4,7 @@
   <ul class="left">
     <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
     <div class="poptions" id="mvmtfilter" style="display: none;">
-      <p>Select which partners' projects you would like to see:</p>
+      <p>Select which partners&rsquo; projects you would like to see:</p>
       <hr />
       <ul>
         <li><%= link_to_function('All', '', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
@@ -50,10 +50,10 @@
     </tr>
     <tr>
       <th></th>
-      <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path %> <%= spinner('search') %></th>
-      <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path %> <%= spinner('search_pd') %></th>
-      <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path %> <%= spinner('search_apd') %></th>
-      <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path %> <%= spinner('search_opd') %></th>
+      <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search') %></th>
+      <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_pd') %></th>
+      <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_apd') %></th>
+      <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th>
       <th></th>
       <th></th>
     </tr>
@@ -78,10 +78,10 @@
 <!-- Pick director form -->
 <div id="leader_search" style="display:none">
   <%= form_tag search_admin_leaders_path, :id => 'leader_search_form' do %>
-    <label for="leader_search_name">Start typing a name</label>
+    <label for="leader_search_name">Start typing a name to find a person to fill this role:</label>
     <%= hidden_field_tag :leader, 'pd', :id => 'leader_search_type' %>
     <%= hidden_field_tag :project_id, '1', :id => 'leader_search_project_id' %>
-    <%= text_field_tag :name, '', :id => 'leader_search_name' %>
+    <%= text_field_tag :name, '', :id => 'leader_search_name', :autocomplete => 'off' %>
     <%= spinner('leader_search') %>
   <% end %>
   <div id="leader_search_results">

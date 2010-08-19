@@ -73,6 +73,13 @@ h1 {
   border: 1px solid #4d4d4d;
   border-top: 4px solid #0b486b;
 }
+.dashboardlist .buttons {
+  margin-left: -44px;
+  margin-top: -19px;
+  padding: 4px;
+  position: absolute;
+  width: 36px;
+}
 .dashboardlist table {
   border-collapse: collapse;
   width: 100%;
@@ -600,3 +607,53 @@ table.people th.sort_down {
 table.people td { border-bottom: 1px solid #efefef; }
 table.people td a { color: #0b486b; }
 table.people .name { width: 30%; }
+.ui-dialog {
+  font-family: Arial;
+  -moz-box-shadow: 0px 0px 10px #555555;
+}
+.ui-dialog .ui-dialog-content { padding: 0.5em 5px; }
+.ui-dialog .ui-dialog-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 230px;
+  overflow: hidden;
+  border: 1px solid silver;
+  margin: 10px 0;
+}
+.ui-dialog .ui-dialog-content ul li a {
+  color: #0b496b;
+  padding: 4px;
+  display: block;
+  font-size: 12px;
+}
+.ui-dialog .ui-dialog-content ul li a:hover {
+  background: #0b496b;
+  color: #ffffff;
+}
+.ui-dialog .ui-dialog-buttonpane { padding: 0.3em 0.5em 0.15em 0.2em; }
+.ui-dialog .ui-dialog-buttonpane button {
+  margin: 0.25em 0.4em;
+  line-height: 1em;
+  padding: 0;
+}
+.ui-dialog-titlebar { background: #cff09e; }
+.ui-corner-all {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+.modal_person_info td {
+  vertical-align: top;
+  padding: 4px 0;
+  line-height: 1.35em;
+}
+.modal_person_info td.left {
+  width: 70px;
+  font-weight: bold;
+}
+.ui-icon { background: none; }
+.ui-icon-person-female, .ui-icon-person-male {
+  background: url("/images/icons/user.png") no-repeat 0 5px;
+  height: 30px;
+}
