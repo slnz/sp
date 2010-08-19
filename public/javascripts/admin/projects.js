@@ -18,6 +18,7 @@ $(function() {
 	
   $('#mvmtselector').click(function(){
   	$('div#mvmtfilter').toggle();
+		$(this).toggleClass('active');
   });
 
 	$('#filter_all').click(function() {
@@ -71,11 +72,11 @@ $(function() {
 	// END Find as you type
 	
 	// Row hover actions
-	$('.project_row').hover(function() {
+	$('.project_row').live('mouseenter', function() {
 		$('.rollovershow', this).show();
-	},function() {
+	}).live('mouseleave',function() {
 		$('.rollovershow', this).hide();
-	})
+	});
 	// END row hover actions
 	
 	// Edit checkboxes
@@ -85,7 +86,7 @@ $(function() {
 	// END Edit checkboxes
 	
 	// Leader Info
-	$("a.leader").click(function() {
+	$("a.leader").live('click', function() {
 		id = $(this).attr('data-id');
 		name = $(this).html();
 		dom = 'leader_details' + id;
@@ -138,7 +139,7 @@ $(function() {
 			modal: true,
 			buttons: {
 				Cancel: function() {
-					$(this).dialog('close');
+					$(this).dialog('destroy');
 				}
 			}
 		});
