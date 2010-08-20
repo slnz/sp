@@ -124,6 +124,8 @@ h1 {
   width: 68%;
   float: left;
 }
+.projectedit p { margin-top: 0px; }
+.projectedit .ui-tabs .ui-tabs-panel { padding-top: 1em; }
 .projectedit .right {
   width: 270px;
   float: right;
@@ -154,6 +156,7 @@ h1 {
   font-weight: normal;
 }
 .projectedit .checkboxes input { vertical-align: middle; }
+.fullpage .left { width: 100%; }
 label {
   font-size: 11px;
   font-weight: bold;
@@ -260,14 +263,48 @@ button.save span {
 }
 div.module h3 {
   background: #efefef;
-  padding: 10px;
+  padding: 6px 10px;
 }
-div.module table { width: 100%; }
+div.module table {
+  width: 100%;
+  margin: 0 6px;
+}
 div.module table th { text-align: left; }
 div.module table td.rightalign { text-align: right; }
 div.module table td.icon {
   width: 25px;
   text-align: center;
+}
+div.module table.stafflist { margin-bottom: 0.75em; }
+div.applicantdata { background: #cff09e; }
+div.applicantdata h3 {
+  background: #0b486b;
+  color: #ffffff;
+}
+div.applicantdata table {
+  width: 100%;
+  margin-bottom: 10px;
+}
+div.applicantdata table th.rightalign {
+  width: 20%;
+  padding-right: 9px;
+}
+div.applicantdata table th.icon {
+  text-align: center;
+  width: 15%;
+}
+div.applicantdata table td.icon {
+  text-align: center;
+  width: 15%;
+}
+.add {
+  background: url(/images/icons/plus-button.png) no-repeat 0 50%;
+  padding-left: 20px;
+}
+span.controls {
+  font-size: 11px;
+  float: right;
+  margin: 3px 0;
 }
 .ui-widget input { font-family: Arial, Helvetica, Verdana; }
 .ui-widget select { font-family: Arial, Helvetica, Verdana; }

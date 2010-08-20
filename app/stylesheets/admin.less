@@ -136,10 +136,20 @@ h1 {font-size: 26px;margin: .5em 0;}
   
 /* Project Edit */
 
+
+
 .projectedit .left {
   width: 68%;
   float: left;
   }
+  
+.projectedit p {
+  margin-top: 0px;
+  }  
+
+.projectedit .ui-tabs .ui-tabs-panel {
+  padding-top: 1em;
+  }  
   
 .projectedit .right {
   width: 270px;
@@ -183,6 +193,8 @@ h1 {font-size: 26px;margin: .5em 0;}
       }
     }
   }
+
+.fullpage .left {width: 100%;} 
 
 /* Forms */
 
@@ -338,10 +350,11 @@ button.save span {
 div.module {
   h3 {
     background: @global-bg;
-    padding: 10px;
+    padding: 6px 10px;
     }
   table {
     width: 100%;
+    margin: 0 6px;
     th {
       text-align: left;
       }
@@ -356,6 +369,40 @@ div.module {
       }
       
     }
+  table.stafflist {
+    margin-bottom: .75em;
+    }
+  }
+  
+
+div.applicantdata {
+  background: @lime;
+  h3 {background: @dark-blue; color: @white;}
+    table {
+    width: 100%;
+    margin-bottom: 10px;
+    th.rightalign {
+      width: 20%;
+      padding-right: 9px;
+      }
+    th.icon, td.icon {
+      text-align: center;
+      width: 15%;
+      }
+    }
+  }
+  
+  
+/* iconic links */
+.add {
+  background: url(/images/icons/plus-button.png) no-repeat 0 50%;
+  padding-left: 20px;
+  }
+
+span.controls {
+  font-size: 11px;
+  float: right;
+  margin: 3px 0;
   }
 
 
