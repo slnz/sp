@@ -4,19 +4,19 @@
       <h3>Applicant Data</h3>
       <table>
         <tr>
-          <td class="rightalign"></td>
+          <td class="titlefield"></td>
           <td class="icon"><%= link_to(image_tag('icons/user.png'), 'mailto:') %></td>
           <td class="icon"><%= link_to(image_tag('icons/user-female.png'), '') %></td>
           <td class="total">Total</td>
         </tr>
         <tr>
-          <td class="rightalign">Applicants</td>
+          <td class="">Applicants</td>
           <td class="icon"><%= project.current_applicants_men.to_i %></td>
           <td class="icon"><%= project.current_applicants_women.to_i %></td>
           <td class="total"><%= project.current_applicants_men.to_i + project.current_applicants_women.to_i %></td>
         </tr>
         <tr>
-          <td class="rightalign">Participants</td>
+          <td class="">Participants</td>
           <td class="icon"><%= project.current_students_men.to_i %></td>
           <td class="icon"><%= project.current_students_women.to_i %></td>
           <td class="total"><%= project.current_students_men.to_i + project.current_students_women.to_i %></td>
@@ -31,7 +31,7 @@
         <% [:pd,:apd,:opd, :coordinator].each do |leader|
           person = project.send(leader) -%>
           <tr>
-            <td class="rightalign"><%= leader.to_s.titleize %></td>
+            <td><%= leader.to_s.titleize %></td>
             <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader %></td>
           </tr>
         <% end %>

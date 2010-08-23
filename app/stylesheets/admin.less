@@ -367,6 +367,14 @@ div.module {
       width: 25px;
       text-align: center;
       }
+    td.titlefield {
+      width: 90px;
+      }
+    div.buttons {
+      float: right;
+      margin-right: 7px;
+      a.delete {margin-left: 10px;}
+      }
       
     }
   table.stafflist {
@@ -465,8 +473,8 @@ a.inline {
   vertical-align: bottom;
 }
 
-a.edit {background-image: url('/images/icons/pencil-small.png');}
-a.delete {background-image: url('/images/icons/minus-small-circle.png');}
+a.edit {background-image: url('/images/icons/pencil-smaller.png');}
+a.delete {background-image: url('/images/icons/slash.png');}
 a.stats {background-image: url('/images/icons/chart-pie.png'); width: 16px; height: 16px;}
 a.close {text-indent: 0px; width: auto;}
 
@@ -740,3 +748,5 @@ table.people {
 
 .ui-widget-content .ui-icon-person-female {background: url("/images/icons/user-female.png") no-repeat 0 5px; height: 30px;}
 .ui-widget-content .ui-icon-person-male {background: url("/images/icons/user.png") no-repeat 0 5px; height: 30px;} 
+.ui-widget-content a {color: @dark-blue;}
+.ui-widget-content a:hover {text-decoration: underline;}

@@ -275,6 +275,12 @@ div.module table td.icon {
   width: 25px;
   text-align: center;
 }
+div.module table td.titlefield { width: 90px; }
+div.module table div.buttons {
+  float: right;
+  margin-right: 7px;
+}
+div.module table div.buttons a.delete { margin-left: 10px; }
 div.module table.stafflist { margin-bottom: 0.75em; }
 div.applicantdata { background: #cff09e; }
 div.applicantdata h3 {
@@ -356,8 +362,8 @@ a.inline {
   line-height: auto;
   vertical-align: bottom;
 }
-a.edit { background-image: url('/images/icons/pencil-small.png'); }
-a.delete { background-image: url('/images/icons/minus-small-circle.png'); }
+a.edit { background-image: url('/images/icons/pencil-smaller.png'); }
+a.delete { background-image: url('/images/icons/slash.png'); }
 a.stats {
   background-image: url('/images/icons/chart-pie.png');
   width: 16px;
@@ -697,3 +703,5 @@ table.people .name { width: 30%; }
   background: url("/images/icons/user.png") no-repeat 0 5px;
   height: 30px;
 }
+.ui-widget-content a { color: #0b486b; }
+.ui-widget-content a:hover { text-decoration: underline; }
