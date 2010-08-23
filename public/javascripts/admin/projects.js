@@ -176,8 +176,6 @@ $(function() {
 	});
 	// END Edit Leader
 	
-	$('.sidebar .buttons').css('display', 'inline');
-	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();
