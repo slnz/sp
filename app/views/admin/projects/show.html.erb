@@ -153,9 +153,10 @@
               <th class="campus">Campus</th>
               <th class="accdate">Submitted</th>
               <th class="balance">Intern</th>
+              <th class="status">Status</th>
             </tr>
 
-            <% @submitted.each do |app| %>
+            <% @not_going.each do |app| %>
               <% person = app.person %>
               <tr>
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
@@ -164,6 +165,7 @@
                 <td class="campus"><%= person.campus %></td>
                 <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
+                <td class="status"><%= app.status.titleize %></td>
               </tr>
             <% end %>
           </table>
