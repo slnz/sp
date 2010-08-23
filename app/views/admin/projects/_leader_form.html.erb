@@ -1,0 +1,13 @@
+<!-- Pick director form -->
+<div id="leader_search" style="display:none">
+  <%= form_tag search_admin_leaders_path, :id => 'leader_search_form' do %>
+    <label for="leader_search_name">Start typing a name to find a person to fill this role:</label>
+    <%= hidden_field_tag :leader, 'pd', :id => 'leader_search_type' %>
+    <%= hidden_field_tag :project_id, '1', :id => 'leader_search_project_id' %>
+    <%= text_field_tag :name, '', :id => 'leader_search_name', :autocomplete => 'off' %>
+    <%= spinner('leader_search') %>
+  <% end %>
+  <div id="leader_search_results">
+    
+  </div>
+</div>

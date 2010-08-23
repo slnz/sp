@@ -86,41 +86,38 @@ $(function() {
 	// END Edit checkboxes
 	
 	// Leader Info
-	$("a.leader").live('click', function() {
+	$("a.person").live('click', function() {
 		id = $(this).attr('data-id');
-		name = $(this).html();
-		dom = 'leader_details' + id;
-		if ($('#' + dom)[0] == null) {
-			$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
-			$.ajax({dataType: 'script',
-							type:'GET', 
-							url: '/admin/leaders/' + id
-			 })
-		}
-		$("#" + dom).dialog({
-			resizable: false,
-			height:300,
-			width:400,
-			modal: true,
-			buttons: {
-				Close: function() {
-					$(this).dialog('close');
-				}
+		if (id != null) {
+			name = $(this).html();
+			dom = 'leader_details' + id;
+			if ($('#' + dom)[0] == null) {
+				$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
+				$.ajax({dataType: 'script',
+								type:'GET', 
+								url: '/admin/leaders/' + id
+				 })
 			}
-		});
-		return false;
+			$("#" + dom).dialog({
+				resizable: false,
+				height:300,
+				width:400,
+				modal: true,
+				buttons: {
+					Close: function() {
+						$(this).dialog('close');
+					}
+				}
+			});
+			return false;
+		}
 	});
 	
-	$('.leader_cell').live('mouseenter', function() {
+	$('td:not(.sidebar) > .leader_cell').live('mouseenter', function() {
 		$('.buttons', this).show();
 	}).live('mouseleave', function() {
 		$('.buttons', this).hide();
 	});
-	// 	$('.leader_cell').hover(function() {
-	// 	$('.buttons', this).show();
-	// }, function() {
-	// 	$('.buttons', this).hide();
-	// });
 	// END Leader Info
 	
 	// Edit Leader
@@ -178,6 +175,8 @@ $(function() {
 		return false;
 	});
 	// END Edit Leader
+	
+	$('.sidebar .buttons').css('display', 'inline');
 	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();

@@ -14,7 +14,7 @@
       </tr>
       <tr>
         <td class="left">Email:</td>
-        <td><%= mail_to(person.current_address.email) %></td>
+        <td><%= mail_to(person.email) if person.email %></td>
       </tr>
       <tr>
         <td class="left">Address:</td>

@@ -19,6 +19,7 @@ gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
 gem 'paperclip'
+gem 'memcache-client'
 # gem 'vestal_versions'
 # To use debugger
 # gem 'ruby-debug'

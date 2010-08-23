@@ -13,7 +13,7 @@ class Admin::LeadersController < ApplicationController
   end
   
   def create
-    @project.update_attribute(params[:leader] + '_id', params[:person_id]) if ['apd','pd','opd','coord'].include?(params[:leader])
+    @project.update_attribute(params[:leader] + '_id', params[:person_id]) if ['apd','pd','opd','coordinator'].include?(params[:leader])
     respond_with(@project) 
   end
   
