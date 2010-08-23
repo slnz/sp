@@ -24,6 +24,7 @@ class MoveDirectorsToSpStaff < ActiveRecord::Migration
       end
     end
     add_index :sp_staff, [:project_id, :type, :year], :name => "project_staff_type"
+    SpApplication.connection.update("update sp_applications set project_id = preference1_id where project_id is NULL")
   end
 
   def self.down

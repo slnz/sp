@@ -17,7 +17,7 @@
   <% [:pd,:apd,:opd].each do |leader| -%>
     <td><%= render 'leader', :project => project, :leader => leader %></td>
 	<% end -%>
-  <td class="stats"><%= stat_link(project,project, 'Stats', :class => 'inline stats') %></td>
+  <td class="stats"><%= stat_link(project, project, 'Stats', :class => 'inline stats') %></td>
   <td class="close">
     
   </td>

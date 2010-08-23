@@ -176,6 +176,10 @@ $(function() {
 	});
 	// END Edit Leader
 	
+	$('#changeyear').click(function() {
+		$('#year_list').toggle();
+	})
+	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();

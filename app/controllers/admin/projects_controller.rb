@@ -42,6 +42,8 @@ class Admin::ProjectsController < ApplicationController
     @accepted_interns = @project.sp_applications.accepted_interns.for_year(@year)
     @ready_to_evaluate = @project.sp_applications.ready_to_evaluate.for_year(@year)
     @submitted = @project.sp_applications.submitted.for_year(@year)
+    @not_submitted = @project.sp_applications.not_submitted.for_year(@year)
+    @not_going = @project.sp_applications.not_going.for_year(@year)
   end
   
   def dashboard

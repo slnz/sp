@@ -42,12 +42,12 @@
       <div class="module <%= level %>">
         <h3>
           <%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) 
-          <span class="controls"><a href="" class="add">Add</a></span>
+          <span class="controls"><%= link_to('Add', '#', :class => 'add edit-leader', 'data-name' => "Add a #{level.singularize.titleize}", 'data-id' => project.id, 'data-leader' => level.singularize) %></span>
         </h3>
         <table class="stafflist">
           <tbody id="<%= level.singularize %>_list">
             <% project.send(level.to_sym, @year).each do |person| %>
-              <%= render 'admin/projects/staff', :person => person, :level => level.singularize %>
+              <%= render 'admin/projects/staff', :project => @project, :person => person, :level => level.singularize %>
             <% end %>
           </tbody>
         </table>

@@ -4,7 +4,8 @@ $("#leader_search").dialog('close');
   $("#<%= params[:leader] %>_for_<%= @project.id %>").effect("highlight", {}, 2000);
 <% else %>
   if ($('#<%= params[:leader] %>_<%= dom_id(@person) %>')[0] == null) {
-    $('#<%= params[:leader] %>_list').append('<%= escape_javascript(render('admin/projects/staff', :person => @person, :level => params[:leader])) %>')
+    $('#<%= params[:leader] %>_list').append('<%= escape_javascript(render('admin/projects/staff', :project => @project, :person => @person, :level => params[:leader])) %>')
+    $("#<%= params[:leader] %>_<%= dom_id(@person) %>").effect("highlight", {}, 2000);
   }
 <% end %>
 $('#leader_search_results').html('');
