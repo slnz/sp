@@ -178,6 +178,7 @@ $(function() {
 	
 	$('#changeyear').click(function() {
 		$('#year_list').toggle();
+		return false;
 	})
 	
 	$("#tabs").tabs();

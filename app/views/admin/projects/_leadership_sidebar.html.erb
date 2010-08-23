@@ -5,21 +5,21 @@
       <table>
         <tr>
           <td class="titlefield"></td>
-          <td class="icon"><%= link_to(image_tag('icons/user.png'), 'mailto:') %></td>
-          <td class="icon"><%= link_to(image_tag('icons/user-female.png'), '') %></td>
+          <td class="icon"><%= image_tag('icons/user.png') %></td>
+          <td class="icon"><%= image_tag('icons/user-female.png') %></td>
           <td class="total">Total</td>
         </tr>
         <tr>
           <td class="">Applicants</td>
-          <td class="icon"><%= project.current_applicants_men.to_i %></td>
-          <td class="icon"><%= project.current_applicants_women.to_i %></td>
-          <td class="total"><%= project.current_applicants_men.to_i + project.current_applicants_women.to_i %></td>
+          <td class="icon"><%= project.male_applicants_count(@year).to_i %></td>
+          <td class="icon"><%= project.female_applicants_count(@year).to_i %></td>
+          <td class="total"><%= project.male_applicants_count(@year).to_i + project.female_applicants_count(@year).to_i %></td>
         </tr>
         <tr>
           <td class="">Participants</td>
-          <td class="icon"><%= project.current_students_men.to_i %></td>
-          <td class="icon"><%= project.current_students_women.to_i %></td>
-          <td class="total"><%= project.current_students_men.to_i + project.current_students_women.to_i %></td>
+          <td class="icon"><%= project.male_accepted_count(@year).to_i %></td>
+          <td class="icon"><%= project.female_accepted_count(@year).to_i %></td>
+          <td class="total"><%= project.male_accepted_count(@year).to_i + project.female_accepted_count(@year).to_i %></td>
         </tr>
       </table>
     </div>
@@ -52,6 +52,9 @@
           </tbody>
         </table>
       </div>
+    <% end %>
+    <% if sp_user.can_delete_project? %>
+      <%= link_to('Delete this project', admin_project_path, :method => :delete, :confirm => "Are you sure you want to delete this project?") %>
     <% end %>
     
   

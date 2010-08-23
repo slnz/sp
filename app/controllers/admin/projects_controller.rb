@@ -27,13 +27,30 @@ class Admin::ProjectsController < ApplicationController
   def update
     @project.update_attributes(params[:sp_project])
     respond_with(@project) do |format|
-      format.html {@project.valid? ? redirect_to(admin_projects_path) : render(:edit)}
+      format.html {@project.errors.empty? ? redirect_to(admin_projects_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
     end
   end
   
   def create
     @project = SpProject.create(params[:sp_project])
-    respond_with(@project) 
+    respond_with(@project) do |format|
+      format.html do
+        if @project.new_record?
+          render :new
+        else
+          redirect_to admin_projects_path, :notice => "#{@project} project was created successfully."
+        end
+      end
+    end
+  end
+  
+  def destroy
+    @project.destroy if sp_user.can_delete_project?
+    respond_with(@project) do |format|
+      format.html do
+        redirect_to admin_projects_path, :notice => "#{@project} project was created deleted."
+      end
+    end
   end
   
   def show

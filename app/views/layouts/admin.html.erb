@@ -21,8 +21,8 @@
       <% if sp_user.can_see_dashboard? %>
         <li><%= link_to('Projects', admin_projects_path, :class => (params[:controller] == 'admin/projects' && !['show','edit'].include?(params[:action])) ? 'selected' : '') %></li>
       <% end %>
-      <% if current_person.directs_projects.length > 0 || @project %>
-        <li><%= link_to('People', @project ? admin_project_path(@project) : admin_project_path(current_person.directs_projects.first), :class => (params[:controller] == 'admin/projects' && ['show','edit'].include?(params[:action])) ? 'selected' : '') %></li>
+      <% if current_person.directs_projects.length > 0 || (@project && !@project.new_record?) %>
+        <li><%= link_to('People', (@project ? admin_project_path(@project) : admin_project_path(current_person.directs_projects.first)), :class => (params[:controller] == 'admin/projects' && ['show','edit'].include?(params[:action])) ? 'selected' : '') %></li>
       <% end %>
       <!-- <li><%= link_to('Reports', '') %></li> -->
       <!-- <li class="search withicon"><%= link_to('Search', 'Search') %></li> -->
