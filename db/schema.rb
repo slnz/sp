@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100819212753) do
+ActiveRecord::Schema.define(:version => 20100823140904) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -5850,7 +5850,7 @@ ActiveRecord::Schema.define(:version => 20100819212753) do
     t.string  "year"
   end
 
-  add_index "sp_staff", ["project_id", "person_id", "year"], :name => "project_staff_person", :unique => true
+  add_index "sp_staff", ["project_id", "type", "year"], :name => "project_staff_type"
 
   create_table "sp_stats", :force => true do |t|
     t.integer  "project_id"
