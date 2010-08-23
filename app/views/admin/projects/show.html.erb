@@ -24,8 +24,10 @@
         <ul class="tabs">
           <li><%= link_to("Participants (#{@accepted_participants.length})", '#participants') %></li>
           <li><%= link_to("Interns (#{@accepted_interns.length})", '#interns') %></li>
-          <li><%= link_to("Ready to Evaluate (#{@ready_to_evaluate.length})", '#ready') %></li> 
+          <li><%= link_to("Ready (#{@ready_to_evaluate.length})", '#ready') %></li> 
           <li><%= link_to("Submited (#{@submitted.length})", '#submitted') %></li> 
+          <li><%= link_to("Not Submited (#{@submitted.length})", '#not_submitted') %></li> 
+          <li><%= link_to("Not Going (#{@submitted.length})", '#not_going') %></li> 
         </ul>
     
         <div class="tabcontent" id="participants">
@@ -77,6 +79,58 @@
         </div>
     
         <div class="tabcontent" id="submitted">
+          (Application submitted, still waiting for references)
+          <table class="people">
+            <tr>
+              <th class="gender"></th>
+              <th class="name sort_up">Name</th>
+              <th class="email"></th>
+              <th class="campus">Campus</th>
+              <th class="accdate">Submitted</th>
+              <th class="balance">Intern</th>
+            </tr>
+
+            <% @submitted.each do |app| %>
+              <% person = app.person %>
+              <tr>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
+                <td class="campus"><%= person.campus %></td>
+                <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
+                <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div> 
+    
+        <div class="tabcontent" id="not_submitted">
+          (Application submitted, still waiting for references)
+          <table class="people">
+            <tr>
+              <th class="gender"></th>
+              <th class="name sort_up">Name</th>
+              <th class="email"></th>
+              <th class="campus">Campus</th>
+              <th class="accdate">Submitted</th>
+              <th class="balance">Intern</th>
+            </tr>
+
+            <% @submitted.each do |app| %>
+              <% person = app.person %>
+              <tr>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
+                <td class="campus"><%= person.campus %></td>
+                <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
+                <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div> 
+    
+        <div class="tabcontent" id="not_going">
           (Application submitted, still waiting for references)
           <table class="people">
             <tr>
