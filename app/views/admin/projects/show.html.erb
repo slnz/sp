@@ -6,7 +6,19 @@
     </ul>
   </div>
   
-  <div class="hybriddrop hybriddropinline"><%= link_to('2010', '', :class => 'down withicon') %><h1><%= @project %></h1></div>
+  <div class="hybriddrop hybriddropinline">
+    <div class="dropdowncontents" id="yeardrop">
+    <%= link_to('2010', '', :class => 'down withicon') %>
+      <ul>
+        <li><%= link_to('2009', '') %></li>
+        <li><%= link_to('2009', '') %></li>
+        <li><%= link_to('2009', '') %></li>
+      </ul>
+    </div>
+    <h1><%= @project %></h1>
+  </div>
+  
+  
   <div id="contextmenu">
     <ul class="left">
       <li><%= link_to('Download Team DB', '', :class => 'excel withicon') %></li>

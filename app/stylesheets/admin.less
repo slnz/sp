@@ -18,6 +18,7 @@ img {border: none;}
 .pagepad {padding: 15px;}
 .clear {clear: both;}
 .spinner {vertical-align: middle; }
+.roundit {}
 
 h1, h2, h3, h4, h5, h6 {font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica;}
 h1 {font-size: 26px;margin: .5em 0;}
@@ -352,6 +353,7 @@ div.module {
   h3 {
     background: @global-bg;
     padding: 6px 10px;
+    margin-bottom:0.5em;
     }
   table {
     width: 100%;
@@ -689,6 +691,37 @@ a.close {text-indent: 0px; width: auto;}
     margin: 0 8px 0 0;
     }
   }
+
+.dropdowncontents {
+  ul {
+    -moz-border-radius:0 0 5px 5px;
+    -webkit-border-radius:0 0 5px 5px;
+    border-radius:0 0 5px 5px;
+    -mox-box-shadow: 0px 0px 5px #999;
+    -webkit-box-shadow: 0px 0px 5px #999;
+    box-shadow: 0px 0px 5px #999;
+    background:none repeat scroll 0 0 #EFEFEF;
+    border:1px solid silver;
+    display:block;
+    margin-left:24px;
+    margin-top:33px;
+    padding:6px 0 0 0;
+    position:absolute;
+    }
+  ul li {
+    float:none;
+    list-style:none outside none;
+    text-indent:0;   
+    }
+  ul li a {
+    background:#EFEFEF;
+    display:block;
+    float:none;
+    margin:0;
+    padding:3px 8px;
+    width:36px;
+    }
+  }
   
 /* People Tables */
 table.people {
@@ -710,7 +743,7 @@ table.people {
     border-bottom: 1px solid @global-bg;
     }
   .gender {}
-  .name {width: 30%;}
+  .name {width: 23%;}
   }
   
 /* Modal Boxes */
