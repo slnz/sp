@@ -80,7 +80,7 @@
             <% @ready_to_evaluate.each do |app| %>
               <% person = app.person %>
               <tr>
-                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
@@ -106,7 +106,7 @@
             <% @submitted.each do |app| %>
               <% person = app.person %>
               <tr>
-                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
@@ -132,7 +132,7 @@
             <% @not_submitted.each do |app| %>
               <% person = app.person %>
               <tr>
-                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
@@ -158,7 +158,7 @@
             <% @submitted.each do |app| %>
               <% person = app.person %>
               <tr>
-                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
