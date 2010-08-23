@@ -79,6 +79,7 @@ h1 {
   padding: 4px;
   position: absolute;
   width: 36px;
+  display: none;
 }
 .dashboardlist table {
   border-collapse: collapse;
