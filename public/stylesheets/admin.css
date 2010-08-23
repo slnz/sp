@@ -335,6 +335,7 @@ span.controls {
   margin: 0 0.4em 1px 0;
   border: none;
 }
+.ui-tabs .ui-tabs-nav li a { font-size: 12px; }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
   padding: 0;
   background: #0b486b;
@@ -642,6 +643,7 @@ a.close {
   margin-top: 33px;
   padding: 6px 0 0 0;
   position: absolute;
+  z-index: 10;
 }
 .dropdowncontents ul li {
   float: none;
