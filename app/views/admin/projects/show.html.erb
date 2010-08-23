@@ -8,7 +8,7 @@
   
   <div class="hybriddrop hybriddropinline">
     <div class="dropdowncontents" id="yeardrop">
-    <%= link_to('2010', '#', :class => 'down withicon', :id => "changeyear") %>
+    <%= link_to(@year, '#', :class => 'down withicon', :id => "changeyear") %>
       <ul id="year_list">
         <% @project.year.downto(2005) do |year| %>
           <li><%= link_to(year, params.dup.merge!({:year => year})) %></li>

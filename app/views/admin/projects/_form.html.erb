@@ -16,12 +16,12 @@
       </p>
     
       <hr />
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :name, 'Project Name' %>
         <%= f.text_field :name %>
       </div>
       
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :display_location, 'Location' %>
         <%= f.text_field :display_location %>
         <%= tip('(ie. "Ocean City, NJ", "Middle East", etc.)') %>
@@ -178,7 +178,7 @@
         <%= f.label :use_provided_application, 'Are you using the USCM Summer Project Online Application we provide?' %>
         <%= f.select :use_provided_application, [['No',false],['Yes',true]] %>
       </div>
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
         <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
       </div>
@@ -188,7 +188,7 @@
     </div>  
     
     <div class="tabcontent" id="contactTab">
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :city %>
         <%= f.text_field :city %>
       </div>
@@ -196,9 +196,13 @@
         <%= f.label :state %>
         <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
       </div>
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :country %>
-        <%= f.select :state, @countries.collect {|c| [c.country]}, :include_blank => true %>
+        <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :aoa %>
+        <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
       <div class="multifield">
         <div class="field">
@@ -268,7 +272,7 @@
     </div>
     
     <div class="tabcontent" id="operationsTab">
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :primary_partner %>
         <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
       </div>
@@ -280,7 +284,7 @@
         <%= f.label :tertiary_partner %>
         <%= partnership_select(:project, :tertiary_partner, [:regions, :ministries]) %>
       </div>
-      <div class="field">
+      <div class="field" class="required">
         <%= f.label :report_stats_to %>
         <%= f.select(:report_stats_to, ['Campus Ministry - US summer project','Campus Ministry - WSN summer project','Other CCC ministry'], { :include_blank => true }) %>
       </div>
@@ -291,6 +295,14 @@
       <div class="field">
         <%= f.label :intern_cost %>
         <%= f.text_field :intern_cost %>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :ideal_staff_men %>
+        <%= f.text_field :ideal_staff_men %>
+      </div>
+      <div class="field">
+        <%= f.label :ideal_staff_women %>
+        <%= f.text_field :ideal_staff_women %>
       </div>
       
       <hr />
