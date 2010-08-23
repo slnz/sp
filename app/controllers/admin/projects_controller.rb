@@ -14,7 +14,7 @@ class Admin::ProjectsController < ApplicationController
     set_up_pagination
     set_up_filters
     set_order
-    @projects = @base.includes([:pd, :opd, :apd]).paginate(:page => params[:page], :per_page => @per_page)
+    @projects = @base.includes([:sp_staff]).paginate(:page => params[:page], :per_page => @per_page)
     respond_with(@products)
   end
   
@@ -37,7 +37,11 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def show
-    
+    @year = params[:year].present? ? params[:year] : SpApplication::YEAR
+    @accepted_participants = @project.sp_applications.accepted_participants.for_year(@year)
+    @accepted_interns = @project.sp_applications.accepted_interns.for_year(@year)
+    @ready_to_evaluate = @project.sp_applications.ready_to_evaluate.for_year(@year)
+    @submitted = @project.sp_applications.submitted.for_year(@year)
   end
   
   def dashboard

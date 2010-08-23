@@ -70,9 +70,9 @@ module ApplicationHelper
     end
     if params[:order] == column
       if params[:direction] == 'ascend'
-        title = "&#9650;&nbsp;#{title}"
+        title = "<span class=\"sort\">&#9650;</span>&nbsp;#{title}"
       else
-        title = "&#9660;&nbsp;#{title}"
+        title = "<span class=\"sort\">&#9660;</span>&nbsp;#{title}"
       end
     end
     ordered = params.dup

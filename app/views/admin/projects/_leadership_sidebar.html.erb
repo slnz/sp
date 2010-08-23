@@ -42,7 +42,7 @@
       <div class="module <%= level %>">
         <h3><%= level.titleize %> <span class="controls"><a href="" class="add">Add</a></span></h3>
         <table class="stafflist">
-          <% project.send(level.to_sym).each do |person| %>
+          <% project.send(level.to_sym, @year).each do |person| %>
           <tr>
             <td class="name"><%= link_to(person, '', :class => 'person', 'data-id' => person.id) %></td>
             <td class="icon"><%= mail_to(person.email, image_tag('icons/mail.png')) if person.email %></td>

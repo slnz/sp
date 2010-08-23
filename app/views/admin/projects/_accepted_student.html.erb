@@ -1,0 +1,10 @@
+<% person = app.person %>
+<tr>
+  <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+  <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+  <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
+  <td class="campus"><%= person.campus %></td>
+  <td class="accdate"><%= l app.accepted_at.to_date if app.accepted_at  %></td>
+  <td class="balance"><%= number_to_currency(app.account_balance, :precision => 0) %></td>
+  <td class="designation"><%= app.designation_number %></td>
+</tr>
