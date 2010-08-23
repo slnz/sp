@@ -73,9 +73,9 @@ GEM
     mutter (0.5.3)
     mysql (2.8.1)
     net-http-persistent (1.2.5)
-    net-scp (1.0.2)
+    net-scp (1.0.3)
       net-ssh (>= 1.99.1)
-    net-sftp (2.0.4)
+    net-sftp (2.0.5)
       net-ssh (>= 2.0.9)
     net-ssh (2.0.23)
     net-ssh-gateway (1.0.1)
@@ -86,7 +86,7 @@ GEM
       activesupport
     polyglot (0.3.1)
     rack (1.2.1)
-    rack-mount (0.6.9)
+    rack-mount (0.6.12)
       rack (>= 1.0.0)
     rack-test (0.5.4)
       rack (>= 1.0)
@@ -115,13 +115,12 @@ GEM
     tiny_mce (0.1.4)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.22)
+    tzinfo (0.3.23)
     will_paginate (3.0.pre2)
     xml-simple (1.0.12)
 
 PLATFORMS
   ruby
-  x86-mingw32
 
 DEPENDENCIES
   activerecord-oracle_enhanced-adapter

@@ -6,6 +6,8 @@ end
 class MoveDirectorsToSpStaff < ActiveRecord::Migration
   def self.up
     remove_index :sp_staff, :name => 'project_staff_person'
+    change_column :sp_staff, :type, :string, :limit => 100
+    
     SpProject.all.each do |project|
       SpStaff.create(:person_id => project.pd_id, :project_id => project.id, :type => 'PD', :year => project.year) if project.pd_id.present?
       SpStaff.create(:person_id => project.apd_id, :project_id => project.id, :type => 'APD', :year => project.year) if project.apd_id.present?
