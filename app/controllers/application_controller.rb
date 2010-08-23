@@ -60,4 +60,9 @@ class ApplicationController < ActionController::Base
         return false
       end
     end
+    
+    def leader_types
+      %w{pd apd opd coordinator}
+    end
+    helper_method :leader_types
 end

@@ -47,6 +47,7 @@ Sp2::Application.routes.draw do
         post :open
       end
     end
+    resources :applications 
     resources :leaders do
       collection do
         post :search

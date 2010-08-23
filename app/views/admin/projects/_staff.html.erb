@@ -1,0 +1,5 @@
+<tr id="<%= level %>_<%= dom_id(person) %>">
+  <td class="name"><%= link_to(person, '', :class => 'person', 'data-id' => person.id) %></td>
+  <td class="icon"><%= mail_to(person.email, image_tag('icons/mail.png')) if person.email %></td>
+  <td class="icon"><%= link_to(image_tag('icons/slash.png'), '') %></td>
+</tr>

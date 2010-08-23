@@ -8,12 +8,20 @@ class Admin::LeadersController < ApplicationController
   end
   
   def destroy
-    @project.update_attribute(params[:leader] + '_id', nil) if ['apd','pd','opd','coord'].include?(params[:leader])
+    year = params[:year].present? ? params[:year] : @project.year
+    staff = @project.sp_staff.where(:type => params[:leader].titleize, :year => year, :person_id => params[:person_id])
+    staff.destroy
     respond_with(@project) 
   end
   
   def create
-    @project.update_attribute(params[:leader] + '_id', params[:person_id]) if ['apd','pd','opd','coordinator'].include?(params[:leader])
+    year = params[:year].present? ? params[:year] : @project.year
+    @person = Person.find(params[:id])
+    if ['apd','pd','opd','coordinator'].include?(params[:leader])
+      @project.send(params[:leader] + '=', params[:person_id])
+    elsif ['staff','kid','volunteer'].include?(params[:leader])
+      @project.sp_staff.create(:type => params[:leader].titleize, :year => year, :person_id => params[:person_id])
+    end
     respond_with(@project) 
   end
   
