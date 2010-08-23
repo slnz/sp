@@ -15,7 +15,7 @@ class MoveDirectorsToSpStaff < ActiveRecord::Migration
       SpStaff.create(:person_id => project.coordinator_id, :project_id => project.id, :type => 'Coordinator', :year => project.year) if project.coordinator_id.present?
     end
     
-    SpProjectVersion.connection.select_all('select max(id) as id, sp_project_id, /bin/bash: year: command not found from sp_project_versions group by /bin/bash: year: command not found, sp_project_id').each do |row|
+    SpProjectVersion.connection.select_all('select max(id) as id, sp_project_id, year from sp_project_versions group by year, sp_project_id').each do |row|
       next unless row['sp_project_id'].present?
       project = SpProjectVersion.find(row['id'])
       if project
