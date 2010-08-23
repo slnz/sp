@@ -284,6 +284,10 @@ div.module table div.buttons {
 }
 div.module table div.buttons a.delete { margin-left: 10px; }
 div.module table.stafflist { margin-bottom: 0.75em; }
+div.module .fillit {
+  color: silver;
+  font-style: italic;
+}
 div.applicantdata { background: #cff09e; }
 div.applicantdata h3 {
   background: #0b486b;
