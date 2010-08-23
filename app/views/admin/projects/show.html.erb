@@ -1,32 +1,113 @@
 <div class="pagepad">
   <div id="breadcrumb">
     <ul>
-      <li><%= link_to('Projects', '') %></li>
-      <li><%= link_to('Projects', '') %></li>
-      <li class="last"><%= link_to('Projects', '') %></li>
+      <li><%= link_to('Projects', admin_projects_path) %></li>
+      <li class="last"><%= @project.name %></li>
     </ul>
   </div>
   
-  <div class="hybriddrop hybriddropinline"><%= link_to('2010', '', :class => 'down withicon') %><h1>Project Title</h1></div>
+  <div class="hybriddrop hybriddropinline"><%= link_to('2010', '', :class => 'down withicon') %><h1><%= @project %></h1></div>
   <div id="contextmenu">
     <ul class="left">
       <li><%= link_to('Download Team DB', '', :class => 'excel withicon') %></li>
       <li><%= link_to('Send Email', '', :class => 'email withicon', :id => 'sendemailopen') %></li>
       <li><%= link_to('Enter Stats', '', :class => 'stats withicon') %></li>
-      <li><%= link_to('Add a Person', '', :class => 'person withicon') %></li>
+      <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li>
     </ul>  
     <div class="clear"></div>
   </div>
   
   <div class="projectedit">
   
-  <%= form_for @project, :url => admin_project_path(@project) do |f| %>  
-    <%= render 'humanlist', :f => f %>
-  <% end %>
+    <div class="left">
+      <div id="tabs">
+        <ul class="tabs">
+          <li><%= link_to("Participants (#{@accepted_participants.length})", '#participants') %></li>
+          <li><%= link_to("Interns (#{@accepted_interns.length})", '#interns') %></li>
+          <li><%= link_to("Ready to Evaluate (#{@ready_to_evaluate.length})", '#ready') %></li> 
+          <li><%= link_to("Submited (#{@submitted.length})", '#submitted') %></li> 
+        </ul>
+    
+        <div class="tabcontent" id="participants">
+          <table class="people">
+            <%= render :partial => 'accepted_header' %>
+        
+            <% @accepted_participants.each do |app| %>
+              <%= render 'accepted_student', :app => app %>
+            <% end %>
+            
+          </table>
+        </div>
+        
+        <div class="tabcontent" id="interns">
+          <table class="people">
+            <%= render :partial => 'accepted_header' %>
+
+            <% @accepted_interns.each do |app| %>
+              <%= render 'accepted_student', :app => app %>
+            <% end %>
+          </table>
+      
+        </div>
+    
+    
+        <div class="tabcontent" id="ready">
+          (Application submitted, paid, and all references submitted)
+          <table class="people">
+            <tr>
+              <th class="gender"></th>
+              <th class="name sort_up">Name</th>
+              <th class="email"></th>
+              <th class="campus">Campus</th>
+              <th class="accdate">Completed</th>
+              <th class="balance">Intern</th>
+            </tr>
+            <% @ready_to_evaluate.each do |app| %>
+              <% person = app.person %>
+              <tr>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
+                <td class="campus"><%= person.campus %></td>
+                <td class="accdate"><%= l app.completed_at.to_date if app.completed_at %></td>
+                <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+    
+        <div class="tabcontent" id="submitted">
+          (Application submitted, still waiting for references)
+          <table class="people">
+            <tr>
+              <th class="gender"></th>
+              <th class="name sort_up">Name</th>
+              <th class="email"></th>
+              <th class="campus">Campus</th>
+              <th class="accdate">Submitted</th>
+              <th class="balance">Intern</th>
+            </tr>
+
+            <% @submitted.each do |app| %>
+              <% person = app.person %>
+              <tr>
+                <td class="gender"><%= image_tag("icons/user-#{person.human_gender}.png") if person.human_gender.present? %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
+                <td class="campus"><%= person.campus %></td>
+                <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
+                <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div> 
+      </div>
+
+
+    </div><!-- left -->  
   
   
-  
-  <%= render 'leadership_sidebar', :project => @project %>
+    <%= render 'leadership_sidebar', :project => @project %>
   
   
   </div>

@@ -10,7 +10,7 @@
       <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %>
     </div>
     <span title="<%= project.current_students_men.to_i %> men, <%= project.current_students_women.to_i %> women">
-      <%= project.accepted %>/<%= project.capacity %>
+      <%= project.accepted_count %>/<%= project.capacity %>
     </span>
   </td>
   <td class="project"><%= link_to(project.name, admin_project_path(project)) %></td>
