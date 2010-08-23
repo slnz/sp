@@ -55,12 +55,13 @@ class Admin::ProjectsController < ApplicationController
   
   def show
     @year = params[:year].present? ? params[:year] : SpApplication::YEAR
-    @accepted_participants = @project.sp_applications.accepted_participants.for_year(@year)
-    @accepted_interns = @project.sp_applications.accepted_interns.for_year(@year)
-    @ready_to_evaluate = @project.sp_applications.ready_to_evaluate.for_year(@year)
-    @submitted = @project.sp_applications.submitted.for_year(@year)
-    @not_submitted = @project.sp_applications.not_submitted.for_year(@year)
-    @not_going = @project.sp_applications.not_going.for_year(@year)
+    applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
+    @accepted_participants = applications.accepted_participants.for_year(@year)
+    @accepted_interns = applications.accepted_interns.for_year(@year)
+    @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
+    @submitted = applications.submitted.for_year(@year)
+    @not_submitted = applications.not_submitted.for_year(@year)
+    @not_going = applications.not_going.for_year(@year)
   end
   
   def dashboard

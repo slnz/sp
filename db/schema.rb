@@ -5844,9 +5844,9 @@ ActiveRecord::Schema.define(:version => 20100823140904) do
   end
 
   create_table "sp_staff", :force => true do |t|
-    t.integer "person_id",                                :null => false
-    t.integer "project_id",                               :null => false
-    t.string  "type",       :limit => 10, :default => "", :null => false
+    t.integer "person_id",                                 :null => false
+    t.integer "project_id",                                :null => false
+    t.string  "type",       :limit => 100, :default => "", :null => false
     t.string  "year"
   end
 
