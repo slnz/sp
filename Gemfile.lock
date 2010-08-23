@@ -120,6 +120,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   activerecord-oracle_enhanced-adapter
