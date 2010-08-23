@@ -40,7 +40,7 @@
     
     <% %w{staff volunteers kids}.each do |level| %>
       <div class="module <%= level %>">
-        <h3><%= level.titleize %> <span class="controls"><a href="" class="add">Add</a></span></h3>
+        <h3><%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) <span class="controls"><a href="" class="add">Add</a></span></h3>
         <table class="stafflist">
           <% project.send(level.to_sym, @year).each do |person| %>
           <tr>
