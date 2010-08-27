@@ -39,7 +39,7 @@
           <li><%= link_to("Interns (#{@accepted_interns.length})", '#interns') %></li>
           <li><%= link_to("Ready (#{@ready_to_evaluate.length})", '#ready') %></li> 
           <li><%= link_to("Submitted (#{@submitted.length})", '#submitted') %></li> 
-          <li><%= link_to("Not Submitted (#{@not_submitted.length})", '#not_submitted') %></li> 
+          <li><%= link_to("Started (#{@not_submitted.length})", '#not_submitted') %></li> 
           <li><%= link_to("Not Going (#{@not_going.length})", '#not_going') %></li> 
         </ul>
     
@@ -152,7 +152,6 @@
               <th class="email"></th>
               <th class="campus">Campus</th>
               <th class="accdate">Submitted</th>
-              <th class="balance">Intern</th>
               <th class="status">Status</th>
             </tr>
 
@@ -164,8 +163,7 @@
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
                 <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
-                <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
-                <td class="status"><%= app.status.titleize %></td>
+                <td class="status"><%= app.status.titleize %> <%= "(#{app.previous_status})" if app.previous_status.present? %></td>
               </tr>
             <% end %>
           </table>

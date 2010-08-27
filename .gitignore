@@ -7,3 +7,4 @@ database.yml
 config/amazon_s3.yml
 html_escape.rb
 .DS_Store
+.rvmrc

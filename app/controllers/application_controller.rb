@@ -65,4 +65,8 @@ class ApplicationController < ActionController::Base
       %w{pd apd opd coordinator}
     end
     helper_method :leader_types
+    
+    def self.application_name
+      'SP'
+    end
 end

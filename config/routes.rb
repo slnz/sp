@@ -50,7 +50,7 @@ Sp2::Application.routes.draw do
     resources :applications 
     resources :leaders do
       collection do
-        post :search
+        post :search, :add_person
       end
     end
   end

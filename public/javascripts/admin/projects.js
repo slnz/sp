@@ -124,6 +124,9 @@ $(function() {
 	$("a.edit-leader").live('click', function() {
 		id = $(this).attr('data-id');
 		name = $(this).attr('data-name');
+  	$('#add_leader_form').hide();
+		$('#leader_search_form').show();
+		$('#leader_search_name').val('');
 		el = $('#leader_search');
 		el.attr('title', name);
 		form = $('#leader_search_form');
@@ -131,7 +134,7 @@ $(function() {
 		$('#leader_search_type').val($(this).attr('data-leader'));
 		el.dialog({
 			resizable: false,
-			height:423,
+			height:427,
 			width:400,
 			modal: true,
 			buttons: {
@@ -154,6 +157,7 @@ $(function() {
 						type: 'POST',
 						success: function(data) {
 							$('#leader_search_results').html(data);
+						  $("#leader_search_results").show();
 						},
 						complete: function() {
 							$.ajaxCount--;
@@ -176,10 +180,15 @@ $(function() {
 	});
 	// END Edit Leader
 	
+	// Add new person as leader
+	$('#create_leader_form').bind('ajax:before', function() {
+		$('#spinner_leader_add').show();
+	});
+	
 	$('#changeyear').click(function() {
 		$('#year_list').toggle();
 		return false;
-	})
+	});
 	
 	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
@@ -190,4 +199,5 @@ $(function() {
     $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
   	return false;
  	});
+
 });

@@ -1,0 +1,18 @@
+<!-- Pick director form -->
+<%= form_tag add_person_admin_leaders_path, :remote => true, :id => 'create_leader_form' do %>
+  <%= hidden_field_tag :leader, params[:leader], :id => 'leader_search_type' %>
+  <%= hidden_field_tag :project_id, params[:project_id], :id => 'leader_search_project_id' %>
+  <% if flash[:error] %>
+    <div class="flash error"><%= raw flash[:error] %></div>
+  <% end %>
+  <label for="leader_search_name">All of the following fields are required to add a person:</label>
+  <%= fields_for @person do |pf| %>
+    First Name: <%= pf.text_field :firstName %><br/>
+    Last Name: <%= pf.text_field :lastName %><br/>
+    <%= pf.fields_for @person.current_address do |af| %>
+      Email: <%= af.text_field :email %><br/>
+      Phone: <%= af.text_field :homePhone %><br/>
+    <% end %>
+  <% end %>
+  <%= submit_tag "Add", :disable_with => "Adding..." %>
+<% end %>
