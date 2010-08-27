@@ -41,6 +41,7 @@ Sp2::Application.routes.draw do
 
   # Sample resource route within a namespace:
   namespace :admin do
+    resources :people
     resources :projects do
       member do
         post :close

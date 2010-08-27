@@ -8,11 +8,6 @@ class Admin::LeadersController < ApplicationController
     @person.current_address = CurrentAddress.new
   end
   
-  def show
-    @person = Person.find(params[:id])
-    respond_with(@person)
-  end
-  
   def destroy
     @person = Person.find(params[:person_id])
     year = params[:year].present? ? params[:year] : @project.year
@@ -52,7 +47,7 @@ class Admin::LeadersController < ApplicationController
     @current_address = CurrentAddress.new(params[:person].delete(:current_address).merge({:addressType => 'current'}))
     @person = Person.new(params[:person])
     @person.current_address = @current_address
-    unless [@person.firstName, @person.lastName, @current_address.homePhone, @current_address.email].all?(&:present?) && @person.valid? && @current_address.valid?
+    unless [@person.firstName, @person.lastName, @person.gender, @current_address.homePhone, @current_address.email].all?(&:present?) && @person.valid? && @current_address.valid?
       flash[:error] = "Please fill in all fields"
       errors = @person.errors.full_messages
       flash[:error] = errors.join("<br />") if errors.present?

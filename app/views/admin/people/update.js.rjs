@@ -1,0 +1,11 @@
+if @person.errors.present?
+  page << <<-END
+    $('#leader_details#{@person.id}').dialog('option',{height:600})
+    $('##{dom_id(@person)}_form').html('#{escape_javascript(render('edit', :person => @person))}')
+  END
+else
+  page << <<-END
+    $('#leader_details#{@person.id}').dialog('option',{height:300})
+    $('#leader_details#{@person.id}').html('#{escape_javascript(render('person', :person => @person))}')
+  END
+end

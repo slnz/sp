@@ -1,0 +1,35 @@
+<div id="<%= dom_id(person) %>_info">
+  <div class="ui-icon ui-icon-person-<%= person.human_gender.downcase %>" style="float:left; margin:0 7px 20px 0;"></div>
+  <div>
+    <table border="0" cellspacing="0" cellpadding="0" class="modal_person_info">
+      <tr>
+        <td class="left">Name:</td>
+        <td><%= person %></td>
+      </tr>
+      <% if person.current_address %>
+        <tr>
+          <td class="left">Phone:</td>
+          <td>
+            <%= raw person.current_address.phone_numbers.join('<br>') %>
+          </td>
+        </tr>
+        <tr>
+          <td class="left">Email:</td>
+          <td><%= mail_to(person.email) if person.email %></td>
+        </tr>
+        <tr>
+          <td class="left">Address:</td>
+          <td><%= raw person.current_address %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <td colspan="2">No Address information Available</td>
+        </tr>
+      <% end %>
+    </table>
+    <%= link_to('Edit this information', '#', :class => 'edit_person_link', 'data-id' => person.id) %>
+  </div>
+</div>
+<div id="<%= dom_id(person) %>_form" style="display:none">
+  <%= render 'edit', :person => person %>
+</div>

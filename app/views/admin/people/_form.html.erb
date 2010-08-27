@@ -1,0 +1,41 @@
+<% person = f.object %>
+<%= error_messages_for person %>
+<table border="0" cellspacing="0" cellpadding="0" class="modal_person_info">
+  <tr>
+    <td class="left">First:</td>
+    <td><%= f.text_field :firstName %></td>
+  </tr>
+  <tr>
+    <td class="left">Last:</td>
+    <td><%= f.text_field :lastName %></td>
+  </tr>
+  <tr>
+    <td class="left">Preferred:</td>
+    <td><%= f.text_field :preferredName %></td>
+  </tr>
+  <%= f.fields_for :current_address do |af| %>
+    <tr>
+      <td class="left">Phone:</td>
+      <td>
+        <%= af.text_field :homePhone %> (home)<br/>
+        <%= af.text_field :cellPhone %> (cell)<br/>
+        <%= af.text_field :workPhone %> (work)
+      </td>
+    </tr>
+    <tr>
+      <td class="left">Email:</td>
+      <td><%= af.text_field :email %></td>
+    </tr>
+    <tr>
+      <td class="left">Address:</td>
+      <td>
+        Street 1: <%= af.text_field :address1 %><br/>
+        Street 2: <%= af.text_field :address2 %><br/>
+        City: <%= af.text_field :city %><br/>
+        State: <%= af.select :state, State::NAMES + ['Ontario'], :include_blank => true %><br/>
+        Zip: <%= af.text_field :zip %><br/>
+        Country: <%= af.select :country, Country.find(:all, :order => :country).collect(&:country), :include_blank => true %>
+      </td>
+    </tr>
+  <% end %>
+</table>

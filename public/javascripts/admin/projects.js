@@ -85,7 +85,7 @@ $(function() {
 	})
 	// END Edit checkboxes
 	
-	// Leader Info
+	// Person Info
 	$("a.person").live('click', function() {
 		id = $(this).attr('data-id');
 		if (id != null) {
@@ -95,9 +95,11 @@ $(function() {
 				$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
 				$.ajax({dataType: 'script',
 								type:'GET', 
-								url: '/admin/leaders/' + id
+								url: '/admin/people/' + id
 				 })
 			}
+			$('#person_' + id + '_form').hide();
+			$('#person_' + id + '_info').show();
 			$("#" + dom).dialog({
 				resizable: false,
 				height:300,
@@ -113,12 +115,30 @@ $(function() {
 		}
 	});
 	
+	$('.edit_person_link').live('click', function() {
+		id = $(this).attr('data-id');
+		$('#person_' + id + '_info').hide();
+		$('#person_' + id + '_form').show();
+	  $('#leader_details' + id).dialog('option',{height:520, buttons: {}})
+		return false
+	});
+	
+	$('.cancel_edit_person_link').live('click', function() {
+		id = $(this).attr('data-id');
+	  $('#leader_details' + id).dialog('close');
+		return false
+	});
+	
+	$('#update_person_form').live('ajax:loading', function() {
+		$('#person_' + id + '_form').html('<img src="/images/spinner.gif" />')
+	});
+	// END Leader Info
+	
 	$('td:not(.sidebar) > .leader_cell').live('mouseenter', function() {
 		$('.buttons', this).show();
 	}).live('mouseleave', function() {
 		$('.buttons', this).hide();
 	});
-	// END Leader Info
 	
 	// Edit Leader
 	$("a.edit-leader").live('click', function() {
@@ -175,7 +195,7 @@ $(function() {
 						dataType: 'script', 
 						type: 'POST'
 						});
-		$('#leader_search_results').html('<img src="/images/spinner.gif" />')
+		$('#leader_search_results').html('<img src="/images/spinner.gif" />');
 		return false;
 	});
 	// END Edit Leader
