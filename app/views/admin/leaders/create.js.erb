@@ -1,10 +1,10 @@
 $("#leader_search").dialog('close');
 <% if leader_types.include?params[:leader] %>
-  $("#<%= params[:leader] %>_for_<%= @project.id %>").replaceWith('<%= escape_javascript(render('admin/projects/leader', :project => @project, :leader => params[:leader])) %>');
+  $("#<%= params[:leader] %>_for_<%= @project.id %>").replaceWith('<%= raw escape_javascript(render('admin/projects/leader', :project => @project, :leader => params[:leader])) %>');
   $("#<%= params[:leader] %>_for_<%= @project.id %>").effect("highlight", {}, 2000);
 <% else %>
   if ($('#<%= params[:leader] %>_<%= dom_id(@person) %>')[0] == null) {
-    $('#<%= params[:leader] %>_list').append('<%= escape_javascript(render('admin/projects/staff', :project => @project, :person => @person, :level => params[:leader])) %>')
+    $('#<%= params[:leader] %>_list').append('<%= raw escape_javascript(render('admin/projects/staff', :project => @project, :person => @person, :level => params[:leader])) %>')
     $("#<%= params[:leader] %>_<%= dom_id(@person) %>").effect("highlight", {}, 2000);
   }
 <% end %>

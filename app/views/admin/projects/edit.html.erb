@@ -10,7 +10,7 @@
   
   <div class="projectedit">
     
-    <%= form_for @project, :url => admin_project_path(@project) do |f| %>  
+    <%= form_for @project, :url => admin_project_path(@project), :html => {:multipart => true} do |f| %>  
       <%= render 'form', :f => f %>
     <% end %>
   
