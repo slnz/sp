@@ -262,6 +262,14 @@ button.save span {
   display: block;
   padding: 4px 5px;
 }
+label .inlinetip { display: inline; }
+label .inlinetip img { vertical-align: middle; }
+label .inlinetip .tip {
+  display: inline;
+  background: #fff9dc;
+  padding: 2px 5px;
+  font-weight: normal;
+}
 div.module h3 {
   background: #efefef;
   padding: 6px 10px;

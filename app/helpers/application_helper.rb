@@ -101,10 +101,10 @@ module ApplicationHelper
   end
   
   def tip(t)
-    hide = t.to_s + ' ' + link_to('hide this text', '#', :class => 'hidetip')
+    hide = t.to_s + ' ' + link_to(image_tag("icons/toggle-small.png"), '#', :class => 'hidetip')
     tip = content_tag(:div, raw(hide), :class => 'tip', :style => 'display:none')
-    prompt = link_to('?', '#', :class => 'prompt')
-    div = "<div class=\"inlinetip\"> [ " + prompt + tip + ' ]</div>'
+    prompt = link_to(image_tag("icons/question-small-white.png"), '#', :class => 'prompt')
+    div = "<span class=\"inlinetip\">" + prompt + tip + '</span>'
     raw div
   end
 end

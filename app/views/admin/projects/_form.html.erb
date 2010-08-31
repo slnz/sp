@@ -25,7 +25,7 @@
       
       <div class="field" class="required">
         <%= f.label(:display_location) do 
-          'Location ' + tip('(ie. "Ocean City, NJ", "Middle East", etc.)')
+          'Location: City, State ' + tip('The Google map on the “Explore Projects” page of goSP.com will pull from this location to place an icon in the correct city. If your project is in a secure location, type the location you want students to read, and don’t worry – nothing will show up on the map!')
           end %>
         <%= f.text_field :display_location %>
       </div>
@@ -44,7 +44,9 @@
       </div>
 
       <div class="field select">
-        <%= f.label :primary_ministry_focus_id %>
+        <%= f.label(:primary_ministry_focus_id) do 
+          'Primary ministry focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
+          end %>
         <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
       </div>
       
@@ -63,14 +65,16 @@
       <hr />
       
       <div class="field">
-        <%= f.label :url, 'Website Address' %>
+        <%= f.label(:url) do 
+          'Website Address ' + tip('Such as http://www.gomets.org/summerproject/or http://www.myproject.com/')
+          end %>
         <%= f.text_field :url %>
-        <%= tip('(i.e. www.gomets.org/summerproject/ or http://www.myproject.com)') %>
       </div>
       <div class="field">
-        <%= f.label :url_title, 'Website Title' %>
+        <%= f.label(:url_title) do 
+          'Website Title ' + tip('The actual words of the link they will click on to go to the website enter above – such as “WDW Summer Project website.” Default is "Project specific website."')
+          end %>
         <%= f.text_field :url_title %>
-        <%= tip('(The actual words of the link they will click on to go to the website enter above. Default is "Project specific website")') %>
       </div>
       
       <div class="field">
@@ -96,19 +100,18 @@
       </div>
       
       <div class="field multitext">
-        <%= f.label :max_accepted_men, 'Max Number of Participants' %>
+        <%= f.label(:max_accepted_men) do 
+          'Max Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the “Explore Projects” page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
+          end %>
         <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
         <%= f.text_field :max_accepted_women, :class => 'small' %> women
-        <%= tip("#s won't show up on websites, but % will be highlighted on map, affects if project will show up in list of options") %>
       </div>
       
       <hr />
       
       <div class="field">
         <%= f.label :description, 'Project Description' %>
-        <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
-      </div>
-      <div class="inlinetip">
+        <div class="inlinetip">
         <div id="explain1" class="explanation">
           <b>Remember – students will want to know what it is like to be on your
     			project – help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description.</b><br /><br />
@@ -131,10 +134,15 @@
         </div>
         <span id="readmoreless" rel="explain1">Read More</span>
       </div>
+        
+        <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
+      </div>
+      
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
-            <label>Add student/human quotes</label>
+            <label>Add student/human quotes <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file – email gosummerproject@uscm.org.') %></label>
+            
             <div class="field quote">
               <div>
                 <%#= sqf.check_box :_destroy  %>
@@ -276,7 +284,7 @@
       
     <div class="tabcontent" id="operationsTab">
       <div class="field checkvertical">
-        <label>Gospel in Action</label>
+        <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
         <div class="checkboxes">
         <% SpGospelInAction.all.each do |ga| %>
           <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.include?(ga) %>">
