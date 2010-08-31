@@ -57,18 +57,6 @@
         </div>
       </div>
       
-      <div class="field checkvertical">
-        <label>Gospel in Action</label>
-        <div class="checkboxes">
-        <% SpGospelInAction.all.each do |ga| %>
-          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.include?(ga) %>">
-            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
-            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
-          </div>
-        <% end %>
-        </div>
-      </div>
-      
       <hr />
       
       <div class="field">
@@ -162,8 +150,16 @@
     
       <div class="field">
         <label for="sp_project_picture">Project Picture</label>
-        <%= f.file_field :picture %>
+        <%#= f.file_field :picture %>
         <% if @project.picture_uid.present? %>
+          <div class="picture"><%#= image_tag(@project.picture.thumb('100x100#').url) %></div>
+        <% end %>
+      </div>
+    
+      <div class="field">
+        <label for="sp_project_picture">Project Logo</label>
+        <%#= f.file_field :logo %>
+        <% if @project.logo_uid.present? %>
           <div class="picture"><%#= image_tag(@project.picture.thumb('100x100#').url) %></div>
         <% end %>
       </div>
@@ -191,6 +187,28 @@
     </div>  
     
     <div class="tabcontent" id="contactTab">
+      <div class="field">
+        <label>Contact Info During Project</label>
+        <%= tip('This person must be available in the states to field calls during the project duration') %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_name, "Name" %>
+        <%= f.text_field :project_contact_name %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_role, "Project Role" %>
+        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_phone, "Phone" %>
+        <%= f.text_field :project_contact_phone %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_email, "Email" %>
+        <%= f.text_field :project_contact_email %>
+      </div>
+
+
       <div class="field" class="required">
         <%= f.label :city %>
         <%= f.text_field :city %>
@@ -204,7 +222,7 @@
         <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
       </div>
       <div class="field" class="required">
-        <%= f.label :aoa %>
+        <%= f.label :aoa, 'Region of the world' %>
         <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
       <div class="multifield">
@@ -219,7 +237,7 @@
         <div class="clear"></div>
       </div>
       <hr />
-      <h3>Travel Information (WSN Only)</h3>
+      <h3>Travel Information (International Only)</h3>
       <div class="multifield">
         <div class="field">
           <%= f.label :departure_city, 'US City you are Departing From' %>
@@ -248,33 +266,22 @@
         <%= tip('Name and Contact Info') %>
       </div>
       
-      <hr />
-      <h3>Other Information</h3>
-      <div class="field">
-        <label>Contact Info During Project</label>
-        <%= tip('This person must be available in the states to field calls during the project duration') %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_name, "Name" %>
-        <%= f.text_field :project_contact_name %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_role, "Project Role" %>
-        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_phone, "Phone" %>
-        <%= f.text_field :project_contact_phone %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_email, "Email" %>
-        <%= f.text_field :project_contact_email %>
-      </div>
       <button class="save"><span>Save</span></button>
     
     </div>
-    
+      
     <div class="tabcontent" id="operationsTab">
+      <div class="field checkvertical">
+        <label>Gospel in Action</label>
+        <div class="checkboxes">
+        <% SpGospelInAction.all.each do |ga| %>
+          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.include?(ga) %>">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
+          </div>
+        <% end %>
+        </div>
+      </div>
       <div class="field" class="required">
         <%= f.label :primary_partner %>
         <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
