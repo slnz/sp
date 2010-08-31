@@ -19,11 +19,11 @@ gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
 # gem 'paperclip'
-gem 'memcache-client'
+#gem 'memcache-client'
 
-gem 'rmagick',    :require => 'RMagick'
-gem 'rack-cache', :require => 'rack/cache'
-gem 'dragonfly', '~>0.7.4'
+#gem 'rmagick',  '2.12.0',  :require => 'RMagick'
+#gem 'rack-cache', :require => 'rack/cache'
+#gem 'dragonfly', '~>0.7.4'
 
 # gem 'vestal_versions'
 # To use debugger
