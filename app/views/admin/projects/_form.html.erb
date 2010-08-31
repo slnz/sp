@@ -24,9 +24,10 @@
       </div>
       
       <div class="field" class="required">
-        <%= f.label :display_location, 'Location' %>
+        <%= f.label(:display_location) do 
+          'Location ' + tip('(ie. "Ocean City, NJ", "Middle East", etc.)')
+          end %>
         <%= f.text_field :display_location %>
-        <%= tip('(ie. "Ocean City, NJ", "Middle East", etc.)') %>
       </div>
       
       <div class="multifield">

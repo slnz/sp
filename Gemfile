@@ -19,7 +19,7 @@ gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
 # gem 'paperclip'
-#gem 'memcache-client'
+gem 'memcache-client'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
 #gem 'rack-cache', :require => 'rack/cache'
