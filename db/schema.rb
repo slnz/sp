@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100827183806) do
+ActiveRecord::Schema.define(:version => 20100831164853) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4002,13 +4002,11 @@ ActiveRecord::Schema.define(:version => 20100827183806) do
     t.string   "tertiary_partner"
     t.date     "staff_start_date"
     t.date     "staff_end_date"
-    t.string   "facebook_url"
-    t.string   "picture_file_name"
-    t.string   "picture_content_type"
-    t.integer  "picture_file_size"
-    t.datetime "picture_updated_at"
     t.string   "blog_url"
     t.string   "blog_title"
+    t.string   "facebook_url"
+    t.string   "picture_uid"
+    t.string   "logo_uid"
   end
 
   add_index "sp_projects", ["name"], :name => "sp_projects_name_index", :unique => true

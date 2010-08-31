@@ -1,4 +1,0 @@
-page << <<-END
-  $('#projects').html('#{escape_javascript(render('projects'))}')
-  $('#pagination').html('#{escape_javascript(render('pagination'))}')
-END
