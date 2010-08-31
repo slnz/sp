@@ -23,6 +23,15 @@ img {border: none;}
 h1, h2, h3, h4, h5, h6 {font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica;}
 h1 {font-size: 26px;margin: .5em 0;}
 
+h3.critical {
+  border-color:orange -moz-use-text-color;
+  border-style:solid none;
+  border-width:1px medium;
+  color:orange;
+  margin-top:25px;
+  padding:10px 0;
+}
+
 /* Global */
 #global {
   background: @white;
@@ -350,23 +359,23 @@ button.save span {
 
 
 /* Tips */
-label .inlinetip {
-  display: inline;
-}
-
-label .inlinetip img {
-  vertical-align: middle;
+label, h3 {
+  .inlinetip {
+    font-family: Arial, Verdana;
+    font-size: 11px;
+    font-weight: normal;
+    display: inline;
   }
-
-/* label .inlinetip a.prompt {
-  -moz-border-radius:4px 4px 4px 4px;
-  background:none repeat scroll 0 0 yellow;
-  border:1px solid orange;
-  display:inline;
-  padding:0 3px;
-} */
-
-label .inlinetip .tip {display: inline; background: #FFF9DC; padding:2px 5px; font-weight: normal;}
+  .inlinetip img {
+    vertical-align: middle;
+  }
+  .inlinetip .tip {
+    display: inline; 
+    background: #FFF9DC; 
+    padding:2px 5px; 
+    font-weight: normal;
+  }
+}
 
 
 /* right side column */

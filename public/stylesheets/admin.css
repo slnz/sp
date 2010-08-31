@@ -29,6 +29,14 @@ h1 {
   font-size: 26px;
   margin: 0.5em 0;
 }
+h3.critical {
+  border-color: orange -moz-use-text-color;
+  border-style: solid none;
+  border-width: 1px medium;
+  color: orange;
+  margin-top: 25px;
+  padding: 10px 0;
+}
 #global { background: #ffffff; }
 #global #menu {
   height: 60px;
@@ -262,9 +270,27 @@ button.save span {
   display: block;
   padding: 4px 5px;
 }
-label .inlinetip { display: inline; }
+label .inlinetip {
+  font-family: Arial, Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  display: inline;
+}
 label .inlinetip img { vertical-align: middle; }
 label .inlinetip .tip {
+  display: inline;
+  background: #fff9dc;
+  padding: 2px 5px;
+  font-weight: normal;
+}
+h3 .inlinetip {
+  font-family: Arial, Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  display: inline;
+}
+h3 .inlinetip img { vertical-align: middle; }
+h3 .inlinetip .tip {
   display: inline;
   background: #fff9dc;
   padding: 2px 5px;
