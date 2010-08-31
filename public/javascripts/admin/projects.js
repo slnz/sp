@@ -108,6 +108,11 @@ $(function() {
 				buttons: {
 					Close: function() {
 						$(this).dialog('close');
+					},
+					'Edit information': function() {
+						$('#person_' + id + '_info').hide();
+						$('#person_' + id + '_form').show();
+					  $('#leader_details' + id).dialog('option',{height:520, buttons: {}})
 					}
 				}
 			});
@@ -115,13 +120,10 @@ $(function() {
 		}
 	});
 	
-	$('.edit_person_link').live('click', function() {
-		id = $(this).attr('data-id');
-		$('#person_' + id + '_info').hide();
-		$('#person_' + id + '_form').show();
-	  $('#leader_details' + id).dialog('option',{height:520, buttons: {}})
-		return false
-	});
+	// $('.edit_person_link').live('click', function() {
+	// 
+	// 	return false
+	// });
 	
 	$('.cancel_edit_person_link').live('click', function() {
 		id = $(this).attr('data-id');
