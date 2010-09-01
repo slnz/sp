@@ -137,7 +137,7 @@ DEPENDENCIES
   memcache-client
   mysql
   paperclip
-  rails (= 3.0.0.rc)
+  rails (~> 3.0.0)
   responds_to_parent
   ruby-oci8
   tiny_mce
