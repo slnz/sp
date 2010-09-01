@@ -1,0 +1,83 @@
+
+      <div class="field">
+        <h3>Contact person during project <%= tip('These people must be available in the United States to field calls during the project duration. Preferably, for US projects include a project director and a regional/ministry project coordinator that is not at the project location. For international projects, include a regional/ministry project coordinator and a secondary, non-family related, other regional/ministry staff. The second contact person would be important if the main person could not always be available. This is especially important for projects into secure areas.') %></h3>
+        
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_name, "Name" %>
+        <%= f.text_field :project_contact_name %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_role, "Project Role" %>
+        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_phone, "Phone" %>
+        <%= f.text_field :project_contact_phone %>
+      </div>
+      <div class="field">
+        <%= f.label :project_contact_email, "Email" %>
+        <%= f.text_field :project_contact_email %>
+      </div>
+
+      <h3 class="critical">In case of an emergency on a summer project – call 888-899-9292 or 407-380-8665. <%= tip('It is advisable that you program these numbers in your cell phone before your project begins. If you are going overseas, use the 407 number. This is a secure number, answered by “LH Communications,” safe for calling from secure countries.') %></h3>
+
+      <h3>Project Location</h3>
+      <div class="field" class="required">
+        <%= f.label :city %>
+        <%= f.text_field :city %>
+      </div>
+      <div class="field">
+        <%= f.label :state %>
+        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :country %>
+        <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :aoa, 'Region of the world' %>
+        <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
+      </div>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :staff_start_date %>
+          <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date %>
+          <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <hr />
+      <h3>Travel Information (International Only)</h3>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :departure_city, 'US City you are Departing From' %>
+          <%= f.text_field :departure_city %>
+        </div>
+        <div class="field">
+          <%= f.label :destination_city, "Int'l City you are Flying To" %>
+          <%= f.text_field :destination_city %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :date_of_departure, 'Date of Departure from the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_departure]', @project.date_of_departure %>
+        </div>
+        <div class="field">
+          <%= f.label :date_of_return, 'Date of Arrival in the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_return]', @project.date_of_return %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="field">
+        <%= f.label :in_country_contact %>
+        <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
+        <%= tip('Name, relationship to project, phone number(s), email, address') %>
+      </div>
+      
+      <button class="save"><span>Save</span></button>

@@ -29,6 +29,14 @@ h1 {
   font-size: 26px;
   margin: 0.5em 0;
 }
+h3.critical {
+  border-color: orange -moz-use-text-color;
+  border-style: solid none;
+  border-width: 1px medium;
+  color: orange;
+  margin-top: 25px;
+  padding: 10px 0;
+}
 #global { background: #ffffff; }
 #global #menu {
   height: 60px;
@@ -261,6 +269,32 @@ button.save span {
   color: #0b486b;
   display: block;
   padding: 4px 5px;
+}
+label .inlinetip {
+  font-family: Arial, Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  display: inline;
+}
+label .inlinetip img { vertical-align: middle; }
+label .inlinetip .tip {
+  display: inline;
+  background: #fff9dc;
+  padding: 2px 5px;
+  font-weight: normal;
+}
+h3 .inlinetip {
+  font-family: Arial, Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  display: inline;
+}
+h3 .inlinetip img { vertical-align: middle; }
+h3 .inlinetip .tip {
+  display: inline;
+  background: #fff9dc;
+  padding: 2px 5px;
+  font-weight: normal;
 }
 div.module h3 {
   background: #efefef;
@@ -741,3 +775,19 @@ table.people .name { width: 23%; }
 }
 .ui-widget-content a { color: #0b486b; }
 .ui-widget-content a:hover { text-decoration: underline; }
+a.edit_person_link {
+  background: url("/images/icons/pencil-smaller.png") no-repeat scroll 0 50% transparent;
+  display: block;
+  font-size: 12px;
+  margin-top: 20px;
+  padding-left: 23px;
+}
+a.AddNewPerson {
+  background: url("/images/plus.png") no-repeat scroll 0 50% #e9f7ff;
+  display: block;
+  font-family: Arial;
+  font-weight: normal;
+  height: 36px;
+  padding-left: 43px;
+  padding-top: 1px;
+}

@@ -1,3 +1,0 @@
-page << <<-END
-  $('#leader_details#{@person.id}').html('#{escape_javascript(render('person', :person => @person))}')
-END

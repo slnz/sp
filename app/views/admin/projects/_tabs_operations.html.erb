@@ -1,0 +1,85 @@
+      <div class="field checkvertical">
+        <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
+        <div class="checkboxes">
+        <% SpGospelInAction.all.each do |ga| %>
+          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.include?(ga) %>">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
+          </div>
+        <% end %>
+        </div>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :primary_partner %>
+        <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
+      </div>
+      <div class="field">
+        <%= f.label :secondary_partner %>
+        <%= partnership_select(:project, :secondary_partner, [:regions, :ministries]) %>
+      </div>
+      <div class="field">
+        <%= f.label :tertiary_partner %>
+        <%= partnership_select(:project, :tertiary_partner, [:regions, :ministries]) %>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :report_stats_to, 'Report evangelism stats to' %>
+        <%= f.select(:report_stats_to, ['Campus Ministry - US summer project','Campus Ministry - WSN summer project','Other CCC ministry'], { :include_blank => true }) %>
+      </div>
+      <div class="field">
+        <%= f.label :staff_cost %>
+        <%= f.text_field :staff_cost %>
+      </div>
+      <div class="field">
+        <%= f.label :intern_cost %>
+        <%= f.text_field :intern_cost %>
+      </div>
+      
+      <hr />
+      <h3>Operating Account Information <%= tip('If you are unsure of your chartfields and are part of a campus ministry region of CCC, click here (link to <a href="http://wiki.uscm.org/display/CMF/CM+Finance+Professionals">http://wiki.uscm.org/display/CMF/CM+Finance+Professionals</a>) to find who is your regional Financial Professional to help you with the chartfields.') %></h3>
+      
+      <div class="field">
+        <%= f.label :operating_business_unit, 'Business Unit' %>
+        <%= f.text_field :operating_business_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_operating_unit, 'Operating Unit' %>
+        <%= f.text_field :operating_operating_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_department, 'Department ID' %>
+        <%= f.text_field :operating_department %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_project, 'Project ID' %>
+        <%= f.text_field :operating_project %>
+      </div>
+      <div class="field">
+        <%= f.label :operating_designation, 'Operating Designation' %>
+        <%= f.text_field :operating_designation %>
+      </div>
+      
+      <hr />
+      <h3>Scholarship Account Information</h3>
+    
+      <div class="field">
+        <%= f.label :scholarship_business_unit, 'Business Unit' %>
+        <%= f.text_field :scholarship_business_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_operating_unit, 'Operating Unit' %>
+        <%= f.text_field :scholarship_operating_unit %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_department, 'Department ID' %>
+        <%= f.text_field :scholarship_department %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_project, 'Project ID' %>
+        <%= f.text_field :scholarship_project %>
+      </div>
+      <div class="field">
+        <%= f.label :scholarship_designation, 'Operating Designation' %>
+        <%= f.text_field :scholarship_designation %>
+      </div>
+      <button class="save"><span>Save</span></button>
+    

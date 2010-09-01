@@ -6,13 +6,32 @@
     <div class="flash error"><%= raw flash[:error] %></div>
   <% end %>
   <label for="leader_search_name">All of the following fields are required to add a person:</label>
+  
+  
   <%= fields_for @person do |pf| %>
-    First Name: <%= pf.text_field :firstName %><br/>
-    Last Name: <%= pf.text_field :lastName %><br/>
-    <%= pf.fields_for @person.current_address do |af| %>
-      Email: <%= af.text_field :email %><br/>
-      Phone: <%= af.text_field :homePhone %><br/>
-    <% end %>
+  <style>.modal_person_info td.left {width: 82px;}</style>
+  <table border="0" cellspacing="0" cellpadding="0" class="modal_person_info">
+  <tr>
+    <td class="left">First Name:</td>
+    <td><%= pf.text_field :firstName %></td>
+  </tr>
+  <tr>
+    <td class="left">Last Name:</td>
+    <td><%= pf.text_field :lastName %></td>
+  </tr>
+  <%= pf.fields_for @person.current_address do |af| %>
+  <tr>
+    <td class="left">Email:</td>
+    <td><%= af.text_field :email %></td>
+  </tr>
+  <tr>
+    <td class="left">Phone:</td>
+    <td><%= af.text_field :homePhone %></td>
+  </tr>
   <% end %>
+  </table>
+  <% end %>
+    
+  
   <%= submit_tag "Add", :disable_with => "Adding..." %>
 <% end %>
