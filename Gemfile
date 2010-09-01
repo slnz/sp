@@ -21,6 +21,7 @@ gem 'dynamic_form'
 # gem 'paperclip'
 gem 'memcache-client'
 
+gem 'RedCloth'
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
 #gem 'rack-cache', :require => 'rack/cache'
 #gem 'dragonfly', '~>0.7.4'

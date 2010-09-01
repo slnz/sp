@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    RedCloth (4.2.3)
     abstract (1.0.0)
     actionmailer (3.0.0.rc)
       actionpack (= 3.0.0.rc)
@@ -120,6 +121,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  RedCloth
   activerecord-oracle_enhanced-adapter
   acts_as_list
   acts_as_state_machine
@@ -133,7 +135,6 @@ DEPENDENCIES
   less
   memcache-client
   mysql
-  paperclip
   rails (~> 3.0.0)
   responds_to_parent
   ruby-oci8
