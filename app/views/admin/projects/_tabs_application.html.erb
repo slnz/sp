@@ -1,0 +1,142 @@
+      <h3>Basic information <%= tip('This includes name, address, contact information, emergency contact information, etc. The international version asks additional questions related to passport information.] (automatically populate US or international, but make it editable') %></h3>
+        * US basic information (these are check boxes)
+        * International basic information 
+      
+      <h3>Application questions <%= tip('Choose the template that best matches your type of project. While most questions are the same, there are variations based on different types of projects. If there is a need to create a new template – email gosummerproject@uscm.org') %> </h3>
+        
+        <p>US</p>
+        <blockquote>
+            * 1-3 week US (these are check boxes. Could the US/International templates be viewed side by side/"2 columns" instead of in a huge long list? Or what if only US templates show up if they have checked off "US Basic Info"?)
+            * 4-11 week US
+            * HLIC - US
+            * Emergency relief – US Keynote
+        </blockquote>
+        
+        
+        <p>International</p>
+        <blockquote>
+            * 1-3 week WSN
+            * Traditional WSN
+            * Secure location WSN
+            * HLIC - US
+            * Emergency relief – US 
+        </blockquote>
+        <p>(more templates I need to get you) </p>
+      
+      <h3>Customizable project-specific questions <%= tip('You can write up to five questions that relate only to your project. Contact your summer project coordinator to add the questions. If you do not know who your SPC is – click here.') %></h3>
+
+       1. Question (fields only viewable by RCs and NCs)
+       2. Question
+       3. Question
+       4. Question
+       5. Question 
+    
+      <div class="field">
+        <label>References <%= tip('Choose which references, and the quantity, that you require for each student. “Lite” refers to a shortened version.') %></label>
+        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
+      </div>
+    
+      
+      <h3>Risk Management forms <%= tip('All participants on Campus Crusade for Christ summer mission projects are required to fill out a risk management form. Choose which form best suits your project. If you have questions, email Debbie.Brown@uscm.org. A link to the form will appear in the application.') %></h3>
+      
+      <div class="field checkvertical">  
+        <label>For US summer mission projects:</label>
+        <div class="checkboxes">
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">Recreational Liability form <%= tip('For EVERY non-CCC staff participant. This is for basic coverage during the project, including risk associated with travel and destruction of personal property. This also covers sports tournaments and regular physical activity.') %></label>
+          </div>
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">Work Project Liability Release form <%= tip('Only a handful of projects need to have students fill this out! This is for coverage during project including relief work, construction, or extensive building projects, or any activity involving physical labor beyond normal activity - including any handling of chemicals or work in a location suspected or known to contain hazardous materials or fumes (including asbestos). An example would be Katrina relief.') %></label>
+          </div>
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">Minor Medical History and Consent Form <%= tip('Only choose this if you will have minors, under the age of 18, on your project.') %></label>
+          </div>
+        </div>
+       </div>
+        
+       <div class="field checkvertical">   
+        <label>For international mission projects: </label>
+        <div class="checkboxes">
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">SOS Enrollment Form <%= tip('For EVERY non-CCC staff participant. This is for required emergency medical assistance.') %></label>
+          </div>
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">International Liability Release Form </label>
+          </div>
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">Statement of Policies Form for Adults (over 18) </label>
+          </div>
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">Statement of Policies Form for Minors (under 18) <%= tip('Only choose this if you will have minors, under the age of 18, on your project.') %></label>
+          </div>
+          <div class="">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_6" value="6" >
+            <label for="sp_project_gospel_in_action_ids_6">Minor Medical History and Consent Form <%= tip('Only choose this if you will have minors, under the age of 18, on your project.') %> </label>
+          </div>
+        </div>
+       </div> 
+
+      
+      
+      
+      (Can we create some way for the Project List to be generated/accessed by RM? They want:
+        1. Project name (including location)
+        2. Project chart field to charge insurance to
+        3. List of project participates
+        4. Project start and end dates
+        5. Project directors contact name and phone number) 
+    
+    
+    
+      
+
+      <div class="field">
+        <label>Upload portfolio or audition <%= tip('If your project requires a student to upload a ---file or --- file in order to be accepted on the project, check this option.') %></label>
+        <input type="checkbox" /> Check to include option for students to upload files
+      </div>
+          
+      
+      
+      <div class="field">
+        <label>Background check form – for projects that focus on childcare</label>
+        <input type="checkbox" /> Check to include form in application (I'm still waiting for Debbie to clarify which form this is - it's probably a pdf)
+      </div>
+
+      <div class="field">      
+        <label>The required fields are:</label>
+          <div class="field"><input type="radio" name="field1"> Yes <input type="radio" name="field1"> No - Are you using the USCM summer project online application we provide?</div>
+          <div class="field"><input type="radio" name="field1"> Yes <input type="radio" name="field1"> No - Accept students from partner region/ministry(s) only</div>
+          <div class="field"><input type="radio" name="field1"> Yes <input type="radio" name="field1"> No - Date Students Must Apply By</div>
+          (I want to make all except the last 2 questions required if a director chooses "Yes" to the first question about using the USCM app... but I'm not sure if this would cause an issue for a few projects)...
+      </div>
+    
+    
+    
+    
+    
+    
+    
+    
+      <div class="field">
+        <%= f.label :partner_region_only, 'Accept from Partner Region(s) Only' %>
+        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
+      </div>
+      <div class="field">
+        <%= f.label :use_provided_application, 'Are you using the USCM Summer Project Online Application we provide?' %>
+        <%= f.select :use_provided_application, [['No',false],['Yes',true]] %>
+      </div>
+      <div class="field" class="required">
+        <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
+        <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
+      </div>
+      <button class="save"><span>Save</span></button>
+    
+
+    
