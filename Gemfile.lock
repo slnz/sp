@@ -118,6 +118,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   activerecord-oracle_enhanced-adapter
@@ -133,7 +134,6 @@ DEPENDENCIES
   less
   memcache-client
   mysql
-  paperclip
   rails (~> 3.0.0)
   responds_to_parent
   ruby-oci8
