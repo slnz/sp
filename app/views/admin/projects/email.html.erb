@@ -1,0 +1,30 @@
+<div class="pagepad">
+  <div id="breadcrumb">
+    <ul>
+      <li><%= link_to('Projects', admin_projects_path) %></li>
+      <li class="last"><%= @project.name %></li>
+    </ul>
+  </div>
+  
+  <%= render :partial => 'context_menu' %>
+
+  
+  <div class="projectedit">
+  
+    <div class="left">
+
+
+
+    </div><!-- left -->  
+  
+  
+    <%= render 'leadership_sidebar', :project => @project %>
+  
+  
+  </div>
+  
+  <div class="projectfooter">
+    <div class="clear"></div>
+  </div>
+
+</div>

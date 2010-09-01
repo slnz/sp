@@ -5,7 +5,8 @@ class Admin::ProjectsController < ApplicationController
                              :theme_advanced_buttons3 => "",
                              :theme_advanced_toolbar_location => "top",
                              :theme_advanced_toolbar_align => "left"}
-  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show]
+  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email]
+  before_filter :get_year, :only => [:show, :email]
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
   respond_to :html, :js
   
@@ -54,7 +55,6 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def show
-    @year = params[:year].present? ? params[:year] : SpApplication::YEAR
     applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
     @accepted_participants = applications.accepted_participants.for_year(@year)
     @accepted_interns = applications.accepted_interns.for_year(@year)
@@ -95,6 +95,13 @@ class Admin::ProjectsController < ApplicationController
     end
   end
   
+  def email
+    
+  end
+  
+  def send_email
+    
+  end
   protected 
   def get_project
     @project = SpProject.find(params[:id])
@@ -131,5 +138,9 @@ class Admin::ProjectsController < ApplicationController
 
   def get_countries
     @countries = Country.find(:all, :order => :country)
+  end
+  
+  def get_year
+    @year = params[:year].present? ? params[:year] : SpApplication::YEAR
   end
 end

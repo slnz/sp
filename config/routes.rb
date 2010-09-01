@@ -44,8 +44,8 @@ Sp2::Application.routes.draw do
     resources :people
     resources :projects do
       member do
-        post :close
-        post :open
+        post :close, :open, :send_email
+        get :email
       end
     end
     resources :applications 
