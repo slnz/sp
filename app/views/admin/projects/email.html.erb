@@ -11,16 +11,72 @@
   
   <div class="projectedit">
   
-    <div class="left">
+    <div class="emailwrap compose">
+
+      <!-- Compose Email -->
+      <div class="backbutton">
+        <%= link_to('Back to project', '') %>
+      </div>            
+      <form action="/projects/370/send_team_email" enctype="multipart/form-data" method="post" onsubmit="return validate()">
+        
+        <div class="field">
+          <label>From</label>
+          <div class="fieldinput"><input name="from" size="70" type="text" value="Josh.Starcher@gmail.com" class="frombox">&nbsp;&nbsp; A copy of the email will be sent to this address.</div>
+        </div>        
+        
+        <div class="field">
+          <label>To:</label>
+          <div class="fieldinput">
+            <select id="group" name="group">
+              <option value="team">Staff/Interns + Accepted Students (Team)</option>
+              <option value="all_applicants">All Applicants (except withdrawn/denied)</option>
+              <option value="all_accepted">All Accepted Students</option>
+              <option value="accepted_men">Accepted Men</option>
+              <option value="accepted_women">Accepted Women</option>
+              <option value="pending_students">Pending Students</option>
+              <option value="staff_and_interns">All Staff and Interns</option>
+              <option value="men_staff_and_interns">Men Staff and Interns</option>
+              <option value="women_staff_and_interns">Women Staff and Interns</option>
+            </select>
+            <textarea name="to" type="text" cols="70" rows="3" wrap="virtual" class="addresses">Dan Rossdeutscher <rossdd27@uwosh.edu>, Katie Lewandowski <lewan058@umn.edu>, Lauren Morris <LMorris12@cornellcollege.edu>, Lacie Adelmann <adla0701@stcloudstate.edu>, Claire Schuerman <havinfunintheson@gmail.com>, Blake Struve <blake-struve@uiowa.edu>, Emily  Polster <polsteem@uwec.edu>, Stacee Gonia <gonias22@uwosh.edu>, Kali Shephard <Kali.Shephard@und.nodak.edu>, Matt Cline <mrcline@iastate.edu>, Corinne Haase <chaase2@wisc.edu></textarea>
+            
+
+          </div>
+        </div>
+        
+        <div class="field">
+          <label>Subject</label>
+          <div class="fieldinput"><input name="subject" size="70" value="" type="text"></div>
+        </div>
+        
+        
+        
+        <textarea name="body" cols="100" style="width: 100%;" rows="18" wrap="virtual" class="mceEditor"></textarea>
+        
+        
+        
+        <div class="field">
+          <label><%= image_tag('attach.png') %></label>
+          <div class="fieldinput" style="padding-top: 8px;">
+            
+            <input id="file_0" name="file[0]" type="file" />  <%= link_to(image_tag('icons/plus-button.png') + ' Add another attachment', '') %><br/>
+            
+          </div>
+        </div>
+        
+        
+        <div class="clear"></div>
+        
+        <button value="Send Email" class="save" /><span>Send Email</span></button>
+      </form>
+
+
 
 
 
     </div><!-- left -->  
   
-  
-    <%= render 'leadership_sidebar', :project => @project %>
-  
-  
+
   </div>
   
   <div class="projectfooter">
