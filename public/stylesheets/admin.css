@@ -75,6 +75,7 @@ h3.critical {
   background-image: url('/images/buttonbg_search.png');
   padding-left: 31px;
 }
+#primary { padding: 0 25px 0 35px; }
 #primary .pagewidth {
   margin-top: 1.5em;
   background: #ffffff;
@@ -141,7 +142,7 @@ h3.critical {
   border-left: 1px solid #efefef;
   padding-left: 13px;
   margin-left: 13px;
-  min-height: 1200px;
+  padding-bottom: 60px;
 }
 .projectedit .checkboxes {
   max-height: 190px;
@@ -387,7 +388,7 @@ span.controls {
   padding: 0;
   -moz-border-radius: 0;
 }
-.tabcontent hr {
+hr {
   border: 0px;
   border-top: 1px solid #efefef;
   margin: 1.5em 0;
@@ -720,6 +721,7 @@ table.people th.sort_down {
 table.people td { border-bottom: 1px solid #efefef; }
 table.people td a { color: #0b486b; }
 table.people .name { width: 23%; }
+table.people .evaluate img { vertical-align: bottom; }
 .ui-dialog {
   font-family: Arial;
   -moz-box-shadow: 0px 0px 10px #555555;
