@@ -1,4 +1,5 @@
 class Admin::PeopleController < ApplicationController
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
   before_filter :get_person, :only => [:edit, :destroy, :update, :show]
   respond_to :html, :js
   def show

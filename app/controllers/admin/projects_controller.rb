@@ -1,5 +1,5 @@
 class Admin::ProjectsController < ApplicationController
-  skip_before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :only => :threads
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :except => :threads
   uses_tiny_mce :options => {:theme => 'advanced',
                              :theme_advanced_buttons1 => "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink",
                              :theme_advanced_buttons2 => "",

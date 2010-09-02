@@ -59,7 +59,7 @@ end
 desc "Restart the web server"
 deploy.task :restart, :roles => :app do
   # run "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin stop -f -C /etc/thin/sp.int.yml && thin start -C /etc/thin/sp.int.yml"
-  sudo "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin restart --pid #{shared_path}/tmp/pids/thin.pid"
+  # sudo "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin restart --pid #{shared_path}/tmp/pids/thin.pid"
 end  
 
 # =============================================================================
