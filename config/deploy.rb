@@ -25,11 +25,11 @@ set :keep_releases, '3'
 # what the purpose of each machine is. You can also specify options that can
 # be used to single out a specific subset of boxes in a particular role, like
 # :primary => true.
-set :target, ENV['target'] || ENV['TARGET'] || 'dev'
+# set :target, ENV['target'] || ENV['TARGET'] || 'dev'
 default_run_options[:pty] = true
 set :scm, "git"
-case target
-when 'dev'
+
+task :staging do
   role :app, "hart-w025.uscm.org"
   role :db, "hart-w025.uscm.org", :primary => true
   set :environment, 'development'
@@ -37,7 +37,9 @@ when 'dev'
   set :user, 'deploy'
   set :password, 'alt60m'
   set :rails_env, 'development'
-when 'prod'
+end
+  
+task :production do
   role :app, "hart-w025.uscm.org."
   role :app, "hart-w040.uscm.org."
   set :environment, 'production'
@@ -45,18 +47,19 @@ when 'prod'
   set :user, 'deploy'
   set :password, 'alt60m'
   set :rails_env, 'production'
+end
   # set :deploy_via, :copy
 # set :copy_cache, true
 # set :copy_exclude, [".git","coverage"]
 
 # set :scm_passphrase, "p@ssw0rd" #This is your custom users password
 
-end
 
 # define the restart task
 desc "Restart the web server"
 deploy.task :restart, :roles => :app do
-  run "touch #{deploy_to}/current/tmp/restart.txt"
+  # run "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin stop -f -C /etc/thin/sp.int.yml && thin start -C /etc/thin/sp.int.yml"
+  sudo "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin restart --pid #{shared_path}/tmp/pids/thin.pid"
 end  
 
 # =============================================================================
@@ -91,9 +94,8 @@ desc "Add linked files after deploy and set permissions"
 task :local_changes, :roles => :app do
   run <<-CMD
     ln -s #{shared_path}/bundle #{release_path}/vendor/bundle &&
-    LD_LIBRARY_PATH=/usr/lib/oracle/10.2.0.4/client/lib/ &&
-    export LD_LIBRARY_PATH &&
-    cd #{release_path} && /opt/ruby/bin/bundle install --deployment &&
+    export LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 &&
+    cd #{release_path} && bundle install --deployment &&
     ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml &&
     
     mkdir -p -m 770 #{shared_path}/tmp/{cache,sessions,sockets,pids} &&
