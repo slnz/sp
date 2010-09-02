@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 3.0.0'
 
-gem 'mysql'
+# gem 'mysql2'
 
 # Deploy with Capistrano
 gem 'capistrano'
@@ -22,6 +22,20 @@ gem 'dynamic_form'
 gem 'memcache-client'
 
 gem 'RedCloth'
+
+gem 'eventmachine'#,     :git => 'git://github.com/eventmachine/eventmachine.git'
+gem 'rack-fiber_pool',  :require => 'rack/fiber_pool'
+gem 'em-synchrony',     :git => 'git://github.com/igrigorik/em-synchrony.git', :require => [
+  'em-synchrony',
+  'em-synchrony/em-http'
+  ]
+  
+# async activerecord requires
+gem 'mysqlplus',      :git => 'git://github.com/oldmoe/mysqlplus.git',        :require => 'mysqlplus'
+gem 'em-mysqlplus',   :git => 'git://github.com/igrigorik/em-mysqlplus.git',  :require => 'em-activerecord'
+
+gem 'em-http-request',:git => 'git://github.com/igrigorik/em-http-request.git', :require => 'em-http'
+gem 'addressable', :require => 'addressable/uri'
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
 #gem 'rack-cache', :require => 'rack/cache'
 #gem 'dragonfly', '~>0.7.4'
@@ -39,8 +53,8 @@ gem 'google-geocode', :require => 'google_geocode'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development do
-  gem 'bullet', '~> 2.0.0.rc1'
+  # gem 'bullet', '~> 2.0.0.rc1'
 end
-
+# 
 gem 'activerecord-oracle_enhanced-adapter'
 gem 'ruby-oci8'

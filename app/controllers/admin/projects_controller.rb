@@ -96,12 +96,17 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def email
-    
+  end
+  
+  def threads
+     ActiveRecord::Base.connection.select_all("select sleep(1)")
+    render :text => "Oh hai"
   end
   
   def send_email
     
   end
+  
   protected 
   def get_project
     @project = SpProject.find(params[:id])

@@ -1,6 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-# Sp2::Application.config.session_store :cookie_store, :key => '_sp2_session'
+#Sp2::Application.config.session_store :cookie_store, :key => '_sp2_session'
 Sp2::Application.config.session_store :mem_cache_store, :key => '_sp2_session'
 
 # Use the database for sessions instead of the cookie-based default,

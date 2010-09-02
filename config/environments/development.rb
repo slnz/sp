@@ -23,7 +23,9 @@ Sp2::Application.configure do
   config.active_support.deprecation = :log
 
   config.after_initialize do
-    Bullet.enable = false
-    Bullet.bullet_logger = true
+    # Bullet.enable = false
+    # Bullet.bullet_logger = true
   end
+  
+  # config.threadsafe!
 end

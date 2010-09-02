@@ -1,3 +1,4 @@
+<%# encoding: utf-8 %>
       <p>
         The fields on this page are directly linked to the gosummerproject.com website. 
         <br/>
@@ -12,7 +13,7 @@
       
       <div class="field" class="required">
         <%= f.label(:display_location) do 
-          'Location: City, State ' + tip('The Google map on the “Explore Projects” page of goSP.com will pull from this location to place an icon in the correct city. If your project is in a secure location, type the location you want students to read, and don’t worry – nothing will show up on the map!')
+          'Location: City, State ' + tip('The Google map on the \'Explore Projects\' page of goSP.com will pull from this location to place an icon in the correct city. If your project is in a secure location, type the location you want students to read, and don\'t worry  nothing will show up on the map!')
           end %>
         <%= f.text_field :display_location %>
       </div>
@@ -49,6 +50,18 @@
         </div>
       </div>
       
+      <div class="field checkvertical">
+        <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
+        <div class="checkboxes">
+        <% SpGospelInAction.all.each do |ga| %>
+          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.include?(ga) %>">
+            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
+          </div>
+        <% end %>
+        </div>
+      </div>
+      
       <hr />
       
       <div class="field">
@@ -59,7 +72,7 @@
       </div>
       <div class="field">
         <%= f.label(:url_title) do 
-          'Website Title ' + tip('The actual words of the link they will click on to go to the website enter above – such as “WDW Summer Project website.” Default is "Project specific website."')
+          'Website Title ' + tip('The actual words of the link they will click on to go to the website enter above  such as \'WDW Summer Project website.\' Default is "Project specific website."')
           end %>
         <%= f.text_field :url_title %>
       </div>
@@ -88,7 +101,7 @@
       
       <div class="field multitext">
         <%= f.label(:max_accepted_men) do 
-          'Max Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the “Explore Projects” page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
+          'Max Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the \'Explore Projects\' page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
           end %>
         <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
         <%= f.text_field :max_accepted_women, :class => 'small' %> women
@@ -99,36 +112,36 @@
       <div class="field">
         <%= f.label :description, 'Project Description' %>
         <div class="inlinetip">
-        <div id="explain1" class="explanation">
-          <b>Remember – students will want to know what it is like to be on your
-    			project – help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description.</b><br /><br />
-    			<b><u>Things to include in your desciption:</u></b><br>
-    			<ul><li>Introduce the project and build vision.</li></ul>
-    			<span class="sub">Daytona Beach Summer Project is located right on the "World's Most Famous Beach." It is a destination spot for thousands over the Summer and Spring Break and it's about an hour's drive from all the attractions in Orlando. Campus Crusade has had a long history at Daytona Beach. The Summer Project has been active there for over 30 summers… (Daytona)
-    			<br /><br />
-    			The country we are going to is the largest unreached nation in the world according to Operation World. Their are 73 million people and only an estimated 2,000 believers… (4th Journey)
-    			<br /><br /></span>
-    			<ul><li>Mention various training students will receive on this project, ways they will be invested in, or how they will return to campus equipped for ministry.</li></ul>
-    			<span class="sub">We will also train you in how to reach internationals from many different people groups and religions in your own settings. (New York Tribeca – Bridges)
-    			<br /><br />
-    			We will do lots of evangelism and follow-up, along with plenty of relationship building and encouraging of local Aussie students. Project participants will be able to take the training and experience directly back to their campuses in the US. Join us down under as we reach out to Australian students and help to establish campus ministries. (Australia – Melbourne)
-    			<br /><br /></span>
-    			<ul><li>Ministry Focus Details – help them experience what the outreach they will be doing looks like.</li></ul>
-    			<span class="sub">One of the strategic aspects of our outreaches is that each summer graduating seniors from the surrounding states come to Ocean City, so we find ourselves talking to next year's freshman class! (Ocean City)
-    			<br /><br />
-    			We will be taking some Russian Class, building relationships with students on campus,and inviting them to learn English with us. Through these relationships, we'll have an opportunity to share our faith.  (Russia, RR)
-    			</span>
+          <div id="explain1" class="explanation">
+            
+            <b>Remember students will want to know what it is like to be on your
+      			project help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description.</b><br /><br />
+      			<b><u>Things to include in your description:</u></b><br>
+      			<ul><li>Introduce the project and build vision.</li></ul>
+      			<span class="sub">Daytona Beach Summer Project is located right on the "World's Most Famous Beach." It is a destination spot for thousands over the Summer and Spring Break and it's about an hour's drive from all the attractions in Orlando. Campus Crusade has had a long history at Daytona Beach. The Summer Project has been active there for over 30 summersÃ– (Daytona)
+      			<br /><br />
+      			The country we are going to is the largest unreached nation in the world according to Operation World. Their are 73 million people and only an estimated 2,000 believersÃ– (4th Journey)
+      			<br /><br /></span>
+      			<ul><li>Mention various training students will receive on this project, ways they will be invested in, or how they will return to campus equipped for ministry.</li></ul>
+      			<span class="sub">We will also train you in how to reach internationals from many different people groups and religions in your own settings. (New York Tribeca  Bridges)
+      			<br /><br />
+      			We will do lots of evangelism and follow-up, along with plenty of relationship building and encouraging of local Aussie students. Project participants will be able to take the training and experience directly back to their campuses in the US. Join us down under as we reach out to Australian students and help to establish campus ministries. (Australia  Melbourne)
+      			<br /><br /></span>
+      			<ul><li>Ministry Focus Details  help them experience what the outreach they will be doing looks like.</li></ul>
+      			<span class="sub">One of the strategic aspects of our outreaches is that each summer graduating seniors from the surrounding states come to Ocean City, so we find ourselves talking to next year's freshman class! (Ocean City)
+      			<br /><br />
+      			We will be taking some Russian Class, building relationships with students on campus,and inviting them to learn English with us. Through these relationships, we'll have an opportunity to share our faith.  (Russia, RR)
+      			</span>
+          </div>
+          <span id="readmoreless" rel="explain1">Read More</span>
         </div>
-        <span id="readmoreless" rel="explain1">Read More</span>
-      </div>
-        
         <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
       </div>
       
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
-            <label>Add student/human quotes <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file – email gosummerproject@uscm.org.') %></label>
+            <label>Quotes/Testimonials from students or other participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email gosummerproject@uscm.org.') %></label>
             
             <div class="field quote">
               <div>
