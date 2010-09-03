@@ -212,7 +212,6 @@ $(function() {
 		return false;
 	});
 	
-	$("#tabs").tabs();
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();
  

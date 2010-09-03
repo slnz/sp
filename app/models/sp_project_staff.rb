@@ -1,0 +1,2 @@
+class SpProjectStaff < SpUser
+end

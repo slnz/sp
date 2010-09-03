@@ -11,4 +11,21 @@ $(function() {
 		$('.prompt', div).show();
 		return false;
 	});
+	
+	$("#tabs").tabs({
+		ajaxOptions: {
+			error: function(xhr, status, index, anchor) {
+				$(anchor.hash).html("Couldn't load this tab. We'll try to fix this as soon as possible.");
+			}
+		},
+		cache: true,
+		spinner: '<img src="/images/spinner.gif" />',
+		load: function() {
+			$('.spinner').html('');
+		}
+	});
+	$('.pagination a').live('click', function(e) {
+		$(this).callRemote();
+    e.preventDefault();
+	});
 });

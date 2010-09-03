@@ -1,5 +1,6 @@
 class SpUser < ActiveRecord::Base
   belongs_to :user, :foreign_key => :ssm_id
+  belongs_to :person
   before_save :set_role
   after_initialize :set_acl
   
@@ -42,9 +43,6 @@ class SpUser < ActiveRecord::Base
   end
   def scope(var = nil)
     @scope ||= ['1=0'] # default to showing nothing
-  end
-  def person
-    @person ||= user.person if user
   end
   
   def acl(*url)
