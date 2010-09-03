@@ -71,6 +71,7 @@ GEM
     memcache-client (1.8.5)
     mime-types (1.16)
     mutter (0.5.3)
+    mysql2 (0.2.3)
     net-http-persistent (1.2.5)
     net-scp (1.0.3)
       net-ssh (>= 1.99.1)
@@ -131,6 +132,7 @@ DEPENDENCIES
   google-geocode
   less
   memcache-client
+  mysql2
   rails (~> 3.0.0)
   responds_to_parent
   ruby-oci8
