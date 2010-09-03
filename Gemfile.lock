@@ -1,31 +1,3 @@
-GIT
-  remote: git://github.com/igrigorik/em-http-request.git
-  revision: 7661a80
-  specs:
-    em-http-request (0.2.11)
-      addressable (>= 2.0.0)
-      eventmachine (>= 0.12.9)
-
-GIT
-  remote: git://github.com/igrigorik/em-mysqlplus.git
-  revision: 6ffb3c8
-  specs:
-    em-mysqlplus (0.1.3)
-      eventmachine (>= 0.12.9)
-
-GIT
-  remote: git://github.com/igrigorik/em-synchrony.git
-  revision: 4e48d5c
-  specs:
-    em-synchrony (0.1.5)
-      eventmachine (>= 0.12.9)
-
-GIT
-  remote: git://github.com/oldmoe/mysqlplus.git
-  revision: 2daef86
-  specs:
-    mysqlplus (0.1.1)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -63,7 +35,6 @@ GEM
       activerecord (>= 2.1)
     acts_as_versioned (0.6.0)
       activerecord (~> 3.0.0.beta4)
-    addressable (2.2.0)
     arel (0.4.0)
       activesupport (>= 3.0.0.beta)
     aws-s3 (0.6.2)
@@ -81,7 +52,6 @@ GEM
     dynamic_form (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    eventmachine (0.12.10)
     google-geocode (1.2.1)
       hoe (>= 1.1.4)
       rc-rest (>= 2.0.0)
@@ -112,7 +82,6 @@ GEM
     nokogiri (1.4.3.1)
     polyglot (0.3.1)
     rack (1.2.1)
-    rack-fiber_pool (0.9.0)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.4)
@@ -155,20 +124,13 @@ DEPENDENCIES
   acts_as_list
   acts_as_state_machine
   acts_as_versioned
-  addressable
   aws-s3
   capistrano
   carmen
   dynamic_form
-  em-http-request!
-  em-mysqlplus!
-  em-synchrony!
-  eventmachine
   google-geocode
   less
   memcache-client
-  mysqlplus!
-  rack-fiber_pool
   rails (~> 3.0.0)
   responds_to_parent
   ruby-oci8

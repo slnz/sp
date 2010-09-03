@@ -23,19 +23,6 @@ gem 'memcache-client'
 
 gem 'RedCloth'
 
-gem 'eventmachine'#,     :git => 'git://github.com/eventmachine/eventmachine.git'
-gem 'rack-fiber_pool',  :require => 'rack/fiber_pool'
-gem 'em-synchrony',     :git => 'git://github.com/igrigorik/em-synchrony.git', :require => [
-  'em-synchrony',
-  'em-synchrony/em-http'
-  ]
-  
-# async activerecord requires
-gem 'mysqlplus',      :git => 'git://github.com/oldmoe/mysqlplus.git',        :require => 'mysqlplus'
-gem 'em-mysqlplus',   :git => 'git://github.com/igrigorik/em-mysqlplus.git',  :require => 'em-activerecord'
-
-gem 'em-http-request',:git => 'git://github.com/igrigorik/em-http-request.git', :require => 'em-http'
-gem 'addressable', :require => 'addressable/uri'
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
 #gem 'rack-cache', :require => 'rack/cache'
 #gem 'dragonfly', '~>0.7.4'
