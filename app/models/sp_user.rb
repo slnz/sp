@@ -2,6 +2,7 @@ class SpUser < ActiveRecord::Base
   belongs_to :user, :foreign_key => :ssm_id
   belongs_to :person
   before_save :set_role
+  after_destroy :create_max_role
   after_initialize :set_acl
   
   def can_delete_project?() false; end
@@ -55,5 +56,24 @@ class SpUser < ActiveRecord::Base
   def set_role
     sp_role = SpRole.find_by_user_class(self[:type])
     self[:role] = sp_role.role if sp_role
+  end
+  
+  # Give this person a role based on their involvement
+  def create_max_role
+    p = Person.find(person_id)
+    if p && p.user
+      staffing = SpStaff.where(:person_id => p.id)
+      base =  case true
+              when !staffing.detect {|s| SpStaff::DIRECTORSHIPS.include?(s.type)}.nil?
+                SpDirector
+              when !staffing.detect {|s| s.type == 'Evaluator'}.nil?
+                SpEvaluator
+              when staffing.length > 0
+                SpProjectStaff
+              else
+                SpUser
+              end
+      base.create(:person_id => p.id, :ssm_id => p.user.id)
+    end
   end
 end

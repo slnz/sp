@@ -48,6 +48,8 @@ class Admin::UsersController < ApplicationController
     
     p = Person.find(params[:person_id])
     begin
+      # Delete their other roles
+      SpUser.delete_all(:person_id => p.id)
       @user = base.create!(:person_id => p.id, :ssm_id => p.user.id, :created_by_id => current_person.id) if p && p.user
     rescue ActiveRecord::RecordNotUnique
     end
