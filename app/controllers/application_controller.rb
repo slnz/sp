@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
       @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
       unless @sp_user
         # check to see if they are staff
-        @sp_user = current_person.isStaff? ? SpUser.new(:ssm_id => current_user.id) : nil
+        @sp_user = current_person.isStaff? ? SpUser.new(:ssm_id => current_user.id, :person_id => current_person.id) : nil
       end
       unless session[:login_stamped] || @sp_user.nil?
         @sp_user.update_attribute(:last_login, Time.now)
