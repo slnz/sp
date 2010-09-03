@@ -42,7 +42,11 @@ Sp2::Application.routes.draw do
   # Sample resource route within a namespace:
   namespace :admin do
     resources :people
-    resources :users
+    resources :users do
+      collection do
+        get :search
+      end
+    end
     resources :projects do
       member do
         post :close, :open, :send_email

@@ -1,7 +1,7 @@
 class SpRegionalCoordinator < SpUser
   def can_change_project_status?() true; end
   def can_change_self?() true; end
-  def can_add_user?() true; end
+  def can_add_user?() false; end
   def can_add_applicant?() true; end
   def can_see_other_regions?() true; end
   def can_see_roster?() true; end

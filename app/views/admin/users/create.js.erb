@@ -1,0 +1,6 @@
+$("#user_search").dialog('close');
+$('#user_search_results').html('');
+<% if @user %>
+$('#<%= params[:type] %>_rows').prepend('<%= escape_javascript(render('user', :user => @user)) %>')
+$('#<%= dom_id(@user) %>').effect("highlight", {}, 2000);
+<% end %>

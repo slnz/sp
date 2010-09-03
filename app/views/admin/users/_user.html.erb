@@ -1,0 +1,10 @@
+<% person = user.person 
+   @addresses ||= {}
+   address = @addresses[person.id] || person.current_address %>
+<tr id="<%= dom_id(user) %>">
+  <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
+	<td><a href="#" class="person" data-id="<%= person.id %>"><%= person %></a></td>
+  <td><%= mail_to(address.email, image_tag('icons/mail.png')) if address.try(:email).present? %></td>
+  <td><%= l(user.last_login) if user.last_login.present? %></td>
+  			<td><%= link_to(image_tag('icons/slash.png'), admin_user_path(user), :method => :delete, :remote => true, :confirm => "Are you sure you want to remove #{person.to_s}'s access?") %></td>
+</tr>

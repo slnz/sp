@@ -67,4 +67,16 @@ class ApplicationController < ActionController::Base
     def self.application_name
       'SP'
     end
+    
+    def search
+      if params[:name].present?
+        term = '%' + params[:name] + '%'
+        conditions = ["firstName like ? OR lastName like ? OR concat(firstname, ' ', lastname) like ?", term, term, params[:name] + '%']
+        @people = Person.where(conditions).includes(:user).limit(10)
+        @total = Person.where(conditions).count
+        respond_with(@people)
+      else
+        render :nothing => true
+      end
+    end
 end

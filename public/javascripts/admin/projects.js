@@ -152,7 +152,7 @@ $(function() {
 		el = $('#leader_search');
 		el.attr('title', name);
 		form = $('#leader_search_form');
-		$('#leader_search_project_id').val($(this).attr('data-id'));
+		$('#leader_search_project_id').val(id);
 		$('#leader_search_type').val($(this).attr('data-leader'));
 		el.dialog({
 			resizable: false,

@@ -24,6 +24,9 @@
       <% if current_person.directed_projects.length > 0 || (@project && !@project.new_record?) %>
         <li><%= link_to('People', (@project ? admin_project_path(@project) : admin_project_path(current_person.directs_projects.first)), :class => (params[:controller] == 'admin/projects' && ['show','edit'].include?(params[:action])) ? 'selected' : '') %></li>
       <% end %>
+      <% if sp_user.can_add_user? %>
+        <li><%= link_to('Users', admin_users_path, :class => (params[:controller] == 'admin/users') ? 'selected' : '') %></li>
+      <% end %>
       <!-- <li><%= link_to('Reports', '') %></li> -->
       <!-- <li class="search withicon"><%= link_to('Search', 'Search') %></li> -->
     </ul>
