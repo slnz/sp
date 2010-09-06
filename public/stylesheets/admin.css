@@ -704,6 +704,7 @@ a.close {
 table.people {
   margin: 15px 0;
   width: 100%;
+  border-collapse: collapse;
 }
 table.people th {
   text-align: left;
@@ -730,6 +731,8 @@ table.people td { border-bottom: 1px solid #efefef; }
 table.people td a { color: #0b486b; }
 table.people .name { width: 23%; }
 table.people .evaluate img { vertical-align: bottom; }
+table.manageusers tr:hover { background: #eeeeee; }
+table.manageusers thead tr:hover { background: none; }
 .ui-dialog {
   font-family: Arial;
   -moz-box-shadow: 0px 0px 10px #555555;

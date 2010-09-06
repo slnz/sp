@@ -763,6 +763,7 @@ a.close {text-indent: 0px; width: auto;}
 table.people {
   margin: 15px 0;
   width: 100%;
+  border-collapse: collapse;
   th {
     text-align: left;
     font-weight: bold;
@@ -783,6 +784,19 @@ table.people {
   .evaluate img {vertical-align: bottom;}
   }
   
+/* Users Tables - based on People Table */
+
+table.manageusers {
+  tr:hover {
+    background: #eee;
+    }
+  thead tr:hover {
+    background: none;
+    }
+  }
+
+
+
 /* Modal Boxes */
 .ui-dialog {
   font-family: Arial;

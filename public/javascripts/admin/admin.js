@@ -19,7 +19,7 @@ $(function() {
 			}
 		},
 		cache: true,
-		spinner: '<img src="/images/spinner.gif" />',
+		spinner: '<img src="/images/spinner_dark.gif" />',
 		load: function() {
 			$('.spinner').html('');
 		}

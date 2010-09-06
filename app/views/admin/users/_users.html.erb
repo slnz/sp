@@ -1,10 +1,19 @@
 <div id="<%= params[:type] %>">
+
+
   <% if params[:type] == 'director' %>
     To add a new director, go to the project screen and add them as a PD, APD, OPD or Coordinator
   <% else %>
-    <%= link_to("Add a new #{@role}", '#', 'data-type' => params[:type], 'data-role' => @role, :class => 'add-user') %>
+  <div id="contextmenu" style="margin: 1em 0;">
+    <ul class="left">
+      <li style="line-height: 1em;"><%= link_to("Add a new #{@role}", '#', 'data-type' => params[:type], 'data-role' => @role, :class => 'person withicon add-user') %></li>
+    </ul>  
+    <div class="clear"></div>
+  </div>
+  
+  
   <% end %>
-  <table class="people">
+  <table class="people manageusers">
     <thead>
       <tr>
         <th class="gender"></th>
