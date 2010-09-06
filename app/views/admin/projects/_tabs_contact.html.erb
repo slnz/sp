@@ -3,48 +3,73 @@
         <h3>Two contact people during project <%= tip('These people must be available in the United States to field calls during the project duration. Preferably, for US projects include a project director and a regional/ministry project coordinator that is not at the project location. For international projects, include a regional/ministry project coordinator and a secondary, non-family related, other regional/ministry staff. The second contact person would be important if the main person could not always be available. This is especially important for projects into secure areas.') %></h3>
         
       </div>
-      <div class="field">
-        <%= f.label :project_contact_name, "Name" %>
-        <%= f.text_field :project_contact_name %>
+     	<div class="col_left"> 
+        <div class="field required">
+          <%= f.label :project_contact_name, "Name" %>
+          <%= f.text_field :project_contact_name %>
+        </div>
+        <div class="field required">
+          <%= f.label :project_contact_role, "Project Role" %>
+          <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
+        </div>
+        <div class="field required">
+          <%= f.label :project_contact_phone, "Phone" %>
+          <%= f.text_field :project_contact_phone %>
+        </div>
+        <div class="field required">
+          <%= f.label :project_contact_email, "Email" %>
+          <%= f.text_field :project_contact_email %>
+        </div>
       </div>
-      <div class="field">
-        <%= f.label :project_contact_role, "Project Role" %>
-        <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
+      
+      <div class="col_right"> 
+        <div class="field required">
+          <%= f.label :project_contact2_name, "Name" %>
+          <%= f.text_field :project_contact2_name %>
+        </div>
+        <div class="field required">
+          <%= f.label :project_contact2_role, "Project Role" %>
+          <%= f.select :project_contact2_role, SpContactRoles.all, :include_blank => true %>
+        </div>
+        <div class="field required">
+          <%= f.label :project_contact2_phone, "Phone" %>
+          <%= f.text_field :project_contact2_phone %>
+        </div>
+        <div class="field required">
+          <%= f.label :project_contact2_email, "Email" %>
+          <%= f.text_field :project_contact2_email %>
+        </div>
       </div>
-      <div class="field">
-        <%= f.label :project_contact_phone, "Phone" %>
-        <%= f.text_field :project_contact_phone %>
-      </div>
-      <div class="field">
-        <%= f.label :project_contact_email, "Email" %>
-        <%= f.text_field :project_contact_email %>
-      </div>
-
+      
+      <div style="height: 1px; clear: both;"></div>
+      
       <h3 class="critical">In case of an emergency on a summer project  call 888-899-9292 or 407-380-8665. <%= tip('It is advisable that you program these numbers in your cell phone before your project begins. If you are going overseas, use the 407 number. This is a secure number, answered by \'LH Communications\', safe for calling from secure countries.') %></h3>
 
       <h3>Project Location</h3>
-      <div class="field" class="required">
+      <div class="field required">
         <%= f.label :city %>
         <%= f.text_field :city %>
       </div>
-      <div class="field">
-        <%= f.label :state %>
+      <div class="field required">
+        <%= f.label :state do
+          'State' + tip('Required if your project is in the US or Canada.')
+        end %>
         <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
       </div>
-      <div class="field" class="required">
+      <div class="field required">
         <%= f.label :country %>
         <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
       </div>
-      <div class="field" class="required">
+      <div class="field required">
         <%= f.label :aoa, 'Region of the world' %>
         <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
       <div class="multifield">
-        <div class="field">
+        <div class="field required">
           <%= f.label :staff_start_date %>
           <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
         </div>
-        <div class="field">
+        <div class="field required">
           <%= f.label :staff_end_date %>
           <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
         </div>
@@ -75,9 +100,10 @@
         <div class="clear"></div>
       </div>
       <div class="field">
-        <%= f.label :in_country_contact %>
+        <%= f.label :in_country_contact do 
+          'In Country Contact' + tip('Name, relationship to project, phone number(s), email, address')
+        end %>
         <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
-        <%= tip('Name, relationship to project, phone number(s), email, address') %>
       </div>
       
       <button class="save"><span>Save</span></button>

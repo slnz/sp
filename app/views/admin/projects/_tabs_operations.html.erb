@@ -1,5 +1,5 @@
 <%# encoding: utf-8 %>
-      <div class="field" class="required">
+      <div class="field required">
         <%= f.label :primary_partner %>
         <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
       </div>
@@ -11,7 +11,7 @@
         <%= f.label :tertiary_partner %>
         <%= partnership_select(:project, :tertiary_partner, [:regions, :ministries]) %>
       </div>
-      <div class="field" class="required">
+      <div class="field required">
         <%= f.label :report_stats_to, 'Report evangelism stats to' %>
         <%= f.select(:report_stats_to, ['Campus Ministry - US summer project','Campus Ministry - WSN summer project','Other CCC ministry'], { :include_blank => true }) %>
       </div>

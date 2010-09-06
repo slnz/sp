@@ -38,13 +38,7 @@
 
 <div id="primary">
 
-	<% if flash[:notice] %>
-	  <div id="flash_notice" class="flash notice"><%= flash[:notice] %></div>
-	<% end %>
-	<% if flash[:error] %>
-	  <div id="flash_error" class="flash error"><%= flash[:error] %></div>
-	<% end %>
-
+  <%= render :partial => 'layouts/flash', :locals => {:flash => flash} %>
 
   <div class="pagewidth">
     <%= yield %>

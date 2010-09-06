@@ -2,6 +2,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   protected
+    def dashboard_path
+      if sp_user.can_see_dashboard?
+        admin_projects_path
+      elsif current_person.staffed_projects.length == 1
+        admin_project_path(current_person.staffed_projects.first)
+      else
+        no_admin_projects_path
+      end
+    end
     
     def partners
       @partners ||= begin
@@ -13,7 +22,7 @@ class ApplicationController < ActionController::Base
 
     def current_user
       unless @current_user
-        # @current_user = User.find(35443)
+        @current_user = User.find(2665)
         if session[:casfilterreceipt]
           @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
         end

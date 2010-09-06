@@ -29,7 +29,7 @@ class Admin::ProjectsController < ApplicationController
   def update
     @project.update_attributes(params[:sp_project])
     respond_with(@project) do |format|
-      format.html {@project.errors.empty? ? redirect_to(admin_projects_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
+      format.html {@project.errors.empty? ? redirect_to(dashboard_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
     end
   end
   
@@ -66,13 +66,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def dashboard
-    if sp_user.can_see_dashboard?
-      redirect_to admin_projects_path
-    elsif current_person.staffed_projects.length == 1
-      redirect_to admin_project_path(current_person.staffed_projects.first)
-    else
-      redirect_to no_admin_projects_path
-    end
+    redirect_to dashboard_path
   end
   
   def no
