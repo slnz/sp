@@ -31,7 +31,7 @@
         <% [:pd,:apd,:opd, :coordinator].each do |leader|
           person = project.send(leader) -%>
           <tr>
-            <td><%= leader.to_s.titleize %></td>
+            <td><%= [:pd,:apd,:opd].include?(leader) ? leader.upcase : leader.to_s.titleize %></td>
             <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader %></td>
           </tr>
         <% end %>
