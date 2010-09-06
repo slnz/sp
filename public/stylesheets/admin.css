@@ -601,6 +601,10 @@ a.close {
   color: #ffffff;
   background: url(/images/icons/check.png) no-repeat 5px 50% #0b486b;
 }
+#contextmenu .poptions hr {
+  margin: 0 0 5px 0;
+  border-color: gray;
+}
 #contextmenu ul.left { float: left; }
 #contextmenu ul.left li a { margin-left: 0; }
 .flash {
@@ -645,6 +649,7 @@ a.close {
 #errorExplanation ul { margin: 0; }
 .field_with_errors input { border-color: #db4f4f; }
 .field_with_errors label { color: #db4f4f; }
+.multitext .field_with_errors { display: inline; }
 .hybriddrop a {
   padding: 9px 12px;
   -webkit-border-radius: 5px;
