@@ -67,11 +67,13 @@
       <h3>Travel Information (International Only)</h3>
       <div class="multifield">
         <div class="field">
-          <%= f.label :departure_city, 'US City you are Departing From' %>
+          <%= f.label :departure_city do
+            'US City you are Departing From<br>(include Airport Code)' + tip('<br>For example: Minneapolis, MN (MSP)')  
+            end %>
           <%= f.text_field :departure_city %>
         </div>
         <div class="field">
-          <%= f.label :destination_city, "Int'l City you are Flying To" %>
+          <%= f.label :destination_city, "Int'l City you are Flying To<br>(include Airport Code)" %>
           <%= f.text_field :destination_city %>
         </div>
         <div class="clear"></div>
@@ -89,7 +91,7 @@
       </div>
       <div class="field">
         <%= f.label :in_country_contact do 
-          'In Country Contact' + tip('Name, relationship to project, phone number(s), email, address')
+          'In Country Contact' + tip('Name, relationship to project, phone number(s), email, address of one or, preferably multiple in-country contacts.')
         end %>
         <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
       </div>

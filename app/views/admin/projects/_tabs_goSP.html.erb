@@ -31,7 +31,7 @@
       </div>
       <div class="field required">
         <%= f.label :state do
-          'State' + tip('Required if your project is in the US or Canada.')
+          'State' + tip('Required if your project is in the US or Canada. Leave it blank for other international projects.')
         end %>
         <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
       </div>
