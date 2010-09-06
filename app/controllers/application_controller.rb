@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
 
     def current_user
       unless @current_user
-        @current_user = User.find(2665)
         if session[:casfilterreceipt]
           @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
         end
