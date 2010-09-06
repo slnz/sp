@@ -4,7 +4,7 @@ class SpDirector < SpUser
   def can_evaluate_applicant?() true; end
   def can_see_roster?() true; end
   def can_see_dashboard? 
-    person.directs_projects.length > 1 
+    person.directed_projects.length > 1 
   end
   
   def scope(var = nil)

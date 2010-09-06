@@ -68,8 +68,8 @@ class Admin::ProjectsController < ApplicationController
   def dashboard
     if sp_user.can_see_dashboard?
       redirect_to admin_projects_path
-    elsif current_person.directs_projects.length > 0
-      redirect_to project_path(person.directs_projects.first)
+    elsif current_person.directed_projects.length > 0
+      redirect_to project_path(person.directed_projects.first)
     else
       redirect_to '/'
     end
