@@ -2,12 +2,14 @@
 <tr class="project_row <%= 'closed' if project.closed? %>">
   <td class="count">
     <div class="rollovershow" style="display:none">
-      <% if project.closed? %>
-        <%= link_to('Open', open_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to open #{project}") %>
-      <% else %>
-        <%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to close #{project}") %>
+      <% if sp_user.can_change_project_status? %>
+        <% if project.closed? %>
+          <%= link_to('Open', open_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to open #{project}") %>
+        <% else %>
+          <%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to close #{project}") %>
+        <% end %>
       <% end %>
-      <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') %>
+      <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') if sp_user.can_edit_project?(project) %>
     </div>
     <span title="<%= project.current_students_men.to_i %> men, <%= project.current_students_women.to_i %> women">
       <%= project.accepted_count %>/<%= project.capacity %>
@@ -17,7 +19,7 @@
   <% [:pd,:apd,:opd].each do |leader| -%>
     <td><%= render 'leader', :project => project, :leader => leader %></td>
 	<% end -%>
-  <td class="stats"><%= stat_link(project, project, 'Stats', :class => 'inline stats') %></td>
+  <td class="stats"><%= stat_link(project, project, 'Stats', :class => 'inline stats', :title => 'Enter stats for this project') %></td>
   <td class="close">
     
   </td>

@@ -38,11 +38,13 @@
       </table>
     </div>
     
-    <% %w{staff volunteers kids}.each do |level| %>
+    <% %w{staff volunteers kids evaluators}.each do |level| %>
       <div class="module <%= level %>">
         <h3>
           <%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) 
-          <span class="controls"><%= link_to('Add', '#', :class => 'add edit-leader', 'data-name' => "Add a #{level.singularize.titleize}", 'data-id' => project.id, 'data-leader' => level.singularize) %></span>
+          <% if sp_user.can_edit_project?(project) %>
+            <span class="controls"><%= link_to('Add', '#', :class => 'add edit-leader', 'data-name' => "Add a #{level.singularize.titleize}", 'data-id' => project.id, 'data-leader' => level.singularize) %></span>
+          <% end %>
         </h3>
         <table class="stafflist">
           <tbody id="<%= level.singularize %>_list">

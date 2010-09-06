@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
   respond_to :js, :html
   
   layout 'admin'
@@ -54,5 +54,11 @@ class Admin::UsersController < ApplicationController
     rescue ActiveRecord::RecordNotUnique
     end
     respond_with(@user)
+  end
+  
+  def check_access
+    unless sp_user.can_add_user?
+      redirect_to '/admin' and return
+    end
   end
 end

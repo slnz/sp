@@ -22,7 +22,7 @@ class Admin::LeadersController < ApplicationController
     @person ||= Person.find(params[:person_id])
     if ['apd','pd','opd','coordinator'].include?(params[:leader])
       @project.send(params[:leader] + '=', params[:person_id])
-    elsif ['staff','kid','volunteer'].include?(params[:leader])
+    elsif ['staff','kid','volunteer', 'evaluator'].include?(params[:leader])
       @project.sp_staff.create(:type => params[:leader].titleize, :year => year, :person_id => params[:person_id])
     end
     render :create

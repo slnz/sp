@@ -19,10 +19,7 @@ class SpUser < ActiveRecord::Base
     types.nil? ? [] : SpRole.find(:all, :conditions => "user_class IN (#{types})", :order => 'role').map { |role| [role.role, role.user_class] }
   end
   def can_edit_project?(project) 
-    person_id = user.person.id
-    project = SpProject.find(:first, :conditions => ["pd_id = ? or apd_id = ? or opd_id = ? or coordinator_id = ?", person_id, person_id, person_id, person_id])
-    return true if project
-    return false
+    person.directed_projects.include?(project)
   end
   def can_merge_projects?() false; end
   def can_su_application?() false; end
@@ -60,6 +57,10 @@ class SpUser < ActiveRecord::Base
   
   # Give this person a role based on their involvement
   def create_max_role
+    SpUser.create_max_role(person_id)
+  end
+  
+  def self.create_max_role(person_id)
     p = Person.find(person_id)
     if p && p.user
       staffing = SpStaff.where(:person_id => p.id)
@@ -70,10 +71,12 @@ class SpUser < ActiveRecord::Base
                 SpEvaluator
               when staffing.length > 0
                 SpProjectStaff
-              else
+              when p.isStaff?
                 SpUser
+              else
+                nil
               end
-      base.create(:person_id => p.id, :ssm_id => p.user.id)
+      base.create!(:person_id => p.id, :ssm_id => p.user.id) if base
     end
   end
 end

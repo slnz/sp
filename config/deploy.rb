@@ -48,28 +48,14 @@ task :production do
   set :password, 'alt60m'
   set :rails_env, 'production'
 end
-  # set :deploy_via, :copy
-# set :copy_cache, true
-# set :copy_exclude, [".git","coverage"]
-
-# set :scm_passphrase, "p@ssw0rd" #This is your custom users password
 
 
 # define the restart task
 desc "Restart the web server"
 deploy.task :restart, :roles => :app do
-  # run "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin stop -f -C /etc/thin/sp.int.yml && thin start -C /etc/thin/sp.int.yml"
-  # sudo "LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 thin restart --pid #{shared_path}/tmp/pids/thin.pid"
+    run "touch #{current_path}/tmp/restart.txt"
 end  
 
-# =============================================================================
-# OPTIONAL VARIABLES
-# =============================================================================
-# set :scm, :darcs               # defaults to :subversion
-# set :svn, "/path/to/svn"       # defaults to searching the PATH
-# set :darcs, "/path/to/darcs"   # defaults to searching the PATH
-# set :cvs, "/path/to/cvs"       # defaults to searching the PATH
-# set :gateway, "gate.host.com"  # default to no gateway
 
 # =============================================================================
 # SSH OPTIONS

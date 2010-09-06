@@ -1,4 +1,4 @@
-class SpEvaluator < SpRegionalCoordinator
+class SpEvaluator < SpUser
   def can_change_project_status?() false; end
   def can_change_self?() false; end
   def can_add_user?() false; end

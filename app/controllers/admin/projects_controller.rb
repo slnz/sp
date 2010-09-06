@@ -1,5 +1,5 @@
 class Admin::ProjectsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :except => :threads
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_valid_user, :except => :no
   uses_tiny_mce :options => {:theme => 'advanced',
                              :theme_advanced_buttons1 => "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink",
                              :theme_advanced_buttons2 => "",
@@ -68,11 +68,15 @@ class Admin::ProjectsController < ApplicationController
   def dashboard
     if sp_user.can_see_dashboard?
       redirect_to admin_projects_path
-    elsif current_person.directed_projects.length > 0
-      redirect_to project_path(person.directed_projects.first)
+    elsif current_person.staffed_projects.length == 1
+      redirect_to admin_project_path(current_person.staffed_projects.first)
     else
-      redirect_to '/'
+      redirect_to no_admin_projects_path
     end
+  end
+  
+  def no
+    
   end
 
   def close
@@ -134,6 +138,17 @@ class Admin::ProjectsController < ApplicationController
       @base = @base.apd_like(params[:search_apd])
     when params[:search_opd].present?
       @base = @base.opd_like(params[:search_opd])
+    end
+    
+    # Filter based on the user type
+    case sp_user.class.to_s
+    when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
+      @base = @base.where(:id => current_person.staffed_projects.collect(&:id))
+    when 'SpRegionalCoordinator'
+      @base = @base.where("primary_partner = ? OR secondary_partner = ? OR tertiary_partner = ?", current_person.region, current_person.region, current_person.region)
+    when 'SpNationalCoordinator'
+    else
+      @base = @base.where('1 <> 1')
     end
   end
   

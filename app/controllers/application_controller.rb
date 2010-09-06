@@ -13,13 +13,12 @@ class ApplicationController < ActionController::Base
 
     def current_user
       unless @current_user
+        # @current_user = User.find(35443)
         if session[:casfilterreceipt]
           @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
-          return @current_user
         end
         if session[:user_id]
           @current_user ||= User.find_by_id(session[:user_id])
-          return @current_user
         end
       end
       @current_user
@@ -40,10 +39,6 @@ class ApplicationController < ActionController::Base
     def sp_user
       return nil unless current_user
       @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
-      unless @sp_user
-        # check to see if they are staff
-        @sp_user = current_person.isStaff? ? SpUser.new(:ssm_id => current_user.id, :person_id => current_person.id) : nil
-      end
       unless session[:login_stamped] || @sp_user.nil?
         @sp_user.update_attribute(:last_login, Time.now)
         session[:login_stamped] = true
@@ -54,7 +49,9 @@ class ApplicationController < ActionController::Base
     
     def check_valid_user
       unless sp_user
-        redirect_to :controller => :projects, :action => :no_access
+        # Some people don't have sp users who should. Before blocking them, let's try creating one
+        return true if @sp_user = SpUser.create_max_role(current_person.id) if current_person
+        redirect_to :controller => :projects, :action => :no
         return false
       end
     end

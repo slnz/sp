@@ -3,13 +3,17 @@
   <% person = project.send(leader) 
   	if person -%>
   		<%= link_to(person, '', :class => 'person', 'data-id' => person.id) %>
-  		<div class="buttons">
-    		<%= link_to('Edit', '', :class => 'inline edit edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader) %>
-    		<%= link_to('Delete', admin_leader_path(project, :leader => leader, :person_id => person.id), :class => 'inline delete delete-leader', :remote => true, :method => :delete, :confirm => "Are you sure you want to remove #{person} as a director?") %>
-    	</div>
+  		<% if sp_user.can_edit_project?(project) %>
+    		<div class="buttons">
+      		<%= link_to('Edit', '', :class => 'inline edit edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader, :id => "edit_leader_#{project.id}#{leader}") %>
+      		<%= link_to('Delete', admin_leader_path(project, :leader => leader, :person_id => person.id), :class => 'inline delete delete-leader', :remote => true, :method => :delete, :confirm => "Are you sure you want to remove #{person} as a director?") %>
+      	</div>
+    	<% end %>
   <% else %>
-    <%= link_to('', :class => 'edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader) do %>
-      <span class="fillit">(Fill this position)</span>
+  	<% if sp_user.can_edit_project?(project) %>
+      <%= link_to('', :class => 'edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader) do %>
+        <span class="fillit">(Fill this position)</span>
+      <% end %>
     <% end %>
   <% end -%>
 </div>

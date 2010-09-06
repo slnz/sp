@@ -1,6 +1,8 @@
 <div class="pagepad">
 <h1>Projects</h1>
 <div id="contextmenu">
+  
+  <% if sp_user.is_a?(SpNationalCoordinator) %>
   <ul class="left">
     <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
     <div class="poptions" id="mvmtfilter" style="display: none;">
@@ -20,12 +22,15 @@
       <button id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
     </div>
   </ul>  
+  <% end %>
   
+  <% if sp_user.can_create_project? %>
   <ul class="right">
     <li><%= link_to('Add New Project', new_admin_project_path, :class => 'add withicon') %></li>
     <!-- <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li> -->
     <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
   </ul>
+  <% end %>
   <div class="clear"></div>
 </div>
 
@@ -48,15 +53,18 @@
       <th></th>
       <th></th>
     </tr>
-    <tr>
-      <th></th>
-      <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search') %></th>
-      <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_pd') %></th>
-      <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_apd') %></th>
-      <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th>
-      <th></th>
-      <th></th>
-    </tr>
+    
+    <% if @projects.total_entries > 20 %>
+      <tr>
+        <th></th>
+        <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search') %></th>
+        <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_pd') %></th>
+        <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_apd') %></th>
+        <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th>
+        <th></th>
+        <th></th>
+      </tr>
+    <% end %>
     <tbody id="projects">
       <%= render 'projects' %>
     </tbody>
@@ -65,13 +73,14 @@
 
 <div class="dashboardfooter">
   <div class="pagination_wrapper" id="pagination"><%= render 'pagination' %></div>
-
-  <div class="show_select">
-    Show
-    <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
-    of 
-    <%= @projects.total_entries %>
-  </div>
+  <% if @projects.total_entries > 20 %>
+    <div class="show_select">
+      Show
+      <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
+      of 
+      <%= @projects.total_entries %>
+    </div>
+  <% end %>
   <div class="clear"></div>
 </div>
 </div>

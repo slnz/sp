@@ -100,12 +100,7 @@ $(function() {
 			}
 			$('#person_' + id + '_form').hide();
 			$('#person_' + id + '_info').show();
-			$("#" + dom).dialog({
-				resizable: false,
-				height:300,
-				width:400,
-				modal: true,
-				buttons: {
+			var buttons = {
 					Close: function() {
 						$(this).dialog('close');
 					},
@@ -114,7 +109,25 @@ $(function() {
 						$('#person_' + id + '_form').show();
 					  $('#leader_details' + id).dialog('option',{height:520, buttons: {}})
 					}
+				};
+			// If this is a leader, provide the option to change the leader
+			var leader_link = $(this).closest('.leader_cell').find('.edit-leader');
+			if (leader_link[0] != null) {
+				var project_id = leader_link.attr('data-id');
+				var leader = leader_link.attr('data-leader');
+				if ( project_id && leader ) {
+					buttons['Change Leader'] = function() {
+						$(this).dialog('close');
+						$('#edit_leader_' + project_id + leader).click();
+					}
 				}
+			}
+			$("#" + dom).dialog({
+				resizable: false,
+				height:300,
+				width:400,
+				modal: true,
+				buttons: buttons
 			});
 			return false;
 		}
@@ -149,6 +162,7 @@ $(function() {
   	$('#add_leader_form').hide();
 		$('#leader_search_form').show();
 		$('#leader_search_name').val('');
+	  $("#leader_search_results").hide();
 		el = $('#leader_search');
 		el.attr('title', name);
 		form = $('#leader_search_form');
@@ -168,23 +182,22 @@ $(function() {
 		return false;
 	});
 	
-	// Search for new leader
-	$('#leader_search_name').keyup(function() {
-		$('#spinner_leader_search').show();
-		form = $('#leader_search_form');
-		$.ajaxCount++;
-		$.ajax({url: form.attr('action'), 
-						data: form.serialize(), 
-						dataType: 'script', 
-						type: 'POST',
-						success: function(data) {
-							$('#leader_search_results').html(data);
-						  $("#leader_search_results").show();
-						},
-						complete: function() {
-							$.ajaxCount--;
-							if($.ajaxCount == 0) $('#spinner_leader_search').hide();
-						}});
+	$('#leader_search_name').autocomplete({
+	  source: function(request, response) {
+			// var term = request.term;
+			$('#spinner_leader_search').show();
+			$.ajax({url: form.attr('action'), 
+				data: form.serialize(), 
+				dataType: 'script', 
+				type: 'POST',
+				success: function(data) {
+					$('#leader_search_results').html(data);
+				  $("#leader_search_results").show();
+				},
+				complete: function() {$('#spinner_leader_search').hide();}
+			});
+			response([]);
+		}
 	});
 	
 	// Update leader

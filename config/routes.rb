@@ -53,7 +53,7 @@ Sp2::Application.routes.draw do
         get :email
       end
       collection do 
-        get :threads
+        get :threads, :no
       end
     end
     resources :applications 
@@ -72,7 +72,7 @@ Sp2::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "admin/projects#index"
+  root :to => "admin/projects#dashboard"
 
   # See how all your routes lay out with "rake routes"
 
