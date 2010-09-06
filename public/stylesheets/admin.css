@@ -603,6 +603,11 @@ a.close {
 }
 #contextmenu ul.left { float: left; }
 #contextmenu ul.left li a { margin-left: 0; }
+.flash {
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 935px;
+}
 .flash, #errorExplanation {
   border: 2px solid #4d4d4d;
   -moz-border-radius: 7px;
