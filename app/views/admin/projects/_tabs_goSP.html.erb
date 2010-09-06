@@ -17,13 +17,15 @@
       
       <div class="field required">
         <%= f.label(:display_location) do 
-          'Location: City, State ' + tip('The Google map on the \'Explore Projects\' page of goSP.com will pull from this location to place an icon in the correct city. If your project is in a secure location, type the location you want students to read, and don\'t worry  nothing will show up on the map!')
+          'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
           end %>
         <%= f.text_field :display_location %>
       </div>
       
+      <h3>Google Map</h3>
       <div class="field required">
-        <%= f.label :city %>
+        <%= f.label :city do
+          'City ' + tip('The Google map on the \'Explore Projects\' page of goSP.com will pull from this location to place an icon in the correct city.') %>
         <%= f.text_field :city %>
       </div>
       <div class="field required">
