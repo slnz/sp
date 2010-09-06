@@ -10,7 +10,7 @@ class CreateSpGospelInActions < ActiveRecord::Migration
      'Street children',
      'Human trafficking',
      'Medical clinics',
-     'Construction'].each {|d| SpGospelInAction.create(:name => d)}
+     'Relief/Rebuilding'].each {|d| SpGospelInAction.create(:name => d)}
   end
 
   def self.down
