@@ -57,7 +57,8 @@ h3.critical {
   line-height: 60px;
 }
 #global #menu li a {
-  color: #79b2cc;
+  background: #efefef;
+  color: #0b486b;
   padding: 9px 12px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -67,12 +68,12 @@ h3.critical {
   font-weight: bold;
 }
 #global #menu li a.selected {
-  background: #efefef;
-  color: #0b486b;
+  color: #efefef;
+  background: #0b486b;
 }
 #global #menu li a:hover {
-  background: #efefef;
-  color: #0b486b;
+  color: #efefef;
+  background: #0b486b;
 }
 #global #menu li.withicon a {
   background: no-repeat 0px;

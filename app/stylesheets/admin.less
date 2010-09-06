@@ -41,7 +41,8 @@ h3.critical {
     .strip-list;
     li {float: left; line-height: 60px;}
     li a {
-      color: @deselected-global;
+			background: @global-bg;
+      color: @dark-blue;
       padding: 9px 12px;
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
@@ -51,8 +52,8 @@ h3.critical {
       font-weight: bold;
       }      
     li a.selected, li a:hover {
-      background: @global-bg;
-      color: @dark-blue;
+      color: @global-bg;
+      background: @dark-blue;
       }
     li.withicon {}
     li.withicon a {background: no-repeat 0px; border: 1px solid silver;}
