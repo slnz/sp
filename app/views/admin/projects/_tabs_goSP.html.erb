@@ -22,6 +22,25 @@
         <%= f.text_field :display_location %>
       </div>
       
+      <div class="field required">
+        <%= f.label :city %>
+        <%= f.text_field :city %>
+      </div>
+      <div class="field required">
+        <%= f.label :state do
+          'State' + tip('Required if your project is in the US or Canada.')
+        end %>
+        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
+      </div>
+      <div class="field required">
+        <%= f.label :country %>
+        <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
+      </div>
+      <div class="field required">
+        <%= f.label :aoa, 'Region of the world' %>
+        <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
+      </div>
+      
       <div class="multifield">
         <div class="field required">
           <%= f.label :start_date, 'Project Start Date' %>
