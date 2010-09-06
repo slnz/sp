@@ -1,4 +1,9 @@
 <%# encoding: utf-8 %>
+			<p class="legend">
+      	Fields with the <%= image_tag('required.png') %> are required.
+     	</p>
+    
+      <hr />
       <div class="field required">
         <%= f.label :primary_partner %>
         <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>

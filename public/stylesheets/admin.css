@@ -139,6 +139,11 @@ h3.critical {
 }
 .dashboardlist .rollovershow .edit { margin-left: 5px; }
 .dashboardlist .rollovershow:hover { display: block; }
+p.legend {
+  font-weight: bold;
+  font-size: 11px;
+}
+p.legend img { vertical-align: top; }
 .projectedit .left {
   width: 68%;
   float: left;
