@@ -204,6 +204,10 @@ div.multifield .field {
   float: left;
   margin-right: 0.5em;
 }
+div.required label {
+  padding-left: 15px;
+  background: url("/images/required.png") no-repeat scroll 0 33% transparent;
+}
 div.quote textarea { height: 50px; }
 div.quote textarea:focus { height: auto; }
 div.quote a.deletequote {
@@ -599,7 +603,7 @@ a.close {
 }
 #contextmenu ul.left { float: left; }
 #contextmenu ul.left li a { margin-left: 0; }
-.flash {
+.flash, #errorExplanation {
   border: 2px solid #4d4d4d;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
@@ -615,10 +619,27 @@ a.close {
   border-color: #83ce00;
   background: url("/images/icons/flag-green.png") no-repeat scroll 15px 50% #d3f4a2;
 }
-#flash_error {
+#flash_error, #errorExplanation {
   border-color: #db4f4f;
   background: url("/images/icons/exclamation-red.png") no-repeat scroll 15px 50% #ffa4a4;
 }
+#errorExplanation h2 {
+  font-size: 16px;
+  margin: 0;
+}
+#errorExplanation p {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+#errorExplanation li {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+#errorExplanation ul { margin: 0; }
+.field_with_errors input { border-color: #db4f4f; }
+.field_with_errors label { color: #db4f4f; }
 .hybriddrop a {
   padding: 9px 12px;
   -webkit-border-radius: 5px;
