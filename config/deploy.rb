@@ -80,7 +80,7 @@ task :local_changes, :roles => :app do
   run <<-CMD
     ln -s #{shared_path}/bundle #{release_path}/vendor/bundle &&
     export LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 &&
-    cd #{release_path} && bundle install --deployment &&
+    cd #{release_path} && bundle install --deployment --without development &&
     ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml &&
     ln -s #{shared_path}/config/initializers/email.rb #{release_path}/config/initializers/email.rb &&
     
