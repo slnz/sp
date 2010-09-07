@@ -1,4 +1,11 @@
+class User < ActiveRecord::Base
+  set_table_name 			"simplesecuritymanager_user"
+	set_primary_key 		"userID"
+	has_one :person, :foreign_key => 'fk_ssmUserID'	
+end
+
 class SpUser < ActiveRecord::Base
+  belongs_to :user, :foreign_key => :ssm_id
 end
 class SpNationalCoordinator < SpUser
 end
