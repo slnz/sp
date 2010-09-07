@@ -4,6 +4,11 @@ class User < ActiveRecord::Base
 	has_one :person, :foreign_key => 'fk_ssmUserID'	
 end
 
+class Person < ActiveRecord::Base 
+  set_table_name   "ministry_person"
+  set_primary_key  "personID"
+end
+
 class SpUser < ActiveRecord::Base
   belongs_to :user, :foreign_key => :ssm_id
 end
