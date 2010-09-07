@@ -73,7 +73,9 @@
           <%= f.text_field :departure_city %>
         </div>
         <div class="field">
-          <%= f.label :destination_city, "Int'l City you are Flying To<br>(include Airport Code)" %>
+          <%= f.label :destination_city, do
+            "Int'l City you are Flying To<br>(include Airport Code)" + tip('<br>For example: Minneapolis, MN (MSP)')   
+            end %>
           <%= f.text_field :destination_city %>
         </div>
         <div class="clear"></div>
