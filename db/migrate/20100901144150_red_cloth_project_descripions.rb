@@ -1,3 +1,6 @@
+class SpProject < ActiveRecord::Base
+end
+
 class RedClothProjectDescripions < ActiveRecord::Migration
   def self.up
     SpProject.all.each do |p|

@@ -1,3 +1,6 @@
+class SpUser < ActiveRecord::Base
+end
+
 class AddPersonIdToSpUser < ActiveRecord::Migration
   def self.up
     add_column :sp_users, :person_id, :integer
