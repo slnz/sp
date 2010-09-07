@@ -50,8 +50,7 @@ Sp2::Application.routes.draw do
     resources :projects do
       member do
         post :close, :open, :send_email
-        get :email
-        get :download
+        get :email, :download
       end
       collection do 
         get :threads, :no

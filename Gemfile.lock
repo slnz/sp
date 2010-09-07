@@ -52,6 +52,7 @@ GEM
     dynamic_form (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    exception_notification (2.3.3.0)
     google-geocode (1.2.1)
       hoe (>= 1.1.4)
       rc-rest (>= 2.0.0)
@@ -132,6 +133,7 @@ DEPENDENCIES
   capistrano
   carmen
   dynamic_form
+  exception_notification
   google-geocode
   less
   memcache-client

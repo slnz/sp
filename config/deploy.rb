@@ -28,24 +28,23 @@ set :keep_releases, '3'
 # set :target, ENV['target'] || ENV['TARGET'] || 'dev'
 default_run_options[:pty] = true
 set :scm, "git"
+role :db, "hart-w025.uscm.org", :primary => true
+role :web, "hart-w025.uscm.org"
+role :app, "hart-w025.uscm.org"
+
+set :user, 'deploy'
+set :password, 'alt60m'
+
 
 task :staging do
-  role :app, "hart-w025.uscm.org"
-  role :db, "hart-w025.uscm.org", :primary => true
-  set :environment, 'development'
   set :deploy_to, "/var/www/html/integration/#{application}"
-  set :user, 'deploy'
-  set :password, 'alt60m'
+  set :environment, 'development'
   set :rails_env, 'development'
 end
   
 task :production do
-  role :app, "hart-w025.uscm.org."
-  role :app, "hart-w040.uscm.org."
-  set :environment, 'production'
   set :deploy_to, "/var/www/html/production/#{application}"
-  set :user, 'deploy'
-  set :password, 'alt60m'
+  set :environment, 'production'
   set :rails_env, 'production'
 end
 
@@ -88,21 +87,6 @@ task :local_changes, :roles => :app do
     rm -Rf #{release_path}/tmp && 
     ln -s #{shared_path}/tmp #{release_path}/tmp 
   CMD
-end
-
-
-desc <<DESC
-An imaginary backup task. (Execute the 'show_tasks' task to display all
-available tasks.)
-DESC
-task :backup, :roles => :db, :only => { :primary => true } do
-  # the on_rollback handler is only executed if this task is executed within
-  # a transaction (see below), AND it or a subsequent task fails.
-  on_rollback { delete "/tmp/dump.sql" }
-
-  run "mysqldump -u theuser -p thedatabase > /tmp/dump.sql" do |ch, stream, out|
-    ch.send_data "thepassword\n" if out =~ /^Enter password:/
-  end
 end
 
 

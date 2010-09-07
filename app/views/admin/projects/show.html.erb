@@ -1,10 +1,12 @@
 <div class="pagepad">
-  <!-- <div id="breadcrumb">
+  <% if sp_user.can_see_dashboard? %>
+  <div id="breadcrumb">
     <ul>
       <li><%= link_to('Projects', admin_projects_path) %></li>
       <li class="last"><%= @project.name %></li>
     </ul>
-  </div> -->
+  </div>
+  <% end %>
   
   <%= render :partial => 'context_menu' %>
   
