@@ -866,6 +866,11 @@ a.AddNewPerson {
 }
 .emailwrap .field input.frombox { width: 35%; }
 .emailwrap .field textarea { width: 100%; }
+.emailwrap .field select {
+  padding: 2px 2px 2px 0;
+  font-family: Arial;
+  font-size: 12px;
+}
 .emailwrap .fieldinput { margin-left: 60px; }
 .emailwrap .addresses {
   border: 1px solid #999999;
