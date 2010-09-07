@@ -27,6 +27,7 @@ gem 'aws-s3', :require => 'aws/s3'
 gem 'google-geocode', :require => 'google_geocode'
 gem 'spreadsheet'
 gem 'exception_notification', :git => "git://github.com/rails/exception_notification", :require => 'exception_notifier', :branch => 'master'
+gem 'unicode_utils'
 # gem "exception_notifier"
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
@@ -45,6 +46,7 @@ gem 'exception_notification', :git => "git://github.com/rails/exception_notifica
 # and rake tasks are available in development mode:
 group :development do
   # gem 'bullet', '~> 2.0.0.rc1'
+  gem 'mail_safe'
 end
 # 
 gem 'activerecord-oracle_enhanced-adapter'

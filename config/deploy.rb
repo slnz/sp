@@ -82,6 +82,8 @@ task :local_changes, :roles => :app do
     export LD_LIBRARY_PATH=/opt/oracle/instantclient_10_2 &&
     cd #{release_path} && bundle install --deployment &&
     ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml &&
+    ln -s #{shared_path}/config/initializers/email.rb #{release_path}/config/initializers/email.rb &&
+    
     
     mkdir -p -m 770 #{shared_path}/tmp/{cache,sessions,sockets,pids} &&
     rm -Rf #{release_path}/tmp && 
