@@ -1,16 +1,16 @@
 class SpUser < ActiveRecord::Base
 end
-class SpNationalCoordinator < ActiveRecord::Base
+class SpNationalCoordinator < SpUser
 end
-class SpRegionalCoordinator < ActiveRecord::Base
+class SpRegionalCoordinator < SpUser
 end
-class SpDirector < ActiveRecord::Base
+class SpDirector < SpUser
 end
-class SpEvaluator < ActiveRecord::Base
+class SpEvaluator < SpUser
 end
-class SpGeneralStaff < ActiveRecord::Base
+class SpGeneralStaff < SpUser
 end
-class SpProjectStaff < ActiveRecord::Base
+class SpProjectStaff < SpUser
 end
 
 class AddPersonIdToSpUser < ActiveRecord::Migration
