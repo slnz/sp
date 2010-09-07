@@ -32,6 +32,14 @@ jQuery(function ($) {
             } else {
                 if (el.triggerAndReturn('ajax:before')) {
                     var data = el.is('form') ? el.serializeArray() : [];
+										if (method.toUpperCase() != 'GET' && method.toUpperCase() != 'POST') {
+											if (data.length == 0) {
+												data = {'_method': method.toLowerCase()};
+											} else {
+												data.concat([{'_method': method.toLowerCase()}]);
+											}
+											method = 'POST';
+										}
                     $.ajax({
                         url: url,
                         data: data,
