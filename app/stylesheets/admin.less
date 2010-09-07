@@ -11,8 +11,10 @@
 @deselected-global: #79B2CC;
 
 
-body {margin: 0; padding: 0; font-size: 12px; font-family: @global-font; background: @global-bg;}
+body {margin: 0; padding: 0; font-size: 12px; font-family: @global-font; background: @global-bg; outline: none;}
 a {text-decoration: none; color: @dark-blue; outline: none;}
+a:active {outline: none;}
+:focus {-moz-outline-style: none;}
 img {border: none; vertical-align: middle;}
 .pagewidth {max-width: @page-width; min-width: 960px; margin: 0 auto;}
 .strip-list{ margin: 0; list-style: none; padding: 0;}
@@ -23,6 +25,7 @@ img {border: none; vertical-align: middle;}
 
 h1, h2, h3, h4, h5, h6 {font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica;}
 h1 {font-size: 26px;margin: .5em 0;}
+h3 {font-size: 14px;}
 
 h3.critical {
   border-color:orange -moz-use-text-color;
@@ -316,6 +319,8 @@ button {
   font-size: 14px;
   font-weight: bold;
   margin: 8px;
+  padding: 0 10px;
+  line-height: 1em;
   }
 
 button.withicon span {
@@ -400,6 +405,7 @@ div.module {
     background: @global-bg;
     padding: 6px 10px;
     margin-bottom:0.5em;
+    min-height: 20px;
     }
   table {
     width: 100%;
@@ -460,10 +466,18 @@ div.applicantdata {
   padding-left: 20px;
   }
 
-span.controls {
+.module h3 span {
+  float: left;
+  }
+  
+
+
+.module h3 span.controls {
   font-size: 11px;
-  float: right;
   margin: 3px 0;
+  display: block;
+  border:0px solid red;
+  float: right;
   }
 
 
@@ -512,7 +526,7 @@ span.controls {
 .col_left {float: left; width: 49%;}
 .col_right {float: right; width: 49%;}
 
-hr {border: 0px; border-top: 1px solid @global-bg; margin: 1.5em 0; clear: both;}
+hr {border: 0px; border-top: 1px solid @global-bg; margin: 1.5em 0; clear: both; }
 
 
 /* Icons */
@@ -625,7 +639,7 @@ a.close {text-indent: 0px; width: auto;}
   }
   
   .poptions {
-    min-width: 300px;
+    width: 560px;
     min-height: 200px;
     background: @global-bg;
     position: absolute;
@@ -634,6 +648,7 @@ a.close {text-indent: 0px; width: auto;}
     -moz-box-shadow: 0 0 12px #555555;
     -webkit-box-shadow: 0 0 12px #555555;
     box-shadow: 0 0 12px #555555;
+
     ul {
       .strip-list;
       float: left;

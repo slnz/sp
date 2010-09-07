@@ -1,7 +1,7 @@
   <div class="right sidebar">
   
    <div class="module applicantdata">
-      <h3>Applicant Data</h3>
+      <h3><span>Applicant Data</span></h3>
       <table>
         <tr>
           <td class="titlefield"></td>
@@ -26,7 +26,7 @@
   
   
     <div class="module">
-      <h3>Project Leaders</h3>
+      <h3><span>Project Leaders</span></h3>
       <table>
         <% [:pd,:apd,:opd, :coordinator].each do |leader|
           person = project.send(leader) -%>
@@ -41,7 +41,7 @@
     <% %w{staff volunteers kids evaluators}.each do |level| %>
       <div class="module <%= level %>">
         <h3>
-          <%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) 
+          <span><%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>)</span>
           <% if sp_user.can_edit_project?(project) %>
             <span class="controls"><%= link_to('Add', '#', :class => 'add edit-leader', 'data-name' => "Add a #{level.singularize.titleize}", 'data-id' => project.id, 'data-leader' => level.singularize) %></span>
           <% end %>

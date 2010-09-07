@@ -1,0 +1,44 @@
+.poptions {
+  margin-top: -29px;
+  margin-left: -119px;
+  position: absolute;
+  
+  }
+  
+#contextmenu .poptions p {
+margin: 0;
+padding: 0;
+}
+
+#contextmenu .poptions hr {
+  margin: 0;
+  padding: 0;
+  }
+  
+.poptions button {
+  vertical-align: middle;
+  }
+  
+.ui-tabs .ui-tabs-nav li {
+  margin-bottom: 8px;
+  border: 0px solid red;
+  display: block;
+}
+
+.ui-tabs .ui-tabs-nav li a{
+  padding: 4px 1em;
+}
+
+.ui-tabs .ui-corner-all {
+  padding-bottom: 0px;
+  display: block;
+  height: 25px;
+  }
+  
+.dropdowncontents ul { 
+  margin-left: -63px;
+}
+
+#yeardrop {
+  margin-top: 20px;
+  }
