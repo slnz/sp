@@ -19,7 +19,7 @@
       </ul>
       <div class="clear"></div>
       <%= check_box_tag :closed, 1, params[:closed] == 'true' %> Include closed projects
-      <button id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
+      <button type="submit" id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
     </div>
   </ul>  
   <% end %>
