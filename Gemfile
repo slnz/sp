@@ -26,7 +26,8 @@ gem 'RedCloth'
 gem 'aws-s3', :require => 'aws/s3'
 gem 'google-geocode', :require => 'google_geocode'
 gem 'spreadsheet'
-gem 'exception_notification'
+gem 'exception_notification', :git => "git://github.com/rails/exception_notification", :require => 'exception_notifier', :branch => 'master'
+# gem "exception_notifier"
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
 #gem 'rack-cache', :require => 'rack/cache'
