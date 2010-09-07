@@ -6,7 +6,7 @@ class Admin::ProjectsController < ApplicationController
                              :theme_advanced_buttons3 => "",
                              :theme_advanced_toolbar_location => "top",
                              :theme_advanced_toolbar_align => "left"}
-  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email]
+  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download]
   before_filter :get_year, :only => [:show, :email]
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
   respond_to :html, :js
@@ -63,6 +63,106 @@ class Admin::ProjectsController < ApplicationController
     @submitted = applications.submitted.for_year(@year)
     @not_submitted = applications.not_submitted.for_year(@year)
     @not_going = applications.not_going.for_year(@year)
+  end
+  
+  def download
+    year = params[:year] || SpApplication::YEAR
+    headers['Content-Type'] = "application/vnd.ms-excel"
+    headers['Content-Disposition'] = "attachment; filename=\"#{@project.name} - Roster - #{year}.xls\""
+    headers['Cache-Control'] = ''
+    
+    book = Spreadsheet::Workbook.new
+    sheet1 = book.create_worksheet(:name => @project.name)
+    
+    r = -1
+
+    sheet1.row(r += 1).concat([@project.name])
+
+    sheet1.row(r += 1).concat([ "City:", @project.city])
+    sheet1.row(r += 1).concat([ "Country:", @project.country])
+    sheet1.row(r += 1).concat([ "Primary partner:", @project.primary_partner])
+    sheet1.row(r += 1).concat([ "Secondary partner:", @project.secondary_partner]) if @project.secondary_partner.present?
+    sheet1.row(r += 1).concat([ "Tertiary partner:", @project.tertiary_partner]) if @project.tertiary_partner.present?
+    sheet1.row(r += 1).concat([ "Staff Start Date:", (@project.staff_start_date || "N/A").to_s])
+    sheet1.row(r += 1).concat([ "Staff End Date:", (@project.staff_end_date || "N/A").to_s])
+    sheet1.row(r += 1).concat([ "Student Start Date:", (@project.start_date || "N/A").to_s])
+    sheet1.row(r += 1).concat([ "Student Stop Date:", (@project.end_date || "N/A").to_s])
+    staff_column_headers =  ["First Name", "Last Name", "Preferred Name", "Gender",
+     "Birthday", "Email", "Address", "Address2", "City", "State",
+     "Zip", "Phone", "Cell", "Campus", "AccountNo", "Marital Status",
+     "Emergency Contact", "Emergency Relationship",  "Emergency Address", "Emergency City", "Emergency State",
+     "Emergency Zip", "Emergency Phone", "Emergency WorkPhone", "Emergency Email"];
+     
+    sheet1.row(r += 1).concat([])
+    sheet1.row(r += 1).concat(["Directors:"])
+    sheet1.row(r += 1).concat(staff_column_headers)
+    
+    [@project.pd, @project.apd, @project.opd, @project.coordinator].each do |person|
+      unless person.nil?
+        row = []
+        values = set_values_from_person(person)
+        staff_column_headers.each do |header|
+          if (values[header] && values[header] != "")
+            row << values[header].to_s.gsub(/[\t\r\n]/, " ")
+          else
+            row << "N/A"
+          end
+        end
+        sheet1.row(r += 1).concat(row)
+      end
+    end
+    
+    sheet1.row(r += 1).concat([])
+    sheet1.row(r += 1).concat(["Staff:"])
+    
+    
+    sheet1.row(r += 1).concat(staff_column_headers)
+    
+    @project.staff.each do |person|
+    
+      values = set_values_from_person(person)
+    
+      row = []
+      staff_column_headers.each do |header|
+        if (values[header] && values[header] != "")
+          row << values[header].to_s.gsub(/[\t\r\n]/, " ")
+        else
+          row << "N/A"
+        end
+      end
+      sheet1.row(r += 1).concat(row)
+    end
+    
+    sheet1.row(r += 1).concat([])
+    sheet1.row(r += 1).concat([ "Accepted Applicants:"])
+    
+    applicant_column_headers = ["First Name", "Last Name", "Preferred Name", "Gender",
+     "Birthday", "Accepted On", "Email", "Address", "Address2", "City", "State",
+     "Zip", "Phone", "Cell", "Campus", "Designation No", "Marital Status",
+     "Emergency Contact", "Emergency Relationship", "Emergency Address", "Emergency City", "Emergency State",
+     "Emergency Zip", "Emergency Phone", "Emergency Work Phone", "Emergency Email",
+     "Participant's Campus Region", "Date Became A Christian", "Major", "Class",
+     "GraduationDate", "Applied for leadership"]
+    
+    sheet1.row(r += 1).concat(applicant_column_headers)
+    applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_intern', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
+    
+    applications.each do |app|
+      values = set_values_from_person(app.person)
+      values["Applied for leadership"] = app.apply_for_leadership.to_s
+      row = []
+      applicant_column_headers.each do |header|
+        if (values[header] && values[header] != "")
+            row << values[header].to_s.gsub(/[\t\r\n]/, "").gsub(/,/, " ")
+        else
+          row << "N/A"
+        end
+      end
+      sheet1.row(r += 1).concat(row)
+    end
+    sio = StringIO.new
+    book.write(sio)
+    render(:text => sio.string )
   end
   
   def dashboard
@@ -158,4 +258,46 @@ class Admin::ProjectsController < ApplicationController
   def get_year
     @year = params[:year].present? ? params[:year] : SpApplication::YEAR
   end
+
+  def set_values_from_person(person)
+    values = Hash.new
+    values["First Name"] = person.firstName
+    values["Last Name"] = person.lastName
+    values["Preferred Name"] = person.preferredName
+    values["Gender"] = person.gender == "1" ? "M" : "F"
+    values["Birthday"] = person.birth_date.present? ? l(person.birth_date) : ''
+    values["Accepted On"] = (person.current_application && person.current_application.accepted_at.present? ? l(person.current_application.accepted_at) : '')
+    if (person.current_address)
+      values["Email"] = person.current_address.email
+      values["Address"] = person.current_address.address1
+      values["Address2"] = person.current_address.address2
+      values["City"] = person.current_address.city
+      values["State"] = person.current_address.state
+      values["Zip"] = person.current_address.zip
+      values["Phone"] = person.current_address.homePhone
+      values["Cell"] = person.current_address.cellPhone
+    end
+    values["Campus"] = person.campus
+    values["AccountNo"] = person.accountNo
+    values["Designation No"] = person.current_application.try(:designation_number)
+    values["Marital Status"] = person.maritalStatus
+    if (person.emergency_address)
+      values["Emergency Contact"] = person.emergency_address.contactName
+      values["Emergency Relationship"] = person.emergency_address.contactRelationship
+      values["Emergency Address"] = person.emergency_address.address1
+      values["Emergency City"] = person.emergency_address.city
+      values["Emergency State"] = person.emergency_address.state
+      values["Emergency Zip"] = person.emergency_address.zip
+      values["Emergency Phone"] = person.emergency_address.homePhone
+      values["Emergency Work Phone"] = person.emergency_address.workPhone
+      values["Emergency Email"] = person.emergency_address.email
+    end
+    values["Participant's Campus Region"] = person.region
+    values["Date Became A Christian"] = person.date_became_christian.present? ? l(person.date_became_christian) : ''
+    values["Major"] = person.major
+    values["Class"] = person.yearInSchool
+    values["GraduationDate"] = person.graduation_date.present? ? l(person.graduation_date) : ''
+    values
+  end
+
 end

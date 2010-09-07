@@ -13,7 +13,7 @@
 <div id="contextmenu">
   <ul class="left">
     <li><%= link_to('Edit Project', edit_admin_project_path(@project), :class => 'edit withicon') %></li>
-    <!-- <li><%= link_to('Download Team DB', '', :class => 'excel withicon') %></li> -->
+    <li><%= link_to('Download Team DB', download_admin_project_path(@project, :year => @year), :class => 'excel withicon') %></li>
     <!-- <li><%= link_to('Send Email', email_admin_project_path(@project), :class => 'email withicon', :id => 'sendemailopen') %></li> -->
     <li><%= stat_link(@project, @project, 'Enter Stats', :class => 'stats withicon') %></li>
     <!-- <li><%= link_to('Add an Applicant', new_admin_application_path, :class => 'person withicon') %></li> -->

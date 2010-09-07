@@ -106,8 +106,11 @@ GEM
       nokogiri (>= 1.3.1)
     responds_to_parent (1.0.20091013)
     ruby-oci8 (2.0.4)
+    ruby-ole (1.2.10.1)
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
+    spreadsheet (0.6.4.1)
+      ruby-ole
     thor (0.14.0)
     tiny_mce (0.1.4)
     treetop (1.4.8)
@@ -136,5 +139,6 @@ DEPENDENCIES
   rails (~> 3.0.0)
   responds_to_parent
   ruby-oci8
+  spreadsheet
   tiny_mce
   will_paginate (~> 3.0.pre2)

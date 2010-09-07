@@ -15,7 +15,7 @@
 
       <!-- Compose Email -->
       <div class="backbutton">
-        <%= link_to('Back to project', '') %>
+        <%= link_to('Back to project', admin_project_path(@project)) %>
       </div>            
       <form action="/projects/370/send_team_email" enctype="multipart/form-data" method="post" onsubmit="return validate()">
         

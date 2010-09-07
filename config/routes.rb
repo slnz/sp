@@ -51,6 +51,7 @@ Sp2::Application.routes.draw do
       member do
         post :close, :open, :send_email
         get :email
+        get :download
       end
       collection do 
         get :threads, :no

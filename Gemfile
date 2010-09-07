@@ -35,6 +35,7 @@ gem 'RedCloth'
 # gem 'nokogiri', '1.4.1'
 gem 'aws-s3', :require => 'aws/s3'
 gem 'google-geocode', :require => 'google_geocode'
+gem 'spreadsheet'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
