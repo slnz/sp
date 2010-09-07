@@ -860,13 +860,16 @@ a.AddNewPerson {
   width: 50px;
   font-size: 12px;
 }
-.emailwrap .field input[type=text] { width: 100%; }
+.emailwrap .field input[type=text] {
+  width: 100%;
+  font-size: 12px;
+}
 .emailwrap .field input.frombox { width: 35%; }
 .emailwrap .field textarea { width: 100%; }
 .emailwrap .fieldinput { margin-left: 60px; }
 .emailwrap .addresses {
   border: 1px solid #999999;
-  font-family: Verdana;
+  font-family: Arial;
   font-size: 12px;
   padding: 3px;
 }
