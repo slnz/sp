@@ -219,6 +219,31 @@ $(function() {
 	$('#create_leader_form').bind('ajax:before', function() {
 		$('#spinner_leader_add').show();
 	});
+	// END Add new person as leader
+	
+	// Send project email
+	$('#email_form').submit(function() {
+		var message = '';
+		if ($.trim($('#to').val()) == '') {
+			message += 'You need to put in at least one email address to send this email to.<br />'
+		}
+		if ($.trim($('#subject').val()) == '') {
+			message += 'Please provide a subject for your email.<br />'
+		}
+		if (message != '') {
+			$('#dialog-confirm').attr('title', 'Slow down :)');
+			$('#dialog-confirm-message').html(message);
+			$("#dialog-confirm").dialog({
+				modal: true,
+				buttons: {
+					Ok: function() {
+						$(this).dialog('close');
+					},
+				}
+			});
+			return false;
+		} 
+	});
 	
 	$('#changeyear').click(function() {
 		$('#year_list').toggle();
@@ -233,5 +258,9 @@ $(function() {
     $(this).text($(this).text() == 'Read More' ? 'Read Less' : 'Read More');
   	return false;
  	});
+
+	$('#group').change(function() {
+		$('#to').val(emails[$('#group').val()]);
+	}); 
 
 });

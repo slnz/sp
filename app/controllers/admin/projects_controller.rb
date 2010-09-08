@@ -6,7 +6,7 @@ class Admin::ProjectsController < ApplicationController
                              :theme_advanced_buttons3 => "",
                              :theme_advanced_toolbar_location => "top",
                              :theme_advanced_toolbar_align => "left"}
-  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download]
+  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email]
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
   respond_to :html, :js
@@ -195,15 +195,33 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def email
+    @group_options = [['',''],['Staff/Interns + Accepted Students (Team)','team'],['All Applicants (except withdrawn/denied)','all_applicants'],
+                  ['All Accepted Students','all_accepted'],['Accepted Men','accepted_men'],['Accepted Women','accepted_women'],
+                  ['Pending Students','pending_students'],['All Staff and Interns','staff_and_interns'],
+                  ['Men Staff and Interns','men_staff_and_interns'],['Women Staff and Interns','women_staff_and_interns']]
+    @group_options << ['Parent References','parent_refs'] if @project.primary_partner == 'MK2MK'
+    build_email_hash
+  end
+
+  def send_email
+    if params[:from].blank?
+      flash[:notice] = 'You must specify a "From" address'
+      redirect_to :back
+    else
+      to = params[:to].split(",")
+      to.each do |t|
+        t.strip!
+      end
+      cc = params[:from]
+      files = (params[:file] || {}).values
+      email = ProjectMailer.team_email(to, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
+      redirect_to admin_project_path(@project), :notice => "Your email has been sent"
+    end
   end
   
   def threads
      ActiveRecord::Base.connection.select_all("select sleep(1)")
     render :text => "Oh hai"
-  end
-  
-  def send_email
-    
   end
   
   protected 
@@ -298,6 +316,95 @@ class Admin::ProjectsController < ApplicationController
     values["Class"] = person.yearInSchool
     values["GraduationDate"] = person.graduation_date.present? ? l(person.graduation_date) : ''
     values
+  end
+  
+  def build_email_hash
+    @emails = {}
+    @group_options.each do |group|
+      next if group[1].blank?
+      addresses = []
+      case group[1]
+      when 'all_applicants'
+        applicant_conditions = "status NOT IN ('declined', 'withdrawn')"
+        include_applicants = true
+      when 'all_accepted'
+        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant')"
+        include_applicants = true
+      when 'accepted_men'
+        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant') AND ministry_person.gender = 1"
+        include_applicants = true
+      when 'accepted_women'
+        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant') AND ministry_person.gender = 0"
+        include_applicants = true
+      when 'pending_students'
+        applicant_conditions = "status IN ('started', 'submitted')"
+        include_applicants = true
+      when 'staff_and_interns'
+        applicant_conditions = "status IN ('accepted_as_intern')"
+        include_applicants = true
+        include_staff = true
+      when 'men_staff_and_interns'
+        applicant_conditions = "status IN ('accepted_as_intern') AND ministry_person.gender = 1"
+        include_applicants = true
+        include_staff = true
+      when 'women_staff_and_interns'
+        applicant_conditions = "status IN ('accepted_as_intern') AND ministry_person.gender = 0"
+        include_applicants = true
+        include_staff = true
+      when 'parent_refs'
+        include_applicants = false
+        include_staff = false
+        parent_refs = true
+      else
+        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant')"
+        include_staff = true
+        include_applicants = true
+      end
+      people = []
+      if include_applicants
+        accepted_applications = SpApplication.find(:all, :conditions => ["#{applicant_conditions} and (project_id = ? OR (preference1_id = ? AND (project_id IS NULL OR project_id = ?))) and year = ?", @project.id, @project.id, @project.id, @year], :include => :person)
+        accepted_applications.each do |app|
+          people << app.person
+        end
+      end
+      if include_staff
+        # Men, women or all
+        case params[:group]
+        when 'men_staff_and_interns'
+          people += [@project.pd] if @project.pd.is_male?
+          people += [@project.apd] if @project.apd.is_male?
+          people += [@project.opd] if @project.opd.is_male?
+          people += @project.staff.find(:all, :conditions => "gender = 1") 
+          people += @project.volunteers.find(:all, :conditions => "gender = 1") 
+        when 'women_staff_and_interns'
+          people += [@project.pd] if !@project.pd.is_male?
+          people += [@project.apd] if !@project.apd.is_male?
+          people += [@project.opd] if !@project.opd.is_male?
+          people += @project.staff.find(:all, :conditions => "gender = 0") 
+          people += @project.volunteers.find(:all, :conditions => "gender = 0") 
+        else
+          people += [@project.pd] + [@project.apd] + [@project.opd] + @project.staff + @project.volunteers 
+        end
+      end
+    
+      if parent_refs
+        addresses = SpParentReference.find(:all, :conditions => ["application_id = sp_applications.id AND project_id = ?", @project.id], :include => :sp_application).collect(&:email)
+        addresses.reject!(&:blank?)
+        addresses.uniq!
+      else
+        people.each do |person|
+          if person
+            email = person.email_address
+            if email
+              addresses << person.informal_full_name + " <" + email + ">";
+            end
+          end
+        end
+      end
+      @emails[group[1]] = addresses.join(",\n")
+    end
+
+    @from = current_user.person.current_address.try(:email).to_s
   end
 
 end
