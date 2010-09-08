@@ -73,6 +73,10 @@ class ApplicationController < ActionController::Base
       'SP'
     end
     
+    def application_name
+      ApplicationController.application_name
+    end
+    
     def search
       if params[:name].present?
         term = '%' + params[:name] + '%'
