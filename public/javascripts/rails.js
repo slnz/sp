@@ -1,4 +1,8 @@
 jQuery(function ($) {
+		if ($('#dialog-confirm')[0] == null) {
+			$('body').append('<div id="dialog-confirm" style="display:none" title="Are you sure?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-confirm-message"></span></p></div>');
+		}
+			
     var csrf_token = $('meta[name=csrf-token]').attr('content'),
         csrf_param = $('meta[name=csrf-param]').attr('content');
 
@@ -71,9 +75,7 @@ jQuery(function ($) {
     $('a[data-confirm],input[data-confirm]').live('click', function () {
         var el = $(this);
         if (el.triggerAndReturn('confirm')) {
-					if ($('#dialog-confirm')[0] == null) {
-						$('body').append('<div id="dialog-confirm" title="Are you sure?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-confirm-message"></span></p></div>');
-					}
+					$('#dialog-confirm').attr('title', 'Are you sure?');
 					$('#dialog-confirm-message').html(el.attr('data-confirm'));
 					$("#dialog-confirm").dialog({
 						resizable: false,

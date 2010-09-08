@@ -788,14 +788,6 @@ table.people td {
   padding: 4px;
   overflow: hidden;
 }
-table.people th.sort_up {
-  background: url("/images/sort_up.png") no-repeat 0 50%;
-  padding-left: 12px;
-}
-table.people th.sort_down {
-  background: url("/images/sort_down.png") no-repeat 0 50%;
-  padding-left: 12px;
-}
 table.people td { border-bottom: 1px solid #efefef; }
 table.people td a { color: #0b486b; }
 table.people .name { width: 23%; }

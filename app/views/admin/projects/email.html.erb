@@ -1,13 +1,15 @@
+<script type="text/javascript" charset="utf-8">
+  var emails = <%= raw @emails.to_json %>
+</script>
 <div class="pagepad">
   <div id="breadcrumb">
     <ul>
       <li><%= link_to('Projects', admin_projects_path) %></li>
-      <li class="last"><%= @project.name %></li>
+      <li><%= link_to(@project.name, admin_project_path(@project)) %></li>
+      <li class="last">Send Email</li>
     </ul>
   </div>
-  
-  <%= render :partial => 'context_menu' %>
-
+  <%= render :partial => 'project_year' %>
   
   <div class="projectedit">
   
@@ -17,58 +19,42 @@
       <div class="backbutton">
         <%= link_to('Back to project', admin_project_path(@project)) %>
       </div>            
-      <form action="/projects/370/send_team_email" enctype="multipart/form-data" method="post" onsubmit="return validate()">
-        
+      <%= form_tag(send_email_admin_project_path(@project), :multipart => true, :id => 'email_form') do %>
+        <%= hidden_field_tag :validated, '0', :id => 'validated' %>
         <div class="field">
           <label>From</label>
-          <div class="fieldinput"><input name="from" size="70" type="text" value="Josh.Starcher@gmail.com" class="frombox">&nbsp;&nbsp; A copy of the email will be sent to this address.</div>
+          <div class="fieldinput"><input name="from" size="70" type="text" value="<%= params[:from] || current_person.email %>" class="frombox">&nbsp;&nbsp; A copy of the email will be sent to this address.</div>
         </div>        
         
         <div class="field">
           <label>To:</label>
           <div class="fieldinput">
-            <select id="group" name="group">
-              <option value="team">Staff/Interns + Accepted Students (Team)</option>
-              <option value="all_applicants">All Applicants (except withdrawn/denied)</option>
-              <option value="all_accepted">All Accepted Students</option>
-              <option value="accepted_men">Accepted Men</option>
-              <option value="accepted_women">Accepted Women</option>
-              <option value="pending_students">Pending Students</option>
-              <option value="staff_and_interns">All Staff and Interns</option>
-              <option value="men_staff_and_interns">Men Staff and Interns</option>
-              <option value="women_staff_and_interns">Women Staff and Interns</option>
-            </select>
-            <textarea name="to" type="text" cols="70" rows="3" wrap="virtual" class="addresses">Dan Rossdeutscher <rossdd27@uwosh.edu>, Katie Lewandowski <lewan058@umn.edu>, Lauren Morris <LMorris12@cornellcollege.edu>, Lacie Adelmann <adla0701@stcloudstate.edu>, Claire Schuerman <havinfunintheson@gmail.com>, Blake Struve <blake-struve@uiowa.edu>, Emily  Polster <polsteem@uwec.edu>, Stacee Gonia <gonias22@uwosh.edu>, Kali Shephard <Kali.Shephard@und.nodak.edu>, Matt Cline <mrcline@iastate.edu>, Corinne Haase <chaase2@wisc.edu></textarea>
-            
-
+            <%= select_tag :group, options_for_select(@group_options) %>
+            <textarea name="to" id="to" type="text" cols="70" rows="3" wrap="virtual" class="addresses"><%= params[:to] %></textarea>
           </div>
         </div>
         
         <div class="field">
           <label>Subject</label>
-          <div class="fieldinput"><input name="subject" size="70" value="" type="text"></div>
+          <div class="fieldinput"><%= text_field_tag :subject, params[:subject], :id => 'subject' %></div>
         </div>
-        
-        
         
         <textarea name="body" cols="100" style="width: 100%;" rows="18" wrap="virtual" class="mceEditor"></textarea>
-        
-        
-        
-        <div class="field">
-          <label><%= image_tag('attach.png') %></label>
-          <div class="fieldinput" style="padding-top: 8px;">
-            
-            <input id="file_0" name="file[0]" type="file" />  <%= link_to(image_tag('icons/plus-button.png') + ' Add another attachment', '') %><br/>
-            
+
+        <% (0..4).each do |i| %>        
+          <div class="field" style="<%= i == 0 ? '' : 'display:none' %>" id="attachment_<%= i %>">
+            <label><%= image_tag('attach.png') %></label>
+            <div class="fieldinput" style="padding-top: 8px;">
+              <%= file_field_tag "file[#{i}]" %>  <%= link_to_function(image_tag('icons/plus-button.png') + ' Add another attachment', "$('#attachment_#{i+1}').show()") unless i == 4  %><br/>
+            </div>
           </div>
-        </div>
-        
+          <div style="clear:both"></div>
+        <% end %>
         
         <div class="clear"></div>
         
-        <button value="Send Email" class="save" /><span>Send Email</span></button>
-      </form>
+        <button type="submit" value="Send Email" class="save" /><span>Send Email</span></button>
+      <% end %>
 
 
 
