@@ -208,7 +208,7 @@ class Admin::ProjectsController < ApplicationController
       flash[:notice] = 'You must specify a "From" address'
       redirect_to :back
     else
-      to = params[:to].split(",")
+      to = params[:to].split(/,|;/)
       to.each do |t|
         t.strip!
       end
@@ -217,11 +217,6 @@ class Admin::ProjectsController < ApplicationController
       email = ProjectMailer.team_email(to, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
       redirect_to admin_project_path(@project), :notice => "Your email has been sent"
     end
-  end
-  
-  def threads
-     ActiveRecord::Base.connection.select_all("select sleep(1)")
-    render :text => "Oh hai"
   end
   
   protected 
