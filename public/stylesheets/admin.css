@@ -38,7 +38,7 @@ img {
 h1, h2, h3, h4, h5, h6 { font-family: "Gill Sans", "Gill Sans MT", Arial, Verdana, Helvetica; }
 h1 {
   font-size: 26px;
-  margin: 0.5em 0;
+  margin: 0.5em 0 1.15em 0;
 }
 h3 { font-size: 14px; }
 h3.critical {
@@ -124,10 +124,6 @@ h3.critical {
 }
 .dashboardlist table td.close a { color: #4d4d4d; }
 .dashboardlist table td.count { padding-left: 8px; }
-.dashboardlist span.fillit {
-  color: silver;
-  font-style: italic;
-}
 .dashboardlist th input { font-size: 11px; }
 .dashboardlist th input:focus { background: #ffffff; }
 .dashboardlist th input#search { width: 200px; }
@@ -347,9 +343,13 @@ div.module table div.buttons {
 }
 div.module table div.buttons a.delete { margin-left: 10px; }
 div.module table.stafflist { margin-bottom: 0.75em; }
-div.module .fillit {
+a span.fillit {
   color: silver;
   font-style: italic;
+}
+a:hover span.fillit {
+  color: #0b486b;
+  font-style: normal;
 }
 div.applicantdata { background: #cff09e; }
 div.applicantdata h3 {
@@ -513,7 +513,7 @@ a.close {
   font-style: normal;
 }
 .pagination a:hover { background: #efefef; }
-#contextmenu { margin-bottom: 1.5em; }
+#contextmenu { margin-bottom: 30px; }
 #contextmenu ul.right {
   float: right;
   margin: 0;
@@ -522,7 +522,7 @@ a.close {
 }
 #contextmenu ul.right li {
   float: left;
-  line-height: 60px;
+  line-height: 28px;
 }
 #contextmenu ul.right li a {
   padding: 9px 12px;
@@ -558,7 +558,7 @@ a.close {
 }
 #contextmenu ul.left li {
   float: left;
-  line-height: 60px;
+  line-height: 28px;
 }
 #contextmenu ul.left li a {
   padding: 9px 12px;
