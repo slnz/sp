@@ -185,20 +185,32 @@
         <% end %>
       <% end %>
     
-      <div class="field">
-        <label for="sp_project_picture">Project Picture</label>
-        <%= f.file_field :picture %>
-        <% if @project.picture_file_name.present? %>
-          <div class="picture"><%= image_tag(@project.picture.url(:thumb)) %></div>
-        <% end %>
-      </div>
     
-      <div class="field">
-        <label for="sp_project_picture">Project Logo</label>
-        <%= f.file_field :logo %>
-        <% if @project.logo_file_name.present? %>
-          <div class="picture"><%= image_tag(@project.logo.url(:thumb)) %></div>
-        <% end %>
+      <div class="multifield" style="margin-top: 20px;">
+    
+        <div class="field">
+          <label for="sp_project_picture">Project Picture</label>
+          <div class="picture">
+          <% if @project.picture_file_name.present? %>
+            <%= image_tag(@project.picture.url(:thumb)) %>
+          <% end %>
+          </div>
+          <input type="file" size="1" name="sp_project[picture]" id="sp_project_picture" class="smallinputfile">
+          <%#= f.file_field(:picture, :size => 2) %>
+  
+        </div>
+      
+        <div class="field">
+          <label for="sp_project_picture">Project Logo</label>
+          <div class="picture">
+          <% if @project.logo_file_name.present? %>
+            <%= image_tag(@project.logo.url(:thumb)) %>
+          <% end %>
+          </div>
+          <input type="file" size="1" name="sp_project[logo]" id="sp_project_logo" class="smallinputfile">
+          <%#= f.file_field(:logo, :size => "2") %>
+        </div>
+        <div class="clear"></div>
       </div>
       
       <button type="submit" class="save"><span>Save</span></button>

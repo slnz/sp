@@ -241,6 +241,15 @@ a.addanother img {
   border: none;
   vertical-align: bottom;
 }
+div.picture {
+  background: url("/images/holder.png") no-repeat 50% 50%;
+  border: 1px solid silver;
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+.ui-widget input.smallinputfile { font-size: 12px; }
 button {
   background: url(/images/buttonbg.png) repeat-x;
   border: 1px solid silver;
