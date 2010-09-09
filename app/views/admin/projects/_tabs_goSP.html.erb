@@ -188,7 +188,7 @@
       <div class="field">
         <label for="sp_project_picture">Project Picture</label>
         <%= f.file_field :picture %>
-        <% if @project.picture.present? %>
+        <% if @project.picture_file_name.present? %>
           <div class="picture"><%= image_tag(@project.picture.url(:thumb)) %></div>
         <% end %>
       </div>
@@ -196,7 +196,7 @@
       <div class="field">
         <label for="sp_project_picture">Project Logo</label>
         <%= f.file_field :logo %>
-        <% if @project.logo.present? %>
+        <% if @project.logo_file_name.present? %>
           <div class="picture"><%= image_tag(@project.logo.url(:thumb)) %></div>
         <% end %>
       </div>
