@@ -20,15 +20,20 @@ class MoveDirectorsToSpStaff < ActiveRecord::Migration
       SpStaff.create(:person_id => project.coordinator_id, :project_id => project.id, :type => 'Coordinator', :year => project.year) if project.coordinator_id.present? && project.coordinator_id != 0
     end
     
-    SpProjectVersion.connection.select_all('select max(id) as id, sp_project_id, year from sp_project_versions group by year, sp_project_id').each do |row|
+    SpProjectVersion.connection.select_all('select max(id) as id, sp_project_id, pd_id, apd_id, opd_id, coordinator_id, year from sp_project_versions where pd_id is not null group by year, sp_project_id').each do |row|
       next unless row['sp_project_id'].present?
-      project = SpProjectVersion.find(row['id'])
-      if project
-        SpStaff.create(:person_id => project.pd_id, :project_id => row['sp_project_id'], :type => 'PD', :year => row['year']) if row['pd_id'].present? && row['pd_id'] != 0
-        SpStaff.create(:person_id => project.apd_id, :project_id => row['sp_project_id'], :type => 'APD', :year => row['year']) if row['apd_id'].present? && row['apd_id'] != 0
-        SpStaff.create(:person_id => project.opd_id, :project_id => row['sp_project_id'], :type => 'OPD', :year => row['year']) if row['opd_id'].present? && row['opd_id'] != 0
-        SpStaff.create(:person_id => project.coordinator_id, :project_id => row['sp_project_id'], :type => 'Coordinator', :year => row['year']) if row['coordinator_id'].present? && row['coordinator_id'] != 0
-      end
+      begin
+        SpStaff.create(:person_id => row['pd_id'], :project_id => row['sp_project_id'], :type => 'PD', :year => row['year']) if row['pd_id'].present? && row['pd_id'] != 0 && !SpStaff.where(:person_id => row['pd_id'], :project_id => row['sp_project_id'], :type => 'PD', :year => row['year']).first
+      rescue ActiveRecord::InvalidForeignKey; end
+      begin
+        SpStaff.create(:person_id => row['apd_id'], :project_id => row['sp_project_id'], :type => 'APD', :year => row['year']) if row['apd_id'].present? && row['apd_id'] != 0 && !SpStaff.where(:person_id => row['apd_id'], :project_id => row['sp_project_id'], :type => 'APD', :year => row['year']).first
+      rescue ActiveRecord::InvalidForeignKey; end
+      begin
+        SpStaff.create(:person_id => row['opd_id'], :project_id => row['sp_project_id'], :type => 'OPD', :year => row['year']) if row['opd_id'].present? && row['opd_id'] != 0 && !SpStaff.where(:person_id => row['opd_id'], :project_id => row['sp_project_id'], :type => 'OPD', :year => row['year']).first
+      rescue ActiveRecord::InvalidForeignKey; end
+      begin
+        SpStaff.create(:person_id => row['coordinator_id'], :project_id => row['sp_project_id'], :type => 'Coordinator', :year => row['year']) if row['coordinator_id'].present? && row['coordinator_id'] != 0 && !SpStaff.where(:person_id => row['coordinator_id'], :project_id => row['sp_project_id'], :type => 'Coordinator', :year => row['year']).first
+      rescue ActiveRecord::InvalidForeignKey; end
     end
     add_index :sp_staff, [:project_id, :type, :year], :name => "project_staff_type"
     SpApplication.connection.update("update sp_applications set project_id = preference1_id where project_id is NULL")
