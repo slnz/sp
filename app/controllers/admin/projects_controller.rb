@@ -366,19 +366,19 @@ class Admin::ProjectsController < ApplicationController
         # Men, women or all
         case params[:group]
         when 'men_staff_and_interns'
-          people += [@project.pd] if @project.pd.is_male?
-          people += [@project.apd] if @project.apd.is_male?
-          people += [@project.opd] if @project.opd.is_male?
-          people += @project.staff.find(:all, :conditions => "gender = 1") 
-          people += @project.volunteers.find(:all, :conditions => "gender = 1") 
+          people += [@project.pd(@year)] if @project.pd(@year).is_male?
+          people += [@project.apd(@year)] if @project.apd(@year).is_male?
+          people += [@project.opd(@year)] if @project.opd(@year).is_male?
+          people += @project.staff(@year).where(:gender => 1) 
+          people += @project.volunteers(@year).where(:gender => 1)
         when 'women_staff_and_interns'
-          people += [@project.pd] if !@project.pd.is_male?
-          people += [@project.apd] if !@project.apd.is_male?
-          people += [@project.opd] if !@project.opd.is_male?
-          people += @project.staff.find(:all, :conditions => "gender = 0") 
-          people += @project.volunteers.find(:all, :conditions => "gender = 0") 
+          people += [@project.pd(@year)] if !@project.pd(@year).is_male?
+          people += [@project.apd(@year)] if !@project.apd(@year).is_male?
+          people += [@project.opd(@year)] if !@project.opd(@year).is_male?
+          people += @project.staff(@year).where(:gender => 0)
+          people += @project.volunteers(@year).where(:gender => 0)
         else
-          people += [@project.pd] + [@project.apd] + [@project.opd] + @project.staff + @project.volunteers 
+          people += [@project.pd(@year)] + [@project.apd(@year)] + [@project.opd(@year)] + @project.staff(@year) + @project.volunteers(@year) 
         end
       end
     

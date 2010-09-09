@@ -261,6 +261,19 @@ $(function() {
 
 	$('#group').change(function() {
 		$('#to').val(emails[$('#group').val()]);
+		if ($.trim($('#to').val()) == '') {
+			$('#dialog-confirm').attr('title', 'Check your project year');
+			var year = $('#changeyear').html();
+			$('#dialog-confirm-message').html("There aren't any people in the group you selected for the " + year + " project year. Try choosing a different year from the dropdown, or manually enter some email addresses.");
+			$("#dialog-confirm").dialog({
+				modal: true,
+				buttons: {
+					Ok: function() {
+						$(this).dialog('close');
+					},
+				}
+			});
+		}
 	}); 
 
 });

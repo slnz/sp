@@ -5,7 +5,7 @@
   <div id="breadcrumb">
     <ul>
       <li><%= link_to('Projects', admin_projects_path) %></li>
-      <li><%= link_to(@project.name, admin_project_path(@project)) %></li>
+      <li><%= link_to(@project.name, admin_project_path(@project, :year => @year)) %></li>
       <li class="last">Send Email</li>
     </ul>
   </div>
@@ -30,7 +30,7 @@
           <label>To:</label>
           <div class="fieldinput">
             <%= select_tag :group, options_for_select(@group_options) %>
-            <textarea name="to" id="to" type="text" cols="70" rows="3" wrap="virtual" class="addresses"><%= params[:to] %></textarea>
+            <textarea name="to" id="to" type="text" cols="70" rows="5" wrap="virtual" class="addresses"><%= params[:to] %></textarea>
           </div>
         </div>
         
