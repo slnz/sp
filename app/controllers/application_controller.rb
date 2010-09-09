@@ -1,6 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-
+  def self.application_name
+    'SP'
+  end
+  
+  def application_name
+    ApplicationController.application_name
+  end
+    
   protected
     def dashboard_path
       if sp_user.can_see_dashboard?
@@ -68,14 +75,6 @@ class ApplicationController < ActionController::Base
       %w{pd apd opd coordinator}
     end
     helper_method :leader_types
-    
-    def self.application_name
-      'SP'
-    end
-    
-    def application_name
-      ApplicationController.application_name
-    end
     
     def search
       if params[:name].present?
