@@ -15,7 +15,7 @@
           <%= f.label :project_contact_name, "Name" %>
           <%= f.text_field :project_contact_name %>
         </div>
-        <div class="field required">
+        <div class="field">
           <%= f.label :project_contact_role, "Project Role" %>
           <%= f.select :project_contact_role, SpContactRoles.all, :include_blank => true %>
         </div>
@@ -30,19 +30,19 @@
       </div>
       
       <div class="col_right"> 
-        <div class="field required">
+        <div class="field">
           <%= f.label :project_contact2_name, "Name" %>
           <%= f.text_field :project_contact2_name %>
         </div>
-        <div class="field required">
+        <div class="field">
           <%= f.label :project_contact2_role, "Project Role" %>
           <%= f.select :project_contact2_role, SpContactRoles.all, :include_blank => true %>
         </div>
-        <div class="field required">
+        <div class="field">
           <%= f.label :project_contact2_phone, "Phone" %>
           <%= f.text_field :project_contact2_phone %>
         </div>
-        <div class="field required">
+        <div class="field">
           <%= f.label :project_contact2_email, "Email" %>
           <%= f.text_field :project_contact2_email %>
         </div>
@@ -53,11 +53,11 @@
       <h3 class="critical">In case of an emergency on a summer project  call 888-899-9292 or 407-380-8665. <%= tip('It is advisable that you program these numbers in your cell phone before your project begins. If you are going overseas, use the 407 number. This is a secure number, answered by \'LH Communications\', safe for calling from secure countries.') %></h3>
 
       <div class="multifield">
-        <div class="field required">
+        <div class="field">
           <%= f.label :staff_start_date %>
           <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
         </div>
-        <div class="field required">
+        <div class="field">
           <%= f.label :staff_end_date %>
           <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
         </div>
@@ -74,7 +74,7 @@
         </div>
         <div class="field">
           <%= f.label :destination_city, do
-            "Int'l City you are Flying To<br>(include Airport Code)" + tip('<br>For example: Minneapolis, MN (MSP)')   
+            "Int'l City you are Flying To<br>(include Airport Code)" + tip('<br>For example: Brisbane, Australia (BNE)')   
             end %>
           <%= f.text_field :destination_city %>
         </div>
