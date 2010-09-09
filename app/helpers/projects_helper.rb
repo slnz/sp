@@ -11,7 +11,7 @@ module ProjectsHelper
     end
   end
   
-  
+  # This method was written by Isaac Kimball
   def stat_link(project, project_version,text, options = {})
     pb=Time.now.to_date
     pe=Time.now.to_date
@@ -101,11 +101,8 @@ module ProjectsHelper
       collections << team
     end
     record = instance_variable_get("@#{object}")
-    unless options && options.include?(:no_errors)
-      error_wrapping(content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options), record.errors.on(method))
-    else 
-      content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options)
-    end
+    tag = content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options)
+    tag = error_wrapping(tag, record.errors.on(method)) unless options && options.include?(:no_errors)
   end
   
   def error_wrapping(html_tag, has_error)
