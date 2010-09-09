@@ -15,6 +15,5 @@ class DragonflyOnSpProject < ActiveRecord::Migration
     add_column :sp_projects, :picture_content_type, :string
     add_column :sp_projects, :picture_file_size,    :integer
     add_column :sp_projects, :picture_updated_at,   :datetime
-    
   end
 end

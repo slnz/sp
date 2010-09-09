@@ -18,7 +18,11 @@ gem 'tiny_mce'
 gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
-# gem 'paperclip'
+gem 'rspec'
+# gem 'image_science', :git => "http://github.com/sobakasu/image_science.git"
+# gem 'RubyInline'
+gem 'paperclip'
+
 gem 'memcache-client'
 
 gem 'RedCloth'
@@ -27,8 +31,7 @@ gem 'aws-s3', :require => 'aws/s3'
 gem 'google-geocode', :require => 'google_geocode'
 gem 'spreadsheet'
 gem 'exception_notification', :git => "git://github.com/rails/exception_notification", :require => 'exception_notifier', :branch => 'master'
-gem 'unicode_utils'
-# gem "exception_notifier"
+# gem 'unicode_utils'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
 #gem 'rack-cache', :require => 'rack/cache'

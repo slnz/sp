@@ -185,20 +185,20 @@
         <% end %>
       <% end %>
     
-<!--       <div class="field">
+      <div class="field">
         <label for="sp_project_picture">Project Picture</label>
-        <%#= f.file_field :picture %>
-        <% if @project.picture_uid.present? %>
-          <div class="picture"><%#= image_tag(@project.picture.thumb('100x100#').url) %></div>
+        <%= f.file_field :picture %>
+        <% if @project.picture.present? %>
+          <div class="picture"><%= image_tag(@project.picture.url(:thumb)) %></div>
         <% end %>
       </div>
     
       <div class="field">
         <label for="sp_project_picture">Project Logo</label>
-        <%#= f.file_field :logo %>
-        <% if @project.logo_uid.present? %>
-          <div class="picture"><%#= image_tag(@project.picture.thumb('100x100#').url) %></div>
+        <%= f.file_field :logo %>
+        <% if @project.logo.present? %>
+          <div class="picture"><%= image_tag(@project.logo.url(:thumb)) %></div>
         <% end %>
-      </div> -->
+      </div>
       
       <button type="submit" class="save"><span>Save</span></button>

@@ -1,0 +1,807 @@
+/*
+ * Provides a clean and simple API to FreeImage.
+ */
+
+#include "ruby.h"
+#include "FreeImage.h"
+#include <sys/stat.h>
+
+#define GET_BITMAP(name) Data_Get_Struct(self, FIBITMAP, (name)); if (!(name)) rb_raise(rb_eTypeError, "Bitmap has already been freed")
+#define RB_BOOL(value) (value ? Qtrue : Qfalse)
+
+#ifdef HAVE_FREEIMAGE_ROTATE
+#define ROTATE(bitmap, angle) FreeImage_Rotate(bitmap, angle, NULL)
+#else
+#define ROTATE(bitmap, angle) FreeImage_RotateClassic(bitmap, angle)
+#endif
+
+VALUE isc;               /* ImageScience class */
+VALUE isc_image_types;   /* ImageScience::ImageTypes module */
+VALUE isc_image_formats; /* ImageScience::ImageFormats module */
+VALUE isc_image_filters; /* ImageScience::ImageFilters module */
+VALUE isc_color_chan;    /* ImageScience::ColorChannels module */
+VALUE isc_color_types;   /* ImageScience::ColorTypes module */
+VALUE isc_ls_flags;      /* ImageScience::LoadSaveFlags module */
+
+static VALUE unload(FIBITMAP *bitmap) {
+  FreeImage_Unload(bitmap);
+  return Qnil;
+}
+
+static VALUE isc_alloc(VALUE klass)
+{
+  VALUE obj = Data_Wrap_Struct(klass, NULL, unload, NULL);
+  DATA_PTR(obj) = NULL;
+  return obj;
+}
+
+static FREE_IMAGE_FORMAT get_fif(VALUE self) {
+  return FIX2INT(rb_iv_get(self, "@file_type"));
+}
+
+static VALUE wrap_and_yield(FIBITMAP *image, VALUE self, FREE_IMAGE_FORMAT fif) {
+  unsigned int self_is_class = rb_type(self) == T_CLASS;
+  VALUE klass = self_is_class ? self : CLASS_OF(self);
+  VALUE obj = isc_alloc(klass);
+
+  if(!self_is_class) fif = get_fif(self);
+
+  DATA_PTR(obj) = image;
+  rb_iv_set(obj, "@file_type", INT2FIX(fif));
+  return rb_yield(obj);
+}
+
+static void copy_icc_profile(FIBITMAP *from, FIBITMAP *to, FREE_IMAGE_FORMAT fif) {
+  if (fif != FIF_PNG && FreeImage_FIFSupportsICCProfiles(fif)) {
+    FIICCPROFILE *profile = FreeImage_GetICCProfile(from);
+    if (profile && profile->data) {
+      FreeImage_CreateICCProfile(to, profile->data, profile->size);
+    }
+  }
+}
+
+static void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
+  rb_raise(rb_eRuntimeError,
+	   "FreeImage exception for type %s: %s",
+	   (fif == FIF_UNKNOWN) ? "???" : FreeImage_GetFormatFromFIF(fif),
+	   message);
+}
+
+/****** helper functions ****/
+
+/*
+ * Prepare the given bitmap for saving in the specified format.
+ * If a new bitmap is required, returns a bitmap, else returns NULL.
+ */
+static FIBITMAP *
+_prepare_bitmap_for_save(FIBITMAP *bitmap, FREE_IMAGE_FORMAT fif)
+{
+  FIBITMAP *new_bitmap = NULL;
+
+  // if (fif == FIF_PNG) FreeImage_DestroyICCProfile(bitmap);
+
+  if (fif == FIF_JPEG && FreeImage_GetBPP(bitmap) != 24) {
+    new_bitmap = FreeImage_ConvertTo24Bits(bitmap);
+  }
+  if (fif == FIF_GIF && FreeImage_GetBPP(bitmap) != 8) {
+    if (FreeImage_GetBPP(bitmap) != 24) {
+      new_bitmap = FreeImage_ColorQuantize(FreeImage_ConvertTo24Bits(bitmap), FIQ_WUQUANT);
+    } else {
+      new_bitmap = FreeImage_ColorQuantize(bitmap, FIQ_WUQUANT);
+    }
+  }
+
+  if (new_bitmap) copy_icc_profile(bitmap, new_bitmap, fif);
+
+  return new_bitmap;
+}
+
+/* called by isc_init, with_image, with_image_from_memory */
+static VALUE isc_init2(VALUE self, VALUE image, VALUE flags_arg, int is_file)
+{
+  char *img;
+  FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+  DWORD image_data_length;
+  FIMEMORY *stream;
+  FIBITMAP *bitmap, *new_bitmap;
+  int flags, flags_given;
+
+  flags = NIL_P(flags_arg) ? 0 : FIX2INT(flags_arg);
+  flags_given = !NIL_P(flags_arg);
+
+  Check_Type(image, T_STRING);
+  img = RSTRING(image)->ptr;
+
+  if (is_file) {
+    /* argument is a file */
+
+    fif = FreeImage_GetFileType(img, 0);
+    if (fif == FIF_UNKNOWN) fif = FreeImage_GetFIFFromFilename(img);
+    if ((fif == FIF_UNKNOWN) || !FreeImage_FIFSupportsReading(fif)) {
+      rb_raise(rb_eTypeError, "Unknown file format");
+    }
+
+    if(!flags_given && fif == FIF_JPEG) flags = JPEG_ACCURATE;
+
+    bitmap = FreeImage_Load(fif, img, flags);
+  }
+  else {
+    /* attempt to read argument as image data */
+    image_data_length = RSTRING(image)->len;
+    stream = FreeImage_OpenMemory((BYTE *)img, image_data_length);
+
+    fif = FreeImage_GetFileTypeFromMemory(stream, 0);
+    if ((fif == FIF_UNKNOWN) || !FreeImage_FIFSupportsReading(fif)) {
+      rb_raise(rb_eTypeError, "Unknown file format");
+    }
+
+    if(!flags_given && fif == FIF_JPEG) flags = JPEG_ACCURATE;
+
+    bitmap = FreeImage_LoadFromMemory(fif, stream, flags);
+    FreeImage_CloseMemory(stream);
+  }
+
+  /* rotate bitmap according to Orientation EXIF tag */
+  if (bitmap) {
+    FITAG *tagValue = NULL;
+    double angle = 0;
+
+    FreeImage_GetMetadata(FIMD_EXIF_MAIN, bitmap, "Orientation", &tagValue); 
+
+    switch (tagValue == NULL ? 0 : *((short *) FreeImage_GetTagValue(tagValue))) {
+    case 6:
+      angle = 270; break;
+    case 3:
+      angle = 180; break;
+    case 8:
+      angle = 90; break;
+    }
+
+    if (angle) {
+      new_bitmap = ROTATE(bitmap, angle);
+      FreeImage_Unload(bitmap);
+      bitmap = new_bitmap;
+    }
+  }
+
+  DATA_PTR(self) = bitmap;
+  rb_iv_set(self, "@file_type", INT2FIX(fif));
+
+  return self;
+}
+
+/****** Class methods ******/
+
+/*
+ * call-seq:
+ *   with_image(filename) { |img| ... }
+ *
+ * The top-level image loader opens +filename+ and then yields the image.
+ */
+static VALUE with_image(VALUE klass, VALUE filename) {
+  VALUE self = isc_alloc(isc);
+  isc_init2(self, filename, Qnil, 1);
+  return rb_yield(self);
+}
+
+/*
+ * call-seq:
+ *   with_image_from_memory(image_data) { |img| ... }
+ *
+ * The top-level image loader, opens an image from the string +image_data+
+ * and then yields the image.
+ */
+static VALUE with_image_from_memory(VALUE klass, VALUE image_data) {
+  VALUE self = isc_alloc(isc);
+  isc_init2(self, image_data, Qnil, 0);
+  return rb_yield(self);
+}
+
+/*
+ * Returns the FreeImage library version.
+ */
+static VALUE get_version(VALUE self) {
+  const char *version = FreeImage_GetVersion();
+  return rb_str_new2(version);
+}
+
+/* 
+ * Orders FreeImage to analyze the bitmap signature. The method then
+ * returns one of the predefined ImageScience::ImageFormats or a bitmap
+ * identification number registered by a plugin. The size parameter is
+ * currently not used and can be set to 0.
+ */
+static VALUE file_type(VALUE self, VALUE filename) {
+  char * input = RSTRING(filename)->ptr;
+  FREE_IMAGE_FORMAT fif = FIF_UNKNOWN; 
+
+  fif = FreeImage_GetFileType(input, 0); 
+  if (fif == FIF_UNKNOWN) fif = FreeImage_GetFIFFromFilename(input); 
+  return (fif == FIF_UNKNOWN) ? Qnil : INT2FIX(fif);
+}
+
+/*********** Instance methods ***********/
+
+/*
+ * call-seq:
+ *   buffer()
+ *   buffer() { |string| ... }
+ *   buffer(format, flags = 0)
+ *   buffer(format, flags = 0) { |string| ... }
+ *
+ * Returns the image in a buffer (String). Optionally accepts a file
+ * format argument to convert the image to the specified format (see
+ * ImageScience::ImageFormats).  If +format+ is nil, buffer() uses the
+ * current file format of the image (the default).  +flags+ is optional
+ * flags to send to the writer plugin (see ImageScience::LoadSaveFlags).
+ */
+static VALUE buffer(int argc, VALUE *argv, VALUE self) {
+  VALUE str = Qnil;
+  int flags;
+  FIBITMAP *bitmap, *new_bitmap;
+  FIMEMORY *mem = NULL;
+  BYTE *mem_buffer = NULL; 
+  DWORD size_in_bytes = 0;
+  char message[1024];
+  FREE_IMAGE_FORMAT fif;
+  BOOL result = 0;
+  VALUE fif_arg, flags_arg;  /* optional argument */
+
+  /* parse optional arguments: fif and flags */
+  rb_scan_args(argc, argv, "02", &fif_arg, &flags_arg);
+  if(NIL_P(fif_arg)) fif_arg = rb_iv_get(self, "@file_type");
+  fif = NIL_P(fif_arg) ? FIF_UNKNOWN : FIX2INT(fif_arg);
+  flags = NIL_P(flags_arg) ? 0 : FIX2INT(flags_arg);
+
+  if ((fif == FIF_UNKNOWN) || !FreeImage_FIFSupportsWriting(fif)) {
+    snprintf(message, 1023, "Unknown file format: %d", fif);
+    rb_raise(rb_eTypeError, message);
+  }
+
+  GET_BITMAP(bitmap);
+
+  // create a memory stream and save to it 
+  new_bitmap = _prepare_bitmap_for_save(bitmap, fif);
+  mem = FreeImage_OpenMemory(0,0);
+  result = FreeImage_SaveToMemory(fif, new_bitmap ? new_bitmap : bitmap, mem, flags);
+
+  if(result) {
+    // get the buffer from the memory stream
+    FreeImage_AcquireMemory(mem, &mem_buffer, &size_in_bytes);
+
+    // convert to ruby string
+    str = rb_str_new((char *) mem_buffer, size_in_bytes);
+  }
+
+  // clean up
+  if(new_bitmap) FreeImage_Unload(new_bitmap);
+  FreeImage_CloseMemory(mem); 
+
+  // yield the string, or return it
+  if (rb_block_given_p()) rb_yield(str);
+
+  return str;
+}
+
+/*
+ * call-seq:
+ *   crop(left, top, right, bottom)
+ *   with_crop(left, top, right, bottom) { |img| ... }
+ *
+ * Crops an image to +left+, +top+, +right+, and +bottom+.
+ * If a block is given, yields the new image, else returns
+ * true on success.
+ */
+static VALUE with_crop(VALUE self, VALUE lv, VALUE tv, VALUE rv, VALUE bv) {
+  FIBITMAP *copy, *bitmap;
+  VALUE result = Qnil;
+
+  GET_BITMAP(bitmap);
+
+  copy = FreeImage_Copy(bitmap, NUM2INT(lv), NUM2INT(tv),
+			NUM2INT(rv), NUM2INT(bv));
+  if (copy) {
+    copy_icc_profile(bitmap, copy, get_fif(self));
+    if(rb_block_given_p()) {
+      result = wrap_and_yield(copy, self, 0);
+    } else {
+      result = Qtrue;
+      FreeImage_Unload(bitmap);
+      DATA_PTR(self) = copy;
+    }
+  }
+  return result;
+}
+
+/*
+ * Returns the height of the image, in pixels.
+ */
+static VALUE height(VALUE self) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+  return INT2FIX(FreeImage_GetHeight(bitmap));
+}
+
+/*
+ * Returns the width of the image, in pixels.
+ */
+static VALUE width(VALUE self) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+  return INT2FIX(FreeImage_GetWidth(bitmap));
+}
+
+/*
+ * call-seq:
+ *   get_pixel_color(x, y) -> [red, green, blue, alpha]
+ *
+ * Returns an array representing the color of the given pixel.
+ */
+static VALUE get_pixel_color(VALUE self, VALUE xval, VALUE yval) {
+  FIBITMAP *bitmap;
+  RGBQUAD rgb;
+  RGBQUAD *pal;
+  BYTE rgb_index;
+  FREE_IMAGE_COLOR_TYPE ctype;
+  VALUE out_ary = rb_ary_new2(4);
+  int x = NUM2INT(xval);
+  int y = NUM2INT(yval);
+  int success = 0;
+
+  GET_BITMAP(bitmap);
+  ctype = FreeImage_GetColorType(bitmap);
+
+  y = FreeImage_GetHeight(bitmap) - y - 1; /* convert to normal coordinates */
+
+  if(ctype == FIC_PALETTE) {
+    if(FreeImage_GetPixelIndex(bitmap, x, y, &rgb_index)) {
+      pal = FreeImage_GetPalette(bitmap);
+      if(pal) {
+	rgb = pal[rgb_index];
+	success = 1;
+      }
+    }
+  } else {
+    memset(&rgb, 0, sizeof(RGBQUAD));
+    success = FreeImage_GetPixelColor(bitmap, x, y, &rgb);
+  }
+
+  if(success) {
+    rb_ary_store(out_ary, 0, INT2FIX(rgb.rgbRed));
+    rb_ary_store(out_ary, 1, INT2FIX(rgb.rgbGreen));
+    rb_ary_store(out_ary, 2, INT2FIX(rgb.rgbBlue));
+    rb_ary_store(out_ary, 3, INT2FIX(rgb.rgbReserved));
+  }
+
+  return out_ary;
+}
+
+/*
+ * call-seq:
+ *   set_pixel_color(x, y, index)
+ *   set_pixel_color(x, y, red, green, blue, alpha = NULL)
+ *   set_pixel_color(x, y, [red, green, blue, alpha])
+ *
+ * Set the pixel color or index (for palettized images).  Parameter
+ * +x+ is the pixel position in horizontal direction, and parameter
+ * +y+ is the pixel position in vertical direction. The method
+ * returns true on success, and returns false otherwise.
+ */
+
+static VALUE set_pixel_color(int argc, VALUE *argv, VALUE self) {
+  FIBITMAP *bitmap;
+  VALUE x, y, set_value, value1;
+  int value_length = 0, yval;
+  FREE_IMAGE_COLOR_TYPE ctype;
+  RGBQUAD rgb;
+  BYTE index_value;
+  BOOL ret = Qfalse;
+
+  GET_BITMAP(bitmap);
+  ctype = FreeImage_GetColorType(bitmap);
+  yval = FreeImage_GetHeight(bitmap); /* to convert to normal coordinates */
+
+  if(ctype == FIC_PALETTE) {
+    /* palettized image */
+    rb_scan_args(argc, argv, "30", &x, &y, &set_value);
+    index_value = FIX2INT(set_value);
+    yval = yval - FIX2INT(y) - 1;
+
+    ret = FreeImage_SetPixelIndex(bitmap, FIX2INT(x), yval, &index_value);
+  }
+  else {
+    rb_scan_args(argc, argv, "2*", &x, &y, &set_value);
+
+    if(!NIL_P(set_value)) {
+      /* if first entry is an array, use that as the colour list */
+      value1 = rb_ary_entry(set_value, 0);
+      if(TYPE(value1) == T_ARRAY) set_value = value1;
+
+      value_length = RARRAY(set_value)->len;
+    }
+
+    if(value_length < 3 || value_length > 4) {
+      rb_raise(rb_eArgError, "wrong number of arguments");
+    }
+
+    rgb.rgbRed   = FIX2INT(rb_ary_entry(set_value, 0));
+    rgb.rgbGreen = FIX2INT(rb_ary_entry(set_value, 1));
+    rgb.rgbBlue  = FIX2INT(rb_ary_entry(set_value, 2));
+    rgb.rgbReserved = (value_length == 4) ? FIX2INT(rb_ary_entry(set_value, 3)) : 0;
+    yval = yval - FIX2INT(y) - 1;
+
+    ret = FreeImage_SetPixelColor(bitmap, FIX2INT(x), yval, &rgb);
+  }
+  return ret;
+}
+
+/*
+ * call-seq:
+ *   resize(width, height, filter = FILTER_CATMULLROM)
+ *   resize(width, height, filter = FILTER_CATMULLROM) { |img| ... }
+ *
+ * Resizes the image to +width+ and +height+.  Optionally specify a filter to
+ * use with the filter argument (See FreeImage::ImageFilters).
+ * If a block is given, yields the new image, else returns
+ * true on success.
+ */
+static VALUE resize(int argc, VALUE *argv, VALUE self) {
+  FIBITMAP *bitmap, *image;
+  VALUE width, height, filter;
+  FREE_IMAGE_FILTER fi_filter;
+  int w, h;
+
+  rb_scan_args(argc, argv, "21", &width, &height, &filter);
+  fi_filter = NIL_P(filter) ? FILTER_CATMULLROM : FIX2INT(filter);
+
+  w = NUM2INT(width);
+  h = NUM2INT(height);
+
+  if (w <= 0) rb_raise(rb_eArgError, "Width <= 0");
+  if (h <= 0) rb_raise(rb_eArgError, "Height <= 0");
+
+  GET_BITMAP(bitmap);
+  image = FreeImage_Rescale(bitmap, w, h, fi_filter);
+
+  if (image) {
+    copy_icc_profile(bitmap, image, get_fif(self));
+    if(rb_block_given_p()) {
+      return wrap_and_yield(image, self, 0);
+    } else {
+      FreeImage_Unload(bitmap);
+      DATA_PTR(self) = image;
+    }
+  }
+  return image ? Qtrue : Qfalse;
+}
+
+/*
+ * call-seq:
+ *   save(path)
+ *
+ * Saves the image out to +path+. Changing the file extension will
+ * convert the file type to the appropriate format.
+ */
+static VALUE save(VALUE self, VALUE filename) {
+  int flags;
+  char * output = RSTRING(filename)->ptr;
+  FIBITMAP *bitmap, *new_bitmap;
+  FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(output);
+  if (fif == FIF_UNKNOWN) fif = FIX2INT(rb_iv_get(self, "@file_type"));
+  if ((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsWriting(fif)) {
+    GET_BITMAP(bitmap);
+    flags = fif == FIF_JPEG ? JPEG_QUALITYSUPERB : 0;
+    BOOL result = 0;
+    
+    new_bitmap = _prepare_bitmap_for_save(bitmap, fif);
+    result = FreeImage_Save(fif, new_bitmap ? new_bitmap : bitmap, output, flags);
+    if(new_bitmap) FreeImage_Unload(new_bitmap);
+
+    return result ? Qtrue : Qfalse;
+  }
+  rb_raise(rb_eTypeError, "Unknown file format");
+}
+
+/*
+ * Investigates the color type of the bitmap by reading the bitmap's
+ * pixel bits and analysing them.  See ImageScience::ColorTypes for
+ * return values. 
+ */
+static VALUE colortype(VALUE self) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+
+  return INT2FIX(FreeImage_GetColorType(bitmap));
+}
+
+/*
+ * Returns the size of one pixel in the bitmap in bits. For example
+ * when each pixel takes 32-bits of space in the bitmap, this method
+ * returns 32. Possible bit depths are 1, 4, 8, 16, 24, 32 for
+ * standard bitmaps and 16-, 32-, 48-, 64-, 96- and 128-bit for non
+ * standard bitmaps.
+ */
+static VALUE depth(VALUE self) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+
+  return INT2FIX(FreeImage_GetBPP(bitmap));
+}
+
+/*
+ * call-seq:
+ *   adjust_gamma(gamma) -> boolean
+ *
+ * Performs gamma correction on a 8-, 24- or 32-bit image. The gamma
+ * parameter represents the gamma value to use (gamma > 0). A value of
+ * 1.0 leaves the image alone, less than one darkens it, and greater
+ * than one lightens it.  The method returns true on success. It
+ * returns false when gamma is less than or equal to zero or when the
+ * bitdepth of the image cannot be handled.
+ */
+static VALUE adjust_gamma(VALUE self, VALUE gamma) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+  return RB_BOOL(FreeImage_AdjustGamma(bitmap, NUM2DBL(gamma)));
+}
+
+/*
+ * call-seq:
+ *   adjust_brightness(percentage) -> boolean
+ *
+ * Adjusts the brightness of a 8-, 24- or 32-bit image by a certain
+ * amount. This amount is given by the percentage parameter, where
+ * percentage is a value between [-100..100]. A value 0 means no
+ * change, less than 0 will make the image darker and greater than 0
+ * will make the image brighter.  The method returns true on
+ * success, false otherwise (e.g. when the bitdepth of the image
+ * cannot be handled).
+ */
+static VALUE adjust_brightness(VALUE self, VALUE percentage) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+  return RB_BOOL(FreeImage_AdjustBrightness(bitmap, NUM2DBL(percentage)));
+}
+
+/*
+ * call-seq:
+ *   adjust_contrast(percentage) -> boolean
+ *
+ * Adjusts the contrast of a 8-, 24- or 32-bit image by a certain
+ * amount. This amount is given by the percentage parameter, where
+ * percentage is a value between [-100..100]. A value 0 means no change,
+ * less than 0 will decrease the contrast and greater than 0 will
+ * increase the contrast of the image.  The method returns true on
+ * success, false otherwise (e.g. when the bitdepth of the image cannot
+ * be handled).
+ */
+static VALUE adjust_contrast(VALUE self, VALUE percentage) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+  return RB_BOOL(FreeImage_AdjustContrast(bitmap, NUM2DBL(percentage)));
+}
+
+/* Inverts each pixel data. Returns true on success. */
+static VALUE invert(VALUE self) {
+  FIBITMAP *bitmap;
+  GET_BITMAP(bitmap);
+  return RB_BOOL(FreeImage_Invert(bitmap));
+}
+
+/*
+ * call-seq:
+ *   histogram(channel = FICC_RGB) -> array or nil
+ *
+ * Computes the image histogram. For 24-bit and 32-bit images,
+ * histogram can be computed from red, green, blue and black
+ * channels. For 8-bit images, histogram is computed from the black
+ * channel. Other bit depth is not supported.
+ * The method returns a 256 element array on success, nil otherwise.
+ * See ImageScience::ColorChannels for accepted channel values.
+ */
+static VALUE histogram(int argc, VALUE *argv, VALUE self) {
+  FIBITMAP *bitmap;
+  DWORD histo[256];
+  VALUE channel;  /* optional argument */
+  FREE_IMAGE_COLOR_CHANNEL fi_chan;
+  VALUE ret = Qnil;
+  int i;
+
+  rb_scan_args(argc, argv, "01", &channel);  /* 1 optional argument */
+  
+  fi_chan = NIL_P(channel) ? FICC_RGB : FIX2INT(channel);
+
+  GET_BITMAP(bitmap);
+  if(FreeImage_GetHistogram(bitmap, histo, fi_chan)) {
+    ret = rb_ary_new2(256);
+    for(i = 0; i < 256; i++) {
+      rb_ary_store(ret, i, INT2FIX(histo[i]));
+    }
+  }
+  return ret;
+}
+
+static VALUE _flip(VALUE self, BOOL (*flip_func)(FIBITMAP *)) {
+  FIBITMAP *bitmap, *new_bitmap;
+  BOOL result;
+
+  GET_BITMAP(bitmap);
+  if(rb_block_given_p()) {
+    new_bitmap = FreeImage_Clone(bitmap);
+    (*flip_func)(new_bitmap);
+    return wrap_and_yield(new_bitmap, self, 0);
+  } else {
+    result = (*flip_func)(bitmap);
+    return result ? Qtrue : Qfalse;
+  }
+}
+
+/* Flip the image horizontally along the vertical axis. */
+static VALUE flip_horizontal(VALUE self) {
+  return _flip(self, FreeImage_FlipHorizontal);
+}
+
+/* Flip the image vertically along the horizontal axis. */
+static VALUE flip_vertical(VALUE self) {
+  return _flip(self, FreeImage_FlipVertical);
+}
+
+/*
+ * call-seq:
+ *   rotate(angle)
+ *   rotate(angle, x_shift, y_shift, x_origin, y_origin, use_mask = true)
+ * 
+ * Perform a rotation and / or translation of an image.
+ * 
+ * The first form rotates an image by means of 3 shears. The angle of
+ * rotation is specified by the +angle+ parameter in degrees. Rotation
+ * occurs around the center of the image area.  The image retains the
+ * size and aspect ratio of the source image.
+ *
+ * The second form uses a 3rd order (cubic) B-Spline. The rotated
+ * image will have the same width and height as the source image.  The
+ * angle of rotation is specified by the +angle+ parameter in
+ * degrees. Horizontal and vertical image translations (in pixel
+ * units) are specified by the +x_shift+ and +y_shift+
+ * parameters. Rotation occurs around the center specified by
+ * +x_origin+ and +y_origin+, also given in pixel units. When
+ * +use_mask+ is set to TRUE, the irrelevant part of the image is set
+ * to a black color, otherwise, a mirroring technique is used to fill
+ * irrelevant pixels.
+ *
+ */
+static VALUE rotate(int argc, VALUE *argv, VALUE self) {
+  FIBITMAP *bitmap;
+  FIBITMAP *new_bitmap = NULL;
+  VALUE angle, x_shift, y_shift, x_origin, y_origin, use_mask;
+  BOOL mask;
+  FREE_IMAGE_FORMAT fif;
+
+  rb_scan_args(argc, argv, "15", &angle, &x_shift, &y_shift,
+	       &x_origin, &y_origin, &use_mask);
+
+  GET_BITMAP(bitmap);
+  fif = get_fif(self);
+
+  if(FreeImage_GetBPP(bitmap) == 16) {
+    /* can't rotate 16 bit images - convert to 24 bit */
+    new_bitmap = FreeImage_ConvertTo24Bits(bitmap);
+    copy_icc_profile(bitmap, new_bitmap, fif);
+    FreeImage_Unload(bitmap);
+    DATA_PTR(self) = bitmap = new_bitmap;
+    new_bitmap = NULL;
+  }
+
+  if (argc == 1) {
+    /* first form - use Rotate */
+    new_bitmap = ROTATE(bitmap, NUM2DBL(angle));
+  }
+  else if (argc == 5 || argc == 6) {
+    /* second form - use RotateEx */
+    mask = NIL_P(use_mask) ? 0 : FIX2INT(use_mask);
+    new_bitmap = FreeImage_RotateEx
+      (bitmap, NUM2DBL(angle), NUM2DBL(x_shift), NUM2DBL(y_shift),
+       NUM2DBL(x_origin), NUM2DBL(y_origin), mask);
+  }
+  else {
+    rb_raise(rb_eArgError, "wrong number of arguments");
+  }
+  if (!new_bitmap) return Qfalse;
+
+  copy_icc_profile(bitmap, new_bitmap, fif);
+
+  if (rb_block_given_p()) {
+    return wrap_and_yield(new_bitmap, self, 0);
+  } else {
+    FreeImage_Unload(bitmap);
+    DATA_PTR(self) = new_bitmap;
+    return Qtrue;
+  }
+}
+
+/*
+ * call-seq:
+ *   ImageScience.new(filename, flags = 0)
+ *   ImageScience.new(image_data, flags = 0)
+ *
+ * Returns a new ImageScience object.  The optional +flags+ argument are
+ * flags to send to the loader plugin (see ImageScience::LoadSaveFlags).
+ * If flags are not specified, the JPEG_ACCURATE flag will be
+ * enabled by default for JPEG files.
+ */
+
+static VALUE isc_init(int argc, VALUE *argv, VALUE self)
+{
+  VALUE image, flags_arg;
+  struct stat buf;
+  int is_file;
+  char *img;
+
+  rb_scan_args(argc, argv, "11", &image, &flags_arg);
+  Check_Type(image, T_STRING);
+  img = RSTRING(image)->ptr;
+  is_file = !stat(img, &buf);
+
+  return isc_init2(self, image, flags_arg, is_file);
+}
+
+/* -- extension initialiser ---- */
+
+void Init_image_science_ext(void)
+{
+  isc = rb_define_class("ImageScience", rb_cObject);
+  rb_define_singleton_method(isc, "with_image", with_image, 1);
+  rb_define_singleton_method(isc, "with_image_from_memory",
+			     with_image_from_memory, 1);
+  rb_define_singleton_method(isc, "get_version", get_version, 0);
+  rb_define_singleton_method(isc, "file_type", file_type, 1);
+
+  rb_define_alloc_func(isc, isc_alloc);
+
+  rb_define_method(isc, "initialize", isc_init, -1);
+  rb_define_method(isc, "width", width, 0);
+  rb_define_method(isc, "height", height, 0);
+  rb_define_method(isc, "resize", resize, -1);
+  rb_define_method(isc, "save", save, 1);
+  rb_define_method(isc, "with_crop", with_crop, 4);
+  rb_define_method(isc, "crop", with_crop, 4);
+  rb_define_method(isc, "get_pixel_color", get_pixel_color, 2);
+  rb_define_method(isc, "set_pixel_color", set_pixel_color, -1);
+  rb_define_method(isc, "colortype", colortype, 0);
+  rb_define_method(isc, "depth", depth, 0);
+  rb_define_method(isc, "adjust_gamma", adjust_gamma, 1);
+  rb_define_method(isc, "adjust_brightness", adjust_brightness, 1);
+  rb_define_method(isc, "adjust_contrast", adjust_contrast, 1);
+  rb_define_method(isc, "invert", invert, 0);
+  rb_define_method(isc, "histogram", histogram, -1);  /* variable args */
+  rb_define_method(isc, "buffer", buffer, -1);
+  rb_define_method(isc, "flip_horizontal", flip_horizontal, 0);
+  rb_define_method(isc, "flip_vertical", flip_vertical, 0);
+  rb_define_method(isc, "rotate", rotate, -1);
+
+  /* FREE_IMAGE_TYPE constants */
+  isc_image_types = rb_define_module_under(isc, "ImageTypes");
+  /* expand FreeImage constants isc_image_types FIT */
+
+  /* FREE_IMAGE_COLOR_CHANNEL constants */
+  isc_color_chan = rb_define_module_under(isc, "ColorChannels");
+  /* expand FreeImage constants isc_color_chan FICC */
+
+  /* FREE_IMAGE_COLOR_TYPE constants */
+  isc_color_types = rb_define_module_under(isc, "ColorTypes");
+  /* expand FreeImage constants isc_color_types FIC */
+
+  /* FREE_IMAGE_FORMATS constants */
+  isc_image_formats = rb_define_module_under(isc, "ImageFormats");
+  /* expand FreeImage constants isc_image_formats FIF */
+
+  /* IMAGE_FILTER constants */
+  isc_image_filters = rb_define_module_under(isc, "ImageFilters");
+  /* expand FreeImage constants isc_image_filters FILTER */
+
+  /* load/save flag constants */
+  isc_ls_flags = rb_define_module_under(isc, "LoadSaveFlags");
+  /* expand FreeImage constants isc_ls_flags FLAG */
+
+  FreeImage_SetOutputMessage(FreeImageErrorHandler);
+}

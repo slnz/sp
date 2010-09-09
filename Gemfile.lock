@@ -81,7 +81,7 @@ GEM
     mime-types (1.16)
     mutter (0.5.3)
     mysql2 (0.2.3)
-    net-http-persistent (1.2.5)
+    net-http-persistent (1.3)
     net-scp (1.0.3)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -90,6 +90,9 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     nokogiri (1.4.3.1)
+    paperclip (2.3.3)
+      activerecord
+      activesupport
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -114,6 +117,7 @@ GEM
       net-http-persistent (~> 1.0)
       nokogiri (>= 1.3.1)
     responds_to_parent (1.0.20091013)
+    rspec (1.3.0)
     ruby-oci8 (2.0.4)
     ruby-ole (1.2.10.1)
     rubyforge (2.0.4)
@@ -125,7 +129,6 @@ GEM
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
-    unicode_utils (1.0.0)
     will_paginate (3.0.pre2)
     xml-simple (1.0.12)
 
@@ -148,10 +151,11 @@ DEPENDENCIES
   mail_safe
   memcache-client
   mysql2
+  paperclip
   rails (~> 3.0.0)
   responds_to_parent
+  rspec
   ruby-oci8
   spreadsheet
   tiny_mce
-  unicode_utils
   will_paginate (~> 3.0.pre2)
