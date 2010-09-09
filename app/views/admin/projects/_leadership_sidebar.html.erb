@@ -29,7 +29,7 @@
       <h3><span>Project Leaders</span></h3>
       <table>
         <% [:pd,:apd,:opd, :coordinator].each do |leader|
-          person = project.send(leader) -%>
+          person = project.send(leader, @year) -%>
           <tr>
             <td><%= [:pd,:apd,:opd].include?(leader) ? leader.upcase : leader.to_s.titleize %></td>
             <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader %></td>
