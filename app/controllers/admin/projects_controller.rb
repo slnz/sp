@@ -252,7 +252,7 @@ class Admin::ProjectsController < ApplicationController
     when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
       @base = @base.where(:id => current_person.staffed_projects.collect(&:id))
     when 'SpRegionalCoordinator'
-      @base = @base.where("primary_partner = ? OR secondary_partner = ? OR tertiary_partner = ?", current_person.region, current_person.region, current_person.region)
+      @base = @base.where("primary_partner = ? OR secondary_partner = ? OR tertiary_partner = ?", current_person.region, current_person.region, current_person.region) if current_person.region.present?
     when 'SpNationalCoordinator'
     else
       @base = @base.where('1 <> 1')

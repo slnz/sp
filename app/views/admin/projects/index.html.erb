@@ -2,7 +2,7 @@
 <h1>Projects</h1>
 <div id="contextmenu">
   
-  <% if sp_user.is_a?(SpNationalCoordinator) %>
+  <% if sp_user.is_a?(SpNationalCoordinator) || (sp_user.is_a?(SpRegionalCoordinator) && current_person.region.blank?) %>
   <ul class="left">
     <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
     <div class="poptions" id="mvmtfilter" style="display: none;">
