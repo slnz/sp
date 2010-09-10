@@ -17,7 +17,7 @@
 
       <!-- Compose Email -->
       <div class="backbutton">
-        <%= link_to('Back to project', admin_project_path(@project)) %>
+        <%= link_to('Back to project', admin_project_path(@project, :year => @year)) %>
       </div>            
       <%= form_tag(send_email_admin_project_path(@project), :multipart => true, :id => 'email_form') do %>
         <%= hidden_field_tag :validated, '0', :id => 'validated' %>
