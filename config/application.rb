@@ -38,5 +38,7 @@ module Sp2
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    
+    config.action_controller.page_cache_directory = 'public/cache'
   end
 end

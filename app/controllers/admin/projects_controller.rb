@@ -9,6 +9,7 @@ class Admin::ProjectsController < ApplicationController
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email]
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
+  cache_sweeper :project_sweeper 
   respond_to :html, :js
   
   layout 'admin'
