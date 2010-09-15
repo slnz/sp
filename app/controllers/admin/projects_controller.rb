@@ -35,7 +35,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def create
-    @project = SpProject.create(params[:sp_project])
+    @project = SpProject.create(params[:sp_project].merge({:year => SpApplication::YEAR}))
     respond_with(@project) do |format|
       format.html do
         if @project.new_record?
