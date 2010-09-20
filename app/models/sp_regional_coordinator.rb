@@ -12,8 +12,7 @@ class SpRegionalCoordinator < SpUser
   
   def scope(partner = nil)
     partner ||= region
-    translations = create_other_ministries_hash
-    if translations.has_key?(partner)
+    if ministry_mappings.has_key?(partner)
       partner = translations[partner]
     end
     @scope ||= ['primary_partner like ? OR secondary_partner like ? OR tertiary_partner like ?' , partner, partner, partner]
@@ -31,9 +30,4 @@ class SpRegionalCoordinator < SpUser
   def region
     @region ||= user.person.region
   end
-  
-  protected
-    def create_other_ministries_hash
-      {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", "JF" => "Jesus Film"}
-    end
 end

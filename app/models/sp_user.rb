@@ -39,8 +39,9 @@ class SpUser < ActiveRecord::Base
   def region
     @region ||= person.region
   end
-  def scope(var = nil)
-    @scope ||= ['1=0'] # default to showing nothing
+
+  def partnerships
+    [region, ministry_lookup(person.ministry)].compact
   end
   
   def acl(*url)
@@ -79,4 +80,11 @@ class SpUser < ActiveRecord::Base
       base.create!(:person_id => p.id, :ssm_id => p.user.id) if base
     end
   end
+  
+  
+  protected
+    def ministry_lookup(ministry)
+      mappings = {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", "JF" => "Jesus Film", "EPI" => "Epic"}
+      mappings[ministry] || ministry
+    end
 end
