@@ -63,6 +63,17 @@ class ApplicationController < ActionController::Base
     helper_method :sp_user
     
     def check_valid_user
+      if CASClient::Frameworks::Rails::Filter.filter(self) && AuthenticationFilter.filter(self)
+        unless sp_user && sp_user.can_edit_questionnaire?
+          redirect_to '/'
+          return false
+        end
+      else
+        return false
+      end
+    end
+    
+    def check_sp_user
       unless sp_user
         # Some people don't have sp users who should. Before blocking them, let's try creating one
         return true if @sp_user = SpUser.create_max_role(current_person.id) if current_person

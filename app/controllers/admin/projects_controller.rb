@@ -1,5 +1,5 @@
 class Admin::ProjectsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_valid_user, :except => :no
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_sp_user, :except => :no
   uses_tiny_mce :options => {:theme => 'advanced',
                              :theme_advanced_buttons1 => "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink",
                              :theme_advanced_buttons2 => "",

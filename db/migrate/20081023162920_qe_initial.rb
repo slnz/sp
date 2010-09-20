@@ -4,7 +4,7 @@ class QeInitial < ActiveRecord::Migration
       t.column :label, :string, :limit => 60, :null => false   # name used internally in admin
     end
     
-    rename_table :sp_pages, :sp_pages_depreated
+    rename_table :sp_pages, :sp_pages_deprecated
     
     create_table Page.table_name do |t|
       t.column :question_sheet_id, :integer, :null => false
@@ -17,7 +17,7 @@ class QeInitial < ActiveRecord::Migration
     
     add_index Page.table_name, [:question_sheet_id, :number], :name => "page_number", :unique => true
     
-    rename_table :sp_elements, :sp_elements_depreated
+    rename_table :sp_elements, :sp_elements_deprecated
     
     create_table Element.table_name do |t|
       t.column :question_sheet_id, :integer, :null => false
@@ -50,7 +50,7 @@ class QeInitial < ActiveRecord::Migration
       # t.foreign_key :question_sheet_id, QuestionSheet.table_name, :id
     end
     
-    rename_table :sp_answers, :sp_answers_depreated
+    rename_table :sp_answers, :sp_answers_deprecated
     
     create_table Answer.table_name do |t|
       t.column :answer_sheet_id, :integer, :null => false
@@ -98,12 +98,12 @@ class QeInitial < ActiveRecord::Migration
     remove_column Element.table_name, :text_xpath
     drop_table Condition.table_name
     drop_table Answer.table_name
-    rename_table :sp_answers_depreated, :sp_answers
+    rename_table :sp_answers_deprecated, :sp_answers
     drop_table AnswerSheet.table_name
     drop_table Element.table_name
-    rename_table :sp_elements_depreated, :sp_elements
+    rename_table :sp_elements_deprecated, :sp_elements
     drop_table Page.table_name
-    rename_table :sp_pages_old, :sp_pages_depreated
+    rename_table :sp_pages_old, :sp_pages_deprecated
     drop_table QuestionSheet.table_name
   end
 end
