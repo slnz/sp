@@ -12,10 +12,12 @@ end
 class MigrateSpToNewQe < ActiveRecord::Migration
   def self.up
     # questionnaires
+    ActiveRecord::Base.connection.delete("truncate sp_question_sheets")
     ActiveRecord::Base.connection.select_all("select id, title from questionnaires where type = 'SpQuestionnaire'").each do |row|
       ActiveRecord::Base.connection.insert("insert into sp_question_sheets(id, label) VALUES(#{row['id']}, '#{row['title']}')")
     end
     
+    ActiveRecord::Base.connection.delete("truncate sp_pages")
     ActiveRecord::Base.connection.select_all("select page_id, questionnaire_id, position from sp_questionnaire_pages").each do |row|
       ActiveRecord::Base.connection.insert("insert into sp_pages(id, question_sheet_id, number, label) VALUES(#{row['page_id']}, #{row['questionnaire_id']}, #{row['position']}, '')")
     end
@@ -24,8 +26,9 @@ class MigrateSpToNewQe < ActiveRecord::Migration
       ActiveRecord::Base.connection.update("update sp_pages set label = '#{row['title']}', hidden = #{row['hidden'].to_i} where id = #{row['id']}")
     end
     
+    ActiveRecord::Base.connection.delete("truncate sp_page_elements")
     ActiveRecord::Base.connection.select_all("select page_id, element_id, position, created_at, updated_at from sp_page_elements_deprecated").each do |row|
-      ActiveRecord::Base.connection.insert("insert into sp_page_elements(page_id, element_id, position, created_at, updated_at) VALUES(#{row['page_id']}, #{row['element_id']}, #{row['position']}, '#{row['created_at']}', '#{row['updated_at']}')")
+      ActiveRecord::Base.connection.insert("insert into sp_page_elements(page_id, element_id, position, created_at, updated_at) VALUES(#{row['page_id']}, #{row['element_id']}, #{row['position']}, '#{row['created_at'].to_s(:db)}', '#{row['updated_at'].to_s(:db)}')")
     end
     change_column :sp_elements, :label, :text
     ActiveRecord::Base.connection.select_all("select * from sp_elements_deprecated").each do |row|
