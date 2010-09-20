@@ -85,7 +85,7 @@ class MigrateSpToNewQe < ActiveRecord::Migration
                                                                     object_name, attribute_name, question_grid_id, created_at, updated_at) 
                                             VALUES(#{row['id']}, '#{kind}', '#{style}', #{ActiveRecord::Base.quote_value(label)}, #{ActiveRecord::Base.quote_value(options)}, #{row['is_required'].to_i}, #{row['position'].to_i}, 
                                             #{row['is_confidential'].to_i}, '#{object}', '#{row['question_column']}', #{row['parent_id'] || 'NULL'}, 
-                                            '#{row['created_at']}', '#{row['updated_at']}')")
+                                            '#{row['created_at'].to_s(:db)}', '#{row['updated_at'].to_s(:db)}')")
     end
   end
 
