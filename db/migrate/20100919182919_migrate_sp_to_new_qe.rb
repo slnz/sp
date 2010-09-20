@@ -17,7 +17,7 @@ class MigrateSpToNewQe < ActiveRecord::Migration
     end
     
     ActiveRecord::Base.connection.select_all("select page_id, questionnaire_id, position from sp_questionnaire_pages").each do |row|
-      ActiveRecord::Base.connection.insert("insert into sp_pages(id, question_sheet_id, number) VALUES(#{row['page_id']}, #{row['questionnaire_id']}, #{row['position']})")
+      ActiveRecord::Base.connection.insert("insert into sp_pages(id, question_sheet_id, number, label) VALUES(#{row['page_id']}, #{row['questionnaire_id']}, #{row['position']}), ''")
     end
     
     ActiveRecord::Base.connection.select_all("select id, title, hidden from sp_pages_deprecated").each do |row|
