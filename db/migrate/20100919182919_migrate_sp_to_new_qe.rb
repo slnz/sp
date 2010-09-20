@@ -31,6 +31,7 @@ class MigrateSpToNewQe < ActiveRecord::Migration
       ActiveRecord::Base.connection.insert("insert into sp_page_elements(page_id, element_id, position, created_at, updated_at) VALUES(#{row['page_id']}, #{row['element_id']}, #{row['position']}, '#{row['created_at'].to_s(:db)}', '#{row['updated_at'].to_s(:db)}')")
     end
     change_column :sp_elements, :label, :text
+    ActiveRecord::Base.connection.delete("truncate sp_elements")
     ActiveRecord::Base.connection.select_all("select * from sp_elements_deprecated").each do |row|
       kind = ''
       style = ''
