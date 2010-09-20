@@ -73,6 +73,12 @@ class MigrateSpToNewQe < ActiveRecord::Migration
       when 'Textarea'
         kind = 'TextField'
         style = 'essay'
+      when 'Datefield'
+        kind = 'DateField'
+        style = 'date'
+      when 'Datefield'
+        kind = 'StateChooser'
+        style = 'state_chooser'
       else
         kind = row['type']
         style = kind.downcase
