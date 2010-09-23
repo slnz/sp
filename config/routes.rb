@@ -65,6 +65,7 @@ Sp2::Application.routes.draw do
   end
   
   resources :projects
+  resources :ministry_focuses
   match '/admin' => "admin/projects#dashboard"
   
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
