@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     helper_method :partners
 
     def current_user
+      # session[:user_id] = 1433149 if session[:user_id] == 42655
       unless @current_user
         if session[:casfilterreceipt]
           @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
