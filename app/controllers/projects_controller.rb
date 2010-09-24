@@ -157,5 +157,17 @@ class ProjectsController < ApplicationController
         conditions[1] << focus.id
       end
     end
+    
+    def get_regions
+      @region_options = Region.find(:all, :order => 'region').map(&:region)
+    end
+    
+    def get_project_type_condition
+      if params[:project_type] == 'US'
+        return ".country = 'United States'"
+      else
+        return ".country <> 'United States'"
+      end
+    end
 end
 
