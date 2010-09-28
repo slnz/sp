@@ -41,7 +41,7 @@ class SpUser < ActiveRecord::Base
   end
 
   def partnerships
-    [region, ministry_lookup(person.ministry)].compact
+    [region, ministry_lookup(person.ministry), ministry_lookup(person.strategy)].compact
   end
   
   def acl(*url)
