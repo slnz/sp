@@ -1,5 +1,6 @@
 class Admin::ProjectsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_sp_user, :except => :no
+  before_filter :set_user
   uses_tiny_mce :options => {:theme => 'advanced',
                              :theme_advanced_buttons1 => "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink",
                              :theme_advanced_buttons2 => "",
@@ -403,4 +404,11 @@ class Admin::ProjectsController < ApplicationController
     @from = current_user.person.current_address.try(:email).to_s
   end
 
+  # developer method to override user in session for testing
+  def set_user
+    if params[:user_id]  && (current_user.developer? || User.find(params[:user_id]).developer?)
+      session[:old_user_id] = session[:user_id]
+      session[:user_id] = params[:user_id] 
+    end
+  end
 end
