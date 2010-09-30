@@ -41,7 +41,9 @@ class SpUser < ActiveRecord::Base
   end
 
   def partnerships
-    [region, ministry_lookup(person.ministry), ministry_lookup(person.strategy)].compact
+    partnerships = [region, ministry_lookup(person.ministry), ministry_lookup(person.strategy)].compact
+    partnerships.reject! {|p| p.blank?}
+    partnerships
   end
   
   def acl(*url)
@@ -84,7 +86,8 @@ class SpUser < ActiveRecord::Base
   
   protected
     def ministry_lookup(ministry)
-      mappings = {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", "JF" => "Jesus Film", "EPI" => "Epic"}
+      mappings = {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", 
+                  "JF" => "Jesus Film", "JESUS Film Project" => 'Jesus Film', "EPI" => "Epic"}
       mappings[ministry] || ministry
     end
 end
