@@ -28,11 +28,10 @@
     <div class="module">
       <h3><span>Project Leaders</span></h3>
       <table>
-        <% [:pd,:apd,:opd, :coordinator].each do |leader|
-          person = project.send(leader, @year) -%>
+        <% [:pd,:apd,:opd, :coordinator].each do |leader| -%>
           <tr>
             <td><%= [:pd,:apd,:opd].include?(leader) ? leader.upcase : leader.to_s.titleize %></td>
-            <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader %></td>
+            <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader, :year => @year %></td>
           </tr>
         <% end %>
       </table>

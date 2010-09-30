@@ -28,13 +28,18 @@ class ApplicationController < ActionController::Base
     helper_method :partners
 
     def current_user
-      # session[:user_id] = 1433149 if session[:user_id] == 42655
       unless @current_user
         if session[:casfilterreceipt]
           @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
         end
         if session[:user_id]
           @current_user ||= User.find_by_id(session[:user_id])
+          # developer method to override user in session for testing
+          if params[:user_id] && params[:su] && (@current_user.developer? || (session[:old_user_id] && User.find(session[:old_user_id]).developer?))
+            session[:old_user_id] = session[:user_id]
+            session[:user_id] = params[:user_id] 
+            @current_user = User.find_by_id(session[:user_id])
+          end
         end
       end
       @current_user

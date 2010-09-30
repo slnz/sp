@@ -11,19 +11,19 @@ class Admin::LeadersController < ApplicationController
   
   def destroy
     @person = Person.find(params[:person_id])
-    year = params[:year].present? ? params[:year] : @project.year
-    staff = @project.sp_staff.where(:type => params[:leader], :year => year, :person_id => params[:person_id]).first
+    @year = params[:year].present? ? params[:year] : @project.year
+    staff = @project.sp_staff.where(:type => params[:leader], :year => @year, :person_id => params[:person_id]).first
     staff.destroy
     respond_with(@project) 
   end
   
   def create
-    year = params[:year].present? ? params[:year] : @project.year
+    @year = params[:year].present? ? params[:year] : @project.year
     @person ||= Person.find(params[:person_id])
     if ['apd','pd','opd','coordinator'].include?(params[:leader])
       @project.send(params[:leader] + '=', params[:person_id])
     elsif ['staff','kid','volunteer', 'evaluator'].include?(params[:leader])
-      @project.sp_staff.create(:type => params[:leader].titleize, :year => year, :person_id => params[:person_id])
+      @project.sp_staff.create(:type => params[:leader].titleize, :year => @year, :person_id => params[:person_id])
     end
     render :create
   end

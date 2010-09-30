@@ -1,6 +1,6 @@
 $("#dialog-confirm").dialog('close');
-<% if leader_types.include?params[:leader] %>
-  $("#<%= params[:leader] %>_for_<%= @project.id %>").replaceWith('<%= raw escape_javascript(render('admin/projects/leader', :project => @project, :leader => params[:leader])) %>');
+<% if leader_types.include?(params[:leader]) %>
+  $("#<%= params[:leader] %>_for_<%= @project.id %>").replaceWith('<%= raw escape_javascript(render('admin/projects/leader', :project => @project, :leader => params[:leader], :year => @year)) %>');
   $("#<%= params[:leader] %>_for_<%= @project.id %>").effect("highlight", {}, 2000);
 <% else %>
   $("#<%= params[:leader] %>_<%= dom_id(@person) %>").remove();
