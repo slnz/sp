@@ -7,9 +7,9 @@ module AuthenticatedSystem
     end
     
     # Accesses the current user from the session.
-    def current_user
-      @current_user if logged_in?
-    end
+    # def current_user
+    #   @current_user if logged_in?
+    # end
     
     # Store the given user in the session.
     def current_user=(new_user)

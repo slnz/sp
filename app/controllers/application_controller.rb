@@ -29,22 +29,22 @@ class ApplicationController < ActionController::Base
 
     def current_user
       unless @current_user
-        if session[:casfilterreceipt]
-          @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
-        end
         if session[:user_id]
-          @current_user ||= User.find_by_id(session[:user_id])
+          @current_user = User.find_by_id(session[:user_id])
           # developer method to override user in session for testing
-          if params[:user_id] && params[:su] && (@current_user.developer? || (session[:old_user_id] && User.find(session[:old_user_id]).developer?))
-            session[:old_user_id] = session[:user_id]
+          if params[:user_id] && params[:su] && (@current_user.developer? || (session[:old_user_id] && old_user = User.find(session[:old_user_id]).developer?))
+            session[:old_user_id] = @current_user.id if @current_user.developer?
             session[:user_id] = params[:user_id] 
             @current_user = User.find_by_id(session[:user_id])
           end
         end
+        if session[:casfilterreceipt]
+          @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
+        end
       end
       @current_user
     end
-    helper_method :user
+    helper_method :current_user
 
     def current_person
       unless @current_person
