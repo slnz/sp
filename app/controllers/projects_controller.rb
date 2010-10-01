@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.xml {
         if @project.show_on_website && @project.project_status == "open"
-          render :xml => @project.to_xml(:only => [:name, :start_date,
+          render :xml => @project.to_xml(:only => [:id, :name, :start_date,
                                                            :end_date, :weeks,
                                                            :job, :description,
                                                            :display_location,
