@@ -238,7 +238,7 @@ $(function() {
 				buttons: {
 					Ok: function() {
 						$(this).dialog('close');
-					},
+					}
 				}
 			});
 			return false;
@@ -270,7 +270,7 @@ $(function() {
 				buttons: {
 					Ok: function() {
 						$(this).dialog('close');
-					},
+					}
 				}
 			});
 		}
