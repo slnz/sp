@@ -4354,6 +4354,9 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
     t.boolean  "is_confidential"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "total_cols"
+    t.string   "css_id"
+    t.string   "css_class"
   end
 
   add_index "sp_elements", ["position"], :name => "index_sp_elements_on_question_sheet_id_and_position_and_page_id"

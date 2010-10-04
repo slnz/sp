@@ -6,8 +6,9 @@
                              'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
   <%= javascript_include_tag 'rails', 'rails.extra', 'admin/projects', 'admin/admin', 'admin/users' %>
   
+  <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
   <%= questionnaire_engine_includes %>
-  <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom', 'admin' %>
+  <%#= stylesheet_link_tag 'admin' %>
   <!--[if IE 7]>
     <%= stylesheet_link_tag 'ie7-admin' %>
   <![endif]--> 
