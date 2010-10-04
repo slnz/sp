@@ -65,7 +65,7 @@
       </div>
       
       <div class="field checkvertical">
-        <label>Other ministry foci:</label>
+        <label>Other Ministry Foci:</label>
         <div class="checkboxes">
           <% SpMinistryFocus.all.each do |sf| %>
             <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if !@project.new_record? && @project.ministry_focuses.include?(sf) %>">
@@ -121,13 +121,13 @@
       </div>
       
       <div class="field required">
-        <%= f.label :student_cost %>
+        <%= f.label :student_cost, 'Student Cost' %>
         <%= f.text_field :student_cost %>
       </div>
       
       <div class="field multitext required">
         <%= f.label(:max_accepted_men) do 
-          'Max Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the \'Explore Projects\' page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
+          'Maximum Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the \'Explore Projects\' page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
           end %>
         <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
         <%= f.text_field :max_accepted_women, :class => 'small' %> women

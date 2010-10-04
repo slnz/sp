@@ -11,8 +11,8 @@ class ApplicationsController < ApplicationController
   
   protected
     def redirect_to_closed
-      unless current_user.developer?
-        redirect_to :closed 
+      unless logged_in? && current_user.developer?
+        redirect_to :action => :closed 
         return false
       end
     end

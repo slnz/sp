@@ -34,7 +34,6 @@
     
       <div class="field">
         <label>References <%= tip('Choose which references, and the quantity, that you require for each student. \'Lite\' refers to a shortened version.') %></label>
-        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
       </div>
     
       
@@ -131,7 +130,7 @@
     
       <div class="field required">
         <%= f.label :partner_region_only, 'Accept from Partner Region(s) Only' %>
-        <%= f.select :partner_region_only, [['',''],['No',false],['Yes',true]] %>
+        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
       </div>
       <div class="field required">
         <%= f.label :use_provided_application, 'Are you using the USCM Summer Project Online Application we provide?' %>

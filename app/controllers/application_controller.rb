@@ -1,4 +1,6 @@
+require 'authenticated_system'
 class ApplicationController < ActionController::Base
+  include AuthenticatedSystem
   protect_from_forgery
   def self.application_name
     'SP'
