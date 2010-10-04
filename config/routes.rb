@@ -56,7 +56,8 @@ Sp2::Application.routes.draw do
         get :threads, :no
       end
     end
-    resources :applications 
+    resources :applications
+    
     resources :leaders do
       collection do
         post :search, :add_person
@@ -65,6 +66,11 @@ Sp2::Application.routes.draw do
   end
   
   resources :projects
+  resources :applications do
+    collection do
+      get :closed
+    end
+  end
   resources :ministry_focuses
   match '/admin' => "admin/projects#dashboard"
   
