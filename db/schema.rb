@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101012132624) do
+ActiveRecord::Schema.define(:version => 20101012150519) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4285,6 +4285,8 @@ ActiveRecord::Schema.define(:version => 20101012132624) do
     t.string  "thumbnail"
   end
 
+  add_index "sp_answers", ["answer_sheet_id"], :name => "index_sp_answers_on_answer_sheet_id"
+  add_index "sp_answers", ["question_id"], :name => "index_sp_answers_on_question_id"
   add_index "sp_answers", ["short_value"], :name => "index_sp_answers_on_short_value"
 
   create_table "sp_answers_deprecated", :force => true do |t|
