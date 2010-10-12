@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100919182919) do
+ActiveRecord::Schema.define(:version => 20101011163404) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4258,6 +4258,13 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
 
   add_index "sn_views", ["ministry_id"], :name => "index_sn_views_on_ministry_id"
 
+  create_table "sp_answer_sheet_question_sheets", :force => true do |t|
+    t.integer  "answer_sheet_id"
+    t.integer  "question_sheet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sp_answer_sheets", :force => true do |t|
     t.integer  "question_sheet_id", :null => false
     t.datetime "created_at",        :null => false
@@ -4337,12 +4344,12 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
   add_index "sp_donations", ["designation_number"], :name => "sp_donations_designation_number_index"
 
   create_table "sp_elements", :force => true do |t|
-    t.string   "kind",             :limit => 40, :null => false
-    t.string   "style",            :limit => 40
+    t.string   "kind",                      :limit => 40, :null => false
+    t.string   "style",                     :limit => 40
     t.text     "label"
     t.text     "content"
     t.boolean  "required"
-    t.string   "slug",             :limit => 36
+    t.string   "slug",                      :limit => 36
     t.integer  "position"
     t.string   "object_name"
     t.string   "attribute_name"
@@ -4357,6 +4364,8 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
     t.string   "total_cols"
     t.string   "css_id"
     t.string   "css_class"
+    t.integer  "related_question_sheet_id"
+    t.integer  "conditional_id"
   end
 
   add_index "sp_elements", ["position"], :name => "index_sp_elements_on_question_sheet_id_and_position_and_page_id"
@@ -4672,7 +4681,8 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
   end
 
   create_table "sp_question_sheets", :force => true do |t|
-    t.string "label", :limit => 60, :null => false
+    t.string  "label",    :limit => 60,                    :null => false
+    t.boolean "archived",               :default => false
   end
 
   create_table "sp_questionnaire_pages", :force => true do |t|
@@ -4685,7 +4695,7 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
 
   create_table "sp_references", :force => true do |t|
     t.integer  "application_id"
-    t.string   "type",           :limit => 50
+    t.string   "type",            :limit => 50
     t.datetime "email_sent_at"
     t.boolean  "is_staff"
     t.string   "title"
@@ -4701,7 +4711,10 @@ ActiveRecord::Schema.define(:version => 20100919182919) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.string   "access_key"
-    t.boolean  "mail",                         :default => false
+    t.boolean  "mail",                          :default => false
+    t.integer  "question_id"
+    t.integer  "answer_sheet_id"
+    t.integer  "response_id"
   end
 
   add_index "sp_references", ["application_id"], :name => "application_id"
