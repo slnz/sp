@@ -25,3 +25,8 @@ Yes / No for "show on website"
 •	show who moved student application and from where.
 
 •	Link from SP Tool to wiki (& on Edit page & on People page?) Needs to say "SP Wiki"
+
+
+* Text editor on paragraph
+
+* delete an element
