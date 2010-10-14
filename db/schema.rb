@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101012150519) do
+ActiveRecord::Schema.define(:version => 20101014203047) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4368,6 +4368,7 @@ ActiveRecord::Schema.define(:version => 20101012150519) do
     t.string   "css_class"
     t.integer  "related_question_sheet_id"
     t.integer  "conditional_id"
+    t.text     "tooltip"
   end
 
   add_index "sp_elements", ["position"], :name => "index_sp_elements_on_question_sheet_id_and_position_and_page_id"
