@@ -127,20 +127,26 @@
      	</p>
     
       <hr />
-    
-      <div class="field required">
-        <%= f.label :partner_region_only, 'Accept from Partner Region(s) Only' %>
-        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
-      </div>
+      
       <div class="field required">
         <%= f.label :use_provided_application, 'Are you using the USCM Summer Project Online Application we provide?' %>
         <%= f.select :use_provided_application, [['No',false],['Yes',true]] %>
       </div>
-      <div class="field required">
-        <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
-        <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
+      
+      <div id="application_questions" style="<%= @project.use_provided_application? ? '' : 'display:none' %>">
+    
+        <div class="field required">
+          <%= f.label :partner_region_only, 'Accept from Partner Region(s) Only' %>
+          <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
+        </div>
+        <div class="field required">
+          <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
+          <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
+        </div>
+        
       </div>
       <button type="submit" class="save"><span>Save</span></button>
+      <button type="button" class="save" onclick="$('#tabs').tabs('select', 2);window.scrollTo(0,0)"><span>Next >></span></button>
     
 
     

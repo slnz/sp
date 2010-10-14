@@ -5,15 +5,15 @@
     
       <hr />
       <div class="field required">
-        <%= f.label :primary_partner %>
+        <%= f.label :primary_partner, 'Primary Partner' %>
         <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
       </div>
       <div class="field">
-        <%= f.label :secondary_partner %>
+        <%= f.label :secondary_partner, 'Secondary Partner' %>
         <%= partnership_select(:project, :secondary_partner, [:regions, :ministries]) %>
       </div>
       <div class="field">
-        <%= f.label :tertiary_partner %>
+        <%= f.label :tertiary_partner, 'Tertiary Partner' %>
         <%= partnership_select(:project, :tertiary_partner, [:regions, :ministries]) %>
       </div>
       <div class="field required">
@@ -21,11 +21,11 @@
         <%= f.select(:report_stats_to, ['Campus Ministry - US summer project','Campus Ministry - WSN summer project','Other CCC ministry'], { :include_blank => true }) %>
       </div>
       <div class="field">
-        <%= f.label :staff_cost %>
+        <%= f.label :staff_cost, 'Staff Cost' %>
         <%= f.text_field :staff_cost %>
       </div>
       <div class="field">
-        <%= f.label :intern_cost %>
+        <%= f.label :intern_cost, 'Intern Cost' %>
         <%= f.text_field :intern_cost %>
       </div>
       

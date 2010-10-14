@@ -6,6 +6,7 @@
       </p>
       
       <p class="legend">
+        Fill out the fields in all four tabs. <br/>
       	Fields with the <%= image_tag('required.png') %> are required.
      	</p>
     
@@ -13,6 +14,11 @@
       <div class="field required">
         <%= f.label :name, 'Project Name' %>
         <%= f.text_field :name %>
+      </div>
+      
+      <div class="field required">
+        <%= f.label :show_on_website, 'Show On Public Website' %>
+        <%= f.select :show_on_website, [['No',false],['Yes',true]] %>
       </div>
       
       <div class="field required">
@@ -40,7 +46,7 @@
         <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
       </div>
       <div class="field required">
-        <%= f.label :aoa, 'Region of the world' %>
+        <%= f.label :aoa, 'Region of the World' %>
         <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
       
@@ -59,7 +65,7 @@
 
       <div class="field select">
         <%= f.label(:primary_ministry_focus_id) do 
-          'Primary ministry focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
+          'Primary Ministry Focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
           end %>
         <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
       </div>
@@ -167,7 +173,7 @@
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
-            <label>Quotes/Testimonials from students or other participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email gosummerproject@uscm.org.') %></label>
+            <label>Quotes/Testimonials from Students or Other Participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email gosummerproject@uscm.org.') %></label>
             
             <div class="field quote">
               <div>
@@ -214,3 +220,4 @@
       </div>
       
       <button type="submit" class="save"><span>Save</span></button>
+      <button type="button" class="save" onclick="$('#tabs').tabs('select', 1);window.scrollTo(0,0)"><span>Next >></span></button>

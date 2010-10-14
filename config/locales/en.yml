@@ -39,5 +39,5 @@ en:
   activerecord:
     attributes:
       sp_project:
-        aoa: Region of the world
+        aoa: Region of the World
     

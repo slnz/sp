@@ -1,26 +1,13 @@
 Help (?) on Kids box: "Note: Include all kids to insure an accurate list of participants in case of any emergencies and to secure their SOS coverage (membership is by individual not by family)."
 
-•	Add a little blurb to left right before “Fields with * are required.” – Fill out the fields in all four tabs.
-
-•	Button at bottom to the left of “save”: “Next” that goes to next tab
-
-* Make capitalization consistent on form.
-
-Yes / No for "show on website"
-
-* Make "Are you using the USCM Summer Project Online Application we provide?" the first question, and hide rest if answer is no
+          <% if level == 'kids' %>
+            <%= tip("Note: Include all kids to insure an accurate list of participants in case of any emergencies and to secure their SOS coverage (membership is by individual not by family).") %>
+          <% end %>
 
 * Under (?) on customizable questions: You can add up to five customizable questions to the application that are specific only for your summer project. All of these questions will be displayed as “required.” A few thoughts: Clarify if the question is for acceptance (required by all), or is just for further information – for example: “Optional: Do you have lifeguard certification?” Please remember that questions need to not be biased or discriminatory. If you have any questions, ask your regional or ministry summer project coordinator or email gosummerproject.com.
 
 * custom questions: required, fill in the blank - essay
 
-* on contact tab: "The fields on this page are for risk management purposes, to help connect with you in case of an emergency."
-
 •	show who moved student application and from where.
 
 •	Link from SP Tool to wiki (& on Edit page & on People page?) Needs to say "SP Wiki"
-
-
-* Text editor on paragraph
-
-* delete an element

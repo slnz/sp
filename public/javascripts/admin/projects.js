@@ -276,4 +276,11 @@ $(function() {
 		}
 	}); 
 
+	$('#sp_project_use_provided_application').change(function() {
+		if ($(this).val() == 'true') {
+			$('#application_questions').show();
+		} else {
+			$('#application_questions').hide();
+		}
+	})
 });
