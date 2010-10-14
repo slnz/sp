@@ -98,7 +98,7 @@ class Admin::ProjectsController < ApplicationController
     sheet1.row(r += 1).concat(["Directors:"])
     sheet1.row(r += 1).concat(staff_column_headers)
     
-    [@project.pd, @project.apd, @project.opd, @project.coordinator].each do |person|
+    [@project.pd(year), @project.apd(year), @project.opd(year), @project.coordinator(year)].each do |person|
       unless person.nil?
         row = []
         values = set_values_from_person(person)
@@ -114,12 +114,12 @@ class Admin::ProjectsController < ApplicationController
     end
     
     sheet1.row(r += 1).concat([])
-    sheet1.row(r += 1).concat(["Staff:"])
+    sheet1.row(r += 1).concat(["Staff and Volunteers:"])
     
     
     sheet1.row(r += 1).concat(staff_column_headers)
     
-    @project.staff.each do |person|
+    @project.staff_and_volunteers(year).each do |person|
     
       values = set_values_from_person(person)
     
@@ -138,7 +138,7 @@ class Admin::ProjectsController < ApplicationController
     sheet1.row(r += 1).concat([ "Accepted Applicants:"])
     
     applicant_column_headers = ["First Name", "Last Name", "Preferred Name", "Gender",
-     "Birthday", "Accepted On", "Email", "Address", "Address2", "City", "State",
+     "Birthday", 'Age', "Accepted On", "Email", "Address", "Address2", "City", "State",
      "Zip", "Phone", "Cell", "Campus", "Designation No", "Marital Status",
      "Emergency Contact", "Emergency Relationship", "Emergency Address", "Emergency City", "Emergency State",
      "Emergency Zip", "Emergency Phone", "Emergency Work Phone", "Emergency Email",
@@ -280,6 +280,7 @@ class Admin::ProjectsController < ApplicationController
     values["Preferred Name"] = person.preferredName
     values["Gender"] = person.gender == "1" ? "M" : "F"
     values["Birthday"] = person.birth_date.present? ? l(person.birth_date) : ''
+    values["Age"] = person.birth_date.present? ? ((Date.today.to_time - person.birth_date.to_time) / 1.year).floor : ''
     values["Accepted On"] = (person.current_application && person.current_application.accepted_at.present? ? l(person.current_application.accepted_at) : '')
     if (person.current_address)
       values["Email"] = person.current_address.email

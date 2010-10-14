@@ -1,9 +1,3 @@
-6.       Whenever he goes to open the Edit Project or change anything on any of the 4 Edit Project tabs, it still always blanks out the “Accept from Partner Region(s) Only” and requires him to fill in that field again.
-
-Check team download on prior years: https://sp.campuscrusadeforchrist.com/admin/projects/581?year=2010
-
-on team db: age in addition to birthday
-
 Help (?) on Kids box: "Note: Include all kids to insure an accurate list of participants in case of any emergencies and to secure their SOS coverage (membership is by individual not by family)."
 
 •	Add a little blurb to left right before “Fields with * are required.” – Fill out the fields in all four tabs.
