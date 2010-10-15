@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include AnswerPagesHelper
   def embed_params(include_action = false)
     params_to_js = params.dup
     unless include_action

@@ -3,17 +3,17 @@
   <%= error_messages_for :project %>
   <div id="tabs">
     <ul class="tabs">
-      <li><%= link_to('goSP.com', '#goSPTab') %></li>
-      <li><%= link_to('Application', '#applicationTab') %></li> 
-      <li><%= link_to('Contact', '#contactTab') %></li> 
-      <li><%= link_to('Operations', '#operationsTab') %></li> 
+      <li><%= link_to('goSP.com', '#goSP') %></li>
+      <li><%= link_to('Application', '#application') %></li> 
+      <li><%= link_to('Contact', '#contact') %></li> 
+      <li><%= link_to('Operations', '#operations') %></li> 
     </ul>
     
         
-    <div class="tabcontent" id="goSPTab"><%= render 'tabs_goSP', :f => f %></div>
-    <div class="tabcontent" id="applicationTab"><%= render 'tabs_application', :f => f %></div>
-    <div class="tabcontent" id="contactTab"><%= render 'tabs_contact', :f => f %></div>
-    <div class="tabcontent" id="operationsTab"><%= render 'tabs_operations', :f => f %></div> 
+    <div class="tabcontent" id="goSP"><%= render 'tabs_goSP', :f => f %></div>
+    <div class="tabcontent" id="application"><%= render 'tabs_application', :f => f %></div>
+    <div class="tabcontent" id="contact"><%= render 'tabs_contact', :f => f %></div>
+    <div class="tabcontent" id="operations"><%= render 'tabs_operations', :f => f %></div> 
   </div>
 
 

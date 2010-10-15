@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101014203047) do
+ActiveRecord::Schema.define(:version => 20101015145442) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4361,11 +4361,11 @@ ActiveRecord::Schema.define(:version => 20101014203047) do
     t.integer  "question_grid_id"
     t.string   "cols"
     t.boolean  "is_confidential"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "total_cols"
     t.string   "css_id"
     t.string   "css_class"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "related_question_sheet_id"
     t.integer  "conditional_id"
     t.text     "tooltip"
@@ -4584,71 +4584,71 @@ ActiveRecord::Schema.define(:version => 20101014203047) do
     t.integer  "pd_id"
     t.integer  "apd_id"
     t.integer  "opd_id"
-    t.string   "name",                         :limit => 50
-    t.string   "city",                         :limit => 50
-    t.string   "state",                        :limit => 50
-    t.string   "country",                      :limit => 60
-    t.string   "aoa",                          :limit => 50
-    t.string   "display_location",             :limit => 100
-    t.string   "primary_partner",              :limit => 100
-    t.string   "secondary_partner",            :limit => 100
+    t.string   "name",                               :limit => 50
+    t.string   "city",                               :limit => 50
+    t.string   "state",                              :limit => 50
+    t.string   "country",                            :limit => 60
+    t.string   "aoa",                                :limit => 50
+    t.string   "display_location",                   :limit => 100
+    t.string   "primary_partner",                    :limit => 100
+    t.string   "secondary_partner",                  :limit => 100
     t.boolean  "partner_region_only"
-    t.string   "report_stats_to",              :limit => 50
+    t.string   "report_stats_to",                    :limit => 50
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "weeks"
     t.integer  "primary_ministry_focus_id"
     t.boolean  "job"
     t.text     "description"
-    t.string   "operating_business_unit",      :limit => 50
-    t.string   "operating_operating_unit",     :limit => 50
-    t.string   "operating_department",         :limit => 50
-    t.string   "operating_project",            :limit => 50
-    t.string   "operating_designation",        :limit => 50
-    t.string   "scholarship_business_unit",    :limit => 50
-    t.string   "scholarship_operating_unit",   :limit => 50
-    t.string   "scholarship_department",       :limit => 50
-    t.string   "scholarship_project",          :limit => 50
-    t.string   "scholarship_designation",      :limit => 50
+    t.string   "operating_business_unit",            :limit => 50
+    t.string   "operating_operating_unit",           :limit => 50
+    t.string   "operating_department",               :limit => 50
+    t.string   "operating_project",                  :limit => 50
+    t.string   "operating_designation",              :limit => 50
+    t.string   "scholarship_business_unit",          :limit => 50
+    t.string   "scholarship_operating_unit",         :limit => 50
+    t.string   "scholarship_department",             :limit => 50
+    t.string   "scholarship_project",                :limit => 50
+    t.string   "scholarship_designation",            :limit => 50
     t.integer  "staff_cost"
     t.integer  "intern_cost"
     t.integer  "student_cost"
-    t.string   "departure_city",               :limit => 60
+    t.string   "departure_city",                     :limit => 60
     t.date     "date_of_departure"
-    t.string   "destination_city",             :limit => 60
+    t.string   "destination_city",                   :limit => 60
     t.date     "date_of_return"
     t.text     "in_country_contact"
-    t.string   "project_contact_name",         :limit => 50
-    t.string   "project_contact_role",         :limit => 40
-    t.string   "project_contact_phone",        :limit => 20
-    t.string   "project_contact_email",        :limit => 100
-    t.integer  "max_student_men_applicants",                   :default => 60,   :null => false
-    t.integer  "max_student_women_applicants",                 :default => 60,   :null => false
+    t.string   "project_contact_name",               :limit => 50
+    t.string   "project_contact_role",               :limit => 40
+    t.string   "project_contact_phone",              :limit => 20
+    t.string   "project_contact_email",              :limit => 100
+    t.integer  "max_student_men_applicants",                         :default => 60,   :null => false
+    t.integer  "max_student_women_applicants",                       :default => 60,   :null => false
     t.integer  "max_accepted_men"
     t.integer  "max_accepted_women"
-    t.integer  "ideal_staff_men",                              :default => 0,    :null => false
-    t.integer  "ideal_staff_women",                            :default => 0,    :null => false
+    t.integer  "ideal_staff_men",                                    :default => 0,    :null => false
+    t.integer  "ideal_staff_women",                                  :default => 0,    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
-    t.integer  "current_students_men",                         :default => 0
-    t.integer  "current_students_women",                       :default => 0
-    t.integer  "current_applicants_men",                       :default => 0
-    t.integer  "current_applicants_women",                     :default => 0
-    t.integer  "year",                                                           :null => false
+    t.integer  "current_students_men",                               :default => 0
+    t.integer  "current_students_women",                             :default => 0
+    t.integer  "current_applicants_men",                             :default => 0
+    t.integer  "current_applicants_women",                           :default => 0
+    t.integer  "year",                                                                 :null => false
     t.integer  "coordinator_id"
     t.integer  "old_id"
     t.string   "project_status"
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "url",                          :limit => 1024
+    t.string   "url",                                :limit => 1024
     t.string   "url_title"
-    t.string   "ds_project_code",              :limit => 50
-    t.boolean  "show_on_website",                              :default => true
+    t.string   "ds_project_code",                    :limit => 50
+    t.boolean  "show_on_website",                                    :default => true
     t.datetime "apply_by_date"
     t.integer  "version"
-    t.boolean  "use_provided_application",                     :default => true
+    t.boolean  "use_provided_application",                           :default => true
     t.string   "tertiary_partner"
     t.date     "staff_start_date"
     t.date     "staff_end_date"
@@ -4667,6 +4667,9 @@ ActiveRecord::Schema.define(:version => 20101014203047) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.integer  "basic_info_question_sheet_id"
+    t.integer  "template_question_sheet_id"
+    t.integer  "project_specific_question_sheet_id"
   end
 
   add_index "sp_projects", ["name"], :name => "sp_projects_name_index", :unique => true

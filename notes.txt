@@ -12,6 +12,9 @@ Help (?) on Kids box: "Note: Include all kids to insure an accurate list of part
 
 •	Link from SP Tool to wiki (& on Edit page & on People page?) Needs to say "SP Wiki"
 
-* Check positioning on grid
-
 * yes / no on the same line, not 2 lines
+
+* Can't close project in IE
+
+LATER:
+* add an 'Send email' button on the RC and NC pages"
