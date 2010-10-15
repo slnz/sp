@@ -67,8 +67,12 @@ Sp2::Application.routes.draw do
   
   resources :projects
   resources :applications do
+    member do
+      get :multiple_projects
+    end
     collection do
       get :closed
+      get :apply
     end
   end
   resources :ministry_focuses

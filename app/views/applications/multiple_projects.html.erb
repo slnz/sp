@@ -1,0 +1,5 @@
+<p>You are already applying for <%= @current_project.to_s %>, but have just clicked the link to apply for <%= @new_project.to_s %>. What would you like to do?</p>
+<ul>
+  <li><%= link_to("Continue applying to #{@current_project.to_s}.", apply_applications_path(:p => @current_project.to_param)) %></li>
+  <li><%= link_to("Apply to #{@new_project.to_s} instead.", apply_applications_path(:p => @new_project.to_param)) %></li>
+</ul>

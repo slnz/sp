@@ -1,5 +1,6 @@
 class ApplicationsController < ApplicationController
   before_filter :redirect_to_closed, :except => :closed
+  before_filter :get_application, :only => [:multiple_projects]
   
   def index
     
@@ -10,13 +11,21 @@ class ApplicationsController < ApplicationController
   end
   
   def apply
+    @project = SpProject.find(params[:p]) if params[:p]
     # If the current user has already started an application, pick it up from there
-    @application = current_person.sp_applications.last
+    @application = current_person.sp_applications.last 
+    
+    # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
+    if @project && @application && @application.project != @project
+      redirect_to multiple_projects_application_path(@application, :p => params[:p])
+      return false
+    end
+    
     if @application && @application.year == @application.project.try(:year)
-      @project = @application.project
+      @project ||= @application.project
     else
       # If not, then we need a project param
-      unless params[:p] && @project = SpProject.find(params[:p])
+      unless @project
         redirect_to projects_path
         return false
       end
@@ -24,17 +33,11 @@ class ApplicationsController < ApplicationController
       @application ||= current_person.sp_applications.create!(:project_id => @project.id, :year => @project.year)
     end
     
-    # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
-    if params[:p] && params[:p].to_i != @project.id
-      redirect_to multiple_projects_application_path(@applicaiton)
-      return false
-    end
-      
     # Make sure we have the right questions sheets from this project
     unless @application.question_sheets.order('id') == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort
       @application.answer_sheet_question_sheets.map(&:destroy)
-      @application.answer_sheet_question_sheets.create(:answer_sheet_id => @application.id, :question_sheet_id => @project.basic_info_question_sheet_id)
-      @application.answer_sheet_question_sheets.create(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
+      @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.basic_info_question_sheet_id)
+      @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
     end
     
     # QE Code
@@ -45,11 +48,20 @@ class ApplicationsController < ApplicationController
     render 'answer_sheets/edit'
   end
   
+  def multiple_projects
+    @current_project = @application.project
+    @new_project = SpProject.find(params[:p])
+  end
+  
   protected
     def redirect_to_closed
-      unless logged_in? && current_user.developer?
+      unless logged_in? && current_person.isStaff?
         redirect_to :action => :closed 
         return false
       end
+    end
+    
+    def get_application
+      @application = SpApplication.find(params[:id])
     end
 end
