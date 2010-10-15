@@ -24,6 +24,12 @@ class ApplicationsController < ApplicationController
       @application ||= current_person.sp_applications.create!(:project_id => @project.id, :year => @project.year)
     end
     
+    # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
+    if params[:p] && params[:p].to_i != @project.id
+      redirect_to multiple_projects_application_path(@applicaiton)
+      return false
+    end
+      
     # Make sure we have the right questions sheets from this project
     unless @application.question_sheets.order('id') == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort
       @application.answer_sheet_question_sheets.map(&:destroy)
