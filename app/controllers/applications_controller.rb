@@ -15,10 +15,14 @@ class ApplicationsController < ApplicationController
     # If the current user has already started an application, pick it up from there
     @application = current_person.sp_applications.last 
     
-    # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
-    if @project && @application && @application.project != @project
-      redirect_to multiple_projects_application_path(@application, :p => params[:p])
-      return false
+    if params[:force] == 'true' && @application
+      @application.update_attribute(:project_id, params[:p])
+    else
+      # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
+      if @project && @application && @application.project.present? && @application.project != @project
+        redirect_to multiple_projects_application_path(@application, :p => params[:p])
+        return false
+      end
     end
     
     if @application && @application.year == @application.project.try(:year)
