@@ -1,8 +1,10 @@
 class MigrateSpAnswers < ActiveRecord::Migration
   def self.up
     remove_index :sp_answers, :short_value
-    ActiveRecord::Base.connection.delete("truncate sp_answers")
-    ActiveRecord::Base.connection.execute('insert into sp_answers (id, answer_sheet_id, question_id, value) select id, instance_id, question_id, answer from sp_answers_deprecated')
+    unless ActiveRecord::Base.connection.select_value("select count(id) from sp_answers_deprecated").to_i == ActiveRecord::Base.connection.select_value("select count(id) from sp_answers").to_i
+      ActiveRecord::Base.connection.delete("truncate sp_answers")
+      ActiveRecord::Base.connection.execute('insert into sp_answers (id, answer_sheet_id, question_id, value) select id, instance_id, question_id, answer from sp_answers_deprecated')
+    end
     total = ActiveRecord::Base.connection.select_value("select max(id) from sp_answers_deprecated").to_i
     count = 0
     while count < total
@@ -14,7 +16,7 @@ class MigrateSpAnswers < ActiveRecord::Migration
         else
           short_value = value
         end
-        ActiveRecord::Base.connection.execute("update sp_answers set short_value = '#{ActiveRecord::Base.connection.quote_string(short_value)}' where id = #{row['id']}")
+        ActiveRecord::Base.connection.execute("update sp_answers set short_value = '#{ActiveRecord::Base.connection.quote_string(short_value)}' where id = #{row['id']}") unless value == short_value
       end
       count += 10000
     end
