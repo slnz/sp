@@ -7,27 +7,44 @@
   <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' ,
                              'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
   <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
-  <%= stylesheet_link_tag 'sp' %>
   <%= questionnaire_engine_includes(:area => :public) %>
   <%= javascript_include_tag 'rails', 'rails.extra' %>
   <script type="text/javascript" charset="utf-8">
     var answer_sheet_type = '<%= @answer_sheet.class %>'
   </script>
   <%= csrf_meta_tag %>
+  <%= stylesheet_link_tag 'theme' %>
 </head>
 <body>
 
-<div id="wrapper">
-   <div id="header">
-   </div>
-   
+<div id="headwrap">
+  <div id="header">
+    <!-- anything in here my be custom branded -->
+    <%= image_tag("/images/frontend/header.jpg") %>
+    <!-- END -->
+  </div>  
+</div>
+
+<div class="clear"></div>
+  
+<div id="wrapper">  
    <div id="main">
     <%= yield %>
+    <div class="clear"></div>
    </div>
 </div>
 
-<div id="footer">
-  Questionnaire Engine | Created by <a href="http://www.26am.com">26AM Design Studio</a>
+<div id="footerwrap">
+  <div id="footer">
+    <!-- anything in here my be custom branded -->
+    <table>
+      <tr>
+        <td class="left">Summer Project Application</td>
+        <Td class="right">Questionnaire Engine | Created by <a href="http://www.26am.com">26AM Design Studio</a></td>
+      </tr>
+    </table>
+    <!-- END -->
+  </div>
 </div>
 
 </body>
