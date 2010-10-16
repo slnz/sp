@@ -30,7 +30,6 @@ function setUpCalendars() {
 }
 
 function setUpJsHelpers() {
-	
 		// ==================
 		// Sortable
 		setUpSortables();
