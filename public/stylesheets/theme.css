@@ -104,6 +104,30 @@ label.choice {
   width: 50px;
 }
 
+li.incomplete {
+  background: url(/images/icons/flag-yellow.png) no-repeat 95% 50%;
+}
 
+li.complete {
+  background: url(/images/icons/flag-green.png) no-repeat 95% 50%;
+}
 
+/* ***************************** */
+/* Grid Table */
 
+table.grid {
+  width: 100%;
+}
+
+table.grid th {
+  text-transform: capitalize;
+}
+
+table.grid td input {
+  width: 5px; 
+  height: 5px;
+}
+
+table.grid label {
+  min-width: 0px;
+}
