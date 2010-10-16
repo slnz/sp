@@ -86,6 +86,7 @@ jQuery(function ($) {
 								$(this).dialog('close');
 							},
 							Yes: function() {
+								$(this).dialog('close');
 								confirm = el.attr('data-confirm')
 								el.removeAttr('data-confirm');
 								el.click();
