@@ -1,0 +1,109 @@
+#headwrap,
+#footerwrap {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+#header {
+  padding: 0;
+  border: none;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background: none;
+  margin-top: 20px;
+  border-bottom: 3px solid #000;
+}
+
+#preview {
+  border-color: #421f07;
+}
+
+#list-pages li.active a {
+  border-color: #421f07;
+}
+
+a {
+  color: #a23910;
+}
+
+#footer table {
+  width: 100%;
+}
+
+#footer table td.left {
+  text-align: left;
+}
+
+#footer table td.right {
+  text-align: right;
+}
+
+
+
+/* ********************************************** */
+textarea.text {
+  width: 90%; 
+  height: 150px;
+}
+
+ul.questions li {
+  border-bottom: 1px dotted silver;
+  margin-bottom: 1.5em;
+  padding-bottom: 1.5em;
+}
+
+.p_content li,
+.p_content ul li,
+.p_content ol li {
+  border: none;
+  padding-bottom: 0px;
+  margin-bottom: 0;
+}
+
+.p_content ul,
+.p_content ol {
+margin:1em;
+padding-left:1.5em;
+}
+
+label {
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  line-height:1.7em;
+  min-width:150px;
+}
+
+input[type=text] {
+  border: 1px solid gray;
+  padding: 4px;
+  width: 200px;
+}
+
+select {
+  border: 1px solid gray;
+  padding: 4px;
+}
+
+input.radio {
+  float: left;
+}
+
+label.choice {
+  margin-left: 25px
+}
+
+.yesno {
+  float: left;
+  width: 50px;
+}
+
+.yesno label {
+  width: 50px;
+}
+
+
+
+
