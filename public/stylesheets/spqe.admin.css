@@ -61,3 +61,23 @@ body {
 .unarchive {
   background:url("/images/icons/briefcase--arrow.png") no-repeat scroll 0 50% transparent;
 }
+
+label.choice {
+  margin-left:25px;
+}
+
+.radio {
+  float: left;
+}
+
+div.tooltip {
+  -moz-box-shadow:0 0 9px #555555;
+  background:none repeat scroll 0 0 #0B486B;
+  border:3px solid #FFFFFF;
+  color:#FFFFFF;
+  display:none;
+  font-size:12px;
+  max-width:300px;
+  padding:10px;
+  width: auto;
+}

@@ -18,6 +18,7 @@
 
 #preview {
   border-color: #421f07;
+  min-height: 500px;
 }
 
 #list-pages li.active a {
@@ -123,11 +124,43 @@ table.grid th {
   text-transform: capitalize;
 }
 
-table.grid td input {
-  width: 5px; 
-  height: 5px;
-}
-
 table.grid label {
   min-width: 0px;
+}
+
+#preview button {
+  background:none repeat scroll 0 0 transparent;
+  border:medium none;
+  cursor:pointer;
+  font-family:Arial;
+  -moz-border-radius:5px 5px 5px 5px;
+  background:url("/images/buttonbg.png") repeat-x scroll 0 0 transparent;
+  border:1px solid #999999;
+  font-size:14px;
+  font-weight:bold;
+  padding:5px 13px;
+  margin-bottom: 10px;
+}
+
+#preview button:hover {
+  -moz-box-shadow: 0 0 5px #999;
+}
+
+#preview button span {
+}
+
+.level1 {
+  margin-left: 30px
+}
+
+ul.level1 li {
+  border: none;
+  margin: 0;
+  padding-bottom: .5em
+}
+
+h4 {
+  display:block;
+  font-size:18px;
+  margin-bottom:0;
 }
