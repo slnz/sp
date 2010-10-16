@@ -1,0 +1,63 @@
+body {
+  background-color: #efefef;
+}
+
+#global {
+  background:none repeat scroll 0 0 #FFFFFF;
+  margin-bottom: 25px;
+}
+
+.pagewidth {
+  margin:0 auto;
+  max-width:1000px;
+  min-width:960px;
+}
+
+#global #menu {
+  height:60px;
+  list-style:none outside none;
+  margin:0;
+  padding:0;
+}
+
+#global #menu li {
+  float:left;
+  line-height:60px;
+}
+
+#global #menu li a.selected {
+  background:none repeat scroll 0 0 #0B486B;
+  color:#EFEFEF;
+}
+
+#global #menu li a {
+  -moz-border-radius:5px 5px 5px 5px;
+  background:none repeat scroll 0 0 #EFEFEF;
+  color:#0B486B;
+  font-size:14px;
+  font-weight:bold;
+  margin:8px;
+  padding:9px 12px;
+}
+
+#header {
+  display: none;
+}
+
+#preview {
+  background: #fff;  
+}
+
+#main #content {
+  background:none repeat scroll 0 0 #FFFFFF;
+  border-color:#0B486B #4D4D4D #4D4D4D;
+  border-right:1px solid #4D4D4D;
+  border-style:solid;
+  border-width:4px 1px 1px;
+  background: #fff;
+  padding: 15px;
+}
+
+.unarchive {
+  background:url("/images/icons/briefcase--arrow.png") no-repeat scroll 0 50% transparent;
+}

@@ -1,26 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Sp2</title>
-  <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' ,
-                             'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
-  <%= javascript_include_tag 'rails', 'rails.extra', 'admin/projects', 'admin/admin', 'admin/users' %>
-  
-  <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
-  <%#= questionnaire_engine_includes %>
-  <%= stylesheet_link_tag 'admin' %>
-  <!--[if IE 7]>
-    <%= stylesheet_link_tag 'ie7-admin' %>
-  <![endif]--> 
-  <%= csrf_meta_tag %>
-  <%= embed_params %>
-  <%= include_tiny_mce_if_needed %>
-  <%#= tiny_mce_init %>
-  
-  <%= render :partial => 'layouts/ga' %>
-
-</head>
-<body>
 <div id="global">
   <div class="pagewidth">
     <ul id="menu">
@@ -43,19 +20,3 @@
     </ul>
   </div>
 </div>
-
-
-<div id="primary">
-
-  <%= render :partial => 'layouts/flash', :locals => {:flash => flash} %>
-
-  <div class="pagewidth">
-    <%= yield %>
-  </div>
-</div>
-
-<div id="status" style="display: none;"><%= image_tag('qe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
-
-<div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('gosummerproject@uscm.org') %></div>
-</body>
-</html>
