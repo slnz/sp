@@ -1,10 +1,7 @@
 class ApplicationsController < ApplicationController
+  before_filter :ssm_login_required
   before_filter :redirect_to_closed, :except => :closed
   before_filter :get_application, :only => [:multiple_projects]
-  
-  def index
-    
-  end
   
   def closed
     render :layout => false
@@ -59,7 +56,7 @@ class ApplicationsController < ApplicationController
   
   protected
     def redirect_to_closed
-      unless logged_in? && current_person.isStaff?
+      unless current_person.isStaff?
         redirect_to :action => :closed 
         return false
       end

@@ -82,9 +82,7 @@ Sp2::Application.routes.draw do
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 
 
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  root :to => "applications#index"
+  root :to => "applications#apply"
 
   # See how all your routes lay out with "rake routes"
 

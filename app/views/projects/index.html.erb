@@ -1,0 +1,10 @@
+<h2>Please pick which project you'd like to apply for:</h2>
+<% if @projects.blank? %>
+  <%= render :partial => 'all' %>
+<% else %>
+  <ul>
+    <% @projects.each do |project| %>
+      <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
+    <% end %>
+  </ul>
+<% end %>
