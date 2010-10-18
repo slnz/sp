@@ -3,7 +3,7 @@ module AuthenticatedSystem
     # Returns true or false if the user is logged in.
     # Preloads @current_user with the user model if they're logged in.
     def logged_in?
-      current_user != :false
+      current_user && current_user != :false
     end
     
     def login_from_session
@@ -63,6 +63,7 @@ module AuthenticatedSystem
     def ssm_login_required
       username, passwd = get_auth_data
       self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
+      raise self.current_user.inspect? if logged_in?
       logged_in? && authorized? ? true : access_denied
     end
     
@@ -78,7 +79,8 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          redirect_to :controller => '/account', :action => 'login'
+          # redirect_to :controller => '/account', :action => 'login'
+          redirect_to :controller => '/applications', :action => 'closed'
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"

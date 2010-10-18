@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
-  before_filter :ssm_login_required
-  before_filter :redirect_to_closed, :except => :closed
+  before_filter :ssm_login_required, :except => [:closed]
+  before_filter :redirect_to_closed, :except => [:closed]
   before_filter :get_application, :only => [:multiple_projects]
   
   def closed
