@@ -7,7 +7,7 @@ module AuthenticatedSystem
     end
     
     def login_from_session
-      self.current_user = session[:user_id] ? User.find_by_id(session[:user_id]) : false).is_a?(User)
+      self.current_user = (session[:user_id] ? User.find_by_id(session[:user_id]) : false).is_a?(User)
     end
     
     def login_from_cas
