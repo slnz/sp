@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101016175652) do
+ActiveRecord::Schema.define(:version => 20101019201248) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4225,6 +4225,9 @@ ActiveRecord::Schema.define(:version => 20101016175652) do
     t.datetime "updated_at"
   end
 
+  add_index "sp_answer_sheet_question_sheets", ["answer_sheet_id"], :name => "index_sp_answer_sheet_question_sheets_on_answer_sheet_id"
+  add_index "sp_answer_sheet_question_sheets", ["question_sheet_id"], :name => "index_sp_answer_sheet_question_sheets_on_question_sheet_id"
+
   create_table "sp_answer_sheets", :force => true do |t|
     t.integer  "question_sheet_id", :null => false
     t.datetime "created_at",        :null => false
@@ -4246,6 +4249,7 @@ ActiveRecord::Schema.define(:version => 20101016175652) do
   end
 
   add_index "sp_answers", ["answer_sheet_id"], :name => "index_sp_answers_on_answer_sheet_id"
+  add_index "sp_answers", ["question_id", "answer_sheet_id"], :name => "index_on_as_and_q"
   add_index "sp_answers", ["question_id"], :name => "index_sp_answers_on_question_id"
   add_index "sp_answers", ["short_value"], :name => "index_sp_answers_on_short_value"
 
@@ -4287,6 +4291,7 @@ ActiveRecord::Schema.define(:version => 20101016175652) do
   end
 
   add_index "sp_applications", ["person_id"], :name => "index_sp_applications_on_person_id"
+  add_index "sp_applications", ["project_id"], :name => "project_id"
   add_index "sp_applications", ["year"], :name => "index_sp_applications_on_year"
 
   create_table "sp_conditions", :force => true do |t|
@@ -4394,6 +4399,9 @@ ActiveRecord::Schema.define(:version => 20101016175652) do
     t.datetime "updated_at"
   end
 
+  add_index "sp_page_elements", ["element_id"], :name => "element_id"
+  add_index "sp_page_elements", ["page_id"], :name => "page_id"
+
   create_table "sp_page_elements_deprecated", :force => true do |t|
     t.integer  "page_id"
     t.integer  "element_id"
@@ -4439,6 +4447,9 @@ ActiveRecord::Schema.define(:version => 20101016175652) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "sp_project_gospel_in_actions", ["gospel_in_action_id"], :name => "gospel_in_action_id"
+  add_index "sp_project_gospel_in_actions", ["project_id"], :name => "project_id"
 
   create_table "sp_project_versions", :force => true do |t|
     t.integer  "pd_id"
@@ -4724,6 +4735,8 @@ ActiveRecord::Schema.define(:version => 20101016175652) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "sp_student_quotes", ["project_id"], :name => "project_id"
 
   create_table "sp_users", :force => true do |t|
     t.integer  "ssm_id"

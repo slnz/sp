@@ -35,7 +35,7 @@ class ApplicationsController < ApplicationController
     end
     
     # Make sure we have the right questions sheets from this project
-    unless @application.question_sheets.order('id') == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort
+    unless @application.question_sheets.collect(&:id).sort == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort
       @application.answer_sheet_question_sheets.map(&:destroy)
       @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.basic_info_question_sheet_id)
       @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
