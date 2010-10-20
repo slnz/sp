@@ -87,7 +87,7 @@ class SpUser < ActiveRecord::Base
   protected
     def ministry_lookup(ministry)
       mappings = {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", 
-                  "JF" => "Jesus Film", "JESUS Film Project" => 'Jesus Film', "EPI" => "Epic"}
+                  "JF" => "Jesus Film", "JESUS Film Project" => 'Jesus Film', "EPI" => "Epic", 'BRD' => 'Bridges'}
       mappings[ministry] || ministry
     end
 end
