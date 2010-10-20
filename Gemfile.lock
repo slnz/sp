@@ -86,7 +86,7 @@ GEM
     mime-types (1.16)
     multi_json (0.0.4)
     mutter (0.5.3)
-    mysql2 (0.2.4)
+    mysql2 (0.2.6)
     net-http-persistent (1.4.1)
     net-ldap (0.1.1)
     net-scp (1.0.4)
@@ -209,7 +209,7 @@ DEPENDENCIES
   less
   mail_safe
   memcache-client
-  mysql2
+  mysql2 (= 0.2.6)
   omniauth
   paperclip
   rails (~> 3.0.0)
