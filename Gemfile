@@ -3,8 +3,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 3.0.0'
 
-# gem 'mysql2', '0.2.6'
-gem 'mysql'
+gem 'mysql2', '0.2.6'
+# gem 'mysql'
 
 # Deploy with Capistrano
 gem 'capistrano'
