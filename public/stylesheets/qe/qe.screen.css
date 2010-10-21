@@ -515,3 +515,6 @@ div.tooltip {
   padding:25px;
   width:300px;
 }
+.ui-state-highlight {
+	min-height: 200px;
+}
