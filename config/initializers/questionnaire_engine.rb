@@ -7,6 +7,6 @@ module Questionnaire
   self.answer_sheet_class = 'SpApplication'
   
   mattr_accessor :from_email
-  self.from_email = 'info@example.com'
+  self.from_email = 'Summer Projects <gosummerproject@uscm.org>'
   
 end
