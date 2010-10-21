@@ -76,6 +76,7 @@ GEM
     less (1.2.21)
       mutter (>= 0.4.2)
       treetop (>= 1.4.2)
+    liquid (2.2.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
       mime-types
@@ -207,6 +208,7 @@ DEPENDENCIES
   exception_notification!
   google-geocode
   less
+  liquid
   mail_safe
   memcache-client
   mysql2 (= 0.2.6)
