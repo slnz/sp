@@ -46,5 +46,5 @@ function setUpJsHelpers() {
     
        // use the "slide" effect
        effect: 'slide'
-		}).dynamic({ bottom: { direction: 'down', bounce: true } });;
+		}).dynamic({ bottom: { direction: 'down', bounce: true } });
 }

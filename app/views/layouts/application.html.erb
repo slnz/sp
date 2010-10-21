@@ -8,7 +8,7 @@
                              'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
   <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
   <%= questionnaire_engine_includes(:area => :public) %>
-  <%= javascript_include_tag 'rails', 'rails.extra' %>
+  <%= javascript_include_tag 'rails', 'rails.extra', 'application' %>
   <script type="text/javascript" charset="utf-8">
     var answer_sheet_type = '<%= @answer_sheet.class %>'
   </script>
