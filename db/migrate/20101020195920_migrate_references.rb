@@ -34,7 +34,7 @@ class MigrateReferences < ActiveRecord::Migration
                     
       ReferenceSheet.connection.insert("insert into sp_references(question_id, applicant_answer_sheet_id, email_sent_at, relationship, title, first_name,
                                         last_name, phone, email, status, submitted_at, access_key, created_at, updated_at) 
-                                        VALUES(#{question_id}, #{row['application_id']}, '#{row['email_sent_at']}', '', '#{row['title']}', 
+                                        VALUES(#{question_id}, #{row['application_id'] || 'NULL'}, '#{row['email_sent_at']}', '', '#{row['title']}', 
                                         '#{ActiveRecord::Base.connection.quote_string(row['first_name'].to_s)}',
                                         '#{ActiveRecord::Base.connection.quote_string(row['last_name'].to_s)}', 
                                         '#{ActiveRecord::Base.connection.quote_string(row['phone'].to_s)}', 
