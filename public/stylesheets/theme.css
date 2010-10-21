@@ -45,8 +45,12 @@ a {
 
 /* ********************************************** */
 textarea.text {
-  width: 90%; 
-  height: 150px;
+  -moz-box-shadow:0 0 10px #C9C9C9;
+  -webkit-box-shadow:0 0 10px #C9C9C9;
+  box-shadow:0 0 10px #C9C9C9;
+  border:1px solid #999999;
+  height:300px;
+  width:65%;
 }
 
 ul.questions li {
@@ -72,13 +76,18 @@ padding-left:1.5em;
 label {
   display:block;
   font-size:13px;
-  font-weight:bold;
-  line-height:1.7em;
+  font-weight:normal;
+  line-height:1.5em;
   min-width:150px;
 }
 
 label.desc {
   margin-bottom: 5px;
+}
+
+label.gridname {
+  font-weight: bold;
+  font-size: 14px;
 }
 
 input[type=text] {
@@ -90,6 +99,7 @@ input[type=text] {
 select {
   border: 1px solid gray;
   padding: 4px;
+  max-width: 300px;
 }
 
 input.radio {
@@ -138,6 +148,8 @@ table.grid label {
   cursor:pointer;
   font-family:Arial;
   -moz-border-radius:5px 5px 5px 5px;
+  -webkit-border-radius:5px 5px 5px 5px;
+  border-radius:5px 5px 5px 5px;
   background:url("/images/buttonbg.png") repeat-x scroll 0 0 transparent;
   border:1px solid #999999;
   font-size:14px;
@@ -148,6 +160,8 @@ table.grid label {
 
 #preview button:hover {
   -moz-box-shadow: 0 0 5px #999;
+  -webkit-box-shadow: 0 0 5px #999;
+  box-shadow: 0 0 5px #999;
 }
 
 #preview button span {
@@ -164,25 +178,41 @@ ul.level1 li {
 }
 
 h4 {
+  border-top:1px solid gray;
+  color:#411E08;
   display:block;
-  font-size:18px;
-  margin: 0.5em 0 1em;
+  font-size:16px;
+  margin:0.5em 0 1em;
+  padding-top:13px;
 }
 
-.col2,
-.col3,
-.col4,
-.col5,
-.col6 {
+.row h4 {
+  width: 690px;
+}
+
+table.grid .col {
   text-align: center;
 }
 
-.col2 input[type=radio],
-.col3 input[type=radio],
-.col4 input[type=radio],
-.col5 input[type=radio],
-.col6 input[type=radio] {
+table.grid .col input[type=radio] {
   float: none;
+}
+
+table.grid label {
+  font-size:12px;
+  font-weight:normal;
+  line-height:1.25em;
+  margin: 0;
+}
+
+table.grid td {
+  border-top: 1px dotted silver;
+  padding: 4px;
+}
+
+table.grid td.hidecell {
+  border: none;
+  padding: 0;
 }
 
 #legend {
@@ -203,4 +233,36 @@ ul#list-pages {
 
 ul.questions li.section {
   padding-bottom: 0;
+}
+
+
+li.questiongrid div.row {
+  float: left;
+  min-height: 60px;
+  margin-right: 10px;
+}
+
+#page-name {
+  font-size: 20px;
+  margin-top: .5em;
+}
+
+#page_ajax_spinner {
+  position:absolute;
+  top:-52px;
+  width:1000px;
+  
+}
+
+#page_ajax_spinner div {
+  -moz-box-shadow:0 0 10px #666666;
+  -webkit-box-shadow:0 0 10px #666666;
+  box-shadow:0 0 10px #666666;
+  background:none repeat scroll 0 0 #FFFFFF;
+  border:2px solid #411E08;
+  color:#411E08;
+  margin:0 auto;
+  padding:10px;
+  text-align:center;
+  width:200px;
 }
