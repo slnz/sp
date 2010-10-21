@@ -50,9 +50,9 @@ textarea.text {
 }
 
 ul.questions li {
-  border-bottom: 1px dotted silver;
-  margin-bottom: 1.0em;
-  padding-bottom: 1.0em;
+  border-bottom:medium none;
+  margin-bottom:0.75em;
+  padding-bottom:0.75em;
 }
 
 .p_content li,
@@ -183,4 +183,24 @@ h4 {
 .col5 input[type=radio],
 .col6 input[type=radio] {
   float: none;
+}
+
+#legend {
+  font-size: 11px;
+  margin: 0 0 0 5px;  
+  line-height: 2em
+}
+
+#legend img {
+  vertical-align: middle;
+}
+
+ul#list-pages {
+  list-style:none outside none;
+  margin:10px 0 0;
+  padding:0;
+}
+
+ul.questions li.section {
+  padding-bottom: 0;
 }
