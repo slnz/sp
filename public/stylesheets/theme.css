@@ -51,8 +51,8 @@ textarea.text {
 
 ul.questions li {
   border-bottom: 1px dotted silver;
-  margin-bottom: 1.5em;
-  padding-bottom: 1.5em;
+  margin-bottom: 1.0em;
+  padding-bottom: 1.0em;
 }
 
 .p_content li,
@@ -75,6 +75,10 @@ label {
   font-weight:bold;
   line-height:1.7em;
   min-width:150px;
+}
+
+label.desc {
+  margin-bottom: 5px;
 }
 
 input[type=text] {
@@ -162,7 +166,7 @@ ul.level1 li {
 h4 {
   display:block;
   font-size:18px;
-  margin-bottom:0;
+  margin: 0.5em 0 1em;
 }
 
 .col2,
