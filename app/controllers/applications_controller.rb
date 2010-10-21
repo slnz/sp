@@ -1,4 +1,4 @@
-class ApplicationsController < ApplicationController
+class ApplicationsController < AnswerSheetsController
   before_filter :ssm_login_required, :except => [:closed]
   before_filter :redirect_to_closed, :except => [:closed]
   before_filter :get_application, :only => [:multiple_projects]
@@ -38,7 +38,7 @@ class ApplicationsController < ApplicationController
     unless @application.question_sheets.collect(&:id).sort == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort
       @application.answer_sheet_question_sheets.map(&:destroy)
       @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.basic_info_question_sheet_id)
-      @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
+      @application.answer_sheet_idt_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
     end
     
     # QE Code
@@ -64,5 +64,10 @@ class ApplicationsController < ApplicationController
     
     def get_application
       @application = SpApplication.find(params[:id])
+    end
+    
+    
+    def get_answer_sheet
+      get_application
     end
 end
