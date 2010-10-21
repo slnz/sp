@@ -25,6 +25,7 @@ gem 'rspec'
 gem 'paperclip'
 
 gem 'memcache-client'
+gem 'liquid'
 
 gem 'RedCloth'
 

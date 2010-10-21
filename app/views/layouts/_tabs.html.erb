@@ -13,8 +13,9 @@
         <% end %>
         <!-- <li><%= link_to('Reports', '') %></li> -->
         <!-- <li class="search withicon"><%= link_to('Search', 'Search') %></li> -->
-        <% if sp_user.can_edit_questionnaire? %>
+        <% if current_user.developer? %>
          <li><%= link_to('Forms', admin_question_sheets_path, :class => (params[:controller] == 'admin/question_sheets') ? 'selected' : '') %></li>
+         <li><%= link_to('Emails', admin_email_templates_path, :class => (params[:controller] == 'admin/email_templates') ? 'selected' : '') %></li>
         <% end %>
       <% end %>
     </ul>
