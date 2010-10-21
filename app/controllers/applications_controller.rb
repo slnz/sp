@@ -38,7 +38,7 @@ class ApplicationsController < AnswerSheetsController
     unless @application.question_sheets.collect(&:id).sort == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort
       @application.answer_sheet_question_sheets.map(&:destroy)
       @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.basic_info_question_sheet_id)
-      @application.answer_sheet_idt_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
+      @application.answer_sheet_id_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
     end
     
     # QE Code
