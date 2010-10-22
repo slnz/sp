@@ -1,5 +1,5 @@
 <div id="controls">
-  <% if @project.logo_file_name.present? %>
+  <% if @project && @project.logo_file_name.present? %>
   <div id="projectlogo">
     <!-- Max size 270w x 100h -->
     <div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
