@@ -75,13 +75,24 @@
       
       <%= f.select :template_question_sheet_id, QuestionSheet.active.where("label like '%Template%'").order('label').collect {|qs| [qs.label, qs.id]} %>
         
-      <!-- <h3>Customizable project-specific questions <%= tip('You can write up to five questions that relate only to your project. Contact your summer project coordinator to add the questions. If you do not know who your SPC is  click here.') %></h3>
-
-       1. Question (fields only viewable by RCs and NCs)
-       2. Question
-       3. Question
-       4. Question
-       5. Question  -->
+      <h3>Customizable project-specific questions <%= tip('You can write up to five questions that relate only to your project. Contact your summer project coordinator to add the questions. If you do not know who your SPC is  click here.') %></h3>
+      
+      <% @questions.each_with_index do |question, i| %>
+        <div class="multifield" style="<%= (i != 0 && question.label.blank?) ? 'display:none' : '' -%>" id="question_<%= i %>">
+          <label>Custom Question:</label>
+          <div class="field quote">
+            <div>
+              <!-- <%= link_to(image_tag('/images/icons/slash.png') + "Delete this question", '', :class => 'deletequote') %> -->
+              <%= text_field_tag "questions[#{i}][label]", question.label, :size => 40 %>
+              <%= hidden_field_tag "questions[#{i}][id]", question.id %>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <% unless i == 4 || @questions[i+1].try(:label).present?%>
+            <%= link_to_function(image_tag('/images/icons/plus-small.png') + 'Add another question', "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
+          <% end %>
+        </div>
+      <% end %>
         
       </div>
       <button type="submit" class="save"><span>Save</span></button>

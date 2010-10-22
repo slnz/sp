@@ -102,7 +102,7 @@ module ProjectsHelper
     end
     record = instance_variable_get("@#{object}")
     tag = content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options)
-    tag = error_wrapping(tag, record.errors.on(method)) unless options && options.include?(:no_errors)
+    tag = error_wrapping(tag, record.errors[method]) unless options && options.include?(:no_errors)
   end
   
   def error_wrapping(html_tag, has_error)

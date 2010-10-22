@@ -950,3 +950,14 @@ a.AddNewPerson {
   text-decoration: underline;
   cursor: pointer;
 }
+
+div.tooltip {
+  -moz-box-shadow:0 0 9px #555555;
+  background:none repeat scroll 0 0 #411E08;
+  border:3px solid #FFFFFF;
+  color:#FFFFFF;
+  display:none;
+  font-size:12px;
+  padding:25px;
+  width:300px;
+}

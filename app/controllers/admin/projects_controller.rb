@@ -22,12 +22,14 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def edit
-    (5 - @project.student_quotes.length).times do 
+    initialize_questions
+    (3 - @project.student_quotes.length).times do 
       @project.student_quotes.build
     end
   end
   
   def update
+    update_questions
     @project.update_attributes(params[:sp_project])
     respond_with(@project) do |format|
       format.html {@project.errors.empty? ? redirect_to(dashboard_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
@@ -404,4 +406,32 @@ class Admin::ProjectsController < ApplicationController
     @from = current_user.person.current_address.try(:email).to_s
   end
 
+  protected
+    def initialize_questions
+      @custom_page = @project.initialize_project_specific_question_sheet.pages.first
+      @questions = @custom_page.elements
+      (5 - @questions.length).times do 
+        @questions << TextField.new
+      end
+    end
+    
+    def update_questions
+      initialize_questions
+      params[:questions].each do |i, attribs|
+        if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
+          if attribs[:label].present?
+            question.update_attribute(:label, attribs[:label])
+          else
+            question.destroy
+          end
+        else
+          if attribs[:lable].present?
+            e = TextField.create!(:label => attribs[:label])
+            PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
+          end
+        end
+      end
+      # Set up the questions again after updating them.
+      initialize_questions 
+    end
 end

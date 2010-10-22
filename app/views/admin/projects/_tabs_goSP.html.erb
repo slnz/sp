@@ -181,7 +181,7 @@
             <div class="field quote">
               <div>
                 <%#= sqf.check_box :_destroy  %>
-                <%= link_to(image_tag('/images/icons/slash.png') + "Delete this quote", '', :class => 'deletequote') %>
+                <!-- <%= link_to(image_tag('/images/icons/slash.png') + "Delete this quote", '', :class => 'deletequote') %> -->
                 <%= sqf.text_field :name %>
               </div>
               <%= sqf.text_area(:quote, :cols => 60, :rows => 5) %>
@@ -210,7 +210,7 @@
         </div>
       
         <div class="field">
-          <label for="sp_project_picture">Project Logo</label>
+          <label for="sp_project_picture">Project Logo <%= tip('recommended dimensions are 270px x 100px') %></label>
           <div class="picture">
           <% if @project.logo_file_name.present? %>
             <%= image_tag(@project.logo.url(:thumb)) %>
