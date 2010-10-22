@@ -266,3 +266,12 @@ li.questiongrid div.row {
   text-align:center;
   width:200px;
 }
+
+#projectlogo div{
+  padding: 0 5px;
+}
+
+#projectlogo div img {
+  max-width: 270px;
+  max-height: 100px;
+}
