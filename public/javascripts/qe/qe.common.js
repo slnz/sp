@@ -40,7 +40,7 @@ function setUpJsHelpers() {
 		// Calendar
 		setUpCalendars();
   	// ==================
-		$("[title]").tooltip({
+		$(".tip[title]").tooltip({
 		   // tweak the position
        offset: [0, 20],
     

@@ -1,5 +1,12 @@
 $(function() {
 	$.ajaxCount = 0;
+
+	$('.delete_question').click(function() {
+		var parent = $(this).closest('div')
+		$('input[type=text]').val('')
+		parent.closest('div.multifield').fadeOut();
+		return false;
+	});
 	
 	$('#projects_per_page').change(function() {
 		params['projects_per_page'] = $(this).val();

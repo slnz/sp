@@ -83,8 +83,8 @@
             <label>Custom Question:</label>
             <div class="field quote">
               <div>
-                <!-- <%= link_to(image_tag('/images/icons/slash.png') + "Delete this question", '', :class => 'deletequote') %> -->
                 <%= text_field_tag "questions[#{i}][label]", question.label, :size => 40 %>
+                <%= link_to(image_tag('/images/icons/slash.png') + "Delete this question", '', :class => 'delete_question') %>
                 <%= hidden_field_tag "questions[#{i}][id]", question.id %>
               </div>
             </div>

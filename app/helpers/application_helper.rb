@@ -100,13 +100,4 @@ module ApplicationHelper
           end
     text_field_tag(name, value, options )
   end
-  
-  def tip(t)
-    image_tag('qe/icons/question-balloon.png', :title => t)
-    # hide = t.to_s + ' ' + link_to(image_tag("icons/toggle-small.png"), '#', :class => 'hidetip')
-    # tip = content_tag(:div, raw(hide), :class => 'tip', :style => 'display:none')
-    # prompt = link_to(image_tag("icons/question-small-white.png"), '#', :class => 'prompt')
-    # div = "<span class=\"inlinetip\">" + prompt + tip + '</span>'
-    # raw div
-  end
 end

@@ -409,7 +409,7 @@ class Admin::ProjectsController < ApplicationController
   protected
     def initialize_questions
       @custom_page = @project.initialize_project_specific_question_sheet.pages.first
-      @questions = @custom_page.elements
+      @questions = @custom_page.elements.to_a
       (5 - @questions.length).times do 
         @questions << TextField.new
       end
@@ -425,7 +425,7 @@ class Admin::ProjectsController < ApplicationController
             question.destroy
           end
         else
-          if attribs[:lable].present?
+          if attribs[:label].present?
             e = TextField.create!(:label => attribs[:label])
             PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
           end
