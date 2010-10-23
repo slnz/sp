@@ -416,22 +416,24 @@ class Admin::ProjectsController < ApplicationController
     end
     
     def update_questions
-      initialize_questions
-      params[:questions].each do |i, attribs|
-        if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
-          if attribs[:label].present?
-            question.update_attribute(:label, attribs[:label])
+      if params[:questions].present?
+        initialize_questions
+        params[:questions].each do |i, attribs|
+          if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
+            if attribs[:label].present?
+              question.update_attribute(:label, attribs[:label])
+            else
+              question.destroy
+            end
           else
-            question.destroy
-          end
-        else
-          if attribs[:label].present?
-            e = TextField.create!(:label => attribs[:label])
-            PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
+            if attribs[:label].present?
+              e = TextField.create!(:label => attribs[:label])
+              PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
+            end
           end
         end
+        # Set up the questions again after updating them.
+        initialize_questions 
       end
-      # Set up the questions again after updating them.
-      initialize_questions 
     end
 end
