@@ -45,7 +45,7 @@ class ApplicationsController < AnswerSheetsController
     @answer_sheet = @application 
     @presenter = AnswerPagesPresenter.new(self, @application)
     @elements = @presenter.questions_for_page(:first).elements
-    @page = Page.find_by_number(1)
+    @page = @presenter.pages.first
     render 'answer_sheets/edit'
   end
   
