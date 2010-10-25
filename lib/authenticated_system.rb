@@ -170,6 +170,15 @@ module AuthenticatedSystem
         :value   => @current_user.remember_token,
         :expires => @current_user.remember_token_expires_at }
     end
+    
+    def logout_keeping_session!
+      # Kill server-side auth cookie
+      @current_user.forget_me if @current_user.is_a? User
+      @current_user = :false     # not logged in, and don't do it for me
+      kill_remember_cookie!     # Kill client-side auth cookie
+      session[:user_id] = nil   # keeps the session but kill our variable
+      # explicitly kill any other session variables you set
+    end
 
     
   private

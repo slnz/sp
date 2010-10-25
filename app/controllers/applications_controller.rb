@@ -14,6 +14,9 @@ class ApplicationsController < AnswerSheetsController
     
     if params[:force] == 'true' && @application
       @application.update_attribute(:project_id, params[:p])
+      # Do a redirect to reset variables
+      redirect_to apply_path
+      return false
     else
       # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
       if @project && @application && @application.project.present? && @application.project != @project
