@@ -47,6 +47,10 @@ class ApplicationsController < AnswerSheetsController
     # QE Code
     @answer_sheet = @application 
     @presenter = AnswerPagesPresenter.new(self, @application)
+    unless @presenter.active_page
+      redirect_to '/apply'
+      return false
+    end
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
     render 'answer_sheets/edit'
