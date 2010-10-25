@@ -83,6 +83,7 @@ task :local_changes, :roles => :app do
     cd #{release_path} && bundle install --deployment --without development &&
     ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml &&
     ln -s #{shared_path}/config/amazon_s3.yml #{release_path}/config/amazon_s3.yml &&
+    ln -s #{shared_path}/config/facebook.yml #{release_path}/config/facebook.yml &&
     ln -s #{shared_path}/config/initializers/email.rb #{release_path}/config/initializers/email.rb &&
     
     

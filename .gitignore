@@ -9,3 +9,4 @@ config/amazon_s3.yml
 .rvmrc
 cache
 vendor/plugins/query_trace
+config/facebook.yml
