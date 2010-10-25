@@ -275,6 +275,11 @@ li.questiongrid div.row {
   max-width: 270px;
   max-height: 100px;
 }
+
+
+/* ******************** */
+/* LOGIN SCREEN */
+
 .authentications { margin-bottom: 30px; }
 .authentication {
   float: left;
@@ -322,4 +327,19 @@ li.questiongrid div.row {
   margin-right: 20px;
   text-align: center;
   margin-bottom: 10px;
+  font-size: 11px;
+}
+
+#railslogin {
+  float: right;
+  width: 610px;
+}
+
+#signinwith a img {
+  border: none;
+}
+
+#signinwith {
+  float: left;
+  width: 340px;
 }
