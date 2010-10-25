@@ -30,6 +30,10 @@ module AuthenticatedSystem
       @current_user = new_user
     end
     
+    def login_user!(user)
+      self.current_user = user
+    end
+    
     # Check if the user is authorized.
     #
     # Override this method in your controllers if you want to restrict access
@@ -78,8 +82,7 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          # redirect_to :controller => '/account', :action => 'login'
-          redirect_to :controller => '/applications', :action => 'closed'
+          redirect_to authentications_path
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"
@@ -122,6 +125,52 @@ module AuthenticatedSystem
         flash[:notice] = "Logged in successfully"
       end
     end
+    def sign_in_and_redirect(user, return_to = nil)
+      self.current_user = user
+      self.current_user.remember_me_for(1.year)
+      handle_remember_cookie! true
+      session[:return_to] = return_to if return_to
+      session[:return_to] = params[:return_to] if params[:return_to].present?
+      flash[:notice] = "Logged in successfully"
+      redirect_back_or_default(root_path)
+    end
+    
+    #
+    # Remember_me Tokens
+    #
+    # Cookies shouldn't be allowed to persist past their freshness date,
+    # and they should be changed at each login
+
+    # Cookies shouldn't be allowed to persist past their freshness date,
+    # and they should be changed at each login
+
+    def valid_remember_cookie?
+      return nil unless @current_user
+      (@current_user.remember_token?) && 
+        (cookies[:auth_token] == @current_user.remember_token)
+    end
+    
+    # Refresh the cookie auth token if it exists, create it otherwise
+    def handle_remember_cookie! new_cookie_flag
+      return unless @current_user
+      case
+      when valid_remember_cookie? then @current_user.refresh_token # keeping same expiry date
+      when new_cookie_flag        then @current_user.remember_me 
+      else                             @current_user.forget_me
+      end
+      send_remember_cookie!
+    end
+  
+    def kill_remember_cookie!
+      cookies.delete :auth_token
+    end
+    
+    def send_remember_cookie!
+      cookies[:auth_token] = {
+        :value   => @current_user.remember_token,
+        :expires => @current_user.remember_token_expires_at }
+    end
+
     
   private
     # gets BASIC auth info

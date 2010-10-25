@@ -57,3 +57,4 @@ end
 gem 'activerecord-oracle_enhanced-adapter'
 gem 'ruby-oci8'
 gem 'omniauth'
+gem 'message_block'

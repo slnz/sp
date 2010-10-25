@@ -13,7 +13,7 @@
     var answer_sheet_type = '<%= @answer_sheet.class %>'
   </script>
   <%= csrf_meta_tag %>
-  <%= stylesheet_link_tag 'theme' %>
+  <%= stylesheet_link_tag 'message_block', 'theme' %>
 </head>
 <body>
 
@@ -28,10 +28,11 @@
 <div class="clear"></div>
   
 <div id="wrapper">  
-   <div id="main">
+  <div id="main">
+    <%= message_block %>
     <%= yield %>
     <div class="clear"></div>
-   </div>
+  </div>
 </div>
 
 <div id="footerwrap">
