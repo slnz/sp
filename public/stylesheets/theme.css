@@ -12,7 +12,7 @@
   -webkit-border-radius: 0px;
   border-radius: 0px;
   background: none;
-  margin-top: 20px;
+  margin-top: 0px;
   border-bottom: 3px solid #000;
 }
 
@@ -395,4 +395,18 @@ button {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
+}
+
+#globalactions {
+  border-top: 3px solid #421f09;
+}
+
+#globalactions ul {
+  float: right;
+}
+
+#globalactions ul li a {
+  padding: 5px 8px;
+  background: #421F09;
+  display: block;
 }
