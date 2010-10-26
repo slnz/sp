@@ -90,7 +90,8 @@ label.gridname {
   font-size: 14px;
 }
 
-input[type=text] {
+input[type=text],
+input[type=password] {
   border: 1px solid gray;
   padding: 4px;
   width: 200px;
@@ -342,4 +343,56 @@ li.questiongrid div.row {
 #signinwith {
   float: left;
   width: 340px;
+}
+
+/* **************************** */
+/* ERRORS */
+/* **************************** */
+
+#errorExplanation {
+  border: 1px solid red;
+  padding: 10px 15px;
+  margin-bottom: 1em;
+}
+
+#errorExplanation h2 {
+  font-size: 16px;
+  margin-top: 0;
+}
+
+#errorExplanation ul {
+  margin: 0;
+  padding: 0 2em;
+  list-style: circle;
+}
+
+#errorExplanation ul li {
+  list-style: disc;
+}
+
+.field_with_errors label {
+  color: red;
+  font-weight: bold;
+}
+
+.field_with_errors input {
+  border-color: red;
+}
+
+button span{
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 8px;
+  display: block;
+  cursor: pointer;
+}
+
+button {
+  padding: 0;
+  background:url("/images/buttonbg.png") repeat-x scroll 0 0 transparent;
+  border: 1px solid gray;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
 }
