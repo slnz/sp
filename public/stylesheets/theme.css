@@ -304,8 +304,6 @@ li.questiongrid div.row {
 .authentication .remove:hover {
   color: #ffffff;
   background-color: #777777;
-  -moz-border-radius: 7px;
-  -webkit-border-radius: 7px;
 }
 .authentication img { float: left; }
 .authentication .provider {
