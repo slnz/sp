@@ -50,6 +50,7 @@ class ApplicationsController < AnswerSheetsController
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
     @presenter.active_page ||= @page
+    raise @application.inspect if @presenter.active_page.nil?
     render 'answer_sheets/edit'
   end
   
