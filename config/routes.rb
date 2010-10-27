@@ -38,7 +38,11 @@ Sp2::Application.routes.draw do
       get :closed
       get :apply
     end
-    resources :payments
+    resources :payments do
+      collection do
+        post :staff_search
+      end
+    end
   end
   resources :ministry_focuses
   match '/admin' => "admin/projects#dashboard"

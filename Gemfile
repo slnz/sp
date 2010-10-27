@@ -20,6 +20,7 @@ gem 'responds_to_parent'
 gem 'carmen'
 gem 'dynamic_form'
 gem 'rspec'
+gem 'activemerchant'
 # gem 'image_science', :git => "http://github.com/sobakasu/image_science.git"
 # gem 'RubyInline'
 gem 'paperclip'

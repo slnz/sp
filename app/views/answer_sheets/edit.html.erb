@@ -38,10 +38,11 @@
     
     // global responders for all Ajax requests
     $(function() {
-    	$('#page_ajax_spinner').ajaxStart(function() {
-    		$(this).show();
-    	}).ajaxComplete(function() {
-    		$(this).hide();
+    	$('body').bind('ajax:loading', function() {
+    		$('#page_ajax_spinner').show();
+				$('#page_ajax_spinner').css({top: $(window).scrollTop() + 20});
+    	}).bind('ajax:complete', function() {
+    		$('#page_ajax_spinner').hide();
     	})
     });
   });

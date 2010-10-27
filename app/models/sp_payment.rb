@@ -3,7 +3,7 @@ class SpPayment < ActiveRecord::Base
   attr_accessor :first_name, :last_name, :address, :city, :state, :zip, :card_number,
                 :expiration_month, :expiration_year, :security_code, :staff_first, :staff_last, :card_type
 
-  belongs_to :application
+  belongs_to :application, :class_name => 'SpApplication', :foreign_key => 'application_id'
   
   after_save :check_app_complete
   
@@ -17,7 +17,7 @@ class SpPayment < ActiveRecord::Base
   
   def check_app_complete
     if self.approved?
-      self.apply.complete
+      self.application.complete
     end
   end
   
@@ -35,6 +35,7 @@ class SpPayment < ActiveRecord::Base
   
   def approve!
     self.status = "Approved"
+    self.auth_code = card_number[-4..-1]
     self.save!
   end
 

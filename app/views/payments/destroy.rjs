@@ -1,2 +1,0 @@
-page.remove dom_id(@payment)
-page.visual_effect :highlight, 'payment_table'

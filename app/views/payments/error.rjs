@@ -1,1 +1,0 @@
-page.replace_html 'payment_errors', :partial => 'errors', :locals => {:payment => @payment}
