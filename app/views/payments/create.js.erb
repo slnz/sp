@@ -1,9 +1,10 @@
 $.scrollTo('.paymentquestion')
 $('.pay_view').hide();
 <% if @payment.errors.empty? %>
-  $("#no-payments");
+  $("#no-payments").hide();
 	$('#payment_table').append('<%= escape_javascript(render('payment', :payment => @payment)) %>')
 	$('#payment_table').effect('highlight')
+	$('#payment_choices').hide()
 <% else %>
   $('#payment_errors').html('<%= escape_javascript(render('errors', :payment => @payment)) %>')
 	<% case @payment.payment_type %>

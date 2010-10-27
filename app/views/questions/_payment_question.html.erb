@@ -1,6 +1,6 @@
 <% @payment = SpPayment.new %>
 <% @application = @answer_sheet %>
-<div id="<%= dom_id(payment_question) %>">
+<div id="<%= dom_id(payment_question) %>" class="payment_question <%= 'required' if payment_question.required? %>">
   <h2>
     Payment
   </h2>
@@ -12,7 +12,7 @@
       Current payments:
     </p>
     <table cellspacing="0" class="list" style="margin-bottom: 27px; width: 95%;">
-      <tbody id="payment_table">
+			<thead>
         <tr>
           <th>
             Payment Type
@@ -27,6 +27,8 @@
             &nbsp;
           </th>
         </tr>
+			</thead>
+      <tbody id="payment_table">
 				<% if @application.payments.empty? %>
 	        <tr>
 	          <td colspan="3" id="no-payments" <% if @application.payments.length > 0 -%> style="display: none;" <% end -%>>
@@ -38,13 +40,13 @@
 				<% end %>
       </tbody>
     </table>
-    <p>
-      Please select one of the following three options for paying your application fee.
-    </p>
-    <div id="payment_errors">
-      <%= render :partial => "payments/errors", :locals => {:payment => @payment} %>
-    </div>
-		<% unless @application.has_paid? %>
+		<div id="payment_choices" style="<%= 'display:none' unless @application.payments.empty? %>">
+	    <p>
+	      Please select one of the following three options for paying your application fee.
+	    </p>
+	    <div id="payment_errors">
+	      <%= render :partial => "payments/errors", :locals => {:payment => @payment} %>
+	    </div>
 	    <ul class="list-choices">
 	      <li>
 	        <%= radio_button :payment, :payment_type, "Credit Card", {:onclick => "swapPayment('credit');",
@@ -71,6 +73,6 @@
 	        </div>
 	      </li>
 	    </ul>
-		<% end %>
+		</div>
   <% end -%>
 </div>
