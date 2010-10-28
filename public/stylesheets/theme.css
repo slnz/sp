@@ -343,6 +343,11 @@ li.questiongrid div.row {
   width: 340px;
 }
 
+span.servicename {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
 /* **************************** */
 /* ERRORS */
 /* **************************** */
