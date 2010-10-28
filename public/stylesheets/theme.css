@@ -22,12 +22,13 @@
 }
 
 #projecttitle {
-  background:none repeat scroll 0 0 #421F07;
-  color:#FFFFFF;
+  background:none repeat scroll 0 0 transparent;
+  border-bottom:1px solid silver;
+  color:#421F07;
   font-size:14px;
   font-weight:bold;
-  margin:-10px -10px 15px;
-  padding:10px;
+  margin-bottom:1em;
+  padding:0 0 10px;
 }
 
 #list-pages li.active a {
