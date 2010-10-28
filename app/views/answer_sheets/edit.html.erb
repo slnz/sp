@@ -1,6 +1,5 @@
 <div id="controls">
   <div id="projectlogo">
-		<%= @project.name %>
 	  <% if @project && @project.logo_file_name.present? %>
     	<!-- Max size 270w x 100h -->
     	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
@@ -16,6 +15,7 @@
 </div>
 
 <div id="preview">
+    <div id="projecttitle"><%= @project.name %></div>
     <%= render :partial => 'answer_sheets/title' %>
     <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
 </div>
