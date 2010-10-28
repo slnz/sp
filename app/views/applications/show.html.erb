@@ -1,0 +1,22 @@
+You applied to <%= @application.project.name %> <br>
+Status: <%= @application.status.titleize %> <br>
+Paid: <%= @application.has_paid? ? 'Yes' : 'No' %> <br>
+
+<h3>References</h3>
+<% @application.sp_references.each do |reference| %>
+	<%= reference.style.titleize %> Reference: <%= reference.status.titleize %> <br>
+<% end %>
+
+<h3>Your Directors</h3>
+<% if @application.project.pd.present? %>
+Project Director: <%= @application.project.pd.to_s %><br>
+<% end %>
+<% if @application.project.apd.present? %>
+Assistant Project Director: <%= @application.project.apd.to_s %><br>
+<% end %>
+<% if @application.project.opd.present? %>
+Operations Project Director: <%= @application.project.opd.to_s %><br>
+<% end %>
+<% if @application.project.coordinator.present? %>
+Coordinator: <%= @application.project.coordinator.to_s %><br>
+<% end %>
