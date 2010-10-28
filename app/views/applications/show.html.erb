@@ -1,22 +1,98 @@
-You applied to <%= @application.project.name %> <br>
-Status: <%= @application.status.titleize %> <br>
-Paid: <%= @application.has_paid? ? 'Yes' : 'No' %> <br>
+<div class="pagepad">
+  <h2>Hello David Sudarma,</h2>
+  
+  <p>
+    You applied to <strong><%= @application.project.name %>!</strong> Here 
+    are some details about your application that will be updated as progress is made. 
+    If you have questions, you can reach your future project directors using their contact information 
+    below. We look forward to serving with you this summer!
+  </p>
+  
+  <div id="progressbox">
+    <h2>Your Progress</h2>
+    <table class="statuswait">
+      <tbody>
+        <tr>
+          <td class="fieldname fieldbold">Status:</td>
+          <td class="value"><%#= @application.status.titleize %></td>
+        </tr>
+        <tr>
+          <td class="fieldname fieldbold">Paid:</td>
+          <td class="value"><%= @application.has_paid? ? 'Yes' : 'No' %></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="divide"></td>
+        </tr>
+        <tr>
+          <td class="fieldname fieldbold">References</td>
+          <td class="value"></td>
+        </tr>
+        <% @application.sp_references.each do |reference| %>
+        <tr>
+          <td class="fieldname fieldbold"><%#= reference.style.titleize %></td>
+          <td class="value"><%#= reference.status.titleize %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <td colspan="2" class="divide"></td>
+        </tr>
+        <tr>
+          <td class="fieldname fieldbold">Dollars Raised:</td>
+          <td class="value">VALUE HERE</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div id="projectsummary">
+    <h2>Your Directors</h2>
+    <table class="statuswait">
+      <tbody>
+        <% if @application.project.pd.present? %>
+          <tr>
+            <td class="fieldname fieldbold">Project Director:</td>
+            <td class="value"><%= @application.project.pd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+          </tr>
+        <% end %>
+        <% if @application.project.apd.present? %>
+          <tr>
+            <td class="fieldname fieldbold">Assistant Project Director:</td>
+            <td class="value"><%= @application.project.apd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+          </tr>
+        <% end %>
+        <% if @application.project.opd.present? %>
+          <tr>
+            <td class="fieldname fieldbold">Operations Project Director:</td>
+            <td class="value"><%= @application.project.opd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+          </tr>
+        <% end %>
+        <% if @application.project.coordinator.present? %>
+          <tr>
+            <td class="fieldname fieldbold">Coordinator:</td>
+            <td class="value"><%= @application.project.coordinator.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+          </tr>
+        <% end %>
+        
+        <tr>
+          <td colspan="2" class="divide"></td>
+        </tr>
+        <tr>
+          <td class="fieldname fieldbold">Project Cost:</td>
+          <td class="value">$4000.00</td>
+        </tr>
+        <tr>
+          <td class="fieldname fieldbold">Project Dates:</td>
+          <td class="value">12/20/2010 &mdash; 12/30/2010</td>
+        </tr>
+        <tr>
+          <td class="fieldname fieldbold">Project Overview:</td>
+          <td class="value"></td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="clear"></div>
 
-<h3>References</h3>
-<% @application.sp_references.each do |reference| %>
-	<%= reference.style.titleize %> Reference: <%= reference.status.titleize %> <br>
-<% end %>
-
-<h3>Your Directors</h3>
-<% if @application.project.pd.present? %>
-Project Director: <%= @application.project.pd.to_s %><br>
-<% end %>
-<% if @application.project.apd.present? %>
-Assistant Project Director: <%= @application.project.apd.to_s %><br>
-<% end %>
-<% if @application.project.opd.present? %>
-Operations Project Director: <%= @application.project.opd.to_s %><br>
-<% end %>
-<% if @application.project.coordinator.present? %>
-Coordinator: <%= @application.project.coordinator.to_s %><br>
-<% end %>
+</div>
