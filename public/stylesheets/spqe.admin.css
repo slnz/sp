@@ -5,6 +5,7 @@ body {
 #global {
   background:none repeat scroll 0 0 #FFFFFF;
   margin-bottom: 25px;
+  border-top: 1px solid #fff;
 }
 
 .pagewidth {
@@ -14,6 +15,7 @@ body {
 }
 
 #global #menu {
+  float: left;
   height:60px;
   list-style:none outside none;
   margin:0;
@@ -25,6 +27,11 @@ body {
   line-height:60px;
 }
 
+#global #menu li a:hover {
+  color: #efefef;
+  background: #0b486b;
+}
+
 #global #menu li a.selected {
   background:none repeat scroll 0 0 #0B486B;
   color:#EFEFEF;
@@ -32,12 +39,52 @@ body {
 
 #global #menu li a {
   -moz-border-radius:5px 5px 5px 5px;
+  -webkit-border-radius:5px 5px 5px 5px;
+  border-radius:5px 5px 5px 5px;
   background:none repeat scroll 0 0 #EFEFEF;
   color:#0B486B;
   font-size:14px;
   font-weight:bold;
   margin:8px;
   padding:9px 12px;
+}
+
+#global #menuright {
+  width: 500px;
+  height: 60px;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+#global #menuright li {
+  float: left;
+  line-height: 60px;
+}
+
+#global #menuright li a {
+  -moz-border-radius:5px 5px 5px 5px;
+  -webkit-border-radius:5px 5px 5px 5px;
+  border-radius:5px 5px 5px 5px;
+  color: #0b486b;
+  padding: 9px 12px;
+  margin: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#global #menuright li a:hover {
+  color: #efefef;
+  background: #0b486b;
+}
+
+#global #menuright {
+  width: auto;
+  float: right;
+}
+
+#global #menuright li a { 
+  background: none; 
 }
 
 #header {

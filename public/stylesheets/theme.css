@@ -21,13 +21,36 @@
   min-height: 500px;
 }
 
+#projecttitle {
+  background:none repeat scroll 0 0 transparent;
+  border-bottom:1px solid silver;
+  color:#421F07;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:1em;
+  padding:0 0 10px;
+}
+
 #list-pages li.active a {
   border-color: #421f07;
 }
 
 a {
-  color: #a23910;
+  color: #421F07;
 }
+
+a.successreturn {
+  -moz-border-radius:7px 7px 7px 7px;
+  -webkit-border-radius:7px 7px 7px 7px;
+  border-radius:7px 7px 7px 7px;
+  background:none repeat scroll 0 0 #EFEFEF;
+  border:1px solid #555555;
+  font-size:12px;
+  font-weight:bold;
+  margin:10px 0;
+  padding:5px;
+}
+
 
 #footer table {
   width: 100%;
@@ -97,6 +120,18 @@ input[type=password] {
   width: 200px;
 }
 
+input.error[type=text],
+input.error[type=password] {
+  border: 1px solid red;
+  background: #FFEAEA;
+  margin-top: -1px;
+}
+
+label.error {
+  font-size: 11px;
+  color: red;
+}
+
 select {
   border: 1px solid gray;
   padding: 4px;
@@ -126,6 +161,39 @@ li.incomplete {
 
 li.complete {
   background: url(/images/icons/flag-green.png) no-repeat 95% 50%;
+}
+
+/* ***************************** */
+/* Payment */
+
+div.payment_question {
+  background: #efefef;
+  padding: 10px;
+  border: 2px solid #999;
+  margin-bottom: 1em;
+}
+
+ul.list-choices li:focus {
+  background: yellow;
+}
+
+div.payment_question div.pay_view {
+  margin-left: 20px;
+}
+
+ul.questions li ul.list-choices li {
+  margin-bottom:0;
+  padding-bottom:0;
+}
+
+tbody#payment_table td {
+  padding: 3px;
+  width: 25%;
+}
+
+p.appfee, p.currpayments {
+  font-size: 14px;
+  margin-bottom: 0;
 }
 
 /* ***************************** */
@@ -239,6 +307,7 @@ ul.questions li.section {
 
 li.questiongrid div.row {
   float: left;
+  min-height: 70px;
   min-height: 60px;
   margin-right: 10px;
 }
@@ -342,6 +411,25 @@ li.questiongrid div.row {
   float: left;
   width: 340px;
 }
+
+
+.savestatus {
+  margin: 2px 0 1em 0;
+  color: gray;
+}
+
+.savestatus img.spinner {
+  margin: 0 0 0 7px;
+  vertical-align: middle;
+}
+
+#submit_message {
+  margin: 2px 0 1em 0;
+  color: #421F07;
+  font-weight: strong;
+  font-size: 14px;
+}
+
 
 span.servicename {
 	font-weight: bold;

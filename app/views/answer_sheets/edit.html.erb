@@ -1,10 +1,10 @@
 <div id="controls">
-  <% if @project && @project.logo_file_name.present? %>
   <div id="projectlogo">
-    <!-- Max size 270w x 100h -->
-    <div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+	  <% if @project && @project.logo_file_name.present? %>
+    	<!-- Max size 270w x 100h -->
+    	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+		<% end %>
   </div>
-  <% end %>
   <div id="panel">
     <%= render :partial => 'answer_sheets/pages_list' %>
   </div>
@@ -15,6 +15,7 @@
 </div>
 
 <div id="preview">
+    <div id="projecttitle"><%= @project.name %></div>
     <%= render :partial => 'answer_sheets/title' %>
     <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
 </div>
@@ -62,3 +63,5 @@
       end %>
   }
 </script>
+
+<%= hidden_field_tag 'submit_to', submit_answer_sheet_path(@answer_sheet), :id => 'submit_to' %>

@@ -1,6 +1,7 @@
 require 'authenticated_system'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
+  before_filter :set_time_zone
   protect_from_forgery
   def self.application_name
     'SP'
@@ -8,6 +9,10 @@ class ApplicationController < ActionController::Base
   
   def application_name
     ApplicationController.application_name
+  end
+  
+  def set_time_zone
+    Time.zone = request.env['rack.timezone.utc_offset'] if request.env['rack.timezone.utc_offset'].present?
   end
     
   protected

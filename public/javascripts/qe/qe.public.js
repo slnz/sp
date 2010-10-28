@@ -148,7 +148,7 @@
 			if (page == null) page = $('#' + this.current_page);
 	    form_data = this.captureForm(page);
 	    if( form_data ) {
-	      if( page.data('form_data') == null || page.data('form_data').data !== form_data.data || force) {  // if any changes
+	      if( page.data('form_data') == null || page.data('form_data').data !== form_data.data || force === true) {  // if any changes
 	        page.data('form_data', form_data);
 					$.ajax({url: form_data.url, type: 'put', data: form_data.data,  beforeSend: function (xhr) {
 																								                            $('#spinner_' + page.attr('id')).show();
@@ -224,6 +224,9 @@
   // callback when falls to 0 active Ajax requests
   completeAll : function()
   {
+		$('#submit_button').attr('disabled', true)
+		$('#submit_message').html('');
+		$('#submit_message').hide();
 		// validate all the pages
   	$('.page_link').each(function(page) {
 			$.qe.pageHandler.validatePage($(page).attr('data-page-id'));
@@ -241,26 +244,33 @@
 		  // submit the application
 		  if($('#submit_to')[0] != null)
 		  {
-		    url = $('submit_to').val();
-				alert(url);
+		    url = $('#submit_to').val();
 			  // clear out pages array to force reload.  This enables "frozen" apps
 			  //       immediately after submission - :onSuccess (for USCM which stays in the application vs. redirecting to the dashboard)
 			  var curr = $.qe.pageHandler.current_page;
-			  $.ajax(url, {dataType:'script', 
-					 method:'post', 
-					 success: function() {
+			  $.ajax({url: url, dataType:'script', 
+					type:'post', 
+					beforeSend: function(xhr) {
+          	$('body').trigger('ajax:loading', xhr);
+					},
+					success: function(xhr) {
 						$('#list-pages a').each(function() { 
 						  if ($(this).attr('data-page-id') != curr) $('#' + $(this).attr('data-page-id')).remove();
-					  });
-					 }
+						})
+					},
+					complete: function(xhr) {
+            $('body').trigger('ajax:complete', xhr);
+		  			var btn = $('#submit_button'); 
+						if (btn) { btn.attr('disabled', false); }
+					}
 				});
 		  }
 		}
 		else
 		{
 		  // some pages aren't valid
-		  var el = $('#submit_message');
-		  if(el) { el.html("Please ensure all pages are complete and valid, then submit again."); el.show(); }
+ 	    $('#submit_message').html("Please ensure all pages are complete and valid, then submit again."); 
+		  $('#submit_message').show();
   
 		  var btn = $('#submit_button'); if (btn) { btn.attr('disabled', false); }
 		}
