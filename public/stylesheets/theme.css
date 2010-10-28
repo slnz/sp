@@ -308,6 +308,7 @@ ul.questions li.section {
 li.questiongrid div.row {
   float: left;
   min-height: 70px;
+  min-height: 60px;
   margin-right: 10px;
 }
 
@@ -429,6 +430,11 @@ li.questiongrid div.row {
   font-size: 14px;
 }
 
+
+span.servicename {
+	font-weight: bold;
+	text-decoration: underline;
+}
 
 /* **************************** */
 /* ERRORS */
