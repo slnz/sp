@@ -18,7 +18,7 @@ function setUpSortables() {
 	
 		
 	$('.droppable').droppable({
-		activeClass: 'ui-state-highlight',
+		activeClass: 'droppable-active',
 		drop: function( event, ui ) {
 			$.post($(this).attr('data-url'), {draggable_element: ui.draggable.attr('id')}, function() {}, 'script')
 		}
