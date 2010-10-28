@@ -1,10 +1,11 @@
 <div id="controls">
-  <% if @project && @project.logo_file_name.present? %>
   <div id="projectlogo">
-    <!-- Max size 270w x 100h -->
-    <div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+		<%= @project.name %>
+	  <% if @project && @project.logo_file_name.present? %>
+    	<!-- Max size 270w x 100h -->
+    	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+		<% end %>
   </div>
-  <% end %>
   <div id="panel">
     <%= render :partial => 'answer_sheets/pages_list' %>
   </div>
