@@ -27,6 +27,11 @@ body {
   line-height:60px;
 }
 
+#global #menu li a:hover {
+  color: #efefef;
+  background: #0b486b;
+}
+
 #global #menu li a.selected {
   background:none repeat scroll 0 0 #0B486B;
   color:#EFEFEF;

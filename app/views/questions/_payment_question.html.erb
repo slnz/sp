@@ -5,13 +5,13 @@
     Payment
   </h2>
   <% if @application %>
-    <p>
+    <p class="appfee">
       Application Fee: <%= number_to_currency(SpApplication.cost) %>
     </p>
-    <p>
+    <p class="currpayments">
       Current payments:
     </p>
-    <table cellspacing="0" class="list" style="margin-bottom: 27px; width: 95%;">
+    <table cellspacing="0" class="list" style="margin-bottom: 27px; width: 100%;">
 			<thead>
         <tr>
           <th>
@@ -31,7 +31,7 @@
       <tbody id="payment_table">
 				<% if @application.payments.empty? %>
 	        <tr>
-	          <td colspan="3" id="no-payments" <% if @application.payments.length > 0 -%> style="display: none;" <% end -%>>
+	          <td colspan="4" id="no-payments" <% if @application.payments.length > 0 -%> style="display: none;" <% end -%>>
 	            You have not yet applied any payments to this application.
 	          </td>
 	        </tr>
@@ -49,28 +49,34 @@
 	    </div>
 	    <ul class="list-choices">
 	      <li>
-	        <%= radio_button :payment, :payment_type, "Credit Card", {:onclick => "swapPayment('credit');",
-	                            :disabled => @application.frozen?&&@reference.nil?,
-	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_credit_card">Credit/Debit Card (Fastest - Processed immediately online)</label>
-	        <div id="pay_credit" class="pay_view" <% unless @payment.payment_type == "Credit Card" -%> style="display: none;" <% end -%>>
-	          <%= render :partial => 'payments/credit' %>
-	        </div>
+	        <div class="field field_check">
+  	        <%= radio_button :payment, :payment_type, "Credit Card", {:onclick => "swapPayment('credit');",
+  	                            :disabled => @application.frozen?&&@reference.nil?,
+  	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_credit_card">Credit/Debit Card (Fastest - Processed immediately online)</label>
+  	        <div id="pay_credit" class="pay_view" <% unless @payment.payment_type == "Credit Card" -%> style="display: none;" <% end -%>>
+  	          <%= render :partial => 'payments/credit' %>
+  	        </div>
+  	      </div>
 	      </li>
 	      <li>
-	        <%= radio_button :payment, :payment_type, "Mail", {:onclick => "swapPayment('mail');",
-	                            :disabled => @application.frozen?&&@reference.nil?,
-	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_mail">Check or Money Order via Postal Mail</label>
-	        <div id="pay_mail" class="pay_view" <% unless @payment.payment_type == "Mail" -%> style="display: none;" <% end -%>>
-	          <%= render :partial => 'payments/mail' %>
-	        </div>
+	        <div class="field field_check">
+  	        <%= radio_button :payment, :payment_type, "Mail", {:onclick => "swapPayment('mail');",
+  	                            :disabled => @application.frozen?&&@reference.nil?,
+  	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_mail">Check or Money Order via Postal Mail</label>
+  	        <div id="pay_mail" class="pay_view" <% unless @payment.payment_type == "Mail" -%> style="display: none;" <% end -%>>
+  	          <%= render :partial => 'payments/mail' %>
+  	        </div>
+  	      </div>
 	      </li>
 	      <li>
-	        <%= radio_button :payment, :payment_type, "Staff", {:onclick => "swapPayment('staff');",
-	                            :disabled => @application.frozen?&&@reference.nil?,
-	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_staff">Transfer from a Staff/Project/Scholarship Fund</label>
-	        <div id="pay_staff" class="pay_view" <% unless @payment.payment_type == "Staff" -%> style="display: none;" <% end -%>>
-	          <%= render :partial => 'payments/staff' %>
-	        </div>
+	        <div class="field field_check">
+  	        <%= radio_button :payment, :payment_type, "Staff", {:onclick => "swapPayment('staff');",
+  	                            :disabled => @application.frozen?&&@reference.nil?,
+  	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_staff">Transfer from a Staff/Project/Scholarship Fund</label>
+  	        <div id="pay_staff" class="pay_view" <% unless @payment.payment_type == "Staff" -%> style="display: none;" <% end -%>>
+  	          <%= render :partial => 'payments/staff' %>
+  	        </div>
+  	      </div>
 	      </li>
 	    </ul>
 		</div>

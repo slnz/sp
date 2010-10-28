@@ -129,6 +129,39 @@ li.complete {
 }
 
 /* ***************************** */
+/* Payment */
+
+div.payment_question {
+  background: #efefef;
+  padding: 10px;
+  border: 2px solid #999;
+  margin-bottom: 1em;
+}
+
+ul.list-choices li:focus {
+  background: yellow;
+}
+
+div.payment_question div.pay_view {
+  margin-left: 20px;
+}
+
+ul.questions li ul.list-choices li {
+  margin-bottom:0;
+  padding-bottom:0;
+}
+
+tbody#payment_table td {
+  padding: 3px;
+  width: 25%;
+}
+
+p.appfee, p.currpayments {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+/* ***************************** */
 /* Grid Table */
 
 table.grid {
