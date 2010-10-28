@@ -39,7 +39,10 @@ h3.critical {
 /* Global */
 #global {
   background: @white;
-  #menu {
+  border-top: 1px solid @white;
+  #menu, #menuright {
+    float: left;
+    width: 500px;
     height: 60px;
     .strip-list;
     li {float: left; line-height: 60px;}
@@ -53,19 +56,26 @@ h3.critical {
       margin: 8px;
       font-size: 14px;
       font-weight: bold;
-      }      
+    }      
     li a.selected, li a:hover {
       color: @global-bg;
       background: @dark-blue;
-      }
+    }
     li.withicon {}
     li.withicon a {background: no-repeat 0px; border: 1px solid silver;}
     li.search {
       float: right;
       a {background-image: url('/images/buttonbg_search.png'); padding-left: 31px; }
-      }
     }
   }
+  #menuright {
+    width: auto;
+    float: right;
+    li a {
+      background: none;
+    }
+  }
+}
 
 
 /* Primary */
