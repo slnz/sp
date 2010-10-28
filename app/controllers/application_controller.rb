@@ -13,7 +13,6 @@ class ApplicationController < ActionController::Base
   
   def set_time_zone
     Time.zone = request.env['rack.timezone.utc_offset'] if request.env['rack.timezone.utc_offset'].present?
-    # raise request.env['rack.timezone.utc_offset'].inspect
   end
     
   protected

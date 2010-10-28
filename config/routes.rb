@@ -33,6 +33,7 @@ Sp2::Application.routes.draw do
   resources :applications do
     member do
       get :multiple_projects
+      get :done
     end
     collection do
       get :closed
