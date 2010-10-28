@@ -21,7 +21,7 @@ class ApplicationsController < AnswerSheetsController
           return false
         else
           # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
-          if @application.project.present? && @application.project != @project
+          if @application.project.present? && @application.project != @project 
             redirect_to multiple_projects_application_path(@application, :p => params[:p])
             return false
           end
