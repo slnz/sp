@@ -21,6 +21,15 @@
   min-height: 500px;
 }
 
+#projecttitle {
+  background:none repeat scroll 0 0 #421F07;
+  color:#FFFFFF;
+  font-size:14px;
+  font-weight:bold;
+  margin:-10px -10px 15px;
+  padding:10px;
+}
+
 #list-pages li.active a {
   border-color: #421f07;
 }
@@ -28,6 +37,19 @@
 a {
   color: #421F07;
 }
+
+a.successreturn {
+  -moz-border-radius:7px 7px 7px 7px;
+  -webkit-border-radius:7px 7px 7px 7px;
+  border-radius:7px 7px 7px 7px;
+  background:none repeat scroll 0 0 #EFEFEF;
+  border:1px solid #555555;
+  font-size:12px;
+  font-weight:bold;
+  margin:10px 0;
+  padding:5px;
+}
+
 
 #footer table {
   width: 100%;
@@ -95,6 +117,18 @@ input[type=password] {
   border: 1px solid gray;
   padding: 4px;
   width: 200px;
+}
+
+input.error[type=text],
+input.error[type=password] {
+  border: 1px solid red;
+  background: #FFEAEA;
+  margin-top: -1px;
+}
+
+label.error {
+  font-size: 11px;
+  color: red;
 }
 
 select {
@@ -272,7 +306,7 @@ ul.questions li.section {
 
 li.questiongrid div.row {
   float: left;
-  min-height: 60px;
+  min-height: 70px;
   margin-right: 10px;
 }
 

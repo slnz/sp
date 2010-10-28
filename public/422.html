@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>The change you wanted was rejected (422)</title>
-  <style type="text/css">
+  <style type="text/css"> /*
     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
     div.dialog {
       width: 25em;
@@ -13,14 +13,21 @@
       border-bottom-color: #999;
     }
     h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
-  </style>
+  */ </style>
+  <link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/frontend.css">
 </head>
 
+<!-- This file lives in public/422.html -->
 <body>
-  <!-- This file lives in public/422.html -->
-  <div class="dialog">
-    <h1>The change you wanted was rejected.</h1>
-    <p>Maybe you tried to change something you didn't have access to.</p>
+  <div id="outer">
+    <div id="header"></div>
+    
+    <div id="body">
+      <div class="content">
+        <h3>The change you wanted was rejected.</h3>
+        <p>Maybe you tried to change something you didn't have access to.</p>
+      </div>
+    </div>
   </div>
 </body>
 </html>
