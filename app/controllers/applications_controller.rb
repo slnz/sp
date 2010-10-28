@@ -2,7 +2,6 @@ class ApplicationsController < AnswerSheetsController
   before_filter :ssm_login_required, :except => [:closed]
   before_filter :redirect_to_closed, :except => [:closed]
   before_filter :get_application, :only => [:multiple_projects]
-  before_filter :set_time_zone
   
   def closed
     render :layout => false
@@ -58,10 +57,6 @@ class ApplicationsController < AnswerSheetsController
   def multiple_projects
     @current_project = @application.project
     @new_project = SpProject.find(params[:p])
-  end
-  
-  def set_time_zone
-    Time.zone = request.env['rack.timezone.utc_offset'] if request.env['rack.timezone.utc_offset'].present?
   end
   
   protected
