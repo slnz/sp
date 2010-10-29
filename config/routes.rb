@@ -2,6 +2,12 @@ Sp2::Application.routes.draw do
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/failure' => 'authentications#failed'
   resources :authentications
+  
+  resources :campuses do
+    collection do 
+      post :search
+    end
+  end
 
   # Sample resource route within a namespace:
   namespace :admin do

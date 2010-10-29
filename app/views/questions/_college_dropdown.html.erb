@@ -1,0 +1,4 @@
+<%= select_tag "answers[#{school_picker.id}]", 
+      options_for_select([""] + school_picker.choices(@application), school_picker.response(@application)), 
+      :class => 'select ' + school_picker.validation_class, 
+      :id => dom_id(school_picker), :disabled => @application.frozen?&&@reference.nil?, :readonly => @application.frozen?&&@reference.nil? %>

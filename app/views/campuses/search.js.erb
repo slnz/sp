@@ -1,0 +1,2 @@
+$('#<%= params[:dom_id] %>_list').html('<%= escape_javascript(render('questions/college_dropdown', :school_picker => @school_picker)) %>')
+$('#spinner_<%= params[:dom_id] %>').hide();
