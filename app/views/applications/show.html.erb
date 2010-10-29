@@ -14,7 +14,7 @@
       <tbody>
         <tr>
           <td class="fieldname fieldbold">Status:</td>
-          <td class="value"><%#= @application.status.titleize %></td>
+          <td class="value"><%= @application.status.to_s.titleize %></td>
         </tr>
         <tr>
           <td class="fieldname fieldbold">Paid:</td>
@@ -29,8 +29,8 @@
         </tr>
         <% @application.sp_references.each do |reference| %>
         <tr>
-          <td class="fieldname fieldbold"><%#= reference.style.titleize %></td>
-          <td class="value"><%#= reference.status.titleize %></td>
+          <td class="fieldname fieldbold"><%= reference.style.to_s.titleize %></td>
+          <td class="value"><%= reference.status.to_s.titleize %></td>
         </tr>
         <% end %>
         <tr>
