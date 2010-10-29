@@ -112,4 +112,11 @@ class ApplicationController < ActionController::Base
         render :nothing => true
       end
     end
+    
+    
+    def initialize_addresses
+      @application.person.create_current_address if @application.person.current_address.nil?
+      @application.person.create_permanent_address if @application.person.permanent_address.nil?
+      @application.person.create_emergency_address if @application.person.emergency_address.nil?
+    end
 end
