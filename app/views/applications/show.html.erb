@@ -1,5 +1,5 @@
 <div class="pagepad">
-  <h2>Hello David Sudarma,</h2>
+  <h2>Hello <%= @application.name %>,</h2>
   
   <p>
     You applied to <strong><%= @application.project.name %>!</strong> Here 
@@ -36,10 +36,10 @@
         <tr>
           <td colspan="2" class="divide"></td>
         </tr>
-        <tr>
+<!--        <tr>
           <td class="fieldname fieldbold">Dollars Raised:</td>
           <td class="value">VALUE HERE</td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
   </div>
@@ -78,15 +78,15 @@
         </tr>
         <tr>
           <td class="fieldname fieldbold">Project Cost:</td>
-          <td class="value">$4000.00</td>
+          <td class="value"><%= number_to_currency(@application.project.student_cost) %></td>
         </tr>
         <tr>
           <td class="fieldname fieldbold">Project Dates:</td>
-          <td class="value">12/20/2010 &mdash; 12/30/2010</td>
+          <td class="value"><%= l(@application.project.start_date) %> &mdash; <%= l(@application.project.end_date) %></td>
         </tr>
         <tr>
           <td class="fieldname fieldbold">Project Overview:</td>
-          <td class="value"></td>
+          <td class="value"><%= raw @application.project.description %></td>
         </tr>
         
       </tbody>

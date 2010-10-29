@@ -77,11 +77,15 @@ class ApplicationsController < AnswerSheetsController
     end
     
     def get_application
-      @application = current_person.sp_applications.find(params[:id])
+      if sp_user && sp_user.can_su_application?
+        @application = SpApplication.find(params[:id])
+      else
+        @application = current_person.sp_applications.find(params[:id])
+      end
     end
     
     
     def get_answer_sheet
-      get_application
+      @answer_sheet = get_application
     end
 end
