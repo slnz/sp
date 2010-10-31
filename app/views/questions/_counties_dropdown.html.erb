@@ -1,1 +1,0 @@
-<%= select_tag "school_picker_county_#{school_picker.id}", options_for_select(County.find_all_by_state(school_picker.state(@application)).collect(&:name), school_picker.county(@application)), :disabled => @application.frozen?&&@reference.nil?, :readonly => @application.frozen?&&@reference.nil? %>

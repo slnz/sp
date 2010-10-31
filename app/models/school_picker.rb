@@ -17,21 +17,16 @@ class SchoolPicker < Question
     s.to_s
   end  
   
-  def county(app=nil)
-    if !app.nil?
-      # try to get state from the applicant
-      # get from the campus
-      c = Campus.find_by_name(response(app))
-      if !c.nil?
-        s = c.county
-      end
-    end
-    s.to_s
-  end
-  
   def colleges(app=nil)
     unless self.state(app) == ""
       return Campus.find_all_by_state_and_type(self.state(app), 'College', :order => :name).to_a.collect {|c| c.name} 
+    end
+    []
+  end
+  
+  def high_schools(app=nil)
+    unless self.state(app) == ""
+      return Campus.find_all_by_type('HighSchool', :order => :name).to_a.collect {|c| c.name} 
     end
     []
   end
