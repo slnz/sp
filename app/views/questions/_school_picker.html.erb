@@ -1,10 +1,15 @@
 <div style="border: solid 1px #dadada; padding: 9px;">
-<label for="school_picker_<%= school_picker.id %>" class="desc">Select the state your school is in and click 'Find Schools'</label>
+	<label for="school_picker_<%= school_picker.id %>" class="desc">Select the state your school is in and click 'Find Schools'</label>
 	<%= select_tag "school_picker_state_#{school_picker.id}", options_for_select(State::NAMES, school_picker.state(@application)), :disabled => @application.frozen?&&@reference.nil?, :readonly => @application.frozen?&&@reference.nil? %>
 	<%= button_to_function 'Find Schools', "searchCampuses('school_picker_state_#{school_picker.id}', '#{dom_id(school_picker)}', #{@application.id});return false;", :disabled => @application.frozen?&&@reference.nil?, :readonly => @application.frozen?&&@reference.nil? %>
 	<%= spinner(dom_id(school_picker)) %>
-<label for="<%= dom_id(school_picker) %>" class="desc" style="margin-top: 9px;">School</label>
-	<div id="<%= dom_id(school_picker) %>_list">
+	<label for="<%= dom_id(school_picker) %>" class="desc" style="margin-top: 9px;">If you're in college, pick from this list</label>
+	<div id="<%= dom_id(school_picker) %>_colleges">
     <%= render 'questions/college_dropdown', :school_picker => school_picker %>
 	</div>
+	<label for="<%= dom_id(school_picker) %>" class="desc" style="margin-top: 9px;">If you're in high school, choose a county</label>
+	<div id="<%= dom_id(school_picker) %>_counties">
+    <%= render 'questions/counties_dropdown', :school_picker => school_picker %>
+	</div>
+	
 </div>

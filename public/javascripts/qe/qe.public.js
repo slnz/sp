@@ -308,4 +308,17 @@ function updateTotal(id) {
 	} catch(e) {}
 }
 
+function submitToFrame(dom_id, url)
+{
+	$('#' + dom_id + "-spinner").show();
+  var form_dom = dom_id + '-form';
+  var old_action = $('#' + form_dom).attr('action');
+  var old_target = $('#' + form_dom).attr('target');
+  $('#' + form_dom).attr('action',  url);
+  $('#' + form_dom).attr('target', dom_id + '-iframe');
+  $('#' + form_dom).submit();
+  $('#' + form_dom).attr('action', old_action);
+  $('#' + form_dom).attr('target', old_target);
+}
+
 })(jQuery);

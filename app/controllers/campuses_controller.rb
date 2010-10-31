@@ -1,6 +1,5 @@
 class CampusesController < ApplicationController
-  skip_before_filter AuthenticationFilter
-  prepend_before_filter :login_from_cookie
+  before_filter :ssm_login_required
   
   layout nil
  
