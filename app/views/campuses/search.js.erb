@@ -1,5 +1,4 @@
 <% if params[:state] %>
-	$('#<%= params[:dom_id] %>_colleges').html('<%= escape_javascript(render('questions/college_dropdown', :school_picker => @school_picker)) %>')
-	$('#<%= params[:dom_id] %>_counties').html('<%= escape_javascript(render('questions/counties_dropdown', :school_picker => @school_picker)) %>')
+	$('#<%= params[:dom_id] %>_div').replaceWith('<%= escape_javascript(render('questions/school_picker', :school_picker => @school_picker)) %>')
 	$('#spinner_<%= params[:dom_id] %>').hide();
 <% end %>
