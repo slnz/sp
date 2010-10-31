@@ -75,24 +75,28 @@
       
       <%= f.select :template_question_sheet_id, QuestionSheet.active.where("label like '%Template%'").order('label').collect {|qs| [qs.label, qs.id]} %>
       
-      <% if sp_user.can_edit_questionnaire? %>  
-        <h3>Customizable project-specific questions <%= tip('You can add up to five customizable questions to the application that are specific only for your summer project. A few thoughts: Clarify if the question is for acceptance (required by all), or is just for further information – for example: “Optional: Do you have lifeguard certification?” Please remember that questions need to not be biased or discriminatory. If you have any questions, ask your regional or ministry summer project coordinator or email gosummerproject@uscm.org') %></h3>
+          <h3>Customizable project-specific questions <%= tip('You can add up to five customizable questions to the application that are specific only for your summer project. A few thoughts: Clarify if the question is for acceptance (required by all), or is just for further information – for example: “Optional: Do you have lifeguard certification?” Please remember that questions need to not be biased or discriminatory. If you have any questions, ask your regional or ministry summer project coordinator or email gosummerproject@uscm.org') %></h3>
+      <% if @project.new_record? %>
+        After you save this new project, you can add custom questions.
+      <% else %>
+        <% if sp_user.can_edit_questionnaire? %>  
       
-        <% @questions.each_with_index do |question, i| %>
-          <div class="multifield" style="<%= (i != 0 && question.label.blank?) ? 'display:none' : '' -%>" id="question_<%= i %>">
-            <label>Custom Question:</label>
-            <div class="field quote">
-              <div>
-                <%= text_field_tag "questions[#{i}][label]", question.label, :size => 40 %>
-                <%= link_to(image_tag('/images/icons/slash.png') + "Delete this question", '', :class => 'delete_question') %>
-                <%= hidden_field_tag "questions[#{i}][id]", question.id %>
+          <% @questions.each_with_index do |question, i| %>
+            <div class="multifield" style="<%= (i != 0 && question.label.blank?) ? 'display:none' : '' -%>" id="question_<%= i %>">
+              <label>Custom Question:</label>
+              <div class="field quote">
+                <div>
+                  <%= text_field_tag "questions[#{i}][label]", question.label, :size => 40 %>
+                  <%= link_to(image_tag('/images/icons/slash.png') + "Delete this question", '', :class => 'delete_question') %>
+                  <%= hidden_field_tag "questions[#{i}][id]", question.id %>
+                </div>
               </div>
+              <div class="clear"></div>
+              <% unless i == 4 || @questions[i+1].try(:label).present?%>
+                <%= link_to_function(image_tag('/images/icons/plus-small.png') + 'Add another question', "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
+              <% end %>
             </div>
-            <div class="clear"></div>
-            <% unless i == 4 || @questions[i+1].try(:label).present?%>
-              <%= link_to_function(image_tag('/images/icons/plus-small.png') + 'Add another question', "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
-            <% end %>
-          </div>
+          <% end %>
         <% end %>
       <% end %>
     </div>
