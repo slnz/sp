@@ -30,7 +30,7 @@ gem 'google-geocode', :require => 'google_geocode'
 gem 'spreadsheet'
 # gem 'exception_notification', :git => "git://github.com/rails/exception_notification", :require => 'exception_notifier', :branch => 'master'
 gem 'hoptoad_notifier'
-  gem 'jammit'
+gem 'jammit'
 # gem 'unicode_utils'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
