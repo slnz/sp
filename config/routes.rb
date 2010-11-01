@@ -55,6 +55,8 @@ Sp2::Application.routes.draw do
   match '/admin' => "admin/projects#dashboard"
   match '/apply' => "applications#apply", :as => :apply
   
+  match '/references/done' => "reference_sheets#done"
+  
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 
 

@@ -13,11 +13,19 @@ class AnswerSheetsController < ApplicationController
       end
       render 'applications/submitted'
     when 'ReferenceSheet'
-      
+      @answer_sheet.submit!
+      render 'reference_sheets/submitted'
     else
       super
     end
     return false
+  end
+  
+  def edit
+    @project = @answer_sheet.project
+    @presenter = AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
+    @elements = @presenter.questions_for_page(:first).elements
+    @page = @presenter.pages.first
   end
   
   protected
