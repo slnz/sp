@@ -35,6 +35,10 @@
   border-color: #421f07;
 }
 
+h1 {
+  font-size: 20px;
+}
+
 a {
   color: #421F07;
 }
@@ -581,6 +585,7 @@ table.statuswait td img {
 
 table.statuswait td.fieldname {
   width: 135px;
+  vertical-align: top;
 }
 
 table.statuswait td.fieldbold {
