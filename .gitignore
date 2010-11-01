@@ -10,3 +10,4 @@ config/amazon_s3.yml
 cache
 vendor/plugins/query_trace
 config/facebook.yml
+public/packages/

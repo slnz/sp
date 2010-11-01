@@ -9,14 +9,12 @@ gem 'mysql2', '0.2.6'
 # Deploy with Capistrano
 gem 'capistrano'
 
-gem 'less' # 1s
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'google-geocode'
 gem 'acts_as_versioned'
 gem 'acts_as_state_machine'
 gem 'acts_as_list'
 gem 'tiny_mce'
-gem 'jammit'
 gem 'carmen'
 gem 'dynamic_form'
 gem 'activemerchant'
@@ -51,6 +49,8 @@ gem 'hoptoad_notifier'
 group :development do
   # gem 'bullet', '~> 2.0.0.rc1'
   gem 'mail_safe' #.5
+  gem 'jammit'
+  gem 'less' # 1s
 end
 # 
 gem 'activerecord-oracle_enhanced-adapter'
