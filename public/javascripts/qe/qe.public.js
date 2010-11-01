@@ -204,7 +204,9 @@
 			  var form = $(page + '-form');
 
 		    valid = form.valid();
-
+				// Move radio button errors up
+				$('input[type=radio].error').closest('tr').addClass('error');
+				
 		    if(valid)  {  
 		      el.removeClass('incomplete');
 				  el.addClass('complete');

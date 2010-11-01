@@ -33,7 +33,7 @@ class SchoolPicker < Question
   
   def validation_class
     if self.required?
-      'validate-selection'
+      'validate-selection required'
     else
       ''
     end
