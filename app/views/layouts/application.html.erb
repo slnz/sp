@@ -6,9 +6,9 @@
   <title>Summer Project Application</title>
   <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' ,
                              'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
-  <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
-  <%= questionnaire_engine_includes(:area => :public) %>
-  <%= javascript_include_tag 'rails', 'rails.extra', 'application' %>
+  <%= javascript_include_tag 'qe/jquery.metadata', 'qe/jquery.tooltips.min', :cache => true %>
+  <%= include_stylesheets :base, :media => 'all' %>
+  <%= include_javascripts :base %>
   <script type="text/javascript" charset="utf-8">
     var answer_sheet_type = '<%= @answer_sheet.class %>'
   </script>

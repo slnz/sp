@@ -40,5 +40,8 @@ module Sp2
     config.filter_parameters += [:password]
     
     config.action_controller.page_cache_directory = 'public/cache'
+    
+    config.cache_store = :dalli_store, '127.0.0.1'
+    
   end
 end

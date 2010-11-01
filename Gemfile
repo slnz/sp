@@ -9,26 +9,23 @@ gem 'mysql2', '0.2.6'
 # Deploy with Capistrano
 gem 'capistrano'
 
-gem 'less'
+gem 'less' # 1s
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'google-geocode'
 gem 'acts_as_versioned'
 gem 'acts_as_state_machine'
 gem 'acts_as_list'
 gem 'tiny_mce'
-gem 'responds_to_parent'
+gem 'jammit'
 gem 'carmen'
 gem 'dynamic_form'
-gem 'rspec'
 gem 'activemerchant'
-# gem 'image_science', :git => "http://github.com/sobakasu/image_science.git"
-# gem 'RubyInline'
 gem 'paperclip'
 
-gem 'memcache-client'
+gem 'dalli'
 gem 'liquid'
 
-gem 'RedCloth'
+# gem 'RedCloth'
 
 gem 'aws-s3', :require => 'aws/s3'
 gem 'google-geocode', :require => 'google_geocode'
@@ -53,11 +50,11 @@ gem 'hoptoad_notifier'
 # and rake tasks are available in development mode:
 group :development do
   # gem 'bullet', '~> 2.0.0.rc1'
-  gem 'mail_safe'
+  gem 'mail_safe' #.5
 end
 # 
 gem 'activerecord-oracle_enhanced-adapter'
 gem 'ruby-oci8'
-gem 'omniauth'
-gem 'message_block'
-gem 'rack-contrib'
+gem 'omniauth' # ~2s
+gem 'message_block' # ~100ms
+gem 'rack-contrib' # 100ms

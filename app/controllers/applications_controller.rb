@@ -70,7 +70,7 @@ class ApplicationsController < AnswerSheetsController
   end
   protected
     def redirect_to_closed
-      unless current_person.isStaff?
+      unless current_user.developer?
         redirect_to :action => :closed 
         return false
       end

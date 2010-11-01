@@ -95,6 +95,7 @@
 				$.qe.pageHandler.showPage(page);  // show after load, unless loading in background
 				setUpJsHelpers();
 	      $.qe.pageHandler.enableValidation(page);
+				$('#' + page).data('form_data', $.qe.pageHandler.captureForm($('#' + page)));
 				// $.qe.pageHandler.validatePage('#' + page);
 	    }
 			$('#page_ajax_spinner').hide();
@@ -284,41 +285,34 @@
   
 };
 
+})(jQuery);
 
-function submitToFrame(dom_id, url)
-{
-	$(dom_id + "-spinner").show();
-  var form_dom = dom_id + '-form';
-  var old_action = $(form_dom).action;
-  var old_target = $(form_dom).target;
-  $(form_dom).action = url;
-  $(form_dom).target = dom_id + '-iframe';
-  $(form_dom).submit();
-  $(form_dom).action = old_action;
-  $(form_dom).target = old_target;
-}
+
 
 function updateTotal(id) {
 	try {
 		total = 0;
-		$$(".col_" + id ).each(function(e) {
-		  total += Number(e.value);
+		$(".col_" + id ).each(function(e) {
+		  total += Number(e.val());
 		});
-		$('total_' + id).value = total;
+		$('#total_' + id).val(total);
 	} catch(e) {}
 }
 
-function submitToFrame(dom_id, url)
+function submitToFrame(id, url)
 {
-	$('#' + dom_id + "-spinner").show();
-  var form_dom = dom_id + '-form';
-  var old_action = $('#' + form_dom).attr('action');
-  var old_target = $('#' + form_dom).attr('target');
-  $('#' + form_dom).attr('action',  url);
-  $('#' + form_dom).attr('target', dom_id + '-iframe');
-  $('#' + form_dom).submit();
-  $('#' + form_dom).attr('action', old_action);
-  $('#' + form_dom).attr('target', old_target);
+  form = $('<form method="post" action="'+url+'.js" endtype="multipart/form-data"></form>')
+  var csrf_token = $('meta[name=csrf-token]').attr('content'),
+      csrf_param = $('meta[name=csrf-param]').attr('content'),
+			dom_id = '#attachment_field_' + id,
+			metadata_input = '<input name="'+csrf_param+'" value="'+csrf_token+'" type="hidden" />',
+			file_field = '<input type="file" name="answers['+ id + ']>';
+	if ($(dom_id).val() == '')	return;
+  form.hide()
+      .append(metadata_input)
+      .append(file_field)
+      .appendTo('body');
+	$(dom_id + "-spinner").show();
+  form.submit();
+	return false
 }
-
-})(jQuery);

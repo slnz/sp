@@ -8,7 +8,7 @@ class AnswerPagesPresenter < Presenter
       end
     end
     # put the instructions page first
-    index = @pages.index {|p| p.label == 'Instructions'}
+    index = @pages.index {|p| p.label == 'Instructions'} 
     instructions = @pages.delete_at(index)
     @pages.insert(0, instructions) if instructions
     

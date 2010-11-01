@@ -1,0 +1,23 @@
+# package_assets: always
+embed_assets: on
+javascript_compressor: closure
+package_path: packages
+
+javascripts:
+  base:
+    - public/javascripts/qe/jquery.validate.pack.js
+    - public/javascripts/qe/qe.common.js
+    - public/javascripts/qe/qe.public.js
+    - public/javascripts/qe/jquery.scrollTo-min.js
+    - public/uploadify/swfobject.js
+    - public/uploadify/jquery.uploadify.v2.1.0.min.js
+    - public/javascripts/rails.js
+    - public/javascripts/rails.extra.js
+    - public/javascripts/application.js
+    
+stylesheets:
+  base:
+    - public/stylesheets/jquery-ui-1.8.2.custom.css
+    - public/stylesheets/qe/qe.screen.css
+    - public/stylesheets/message_block.css
+    - public/stylesheets/theme.css

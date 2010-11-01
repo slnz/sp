@@ -1,9 +1,9 @@
-# Be sure to restart your server when you modify this file.
+require File.join(Rails.root, 'app', 'middleware', 'flash_session_cookie_middleware')
+require 'action_dispatch/middleware/session/dalli_store'
+Sp2::Application.config.session_store :dalli_store, :memcache_server => ['localhost'], :namespace => 'sessions', :key => '_sp2_session', :expire_after => 2.hours
 
-#Sp2::Application.config.session_store :cookie_store, :key => '_sp2_session'
-Sp2::Application.config.session_store :mem_cache_store, :key => '_sp2_session'
-
-# Use the database for sessions instead of the cookie-based default,
-# which shouldn't be used to store highly confidential information
-# (create the session table with "rake db:sessions:create")
-# Sp2::Application.config.session_store :active_record_store
+Sp2::Application.config.middleware.insert_before(
+  ActionDispatch::Session::DalliStore,
+  FlashSessionCookieMiddleware,
+  Rails.application.config.session_options[:key]
+)
