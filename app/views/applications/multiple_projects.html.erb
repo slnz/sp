@@ -1,4 +1,4 @@
-<% if @application.started? %>
+<% if @application.started? || @application.submitted? %>
 	<p>You are already applying for <%= @current_project.to_s %>, but have just clicked the link to apply for <%= @new_project.to_s %>. What would you like to do?</p>
 	<ul>
 	  <li><%= link_to("Continue applying to #{@current_project.to_s}.", apply_applications_path(:p => @current_project.to_param, :force => true)) %></li>
