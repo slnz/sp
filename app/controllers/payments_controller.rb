@@ -82,8 +82,12 @@ class PaymentsController < ApplicationController
 
  private
   def setup
-    @application = current_person.sp_applications.find(params[:application_id])
-  end  
+    if sp_user && sp_user.can_su_application?
+      @application = SpApplication.find(params[:application_id])
+    else
+      @application = current_person.sp_applications.find(params[:application_id])
+    end
+  end
   
   def send_staff_payment_request(payment)
     @person = @application.person

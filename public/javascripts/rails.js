@@ -87,10 +87,10 @@ jQuery(function ($) {
 							},
 							Yes: function() {
 								$(this).dialog('close');
-								confirm = el.attr('data-confirm')
+								// confirm = el.attr('data-confirm')
 								el.removeAttr('data-confirm');
 								el.click();
-								el.attr('data-confirm', confirm);
+								// el.attr('data-confirm', confirm);
 							}
 						}
 					});

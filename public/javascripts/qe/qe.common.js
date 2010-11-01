@@ -27,7 +27,7 @@ function setUpSortables() {
 
 function setUpCalendars() {
 	$('[data-calendar]').datepicker({changeYear:true,
-																	 yearRange: '1975:c+5'})
+																	 yearRange: '1950:c+5'})
 }
 
 function setUpJsHelpers() {
