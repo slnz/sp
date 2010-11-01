@@ -48,7 +48,7 @@ gem 'jammit'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development do
-  # gem 'bullet', '~> 2.0.0.rc1'
+  # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
   gem 'less' # 1s
 end

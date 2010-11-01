@@ -23,10 +23,13 @@ Sp2::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
-  config.after_initialize do
-    # Bullet.enable = false
-    # Bullet.bullet_logger = true
-  end
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.rails_logger = true
+  #   Bullet.console = true
+  #   Bullet.disable_browser_cache = true
+  # end
   
   config.action_mailer.default_url_options= { :host => 'localhost:3000' }
   
