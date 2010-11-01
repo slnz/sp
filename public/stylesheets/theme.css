@@ -205,10 +205,23 @@ table.grid {
 
 table.grid th {
   text-transform: capitalize;
+  text-align:center;
 }
 
 table.grid label {
   min-width: 0px;
+}
+
+table.grid tr.error {
+  background: #FFEAEA;
+}
+
+table.grid tr.error td {
+  color: red;
+}
+
+table.grid tr.error label.error {
+  display: none;
 }
 
 #preview button {
@@ -286,7 +299,7 @@ table.grid td.hidecell {
 
 #legend {
   font-size: 11px;
-  margin: 0 0 0 5px;  
+  margin: 5px 0 0 5px;  
   line-height: 2em
 }
 
