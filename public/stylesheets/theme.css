@@ -134,8 +134,12 @@ label.error {
 
 select {
   border: 1px solid gray;
-  padding: 4px;
+  padding: 3px;
   max-width: 300px;
+}
+
+li.statechooser select {
+  width: 300px;
 }
 
 input.radio {
@@ -144,15 +148,18 @@ input.radio {
 
 label.choice {
   margin-left: 25px
+  min-height: 25px;
+  border: 1px solid #fff;
 }
 
 .yesno {
   float: left;
-  width: 50px;
+  width: 60px;
 }
 
 .yesno label {
-  width: 50px;
+  width: 30px;
+  min-width: 0px;
 }
 
 li.incomplete {
@@ -321,8 +328,9 @@ ul.questions li.section {
 li.questiongrid div.row {
   float: left;
   min-height: 70px;
-  min-height: 60px;
+  min-height: 80px;
   margin-right: 10px;
+  border-bottom: 1px solid #fff;
 }
 
 #page-name {
