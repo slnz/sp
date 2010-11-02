@@ -34,7 +34,7 @@ class AnswerSheetsController < ApplicationController
       @answer_sheet = answer_sheet_type.find(params[:id])
       case @answer_sheet.class.to_s
       when 'SpApplication'
-        unless @answer_sheet.person == current_person
+        unless @answer_sheet.person == current_person || (sp_user && sp_user.can_su_application?)
           redirect_to root_path
           return false
         end

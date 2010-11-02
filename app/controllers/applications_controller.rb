@@ -4,7 +4,7 @@ class ApplicationsController < AnswerSheetsController
   before_filter :get_application, :only => [:multiple_projects, :done, :edit, :show]
   
   def closed
-    render :layout => false
+    redirect_to '/'
   end
   
   def apply

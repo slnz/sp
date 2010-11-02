@@ -115,12 +115,12 @@ class ApplicationController < ActionController::Base
     
     
     def initialize_addresses
-      if @application.respond_to?(:person) && (@application.person.current_address.nil? || @application.person.current_address.nil? ||
-                                                @application.person.emergency_address.nil?)
-        @application.person.create_current_address if @application.person.current_address.nil?
-        @application.person.create_permanent_address if @application.person.permanent_address.nil?
-        @application.person.create_emergency_address if @application.person.emergency_address.nil?
-        @application.person.reload
-      end
+      # if @application.respond_to?(:person) && (@application.person.current_address.nil? || @application.person.current_address.nil? ||
+      #                                           @application.person.emergency_address.nil?)
+      #   @application.person.create_current_address if @application.person.current_address.nil?
+      #   @application.person.create_permanent_address if @application.person.permanent_address.nil?
+      #   @application.person.create_emergency_address if @application.person.emergency_address.nil?
+      #   @application.person.reload
+      # end
     end
 end
