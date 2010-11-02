@@ -11,3 +11,4 @@ cache
 vendor/plugins/query_trace
 config/facebook.yml
 public/packages/
+config/initializers/active_merchant.rb

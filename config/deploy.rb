@@ -86,6 +86,7 @@ task :local_changes, :roles => :app do
     ln -s #{shared_path}/config/amazon_s3.yml #{release_path}/config/amazon_s3.yml &&
     ln -s #{shared_path}/config/facebook.yml #{release_path}/config/facebook.yml &&
     ln -s #{shared_path}/config/initializers/email.rb #{release_path}/config/initializers/email.rb &&
+    ln -s #{shared_path}/config/initializers/active_merchant.rb #{release_path}/config/initializers/active_merchant.rb &&
     
     
     mkdir -p -m 770 #{shared_path}/tmp/{cache,sessions,sockets,pids} &&
