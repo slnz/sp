@@ -7,6 +7,10 @@ class ApplicationsController < AnswerSheetsController
     redirect_to '/'
   end
   
+  def index
+    redirect_to '/'
+  end
+  
   def apply
     @project = SpProject.find(params[:p]) if params[:p]
     # If the current user has already started an application, pick it up from there
