@@ -1,5 +1,6 @@
 # gather payment information from Applicant
 class PaymentsController < ApplicationController
+  prepend_before_filter :ssm_login_required
   layout nil
   before_filter :setup
   

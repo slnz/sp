@@ -7,7 +7,9 @@ class SpPayment < ActiveRecord::Base
   
   after_save :check_app_complete
   
-  def validate
+  validate :credit_card_validation
+  
+  def credit_card_validation
     if credit?
       errors.add_on_empty([:first_name, :last_name, :address, :city, :state, :zip, :card_number,
                 :expiration_month, :expiration_year, :security_code])
