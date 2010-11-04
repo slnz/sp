@@ -605,3 +605,14 @@ div.pagepad {
   padding: 0 15px;
 }
 
+a.applydiff {
+	float: right;
+	background: #efefef;
+	border: 1px solid gray;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	margin-top:-4px;
+	padding:4px;
+}
+}

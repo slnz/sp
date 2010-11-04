@@ -18,7 +18,10 @@
 
 <div id="preview">
     <% if @project %>
-      <div id="projecttitle"><%= @project.name %></div>
+      <div id="projecttitle">
+				<%= @project.name %>
+				<%= link_to('click here to apply to a different project', '/projects', :class => 'applydiff') %>
+			</div>
     <% end %>
     <%= render :partial => 'answer_sheets/title' %>
     <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
