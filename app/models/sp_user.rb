@@ -41,7 +41,7 @@ class SpUser < ActiveRecord::Base
   end
 
   def partnerships
-    partnerships = [region, ministry_lookup(person.ministry), ministry_lookup(person.strategy)].compact
+    partnerships = [ministry_lookup(region), ministry_lookup(person.ministry), ministry_lookup(person.strategy)].compact
     partnerships.reject! {|p| p.blank?}
     partnerships
   end
