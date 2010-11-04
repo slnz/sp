@@ -24,12 +24,12 @@
           <td colspan="2" class="divide"></td>
         </tr>
         <tr>
-          <td class="fieldname fieldbold">References</td>
+          <td class="fieldname fieldbold">References (<%= link_to('edit', '/apply') %>)</td>
           <td class="value"></td>
         </tr>
         <% @application.sp_references.each do |reference| %>
         <tr>
-          <td class="fieldname fieldbold"><%= reference.style.to_s.titleize %></td>
+          <td class="fieldname fieldbold"><%= reference.name %></td>
           <td class="value"><%= reference.status.to_s.titleize %></td>
         </tr>
         <% end %>
