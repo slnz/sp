@@ -54,13 +54,17 @@ class ApplicationsController < AnswerSheetsController
       @application.reload
     end
     
+    # If they've submitted their application, go to the status page
+    if @application.frozen?
+      redirect_to application_path(@application) and return
+    end
+    
     # QE Code
     @answer_sheet = @application 
     @presenter = AnswerPagesPresenter.new(self, @application)
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
     @presenter.active_page ||= @page
-    raise @application.inspect if @presenter.active_page.nil?
     render 'answer_sheets/edit'
   end
   

@@ -24,7 +24,7 @@
           <td colspan="2" class="divide"></td>
         </tr>
         <tr>
-          <td class="fieldname fieldbold">References (<%= link_to('edit', '/apply') %>)</td>
+          <td class="fieldname fieldbold">References (<%= link_to('edit', edit_application_path(@application)) %>)</td>
           <td class="value"></td>
         </tr>
         <% @application.sp_references.each do |reference| %>
