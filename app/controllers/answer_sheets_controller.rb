@@ -3,6 +3,7 @@ class AnswerSheetsController < ApplicationController
   before_filter :login
   
   def submit
+    session[:attempted_submit] = true
     return false unless validate_sheet
     case @answer_sheet.class.to_s
     when 'SpApplication'

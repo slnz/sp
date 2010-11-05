@@ -12,6 +12,7 @@ class ApplicationsController < AnswerSheetsController
   end
   
   def apply
+    session[:attempted_submit] = nil
     @project = project_base.find(params[:p]) if params[:p]
     # If the current user has already started an application, pick it up from there
     @application = current_person.sp_applications.last 
