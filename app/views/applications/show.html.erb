@@ -24,7 +24,12 @@
           <td colspan="2" class="divide"></td>
         </tr>
         <tr>
-          <td class="fieldname fieldbold">References (<%= link_to('edit', edit_application_path(@application)) %>)</td>
+          <td class="fieldname fieldbold">
+						References 
+						<% if @application.can_change_references? %>
+							(<%= link_to('edit', edit_application_path(@application)) %>)
+						<% end %>
+					</td>
           <td class="value"></td>
         </tr>
         <% @application.sp_references.each do |reference| %>
@@ -40,6 +45,14 @@
           <td class="fieldname fieldbold">Dollars Raised:</td>
           <td class="value">VALUE HERE</td>
         </tr> -->
+				<% if @application.can_change_references? %>
+					<tr>
+	          <td colspan="2">
+							<%= link_to('If you\'d like to change which project you are applying for, click here.', '/projects') %>
+							<%= tip('If you decide you want to switch your project preference, you may be required to fill out additional questions since not every project has the same exact application. Be aware of the timing in light of the deadlines, and that projects may fill up the later you finish this second application.') %>
+						</td>
+	        </tr>
+				<% end %>
       </tbody>
     </table>
   </div>
