@@ -1,6 +1,6 @@
 require_dependency Rails.root.join('vendor','plugins','questionnaire_engine','app','controllers','answer_sheets_controller').to_s
 class AnswerSheetsController < ApplicationController
-  before_filter :ssm_login_required
+  before_filter :login
   
   def submit
     return false unless validate_sheet
@@ -45,5 +45,9 @@ class AnswerSheetsController < ApplicationController
         return false
       end
           
+    end
+    
+    def login
+      ssm_login_required unless answer_sheet_type.to_s == 'ReferenceSheet'
     end
 end
