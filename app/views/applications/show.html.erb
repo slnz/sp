@@ -76,14 +76,18 @@
         <tr>
           <td colspan="2" class="divide"></td>
         </tr>
-        <tr>
-          <td class="fieldname fieldbold">Project Cost:</td>
-          <td class="value"><%= number_to_currency(@application.project.student_cost) %></td>
-        </tr>
-        <tr>
-          <td class="fieldname fieldbold">Project Dates:</td>
-          <td class="value"><%= l(@application.project.start_date) %> &mdash; <%= l(@application.project.end_date) %></td>
-        </tr>
+        <% if @application.project.student_cost.to_i > 0 %>
+          <tr>
+            <td class="fieldname fieldbold">Project Cost:</td>
+            <td class="value"><%= number_to_currency(@application.project.student_cost, :precision => 0) %></td>
+          </tr>
+        <% end %>
+        <% if @application.project.start_date && @application.project.end_date %>
+          <tr>
+            <td class="fieldname fieldbold">Project Dates:</td>
+            <td class="value"><%= l(@application.project.start_date) %> &mdash; <%= l(@application.project.end_date) %></td>
+          </tr>
+        <% end %>
         <tr>
           <td class="fieldname fieldbold">Project Overview:</td>
           <td class="value"><%= raw @application.project.description %></td>
