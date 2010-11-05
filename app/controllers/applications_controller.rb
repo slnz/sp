@@ -106,6 +106,6 @@ class ApplicationsController < AnswerSheetsController
     end
     
     def project_base
-      project_base = SpProject.uses_application
+      project_base = SpProject.uses_application.current
     end
 end
