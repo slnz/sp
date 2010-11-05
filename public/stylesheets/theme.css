@@ -167,11 +167,11 @@ label.choice {
 }
 
 li.incomplete {
-  background: url(/images/icons/flag-yellow.png) no-repeat 95% 50%;
+  background: url(/images/icons/flag.png) no-repeat 95% 50%;
 }
 
 li.complete {
-  background: url(/images/icons/flag-green.png) no-repeat 95% 50%;
+  /* background: url(/images/icons/flag-green.png) no-repeat 95% 50%; */
 }
 
 /* ***************************** */
