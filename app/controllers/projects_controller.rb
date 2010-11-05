@@ -125,7 +125,9 @@ class ProjectsController < ApplicationController
         end
       end
       respond_to do |format|
-        format.html
+        format.html do
+          @projects.reject! {|p| !p.use_provided_application?} if @projects
+        end
         format.xml 
       end
     end

@@ -12,7 +12,7 @@ class ApplicationsController < AnswerSheetsController
   end
   
   def apply
-    @project = SpProject.find(params[:p]) if params[:p]
+    @project = project_base.find(params[:p]) if params[:p]
     # If the current user has already started an application, pick it up from there
     @application = current_person.sp_applications.last 
     
@@ -70,7 +70,7 @@ class ApplicationsController < AnswerSheetsController
   
   def multiple_projects
     @current_project = @application.project
-    @new_project = SpProject.find(params[:p])
+    @new_project = project_base.find(params[:p])
   end
   
   def show
@@ -103,5 +103,9 @@ class ApplicationsController < AnswerSheetsController
     def get_answer_sheet
       @answer_sheet = get_application
       initialize_addresses
+    end
+    
+    def project_base
+      project_base = SpProject.uses_application
     end
 end

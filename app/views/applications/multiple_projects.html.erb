@@ -1,4 +1,4 @@
-<% if @application.started? || @application.submitted? %>
+<% if @application.can_change_references? %>
 	<p>You are already applying for <%= @current_project.to_s %>, but have just clicked the link to apply for <%= @new_project.to_s %>. What would you like to do?</p>
 	<ul>
 	  <li><%= link_to("Continue applying to #{@current_project.to_s}.", apply_applications_path(:p => @current_project.to_param, :force => true)) %></li>
@@ -6,7 +6,7 @@
 	</ul>
 <% else %>
 	<p>
-		You have already submitted your application to <%= @current_project.name %>. If you need to change which project you're applying to, please 
+		Your application to <%= @current_project.name %> has already been completed. If you need to change which project you're applying to, please 
 		<% if @current_project.contact %>
 			contact <%= @current_project.contact.informal_full_name %> at <%= @current_project.contact.email %>
 		<% else %>
