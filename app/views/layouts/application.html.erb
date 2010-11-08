@@ -13,7 +13,7 @@
     var answer_sheet_type = '<%= @answer_sheet.class %>'
   </script>
   <%= csrf_meta_tag %>
-  <%= stylesheet_link_tag 'message_block', 'theme' %>
+  <%= stylesheet_link_tag 'message_block' %>
   <script type="text/javascript" charset="utf-8">
     <%= raw Rack::TimeZone::Javascript %>
     setTimezoneCookie()
@@ -47,7 +47,6 @@
     <div class="clear"></div>
   </div>
 </div>
-
 <div id="footerwrap">
   <div id="footer">
     <!-- anything in here my be custom branded -->
