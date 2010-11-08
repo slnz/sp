@@ -273,6 +273,18 @@ ul.questions li {
   float: left;
 }
 
+.choice_field.error label {
+	color: red;
+	font-weight: bold;
+	width: 50px;
+	background: #FFEAEA;
+	border: 1px solid red;
+}
+
+.choice_field.error label.error {
+	display: none;
+}
+
 div.p_content p {
   margin-bottom: 1em;
 }
