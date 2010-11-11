@@ -94,6 +94,7 @@ h3.critical {
   padding-left: 31px;
   border: none;
 }
+#global #menu li.search a:hover { color: #4d4d4d; }
 #global #menuright {
   float: left;
   width: 500px;
@@ -135,6 +136,7 @@ h3.critical {
   padding-left: 31px;
   border: none;
 }
+#global #menuright li.search a:hover { color: #4d4d4d; }
 #global #menuright {
   width: auto;
   float: right;
