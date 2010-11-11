@@ -4,14 +4,12 @@ class Admin::ApplicationsController < ApplicationController
   layout 'admin'
   
   def search
-    @region_options = Region.order('region')
-    @team_options = MinistryLocalLevel.where("lane = 'FS'").order('name')
-    @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
-    @project_options = SpProject.current.order(:name)
+    set_up_search_form
   end
   
   def search_results
-        if request.post?
+    set_up_search_form
+    if request.post?
       conditions = [[],[]]
       if params[:first_name] && !params[:first_name].empty?
         conditions[0] << "#{Person.table_name}.firstName like ?"
@@ -78,4 +76,12 @@ class Admin::ApplicationsController < ApplicationController
       end
     end
   end
+  
+  protected
+    def set_up_search_form
+      @region_options = Region.order('region')
+      @team_options = MinistryLocalLevel.where("lane = 'FS'").order('name')
+      @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
+      @project_options = SpProject.current.order(:name)
+    end
 end
