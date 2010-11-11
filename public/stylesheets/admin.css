@@ -88,10 +88,11 @@ h3.critical {
   background: no-repeat 0px;
   border: 1px solid silver;
 }
-#global #menu li.search { float: right; }
+#global #menu li.search { float: left; }
 #global #menu li.search a {
   background-image: url('/images/buttonbg_search.png');
   padding-left: 31px;
+  border: none;
 }
 #global #menuright {
   float: left;
@@ -128,10 +129,11 @@ h3.critical {
   background: no-repeat 0px;
   border: 1px solid silver;
 }
-#global #menuright li.search { float: right; }
+#global #menuright li.search { float: left; }
 #global #menuright li.search a {
   background-image: url('/images/buttonbg_search.png');
   padding-left: 31px;
+  border: none;
 }
 #global #menuright {
   width: auto;
