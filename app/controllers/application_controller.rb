@@ -67,6 +67,9 @@ class ApplicationController < ActionController::Base
     def sp_user
       return nil unless current_user
       @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
+      if @sp_user.nil? && current_person.isStaff?
+        @sp_user = SpGeneralStaff.create(:ssm_id => current_user.id, :created_by_id => current_user.id)
+      end
       unless session[:login_stamped] || @sp_user.nil?
         @sp_user.update_attribute(:last_login, Time.now)
         session[:login_stamped] = true

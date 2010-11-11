@@ -30,4 +30,8 @@ class SpRegionalCoordinator < SpUser
   def region
     @region ||= user.person.region
   end
+  
+  def role
+    'Regional Coordinator'
+  end
 end

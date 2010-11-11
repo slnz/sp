@@ -30,6 +30,7 @@ Sp2::Application.routes.draw do
       collection do
         get :search
         post :search_results
+        get :search_results
       end
     end
     

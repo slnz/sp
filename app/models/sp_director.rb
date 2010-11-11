@@ -15,4 +15,8 @@ class SpDirector < SpUser
   end
   
   def heading(val = nil) "My Projects"; end;
+  
+  def role
+    'Director'
+  end
 end

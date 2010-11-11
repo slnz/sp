@@ -1,10 +1,11 @@
 <div id="search_applicant_wrap">
   <h4 id="showhide">Search Criteria
-    
-  <span style="float: right;">
-  <a href="" id="showrr">Show</a> / 
-  <a href="" id="hidrr">Hide</a>
-  </span>
+  <% if params[:action] == 'search_results' %>
+    <span style="float: right;">
+      <a href="" id="showrr">Show</a> / 
+      <a href="" id="hidrr">Hide</a>
+    </span>
+  <% end %>
   
   </h4>
   <div id="allfields">
@@ -82,9 +83,11 @@ $("#showrr").click(function () {
     /* use callee so don't have to name the function */
     $(this).next("div").show("fast", arguments.callee);
   });
+  return false;
 });
 $("#hidrr").click(function () {
   $("#allfields").hide(250);
+  return false;
 });
 
 </script>

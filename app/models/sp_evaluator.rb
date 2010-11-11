@@ -16,4 +16,8 @@ class SpEvaluator < SpUser
   def region
     @region ||= user.person.region
   end
+  
+  def role
+    'Evaluator'
+  end
 end
