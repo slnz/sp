@@ -1,7 +1,7 @@
 class SpUser < ActiveRecord::Base
   belongs_to :user, :foreign_key => :ssm_id
   belongs_to :person
-  before_save :set_role
+  # before_save :set_role
   after_destroy :create_max_role
   after_initialize :set_acl
   
@@ -53,9 +53,13 @@ class SpUser < ActiveRecord::Base
   
   def heading(partner = nil) ''; end;
   
-  def set_role
-    sp_role = SpRole.find_by_user_class(self[:type])
-    self[:role] = sp_role.role if sp_role
+  # def set_role
+  #   sp_role = SpRole.find_by_user_class(self[:type])
+  #   self[:role] = sp_role.role if sp_role
+  # end
+  
+  def role
+    ''
   end
   
   # Give this person a role based on their involvement

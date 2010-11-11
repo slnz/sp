@@ -32,4 +32,8 @@ class SpNationalCoordinator < SpUser
   def creatable_user_types
     creatable_user_types_array("'SpRegionalCoordinator','SpNationalCoordinator','SpEvaluator','SpDirector','SpGeneralStaff'")
   end
+  
+  def role
+    'National Coordinator'
+  end
 end
