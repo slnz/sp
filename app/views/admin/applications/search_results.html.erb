@@ -1,0 +1,40 @@
+<h3>Summer Project Applicants: Search Results</h3>
+<% year = '' %>
+<table border="1">
+  <tr>
+  	<th>Year</th>
+  	<th>Name</th>
+  	<th>Accepted</th>
+  	<th>App. Completed</th>
+  	<th>Account#</th>
+  	<th>School</th>
+  	<th>E-mail</th>
+  	<th>Phone</th>
+  	<th>Assignment</th>
+  </tr>
+
+<% @applications.each_with_index do |application, i| %>
+  <% person = application.person || Person.new %>
+  <% address = person.current_address || Address.new  %>
+  <% project = application.project || SpProject.new %>
+	<% year = application.year %>
+  <tr align="center">
+  	<td><b><%= year %></b></td>
+  	<td nowrap="nowrap">
+  	  <% if false && (sp_user.can_evaluate_applicant?(application)) %>
+    		<%= link_to(person.informal_full_name, admin_application_path(application)) %>
+    	<% else %>
+    	  <%= person.informal_full_name %>
+    	<% end %>
+  	</td>
+  	<td><%= application.status.titleize%></td>
+
+  	<td><%= l(application.completed_at) if application.completed_at %></td>
+  	<td><%= application.designation_number%></td>
+  	<td><%= person.campus if person.campus%></td>
+  	<td><%= mail_to(address.email) if address.email%></a></td>
+  	<td><%= address.homePhone%></td>
+  	<td><%= project.id && sp_user.person.staffed_projects.include?(project) ? link_to(project.name, project_path(project)) : project.name %></td>
+  </tr>
+<% end -%>
+</table>

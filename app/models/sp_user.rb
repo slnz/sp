@@ -27,7 +27,7 @@ class SpUser < ActiveRecord::Base
   def can_edit_questionnaire?() false; end
   def can_edit_payments?() false; end
   def can_edit_applicant_info?() false; end
-  def can_evaluate_applicant?() false; end
+  def can_evaluate_applicant?(app=nil) false; end
   def can_see_roster?() false; end
   def can_upload_ds?() false; end
   def can_see_dashboard?() false; end

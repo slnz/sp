@@ -5,7 +5,7 @@ class SpRegionalCoordinator < SpUser
   def can_add_applicant?() true; end
   def can_see_other_regions?() true; end
   def can_see_roster?() true; end
-  def can_evaluate_applicant?() true; end
+  def can_evaluate_applicant?(app=nil) true; end
   def can_edit_roles?() true; end
   def can_edit_project?(project) true; end
   def can_see_dashboard?() true; end

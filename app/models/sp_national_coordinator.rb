@@ -12,7 +12,7 @@ class SpNationalCoordinator < SpUser
   def can_edit_questionnaire?() true; end
   def can_edit_payments?() true; end
   def can_edit_applicant_info?() true; end
-  def can_evaluate_applicant?() true; end
+  def can_evaluate_applicant?(app=nil) true; end
   def can_see_roster?() true; end
   def can_edit_roles?() true; end
   def can_upload_ds?() true; end

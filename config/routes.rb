@@ -26,7 +26,12 @@ Sp2::Application.routes.draw do
         get :threads, :no
       end
     end
-    resources :applications
+    resources :applications do 
+      collection do
+        get :search
+        post :search_results
+      end
+    end
     
     resources :leaders do
       collection do
