@@ -27,8 +27,10 @@ class Admin::ApplicationsController < ApplicationController
       # rather than join the team stuff into the main query it's going to be
       # cleaner to query out the campuses associated with this team seperately.
       # I know that means an extra query, but trust me, it's better.
-      @schools = TargetArea.find(:all, :include => :ministry_activities, :conditions => ["#{MinistryActivity.table_name}.fk_teamID = ?", params[:team]]).map(&:name)
-      unless @schools.empty?
+      @schools = TargetArea.joins(:ministry_activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
+      if @schools.empty?
+        conditions[0] << " 1 <> 1 "
+      else
         conditions[0] << "#{Person.table_name}.campus IN (\"#{@schools.join("\",\"")}\")"
       end
     end
@@ -79,5 +81,13 @@ class Admin::ApplicationsController < ApplicationController
       @team_options = MinistryLocalLevel.where("lane = 'FS'").order('name')
       @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
       @project_options = SpProject.current.order(:name)
+    end
+    
+    def get_project_type_condition
+      if params[:project_type] == 'US'
+        return ".country = 'United States'"
+      else
+        return ".country <> 'United States'"
+      end
     end
 end

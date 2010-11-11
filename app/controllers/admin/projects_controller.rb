@@ -169,7 +169,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def dashboard
-    redirect_to dashboard_path
+    redirect_to dashboard_path # defined in application_controller
   end
   
   def no

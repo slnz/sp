@@ -3,7 +3,7 @@ class SpDirector < SpUser
   def can_edit_applicant_info?() true; end
   def can_evaluate_applicant?(app=nil)
     return false unless app
-    app.project_id && person.staffed_projects.collect(&:id).include?(app.project_id)
+    app.project_id && person.current_staffed_projects.collect(&:id).include?(app.project_id)
   end
   def can_see_roster?() true; end
   def can_see_dashboard? 

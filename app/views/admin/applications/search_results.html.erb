@@ -36,5 +36,6 @@
     </tr>
   <% end -%>
   </table>
-  <%= will_paginate(@applications) %>
+  <%= will_paginate(@applications, :params => params.slice(:first_name, :last_name, :school, :team, :project_type, :region, :city, :state, 
+                                                           :designation, :status, :year, :preference)) %>
 </div>

@@ -5,7 +5,7 @@ class SpEvaluator < SpUser
   def can_see_other_regions?() false; end
   def can_evaluate_applicant?(app=nil)
     return false unless app
-    app.project_id && person.staffed_projects.collect(&:id).include?(app.project_id)
+    app.project_id && person.current_staffed_projects.collect(&:id).include?(app.project_id)
   end
   def can_see_roster?() true; end
   
