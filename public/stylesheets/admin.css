@@ -967,14 +967,14 @@ a.AddNewPerson {
 #search_applicant_wrap {
   background: #efefef;
   border: 1px solid #999999;
-  padding: 15px 0 15px 15px;
+  padding: 15px 0 0px 15px;
 }
 #search_applicant_wrap div.fieldgroup {
   float: left;
   margin-right: 20px;
 }
 #search_applicant_wrap h4#showhide {
-  margin: -15px 0 10px -15px;
+  margin: -15px 0 0px -15px;
   background: #0b486b;
   color: #ffffff;
   font-family: Arial, Helvetica, Verdana;
@@ -982,7 +982,12 @@ a.AddNewPerson {
   padding: 10px 15px;
 }
 #search_applicant_wrap h4#showhide a { color: #ffffff; }
-#search_applicant_wrap #allfields { display: none; }
+#search_applicant_wrap table.people td { text-align: left; }
+#search_applicant_wrap #allfields {
+  display: block;
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
 #search_applicant_wrap button { margin: 8px 0 0 0; }
 #search_applicant_wrap select {
   border: 1px solid #999999;

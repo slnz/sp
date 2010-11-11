@@ -1003,14 +1003,14 @@ a.AddNewPerson {
 #search_applicant_wrap {
   background: @global-bg;
   border: 1px solid @form-gray;
-  padding: 15px 0 15px 15px;
+  padding: 15px 0 0px 15px;
   div.fieldgroup {
     float: left;
     margin-right: 20px;
   }
   
   h4#showhide {
-    margin: -15px 0 10px -15px;
+    margin: -15px 0 0px -15px;
     background: @dark-blue;
     color: @white;
     font-family: @global-font;
@@ -1021,8 +1021,14 @@ a.AddNewPerson {
     }
   }
   
+  table.people td {
+    text-align: left;
+  }
+  
   #allfields {
-    display: none;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 15px;
   }
   
   button {

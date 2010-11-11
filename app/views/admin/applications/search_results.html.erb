@@ -20,7 +20,7 @@
   <% address = person.current_address || Address.new  %>
   <% project = application.project || SpProject.new %>
 	<% year = application.year %>
-  <tr align="center">
+  <tr>
   	<td><b><%= year %></b></td>
   	<td nowrap="nowrap">
   	  <% if false && (sp_user.can_evaluate_applicant?(application)) %>
@@ -30,7 +30,6 @@
     	<% end %>
   	</td>
   	<td><%= application.status.titleize%></td>
-
   	<td><%= l(application.completed_at) if application.completed_at %></td>
   	<td><%= person.campus if person.campus%></td>
   	<td><%= project.id && sp_user.person.staffed_projects.include?(project) ? link_to(project.name, project_path(project)) : project.name %></td>
