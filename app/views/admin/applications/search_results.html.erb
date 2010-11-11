@@ -1,15 +1,17 @@
-<h3>Summer Project Applicants: Search Results</h3>
+<div class="pagepad">
+<h1>Summer Project Applicants: Search Results</h1>
+
+
+<%= render :partial => 'search_form' %>
+
 <% year = '' %>
-<table border="1">
+<table class="people manageusers">
   <tr>
   	<th>Year</th>
   	<th>Name</th>
   	<th>Accepted</th>
   	<th>App. Completed</th>
-  	<th>Account#</th>
   	<th>School</th>
-  	<th>E-mail</th>
-  	<th>Phone</th>
   	<th>Assignment</th>
   </tr>
 
@@ -30,11 +32,10 @@
   	<td><%= application.status.titleize%></td>
 
   	<td><%= l(application.completed_at) if application.completed_at %></td>
-  	<td><%= application.designation_number%></td>
   	<td><%= person.campus if person.campus%></td>
-  	<td><%= mail_to(address.email) if address.email%></a></td>
-  	<td><%= address.homePhone%></td>
   	<td><%= project.id && sp_user.person.staffed_projects.include?(project) ? link_to(project.name, project_path(project)) : project.name %></td>
   </tr>
 <% end -%>
 </table>
+
+</div>

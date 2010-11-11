@@ -1,58 +1,6 @@
-<%= form_tag search_results_admin_applications_path do %>
-  <% cache(:expires_in => 1.day) do %>
-    <h3>Search Summer Project Applicants</h3>
-    <table>
-    <tr>
-    	<td>First Name</td>
-    	<td><%= text_field_tag 'first_name'%></td>
-    </tr>
-    <tr>
-    	<td>Last Name</td>
-    	<td><%= text_field_tag 'last_name'%></td>
-    </tr>
-    <tr>
-    	<td>School</td>
-    	<td><%= select_tag 'school', options_for_select(@school_options.map(&:name).insert(0,''))%></td>
-    </tr>
-    <tr>
-    	<td>Ministry Team</td>
-    	<td><%= select_tag 'team', options_for_select(@team_options.map {|t| [t.name, t.id]}.insert(0,''))%></td>
-    </tr>
-    <tr>
-    	<td>Region</td>
-    	<td><%= select_tag 'region', options_for_select(@region_options.map(&:region))%></td>
-    </tr>
-    <tr>
-    	<td>City</td>
-    	<td><%= text_field_tag 'city'%></td>
-    </tr>
-    <tr>
-    	<td>State</td>
-    	<td>
-    		<%= select_tag "state", options_for_select(State::NAMES.insert(0,['',''])) %>
-    	</td>
-    </tr>
-    <tr>
-    	<td>Designation (Account)#</td>
-    	<td><%= text_field_tag 'designation'%></td>
-    </tr>
-    <tr>
-    	<td>Project Type</td>
-    	<td><%= select_tag "project_type", options_for_select(['','US','International'])%>
-    </tr>
-    <tr>
-    	<td>Status</td>
-    	<td><%= select_tag "status", options_for_select(SpApplication.statuses.insert(0,''))%></td>
-    </tr>
-    <tr>
-    	<td>Year</td>
-    	<td><%= select_tag "year", options_for_select((2001..SpApplication::YEAR).to_a.reverse.insert(0,''), SpApplication::YEAR)%></td>
-    </tr>
-    <tr>
-    	<td>Project Preference</td>
-    	<td><%= select_tag 'preference', options_for_select(@project_options.map {|p| [p.name, p.id]}.insert(0,['','']))%></td>
-    </tr>
-    </table>
-    <%= submit_tag "Search" %>
-  <% end %>
-<% end %>
+<div class="pagepad">
+  
+  <h1>Search Summer Project Applicants</h1>
+  <%= render :partial => 'search_form' %>
+
+</div>

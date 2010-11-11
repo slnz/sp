@@ -12,7 +12,7 @@
           <li><%= link_to('Users', admin_users_path, :class => (params[:controller] == 'admin/users') ? 'selected' : '') %></li>
         <% end %>
         <!-- <li><%= link_to('Reports', '') %></li> -->
-        <!-- <li class="search withicon"><%= link_to('Search', 'Search') %></li> -->
+        
         <% if current_user.developer? %>
          <li><%= link_to('Forms', admin_question_sheets_path, :class => (params[:controller] == 'admin/question_sheets') ? 'selected' : '') %></li>
          <li><%= link_to('Emails', admin_email_templates_path, :class => (params[:controller] == 'admin/email_templates') ? 'selected' : '') %></li>
@@ -21,6 +21,7 @@
     </ul>
     <ul id="menuright">
       <li><%= link_to('Logout', '/logout') %></li>
+      <li class="search withicon"><%= link_to('Search', '/admin/applications/search') %></li>      
     </ul>
     <div class="clear"></div>
   </div>
