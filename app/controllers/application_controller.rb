@@ -17,12 +17,12 @@ class ApplicationController < ActionController::Base
     
   protected
     def dashboard_path
-      if sp_user.can_see_dashboard?
+      if sp_user.can_see_dashboard? || current_person.current_staffed_projects.length > 1
         admin_projects_path
-      elsif current_person.staffed_projects.length == 1
+      elsif current_person.current_staffed_projects.length == 1
         admin_project_path(current_person.staffed_projects.first)
       else
-        no_admin_projects_path
+        search_admin_applications_path
       end
     end
     
@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
       return nil unless current_user
       @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
       if @sp_user.nil? && current_person.isStaff?
-        @sp_user = SpGeneralStaff.create(:ssm_id => current_user.id, :created_by_id => current_user.id)
+        @sp_user = SpGeneralStaff.create(:ssm_id => current_user.id, :created_by_id => current_user.id, :person_id => current_person.id)
       end
       unless session[:login_stamped] || @sp_user.nil?
         @sp_user.update_attribute(:last_login, Time.now)

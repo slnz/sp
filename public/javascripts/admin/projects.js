@@ -49,7 +49,7 @@ $(function() {
 	
 	// Find as you type
 	var search_prompt = 'Type here to filter';
-	$('.search').each(function() {
+	$('#dashboardlist .search').each(function() {
 		if ($(this).val() == '') {
 			$(this).val(search_prompt);
 			$(this).addClass('prompt');
@@ -66,7 +66,7 @@ $(function() {
 		}
 	}).keyup(function() {
 		// Clear the other search fields
-		$('.search').not(this).val('');
+		$('#dashboardlist .search').not(this).val('');
 		param = $(this).attr('name');
 		params[param] = $(this).val();
 		$('#spinner_' + param).show();

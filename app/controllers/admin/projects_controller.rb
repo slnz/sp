@@ -253,7 +253,7 @@ class Admin::ProjectsController < ApplicationController
     # Filter based on the user type
     case sp_user.class.to_s
     when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
-      @base = @base.where(:id => current_person.staffed_projects.collect(&:id))
+      @base = @base.where(:id => current_person.current_staffed_projects.collect(&:id))
     when 'SpRegionalCoordinator'
       @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", sp_user.partnerships, sp_user.partnerships, sp_user.partnerships) if sp_user.partnerships.present?
     when 'SpNationalCoordinator'
