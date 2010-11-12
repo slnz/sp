@@ -24,7 +24,7 @@
       
       <div class="fieldgroup">
         <label for="team">Missional Team</label>
-        <%= select_tag 'team', options_for_select(@team_options.map {|t| [t.name, t.id]}.insert(0,''), params[:team])%>
+        <%= select_tag 'team', options_for_select(@team_options.map {|t| [t.name, t.id]}.insert(0,''), params[:team].to_i)%>
         
         <div class="clear"></div>
         
@@ -59,7 +59,7 @@
         <div class="clear"></div>
         <div class="fieldinline">
           <label for="year">Year</label>
-          <%= select_tag "year", options_for_select((2001..SpApplication::YEAR).to_a.reverse.insert(0,''), params[:year] || SpApplication::YEAR)%>
+          <%= select_tag "year", options_for_select((2001..SpProject.maximum(:year).to_i).to_a.reverse.insert(0,''), (params[:year] || SpApplication::YEAR).to_i)%>
         </div>
         <div class="fieldinline">
           <label for="preference">Project Preference</label>
