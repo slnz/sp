@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
       if sp_user.can_see_dashboard? || current_person.current_staffed_projects.length > 1
         admin_projects_path
       elsif current_person.current_staffed_projects.length == 1
-        admin_project_path(current_person.staffed_projects.first)
+        admin_project_path(current_person.current_staffed_projects.first)
       else
         search_admin_applications_path
       end
