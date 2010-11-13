@@ -45,8 +45,8 @@ class ApplicationController < ActionController::Base
             @current_user = User.find_by_id(session[:user_id])
           end
         end
-        if session[:casfilterreceipt]
-          @current_user ||= User.find_by_globallyUniqueID(session[:casfilterreceipt].attributes[:ssoGuid])
+        if session['cas_extra_attributes']
+          @current_user ||= User.find_by_globallyUniqueID(session['cas_extra_attributes'].attributes['ssoGuid'])
         end
       end
       @current_user
