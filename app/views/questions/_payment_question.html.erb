@@ -40,7 +40,7 @@
 				<% end %>
       </tbody>
     </table>
-		<div id="payment_choices" style="<%= 'display:none' unless @application.payments.empty? %>">
+		<div id="payment_choices" style="<%= 'display:none' unless @application.payments.non_denied.empty? %>">
 	    <p>
 	      Please select one of the following three options for paying your application fee.
 	    </p>

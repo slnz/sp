@@ -1,4 +1,4 @@
-<% person = @payment.apply.applicant %>
+<% person = @application.person %>
 <% @title = "Receive Payments" %>
 
 <div id="controls">
@@ -36,9 +36,9 @@
 	<p style="font-weight: bold;">Choose Payment type:</p>
 		<ul class="list-choices">
 			<li><%= radio_button :payment, :status, "Denied" %>
-				<label for="payment_status_denied">I do not want to pay for this applicant's application.</label></li>	
+				<label for="payment_status_denied" style="display:inline">I do not want to pay for this applicant's application.</label></li>	
 			<li><%= radio_button :payment, :status, "Approved" %>
-				<label for="payment_status_approved">I authorize <%= number_to_currency(@payment.amount) %> to be transferred from my account (<%= @payment.payment_account_no %>) for this applicant's application.</label></li>		
+				<label for="payment_status_approved" style="display:inline">I authorize <%= number_to_currency(@payment.amount) %> to be transferred from my account (<%= @payment.payment_account_no %>) for this applicant's application.</label></li>		
 			<li><%= radio_button :payment, :status, "Other Account" %>
 				I authorize <%= number_to_currency(@payment.amount) %> to be transferred from this specific account:<br/>
 				<div style="margin-left: 25px;"><%= text_field_tag :other_account, '', :size => 30 %><br />

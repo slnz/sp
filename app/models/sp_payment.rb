@@ -5,6 +5,8 @@ class SpPayment < ActiveRecord::Base
 
   belongs_to :application, :class_name => 'SpApplication', :foreign_key => 'application_id'
   
+  scope :non_denied, where("status <> 'Denied' OR status is null")
+  
   after_save :check_app_complete
   
   validate :credit_card_validation
@@ -37,7 +39,7 @@ class SpPayment < ActiveRecord::Base
   
   def approve!
     self.status = "Approved"
-    self.auth_code = card_number[-4..-1]
+    self.auth_code ||= card_number[-4..-1]
     self.save!
   end
 
