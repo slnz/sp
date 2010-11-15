@@ -33,10 +33,12 @@
           <td class="value"></td>
         </tr>
         <% @application.sp_references.each do |reference| %>
-        <tr>
-          <td class="fieldname fieldbold"><%= reference.name %></td>
-          <td class="value"><%= reference.status.to_s.titleize %></td>
-        </tr>
+          <% if reference.name.present? %>
+            <tr>
+              <td class="fieldname fieldbold"><%= reference.name %></td>
+              <td class="value"><%= reference.status.to_s.titleize %></td>
+            </tr>
+          <% end %>
         <% end %>
         <tr>
           <td colspan="2" class="divide"></td>
