@@ -1,0 +1,82 @@
+<table>
+<tr>
+	<td valign="top">
+		<table width="100%" border="0" bgcolor="#bbbb88" bordercolor="#bbbb88" BORDERCOLORLIGHT="#cccc99" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<table cellpadding="0" cellspacing="0" border="1" bordercolor="#336699" height="100%" width="100%">
+					<tr><td colspan="2" class="evalbigbold" bgcolor="#bbbb88"><%= @person.informal_full_name%><br /><HR></td>
+					</tr>
+					<tr>
+					<td>
+						<table ecellpadding="0" cellspacing="0" border="1" bordercolor="#bbbb88" height="100%" width="100%">
+
+							<tr><td bgcolor="#bbbb88">School</td>
+							</tr>
+							<tr><td><%= @person.campus %></td>
+							</tr>
+						</table>
+					</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr><td><%= link_to "Evaluator's Summary" %></td></tr>
+		<% @presenter.pages.each do |page| %>
+		  <% if page.has_questions? %>
+    		<tr><td nowrap="nowrap"><%= link_to(page.label) %></td></tr>
+    	<% end %>
+  	<% end %>
+		</table>
+</td>
+<!-- Start Main Work Area -->
+<td width="64%" valign="top">
+	<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#bbbb88" bordercolor="#bbbb88" border="1">
+	<tr>
+		<td align="right">
+      <table cellpadding="0" cellspacing="0" border="1" bordercolor="#bbbb88">
+      	<tr><td colspan="2">Application</td></tr>
+      	<tr><td>Status:</td><td bgcolor="#cccc99">--<%= @application.status.titleize %>--</td></tr>
+      	<tr>
+      	  <td>Started:</td>
+      	  <td bgcolor="#cccc99"><%= l(@application.created_at) if @application.created_at %></td>
+      	</tr>
+      	<tr>
+      		<td>Completed:</td>
+      		<td bgcolor="#cccc99"><%= l(@application.completed_at) if @application.completed_at %></td>
+      	</tr>
+        <tr>
+          <td>Fee Paid?</td>
+          <td bgcolor="#cccc99">
+            <font color="#<% if @application.has_paid? %>008000<%else%>FF0000<%end%>"><%= @application.has_paid? ? "Yes" : "No" %></font>
+            <% if sp_user.can_waive_fee? && !@application.has_paid? %>
+              <%= link_to('waive fee', waive_fee_applicant_path(@application)) %>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+		</td>
+		<td align="right">
+			<% if @application.reference_sheets.present? -%>
+			<table cellpadding="0" cellspacing="0" border="1" bordercolor="#bbbb88">
+				<tr><td colspan="2">References</td></tr>
+			  <% @application.reference_sheets.each do |reference| -%>
+			    <% if reference.name.present? %>
+    				<tr>
+    					<td><%= reference.question.label %></td>
+    					<td bgcolor="#cccc99"><font color="#<% if reference.completed? %>008000<%else%>FF0000<%end%>"><%= reference.status.titleize %></font></td>
+    				</tr>
+    			<% end %>
+    		<% end %>
+			</table>
+			<% end -%>
+		</td>
+		<td align="right">
+			<table width="100%" cellpadding="0" cellspacing="0" border="1" bordercolor="#bbbb88">
+				<tr>
+					<td colspan="2" width="80%">Applying for Summer Internship?</td><td bgcolor="#cccc99" width="20%"><%= @application.apply_for_leadership? ? "Yes" : "No" %></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</table>

@@ -79,7 +79,7 @@
                 <td class="accdate"><%= l app.completed_at.to_date if app.completed_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), '', :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), admin_application_path(app), :title => 'Evaluate ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>
@@ -109,7 +109,7 @@
                 <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), '', :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), admin_application_path(app), :title => 'Evaluate ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>
@@ -139,7 +139,7 @@
                 <td class="intern"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <td class="status"><%= app.status.titleize %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), '', :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), admin_application_path(app), :title => 'Evaluate ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>
@@ -169,7 +169,7 @@
                 <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
                 <td class="status"><%= app.status.titleize %> <%= "(#{app.previous_status})" if app.previous_status.present? %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), '', :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), admin_application_path(app), :title => 'Evaluate ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>

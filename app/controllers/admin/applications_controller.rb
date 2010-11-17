@@ -75,6 +75,15 @@ class Admin::ApplicationsController < ApplicationController
     end
   end
   
+  def show
+    @application = SpApplication.includes(:person).find(params[:id])
+    @person = @application.person
+    @answer_sheet = @application 
+    @presenter = AnswerPagesPresenter.new(self, @application)
+    projects_base = SpProject.current.uses_application.order(:name)
+    @projects = @person.is_male? ? projects_base.not_full_men : projects_base.not_full_women
+    @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
+  end
   protected
     def set_up_search_form
       @region_options = Region.order('region')
