@@ -23,7 +23,7 @@
       
       <div class="field required">
         <%= f.label(:display_location) do 
-          'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
+          raw 'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
           end %>
         <%= f.text_field :display_location %>
       </div>
@@ -31,13 +31,13 @@
       <h3>Google Map</h3>
       <div class="field required">
         <%= f.label :city do
-          'City ' + tip('The Google map on the \'Explore Projects\' page of goSP.com will pull from this location to place an icon in the correct city.')
+          raw 'City ' + tip('The Google map on the \'Explore Projects\' page of goSP.com will pull from this location to place an icon in the correct city.')
           end %>
         <%= f.text_field :city %>
       </div>
       <div class="field required">
         <%= f.label :state do
-          'State' + tip('Required if your project is in the US or Canada. Leave it blank for other international projects.')
+          raw 'State' + tip('Required if your project is in the US or Canada. Leave it blank for other international projects.')
         end %>
         <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
       </div>
@@ -68,7 +68,7 @@
 
       <div class="field select">
         <%= f.label(:primary_ministry_focus_id) do 
-          'Primary Ministry Focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
+          raw 'Primary Ministry Focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
           end %>
         <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
       </div>
@@ -101,13 +101,13 @@
       
       <div class="field">
         <%= f.label(:url) do 
-          'Website Address ' + tip('Such as http://www.gomets.org/summerproject/or http://www.myproject.com/')
+          raw 'Website Address ' + tip('Such as http://www.gomets.org/summerproject/or http://www.myproject.com/')
           end %>
         <%= f.text_field :url %>
       </div>
       <div class="field">
         <%= f.label(:url_title) do 
-          'Website Title ' + tip('The actual words of the link they will click on to go to the website enter above  such as \'WDW Summer Project website.\' Default is "Project specific website."')
+          raw 'Website Title ' + tip('The actual words of the link they will click on to go to the website enter above  such as \'WDW Summer Project website.\' Default is "Project specific website."')
           end %>
         <%= f.text_field :url_title %>
       </div>
@@ -136,7 +136,7 @@
       
       <div class="field multitext required">
         <%= f.label(:max_accepted_men) do 
-          'Maximum Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the \'Explore Projects\' page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
+          raw 'Maximum Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the \'Explore Projects\' page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
           end %>
         <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
         <%= f.text_field :max_accepted_women, :class => 'small' %> women
