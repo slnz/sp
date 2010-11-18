@@ -1,34 +1,13 @@
-<%= @person.informal_full_name%>
-School <%= @person.campus %><br/>
-
-
-<%= link_to "Evaluator's Summary" %>
-<% @presenter.pages.each do |page| %>
-  <% if page.has_questions? %>
-    <%= link_to(page.label) %><br/>
-  <% end %>
-<% end %>
-
-
-Application	Status:<%= @application.status.titleize %><br/>      	
-Started:<%= l(@application.created_at) if @application.created_at %><br/>   
-Completed:<%= l(@application.completed_at) if @application.completed_at %><br/>
-Fee Paid?<font color="#<% if @application.has_paid? %>008000<%else%>FF0000<%end%>"><%= @application.has_paid? ? "Yes" : "No" %></font><br/>
-<% if sp_user.can_waive_fee? && !@application.has_paid? %>
-  <%#= link_to('waive fee', waive_fee_applicant_path(@application)) %>
-<% end %>
-
-<% if @application.reference_sheets.present? -%>
-References <br/>
-<% @application.reference_sheets.each do |reference| -%>
-  <% if reference.name.present? %>
+<div id="leftside">
+  <h2><%= @person.informal_full_name%></h2>
+  School <%= @person.campus %><br/>
   
-    <%= reference.question.label %> <font color="#<% if reference.completed? %>008000<%else%>FF0000<%end%>"><%= reference.status.titleize %></font><br/>
-    
-  <% end %>
-<% end %>
-
-<% end -%>
-
-
-Applying for Summer Internship? <%= @application.apply_for_leadership? ? "Yes" : "No" %> <br/>
+  <ul id="pagename">
+    <li><%= link_to "Evaluator's Summary" %></li>
+    <% @presenter.pages.each do |page| %>
+      <% if page.has_questions? %>
+        <li><%= link_to(page.label) %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

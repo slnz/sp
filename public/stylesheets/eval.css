@@ -1,0 +1,50 @@
+#evaluation { padding: 10px; }
+#evaluation #leftside {
+  float: left;
+  width: 250px;
+}
+#evaluation #leftside ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#evaluation #leftside ul li { display: block; }
+#evaluation #evalcontent {
+  float: right;
+  width: 730px;
+}
+#evaluation #evalcontent .eitem {
+  border-bottom: 1px solid silver;
+  padding: 2px 0;
+}
+#evaluation #evalcontent .eitem label {
+  width: 200px;
+  padding: 0;
+  display: inline-block;
+}
+#evaluation #evalcontent .eitem span.value {
+  line-height: 100%;
+  display: inline-block;
+  float: right;
+}
+#evaluation #evalcontent #col1 .eitem label { width: 100px; }
+#evaluation #evalcontent .scale .eitem {
+  background: #0b486b;
+  color: #ffffff;
+  float: left;
+  -moz-border-radius: 3px;
+  padding: 3px;
+  margin-right: 4px;
+}
+#evaluation #evalcontent .scale .eitem label { width: auto; }
+#evaluation .summarytable {
+  background: #cff09e;
+  padding: 10px;
+}
+#evaluation .summarytable .column {
+  border-right: 1px solid silver;
+  float: left;
+  height: 174px;
+  margin-right: 10px;
+  padding-right: 10px;
+}
