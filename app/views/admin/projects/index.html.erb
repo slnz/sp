@@ -1,79 +1,79 @@
 <div class="pagepad">
-<h1>Projects</h1>
-<div id="contextmenu">
+  <h1>Projects</h1>
+  <div id="contextmenu">
   
-  <% if sp_user.is_a?(SpNationalCoordinator) || (sp_user.is_a?(SpRegionalCoordinator) && current_person.region.blank?) %>
-  <ul class="left">
-    <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
-    <div class="poptions" id="mvmtfilter" style="display: none;">
-      <p>Select which partners&rsquo; projects you would like to see:</p>
-      <hr />
-      <ul>
-        <li><%= link_to_function('All', '', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
-        <% partners.each_with_index do |partner, i| %>
-        <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
-          <% if (i + 1) % 6 == 0 %>
-            </ul><ul><li>&nbsp;</li>
+    <% if sp_user.is_a?(SpNationalCoordinator) || (sp_user.is_a?(SpRegionalCoordinator) && current_person.region.blank?) %>
+    <ul class="left">
+      <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
+      <div class="poptions" id="mvmtfilter" style="display: none;">
+        <p>Select which partners&rsquo; projects you would like to see:</p>
+        <hr />
+        <ul>
+          <li><%= link_to_function('All', '', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
+          <% partners.each_with_index do |partner, i| %>
+          <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
+            <% if (i + 1) % 6 == 0 %>
+              </ul><ul><li>&nbsp;</li>
+            <% end %>
           <% end %>
-        <% end %>
-      </ul>
-      <div class="clear"></div>
-      <%= check_box_tag :closed, 1, params[:closed] == 'true' %> Include closed projects
-      <button type="submit" id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
-    </div>
-  </ul>  
-  <% end %>
+        </ul>
+        <div class="clear"></div>
+        <%= check_box_tag :closed, 1, params[:closed] == 'true' %> Include closed projects
+        <button type="submit" id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
+      </div>
+    </ul>  
+    <% end %>
   
-  <% if sp_user.can_create_project? %>
-  <ul class="right">
-    <li><%= link_to('Add New Project', new_admin_project_path, :class => 'add withicon') %></li>
-    <!-- <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li> -->
-    <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
-  </ul>
-  <% end %>
-  <div class="clear"></div>
-</div>
+    <% if sp_user.can_create_project? %>
+    <ul class="right">
+      <li><%= link_to('Add New Project', new_admin_project_path, :class => 'add withicon') %></li>
+      <!-- <li><%= link_to('Add an Applicant', '', :class => 'person withicon') %></li> -->
+      <li style="display: none;"><%= link_to('Merge', :class => 'person withicon') %></li>
+    </ul>
+    <% end %>
+    <div class="clear"></div>
+  </div>
 
-<div id="dashboardlist" class="dashboardlist">
-  <table>
-    <tr>
-      <th class="th_count"></th>
-      <th class="th_project capitalize"><%= sort_by('name', 'Project') %></th>
-      <th class="th_pd"><%= sort_by('PD') %></th>
-      <th class="th_apd"><%= sort_by('APD') %></th>
-      <th class="th_opd"><%= sort_by('OPD') %></th>
-      <th></th>
-      <th></th>
-    </tr>
-    
-    <% if @projects.total_entries > 20 %>
+  <div id="dashboardlist" class="dashboardlist">
+    <table>
       <tr>
-        <th></th>
-        <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search') %></th>
-        <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_pd') %></th>
-        <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_apd') %></th>
-        <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th>
+        <th class="th_count"></th>
+        <th class="th_project capitalize"><%= sort_by('name', 'Project') %></th>
+        <th class="th_pd"><%= sort_by('PD') %></th>
+        <th class="th_apd"><%= sort_by('APD') %></th>
+        <th class="th_opd"><%= sort_by('OPD') %></th>
         <th></th>
         <th></th>
       </tr>
-    <% end %>
-    <tbody id="projects">
-      <%= render 'projects' %>
-    </tbody>
-  </table>
-</div>
+    
+      <% if @projects.total_entries > 20 %>
+        <tr>
+          <th></th>
+          <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search') %></th>
+          <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_pd') %></th>
+          <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_apd') %></th>
+          <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th>
+          <th></th>
+          <th></th>
+        </tr>
+      <% end %>
+      <tbody id="projects">
+        <%= render 'projects' %>
+      </tbody>
+    </table>
+  </div>
 
-<div class="dashboardfooter">
-  <div class="pagination_wrapper" id="pagination"><%= render 'pagination' %></div>
-  <% if @projects.total_entries > 20 %>
-    <div class="show_select">
-      Show
-      <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
-      of 
-      <%= @projects.total_entries %>
-    </div>
-  <% end %>
-  <div class="clear"></div>
-</div>
+  <div class="dashboardfooter">
+    <div class="pagination_wrapper" id="pagination"><%= render 'pagination' %></div>
+    <% if @projects.total_entries > 20 %>
+      <div class="show_select">
+        Show
+        <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
+        of 
+        <%= @projects.total_entries %>
+      </div>
+    <% end %>
+    <div class="clear"></div>
+  </div>
 </div>
 <%= render :partial => 'leader_form' %>

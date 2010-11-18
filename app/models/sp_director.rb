@@ -9,6 +9,7 @@ class SpDirector < SpUser
   def can_see_dashboard? 
     person.directed_projects.length > 1 
   end
+  def can_see_pd_reports?() true; end
   
   def scope(var = nil)
     @scope ||= ['pd_id = ? OR apd_id = ? OR opd_id = ? OR coordinator_id = ?' , person.id, person.id, person.id, person.id]
