@@ -31,6 +31,12 @@ class SpUser < ActiveRecord::Base
   def can_see_roster?() false; end
   def can_upload_ds?() false; end
   def can_see_dashboard?() false; end
+  def can_see_pd_reports?() false; end
+  def can_see_rc_reports?() false; end
+  def can_see_nc_reports?() false; end
+  def can_see_reports?() 
+    can_see_pd_reports? || can_see_rc_reports? || can_see_nc_reports?
+  end
   
   def set_acl(attributes = nil)
     @acl = {:projects => [:no_access]}
