@@ -11,7 +11,9 @@
         <% if sp_user.can_add_user? %>
           <li><%= link_to('Users', admin_users_path, :class => (params[:controller] == 'admin/users') ? 'selected' : '') %></li>
         <% end %>
-        <!-- <li><%= link_to('Reports', '') %></li> -->
+        <% if sp_user.can_see_reports? %>
+          <li><%= link_to('Reports', admin_reports_path, :class => (params[:controller] == 'admin/reports') ? 'selected' : '') %></li>
+        <% end %>
         
         <% if current_user.developer? %>
          <li><%= link_to('Forms', admin_question_sheets_path, :class => (params[:controller] == 'admin/question_sheets') ? 'selected' : '') %></li>
