@@ -74,312 +74,229 @@
       <%= radio_button :application, :applicant_notified, true %>Yes
       <%= radio_button :application, :applicant_notified, false %>No
     </div>
-        Qualifying Factors
-        Factor Weight
-        Factor Score
+    
+    
+    
+    
     
     
     
     <div class="scale field">
-      1. Spiritual Maturity/Knowledge of and demonstration of Spirit-filled life
-      
-      
-      
-      
-      
-      
-      
-      <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 1 %></span></div>
-      <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 2 %></span></div>
-      <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 3 %></span></div>
-      <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 4 %></span></div>
-      <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 5 %></span></div>
-      <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 6 %></span></div>
-      <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 7 %></span></div>
-    
-      10    <div name="outputdiv" id="outputdiv"><%= @evaluation.spiritual_maturity_score%></div>
-    
+      <div class="question"><h3>Qualifying Factors</h3></div>
+      <div class="grid">
+      </div>
+      <div class="score">
+        <div class="weight">Factor Weight</div>
+        <div class="total">Factor Score</div>
+      </div>
     </div>
     
     
-    
-    
-    
     <div class="scale field">
-      2. Attitude toward Authority and General Teachability
-      10
-      <%= @evaluation.teachability_score%>
-    
-    
-    
-    
-    
-    
-      <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :teachability, 1 %></span></div>
-      <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :teachability, 2 %></span></div>
-      <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :teachability, 3 %></span></div>
-      <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :teachability, 4 %></span></div>
-      <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :teachability, 5 %></span></div>
-      <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :teachability, 6 %></span></div>
-      <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :teachability, 7 %></span></div>
-    
-      10    <div name="outputdiv" id="outputdiv"><%= @evaluation.teachability_score%></div>
-    
+      <div class="question">1. Spiritual Maturity/Knowledge of and demonstration of Spirit-filled life</div>
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 7 %></span></div>
+      </div>
+      <div class="score">
+        <div class="weight">10</div>
+        <div class="total"><%= @evaluation.spiritual_maturity_score%></div>
+      </div>
     </div>
     
     
+    <div class="scale field">
+      <div class="question">2. Attitude toward Authority and General Teachability</div>
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :teachability, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :teachability, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :teachability, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :teachability, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :teachability, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :teachability, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :teachability, 7 %></span></div>
+      </div>
+      <div class="score">
+        <div class="weight">10</div>
+        <div class="total"><%= @evaluation.teachability_score%></div>
+      </div>
+    </div>
+    
     
     <div class="scale field">
-      3. Leadership Displayed or Leadership Potential
-      8
-      <%= @evaluation.leadership_score%>
-      
-      
-      
-      
-      
-      
-      <%= radio_button :evaluation, :leadership, 1 %>
-      <%= radio_button :evaluation, :leadership, 2 %>
-      <%= radio_button :evaluation, :leadership, 3 %>
-      <%= radio_button :evaluation, :leadership, 4 %>
-      <%= radio_button :evaluation, :leadership, 5 %>
-      <%= radio_button :evaluation, :leadership, 6 %>
-      <%= radio_button :evaluation, :leadership, 7 %>
-      
-      1Low
-      2
-      3
-      4Average
-      5
-      6
-      7High
+      <div class="question">3. Leadership Displayed or Leadership Potential</div>      
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :leadership, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :leadership, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :leadership, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :leadership, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :leadership, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :leadership, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :leadership, 7 %></span></div>
+      </div>
+      <div class="score">
+        <div class="weight">8</div>
+        <div class="total"><%= @evaluation.leadership_score%></div>
+      </div>
     </div> 
     
     
-    
     <div class="scale field">
-      4. Emotional Stability
-      7
-      <%= @evaluation.stability_score%>
-      
-      
-      
-      
-            
-      
-      <%= radio_button :evaluation, :stability, 1 %>
-      <%= radio_button :evaluation, :stability, 2 %>
-      <%= radio_button :evaluation, :stability, 3 %>
-      <%= radio_button :evaluation, :stability, 4 %>
-      <%= radio_button :evaluation, :stability, 5 %>
-      <%= radio_button :evaluation, :stability, 6 %>
-      <%= radio_button :evaluation, :stability, 7 %>
-      
-      
-      1Low
-      2
-      3
-      4Average
-      5
-      6
-      7High
+      <div class="question">4. Emotional Stability</div>     
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :stability, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :stability, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :stability, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :stability, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :stability, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :stability, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :stability, 7 %></span></div>
+      </div>      
+      <div class="score">
+        <div class="weight">7</div>
+        <div class="total"><%= @evaluation.stability_score%></div>
+      </div>
     </div>
     
     
-    
-    
-    
-    
-    5. Attitude toward Evangelism
-    
-    7
-    <%= @evaluation.good_evangelism_score%>
-    
-    
-    
-    
-          
-    
-    <%= radio_button :evaluation, :good_evangelism, 1 %>
-    <%= radio_button :evaluation, :good_evangelism, 2 %>
-    <%= radio_button :evaluation, :good_evangelism, 3 %>
-    <%= radio_button :evaluation, :good_evangelism, 4 %>
-    <%= radio_button :evaluation, :good_evangelism, 5 %>
-    <%= radio_button :evaluation, :good_evangelism, 6 %>
-    <%= radio_button :evaluation, :good_evangelism, 7 %>
-    
-    
-    1Low
-    2
-    3
-    4Average
-    5
-    6
-    7High
-    
-    
-    
-    
-    
-    6. Reason for applying to a project
-    
-    6
-    <%= @evaluation.reason_score%>
-    
-    
-    
-    
-    
-    
-    <%= radio_button :evaluation, :reason, 1 %>
-    <%= radio_button :evaluation, :reason, 2 %>
-    <%= radio_button :evaluation, :reason, 3 %>
-    <%= radio_button :evaluation, :reason, 4 %>
-    <%= radio_button :evaluation, :reason, 5 %>
-    <%= radio_button :evaluation, :reason, 6 %>
-    <%= radio_button :evaluation, :reason, 7 %>
-    
-    
-    1Low
-    2
-    3
-    4Average
-    5
-    6
-    7High
-    
-    
-    
-    
-    
-    
-    7. Social Maturity
-    
-    6
-    <%= @evaluation.social_maturity_score%>
-    
-    
-    
-    
-          
-    
-    <%= radio_button :evaluation, :social_maturity, 1 %>
-    <%= radio_button :evaluation, :social_maturity, 2 %>
-    <%= radio_button :evaluation, :social_maturity, 3 %>
-    <%= radio_button :evaluation, :social_maturity, 4 %>
-    <%= radio_button :evaluation, :social_maturity, 5 %>
-    <%= radio_button :evaluation, :social_maturity, 6 %>
-    <%= radio_button :evaluation, :social_maturity, 7 %>
-    
-    1Low
-    
-    2
-    3
-    4Average
-    5
-    6
-    7High
-    
-    
-    
-    
-    
-    
-    8. Amount of CCC involvement
-    6
-    
-    <%= @evaluation.ccc_involvement_score%>
-    
-    
-    
-    
-    
-    <%= radio_button :evaluation, :ccc_involvement, 1 %>
-    <%= radio_button :evaluation, :ccc_involvement, 2 %>
-    <%= radio_button :evaluation, :ccc_involvement, 3 %>
-    <%= radio_button :evaluation, :ccc_involvement, 4 %>
-    <%= radio_button :evaluation, :ccc_involvement, 5 %>
-    <%= radio_button :evaluation, :ccc_involvement, 6 %>
-    <%= radio_button :evaluation, :ccc_involvement, 7 %>
-    
-    
-    1Low
-    2
-    3
-    4Average
-    5
-    6
-    7High
-    
-    
-    
-    
-    
-    
-    TOTAL SCORE <%= @evaluation.total_score%>
-    
-    
-    
-    
-    
-    
-    
-    
-    Disqualifying Factors
+    <div class="scale field">
+      <div class="question">5. Attitude toward Evangelism</div>     
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 7 %></span></div>
+      </div>      
+      <div class="score">
+        <div class="weight">7</div>
+        <div class="total"><%= @evaluation.good_evangelism_score%></div>
+      </div>
+    </div>
+    
+    
+    <div class="scale field">
+      <div class="question">6. Reason for applying to a project</div>     
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :reason, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :reason, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :reason, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :reason, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :reason, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :reason, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :reason, 7 %></span></div>
+      </div>      
+      <div class="score">
+        <div class="weight">6</div>
+        <div class="total"><%= @evaluation.reason_score%></div>
+      </div>
+    </div>
+    
+    <div class="scale field">
+      <div class="question">7. Social Maturity</div>     
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :social_maturity, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :social_maturity, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :social_maturity, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :social_maturity, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :social_maturity, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :social_maturity, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :social_maturity, 7 %></span></div>
+      </div>      
+      <div class="score">
+        <div class="weight">6</div>
+        <div class="total"><%= @evaluation.social_maturity_score%></div>
+      </div>
+    </div>
+    
+    <div class="scale field">
+      <div class="question">8. Amount of CCC involvement</div>     
+      <div class="grid">
+        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 1 %></span></div>
+        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 2 %></span></div>
+        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 3 %></span></div>
+        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 4 %></span></div>
+        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 5 %></span></div>
+        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 6 %></span></div>
+        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 7 %></span></div>
+      </div>      
+      <div class="score">
+        <div class="weight">6</div>
+        <div class="total"><%= @evaluation.ccc_involvement_score%></div>
+      </div>
+    </div>
+    
+    
+    <div class="scale field">
+      <div class="question">TOTAL SCORE</div>         
+      <div class="score">
+        <div class="total"><%= @evaluation.total_score%></div>
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <h3>Disqualifying Factors</h3>
     Check if applies
     
     
-    1. Charismatic involvement
+    <div class="field">
+      <div class="question">1. Charismatic involvement</div>
+      <div class="score">    
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :charismatic, true %></span><label>Yes</label></div>
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :charismatic, false %></span><label>No</label></div>
+      </div>
+    </div>    
+    <div class="field">
+      <div class="question">2. Moral Problem</div>
+      <div class="score">    
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :morals, true %></span><label>Yes</label></div>
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :morals, false %></span><label>No</label></div>
+      </div>
+    </div>  
+    <div class="field">
+      <div class="question">3. Drug or alcohol problem</div>
+      <div class="score">    
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :drugs, true %></span><label>Yes</label></div>
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :drugs, false %></span><label>No</label></div>
+      </div>
+    </div>  
+    <div class="field">
+      <div class="question">4. Bad attitude toward evangelism</div>
+      <div class="score">    
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :bad_evangelism, true %></span><label>Yes</label></div>
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :bad_evangelism, false %></span><label>No</label></div>
+      </div>
+    </div>    
+    <div class="field">
+      <div class="question">5. Unresponsive to authority</div>
+      <div class="score">    
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :authority, true %></span><label>Yes</label></div>
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :authority, false %></span><label>No</label></div>
+      </div>
+    </div>  
+    <div class="field">
+      <div class="question">6. Eating Disorder</div>
+      <div class="score">    
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :eating, true %></span><label>Yes</label></div>
+        <div class="eitem"><span class="value"><%= radio_button :evaluation, :eating, false %></span><label>No</label></div>
+      </div>
+    </div>  
+
+
+    <div class="field">
+      <div class="question">Any other comments of importance in selection:</div>
+      <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
+    </div>    
     
-    <%= radio_button :evaluation, :charismatic, true %>Yes
-    <%= radio_button :evaluation, :charismatic, false %>No
-    
-    
-    
-    2. Moral Problem
-    
-    <%= radio_button :evaluation, :morals, true %>Yes
-    <%= radio_button :evaluation, :morals, false %>No
-    
-    
-    
-    3. Drug or alcohol problem
-    
-    <%= radio_button :evaluation, :drugs, true %>Yes
-    <%= radio_button :evaluation, :drugs, false %>No
-    
-    
-    
-    4. Bad attitude toward evangelism
-    
-    <%= radio_button :evaluation, :bad_evangelism, true %>Yes
-    <%= radio_button :evaluation, :bad_evangelism, false %>No
-    
-    
-    
-    5. Unresponsive to authority
-    
-    <%= radio_button :evaluation, :authority, true %>Yes
-    <%= radio_button :evaluation, :authority, false %>No
-    
-    
-    
-    6. Eating Disorder
-    
-    <%= radio_button :evaluation, :eating, true %>Yes
-    <%= radio_button :evaluation, :eating, false %>No
-    
-    
-    
-    
-    
-    Any other comments of importance in selection:
-    <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
-    
-    
-    
-    
+    <hr/>
     <input type="submit" value="Save">
     
     
