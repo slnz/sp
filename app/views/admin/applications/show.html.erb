@@ -1,15 +1,5 @@
 <div id="evaluation">
 
-  <script type="text/javascript">
-  function displayWarning() {
-  if (document.evaluation.event.options[document.evaluation.event.selectedIndex].value == "decline") {
-  alert("WARNING: Are you sure you want to decline this student?\n\n" +
-  "• Declined = Applicant has been evaluated and found not acceptable to participate in ANY CCC project, not even a one-week project. Few if any students should ever be marked this way. If you mark this student 'declined' their application will not be saved in the SP Tool.\n\n" +
-  "• Withdrawn = Applicant has requested their application to be withdrawn because they are no longer going on project. Their application will still be in the SP Tool and can be un-withdrawn if need be.\n\n" +
-  "If you have questions about this, please email gosummerproject@uscm.org or call 1-800-690-0911.");
-  }
-  }
-  </script>
   <%= render :partial => 'left_side' %>
   
   
@@ -86,18 +76,22 @@
         <td class="title">Status</td><td><%= @application.status.titleize %></td>
       </tr>
       <tr>
-        <td class="title">Change Status</td><td><%= select_tag :event, options_for_select((@application.valid_events.map {|s| s.to_s}).insert(0, '')), :onchange => "displayWarning()"%></td>
+        <td class="title">Change Status</td><td><%= select_tag :event, options_for_select((@application.valid_events.map {|s| [s.to_s.humanize, s.to_s]}).insert(0, '')), :onchange => "displayWarning()"%></td>
       </tr>
       <tr>
         <td class="title">Move this student to a different project:</td><td><%= select(:application, :project_id, @projects.collect {|p| [p.name, p.id]}, :include_blank => true) %></td>
       </tr>
       <tr>
         <td class="title">Applicant Notified (Sends an email to an accepted applicant to get them started with MPD)</td>
-        <td><%= radio_button :application, :applicant_notified, true %>Yes | <%= radio_button :application, :applicant_notified, false %>No</td>
+        <td><%= radio_button :application, :applicant_notified, true %>Yes  <%= radio_button :application, :applicant_notified, false %>No</td>
       </tr>
     </table>
       
     
+    <div class="field">
+      <div class="question"><h3>Notes:</h3></div>
+      <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
+    </div>  
     
     
     <table class="datatable">
@@ -106,8 +100,8 @@
         <th class="tally">Factor Weight</th>
         <th class="tally">Factor Score</th>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           1. Spiritual Maturity/Knowledge of and demonstration of Spirit-filled life
           <table>
             <tr>
@@ -124,10 +118,10 @@
           </table>
         </td>
         <td class="weight">10</td>
-        <td class="score"><%= @evaluation.spiritual_maturity_score%></td>
+        <td class="score"><%= @evaluation.spiritual_maturity_score.to_i * 10 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           2. Attitude toward Authority and General Teachability
           <table>
             <tr>
@@ -144,10 +138,10 @@
           </table>  
         </td>
         <td class="weight">10</td>
-        <td class="score"><%= @evaluation.teachability_score%></td>
+        <td class="score"><%= @evaluation.teachability_score.to_i * 10 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           3. Leadership Displayed or Leadership Potential
           <table>
             <tr>
@@ -164,10 +158,10 @@
           </table>  
         </td>
         <td class="weight">8</td>
-        <td class="score"><%= @evaluation.leadership_score%></td>
+        <td class="score"><%= @evaluation.leadership_score.to_i * 8 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           4. Emotional Stability
           <table>
             <tr>
@@ -184,10 +178,10 @@
           </table>  
         </td>
         <td class="weight">7</td>
-        <td class="score"><%= @evaluation.stability_score%></td>
+        <td class="score"><%= @evaluation.stability_score.to_i * 7 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           5. Attitude toward Evangelism
           <table>
             <tr>
@@ -204,10 +198,10 @@
           </table>  
         </td>
         <td class="weight">7</td>
-        <td class="score"><%= @evaluation.good_evangelism_score%></td>
+        <td class="score"><%= @evaluation.good_evangelism_score.to_i * 7 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           6. Reason for applying to a project
           <table>
             <tr>
@@ -224,10 +218,10 @@
           </table>  
         </td>
         <td class="weight">6</td>
-        <td class="score"><%= @evaluation.reason_score%></td>
+        <td class="score"><%= @evaluation.reason_score.to_i * 6 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           7. Social Maturity
           <table>
             <tr>
@@ -244,10 +238,10 @@
           </table>  
         </td>
         <td class="weight">6</td>
-        <td class="score"><%= @evaluation.social_maturity_score%></td>
+        <td class="score"><%= @evaluation.social_maturity_score.to_i * 6 %></td>
       </tr>
-      <tr>
-        <td class="question">
+      <tr class="question">
+        <td class="question calc">
           8. Amount of CCC involvement
           <table>
             <tr>
@@ -264,12 +258,12 @@
           </table>  
         </td>
         <td class="weight">6</td>
-        <td class="score"><%= @evaluation.ccc_involvement_score%></td>
+        <td class="score"><%= @evaluation.ccc_involvement_score.to_i * 6 %></td>
       </tr>
       <tr>
         <td>TOTAL SCORE</td>
         <td></td>
-        <td><%= @evaluation.total_score%></td>
+        <td id="total_score"><span><%= @evaluation.total_score %></span><%= hidden_field :evaluation, :total_score %></td>
       </tr>                
     </table>
       
@@ -314,13 +308,7 @@
           <td><%= radio_button :evaluation, :eating, false %><label>No</label></td>
         </tr>
       </tbody>
-    </table>
-    
-
-    <div class="field">
-      <div class="question"><h3>Any other comments of importance in selection:</h3></div>
-      <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
-    </div>    
+    </table>  
     
     <div class="actionwrap">
     <input type="submit" value="Save" class="savebut">

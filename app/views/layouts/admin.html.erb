@@ -4,7 +4,8 @@
   <title>Sp2</title>
   <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' ,
                              'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
-  <%= javascript_include_tag 'qe/jquery.tooltips.min', 'qe/qe.common', 'rails', 'rails.extra', 'admin/projects', 'admin/admin', 'admin/users' %>
+  <%= javascript_include_tag 'qe/jquery.tooltips.min' %>
+  <%= include_javascripts :admin %>
   
   <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
   <%#= questionnaire_engine_includes %>
