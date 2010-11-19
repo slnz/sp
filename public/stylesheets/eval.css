@@ -1,7 +1,8 @@
 #evaluation { padding: 10px; }
+#evaluation h3 { margin: 0; }
 #evaluation #leftside {
   float: left;
-  width: 250px;
+  width: 235px;
 }
 #evaluation #leftside ul {
   list-style: none;
@@ -9,42 +10,104 @@
   margin: 0;
 }
 #evaluation #leftside ul li { display: block; }
+#evaluation #leftside ul#pagename { margin: 20px 0; }
+#evaluation #leftside ul#pagename li { border-bottom: 1px dotted silver; }
+#evaluation #leftside ul#pagename li a {
+  padding: 5px;
+  display: block;
+}
+#evaluation #leftside ul#pagename li a:hover { background: #efefef; }
+#evaluation #leftside .schoolleft {
+  font-size: 12px;
+  margin-top: -18px;
+  display: block;
+}
 #evaluation #evalcontent {
   float: right;
   width: 730px;
 }
-#evaluation #evalcontent .eitem {
-  border-bottom: 1px solid silver;
-  padding: 2px 0;
+#evaluation #evalcontent .savebut {
+  font-size: 18px;
+  margin: 0 0 0;
 }
-#evaluation #evalcontent .eitem label {
-  width: 200px;
-  padding: 0;
-  display: inline-block;
+#evaluation #evalcontent .datatable {
+  border: 1px solid #999999;
+  width: 100%;
+  margin: 0 0 20px 0;
 }
-#evaluation #evalcontent .eitem span.value {
-  line-height: 100%;
-  display: inline-block;
-  float: right;
+#evaluation #evalcontent .datatable td.question {
+  width: 70%;
+  text-align: left;
 }
-#evaluation #evalcontent #col1 .eitem label { width: 100px; }
-#evaluation #evalcontent .scale .eitem {
-  background: #0b486b;
+#evaluation #evalcontent .datatable th { text-align: left; }
+#evaluation #evalcontent .datatable td {
+  text-align: center;
+  padding: 5px;
+}
+#evaluation #evalcontent .datatable th.tally { text-align: center; }
+#evaluation #evalcontent .datatable th {
+  background: #efefef;
+  padding: 5px;
+}
+#evaluation #evalcontent .datatable td.great { font-size: 11px; }
+#evaluation #evalcontent .datatable td.poor { font-size: 11px; }
+#evaluation #evalcontent .datatable td.weight {
+  font-weight: bold;
+  font-size: 16px;
+}
+#evaluation #evalcontent .datatable td.score {
+  font-weight: bold;
+  font-size: 18px;
+}
+#evaluation #evalcontent .datatable td.great {
+  background: #06681b;
   color: #ffffff;
-  float: left;
-  -moz-border-radius: 3px;
-  padding: 3px;
-  margin-right: 4px;
 }
-#evaluation #evalcontent .scale .eitem label { width: auto; }
-#evaluation .summarytable {
+#evaluation #evalcontent .datatable td.poor { background: #ffd200; }
+#evaluation #evalcontent .question table {
+  width: 100%;
+  margin: 5px 0;
+}
+#evaluation #evalcontent .question table td {
+  text-align: center;
+  background: #efefef;
+}
+#evaluation #evalcontent .question table td label { padding: 0; }
+#evaluation #evalcontent .field {
+  padding: 5px 0;
+  border-bottom: 1px solid silver;
+  margin-bottom: 5px;
+}
+#evaluation #evalcontent .col2 td { text-align: left; }
+#evaluation #evalcontent .col2 td.title {
+  width: 30%;
+  font-weight: bold;
+}
+#evaluation #summarygreen {
+  font-size: 11px;
   background: #cff09e;
+  padding: 4px;
+}
+#evaluation #summarygreen td {
+  border-right: 1px solid #999999;
+  vertical-align: top;
+}
+#evaluation #summarygreen .summarytable {
+  background: #cff09e;
+  float: left;
   padding: 10px;
 }
-#evaluation .summarytable .column {
+#evaluation #summarygreen .summarytable .column {
   border-right: 1px solid silver;
   float: left;
   height: 174px;
   margin-right: 10px;
   padding-right: 10px;
+}
+#evaluation #summarygreen .summarytable .title { font-weight: bold; }
+#evaluation #summarygreen .summarytable td { border-right: none; }
+#evaluation .actionwrap {
+  background: #efefef;
+  padding: 5px;
+  margin: 10px 0;
 }

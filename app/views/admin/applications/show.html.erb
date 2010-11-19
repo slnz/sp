@@ -15,290 +15,316 @@
   
   <div id="evalcontent">
     
-    <div class="summarytable">
-      <div class="column" id="col1">
-        <div class="eitem"><label>Status:</label><span class="value"><%= @application.status.titleize %></span></div>	
-        <div class="eitem"><label>Started:</label><span class="value"><%= l(@application.created_at) if @application.created_at %></span></div> 
-        <div class="eitem"><label>Completed:</label><span class="value"><%= l(@application.completed_at) if @application.completed_at %></span></div>
-        <div class="eitem"><label>Fee Paid?</label><span class="value"><font color="#<% if @application.has_paid? %>008000<%else%>FF0000<%end%>"><%= @application.has_paid? ? "Yes" : "No" %></font></span></div>
-        <% if sp_user.can_waive_fee? && !@application.has_paid? %>
-          <%#= link_to('waive fee', waive_fee_applicant_path(@application)) %>
-        <% end %> 
-      </div>
-
-      <div class="column">        
-        <% if @application.reference_sheets.present? -%>
-          References <br/>
-          <% @application.reference_sheets.each do |reference| -%>
-            <% if reference.name.present? %>
-              <div class="eitem">
-                <label><%= reference.question.label %></label>
-                <span class="value <% if reference.completed? %>complete<%else%>incomplete<%end%>"><%= reference.status.titleize %></span>
-              </div> 
-            <% end %>
-          <% end %>
-        <% end -%>
-        <div class="eitem"><label>Applying for Summer Internship?</label><span class="value"><%= @application.apply_for_leadership? ? "Yes" : "No" %></span></div>
-      </div>
-      <div class="clear"></div>
       
-    </div>
+    
+    <h1>Evaluation Summary</h1>
+    
+    <table id="summarygreen">
+      <tr>
+      <td>
+        <table class="summarytable">
+          <tr>
+            <td class="title">Status:</td><td><%= @application.status.titleize %></td>	
+          </tr>
+          <tr>
+            <td class="title">Started:</td><td><%= l(@application.created_at) if @application.created_at %></td>
+          </tr>
+          <tr>
+            <td class="title">Completed:</td><td><%= l(@application.completed_at) if @application.completed_at %></td>
+          </tr>
+          <tr>
+            <td class="title">Fee Paid?</td><td><font color="#<% if @application.has_paid? %>008000<%else%>FF0000<%end%>"><%= @application.has_paid? ? "Yes" : "No" %></font></td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table class="summarytable">    
+          
+          <% if sp_user.can_waive_fee? && !@application.has_paid? %>
+            <%#= link_to('waive fee', waive_fee_applicant_path(@application)) %>
+          <% end %> 
+            
+           
+          <% if @application.reference_sheets.present? -%>
+            <tr>
+              <th colspan="2">References </th>
+            </tr>
+            <% @application.reference_sheets.each do |reference| -%>
+              <% if reference.name.present? %>
+                <tr>
+                  <td class="title"><%= reference.question.label %></td>
+                  <td class="<% if reference.completed? %>complete<%else%>incomplete<%end%>"><%= reference.status.titleize %></td>
+                </tr> 
+              <% end %>
+            <% end %>
+          <% end -%>
+        </table>
+      </td>
+      <td style="border: none;">
+        <table class="summarytable" style="border-right: none;">
+          <tr>
+            <td class="title">Applying for Summer Internship?</td>
+            <td><%= @application.apply_for_leadership? ? "Yes" : "No" %></td>
+          </tr>
+        </table>
+        <div class="clear"></div>
+      </td>
+    </tr>
+    </table>
     
   
     <%= form_tag do %>
     
-    
-    <h1>Evaluation Summary</h1>
-    
-    <input type="submit" value="Save">
-    
-    
-    
-    
-    
-    <div class="field">
-      Applicant    <%= @person.informal_full_name %>
-    </div>
-    <div class="field">
-      Status    <%= @application.status.titleize %>
-    </div>
-    <div class="field">  
-      Change Status    <%= select_tag :event, options_for_select((@application.valid_events.map {|s| s.to_s}).insert(0, '')), :onchange => "displayWarning()"%>
-    </div>
-    <div class="field">  
-      Move this student to a different project:    <%= select(:application, :project_id, @projects.collect {|p| [p.name, p.id]}, :include_blank => true) %>
-    </div>
-    <div class="field">  
-      Applicant Notified (Sends an email to an accepted applicant to get them started with MPD)
+    <div class="actionwrap">
+      <input type="submit" value="Save" class="savebut">
+    </div>  
+    <table class="datatable col2">
+      <tr>
+        <td class="title">Applicant</td><td><%= @person.informal_full_name %></td>
+      </tr>
+      <tr>
+        <td class="title">Status</td><td><%= @application.status.titleize %></td>
+      </tr>
+      <tr>
+        <td class="title">Change Status</td><td><%= select_tag :event, options_for_select((@application.valid_events.map {|s| s.to_s}).insert(0, '')), :onchange => "displayWarning()"%></td>
+      </tr>
+      <tr>
+        <td class="title">Move this student to a different project:</td><td><%= select(:application, :project_id, @projects.collect {|p| [p.name, p.id]}, :include_blank => true) %></td>
+      </tr>
+      <tr>
+        <td class="title">Applicant Notified (Sends an email to an accepted applicant to get them started with MPD)</td>
+        <td><%= radio_button :application, :applicant_notified, true %>Yes | <%= radio_button :application, :applicant_notified, false %>No</td>
+      </tr>
+    </table>
       
-      <%= radio_button :application, :applicant_notified, true %>Yes
-      <%= radio_button :application, :applicant_notified, false %>No
-    </div>
     
     
     
+    <table class="datatable">
+      <tr>
+        <th>Qualifying Factors</th>
+        <th class="tally">Factor Weight</th>
+        <th class="tally">Factor Score</th>
+      </tr>
+      <tr>
+        <td class="question">
+          1. Spiritual Maturity/Knowledge of and demonstration of Spirit-filled life
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :spiritual_maturity, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>
+        </td>
+        <td class="weight">10</td>
+        <td class="score"><%= @evaluation.spiritual_maturity_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          2. Attitude toward Authority and General Teachability
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :teachability, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :teachability, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :teachability, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :teachability, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :teachability, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :teachability, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :teachability, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">10</td>
+        <td class="score"><%= @evaluation.teachability_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          3. Leadership Displayed or Leadership Potential
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :leadership, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :leadership, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :leadership, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :leadership, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :leadership, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :leadership, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :leadership, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">8</td>
+        <td class="score"><%= @evaluation.leadership_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          4. Emotional Stability
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :stability, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :stability, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :stability, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :stability, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :stability, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :stability, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :stability, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">7</td>
+        <td class="score"><%= @evaluation.stability_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          5. Attitude toward Evangelism
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :good_evangelism, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :good_evangelism, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :good_evangelism, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :good_evangelism, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :good_evangelism, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :good_evangelism, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :good_evangelism, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">7</td>
+        <td class="score"><%= @evaluation.good_evangelism_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          6. Reason for applying to a project
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :reason, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :reason, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :reason, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :reason, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :reason, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :reason, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :reason, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">6</td>
+        <td class="score"><%= @evaluation.reason_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          7. Social Maturity
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :social_maturity, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :social_maturity, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :social_maturity, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :social_maturity, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :social_maturity, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :social_maturity, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :social_maturity, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">6</td>
+        <td class="score"><%= @evaluation.social_maturity_score%></td>
+      </tr>
+      <tr>
+        <td class="question">
+          8. Amount of CCC involvement
+          <table>
+            <tr>
+              <td class="poor">Poor</td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 1 %><label>1</label></td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 2 %><label>2</label></td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 3 %><label>3</label></td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 4 %><label>4</label></td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 5 %><label>5</label></td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 6 %><label>6</label></td>
+              <td><%= radio_button :evaluation, :ccc_involvement, 7 %><label>7</label></td>
+              <td class="great">Great</td>
+            </tr>
+          </table>  
+        </td>
+        <td class="weight">6</td>
+        <td class="score"><%= @evaluation.ccc_involvement_score%></td>
+      </tr>
+      <tr>
+        <td>TOTAL SCORE</td>
+        <td></td>
+        <td><%= @evaluation.total_score%></td>
+      </tr>                
+    </table>
+      
     
     
+    <table class="datatable">
+      <thead>
+        <tr>
+          <th>Disqualifying Factors</th>
+          <th colspan="2" class="tally">Check if applies</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="question">1. Charismatic involvement</td>
+          <td><%= radio_button :evaluation, :charismatic, true %><label>Yes</label></td>
+          <td><%= radio_button :evaluation, :charismatic, false %><label>No</label></td>
+        </tr>
+        <tr>
+          <td class="question">2. Moral Problem</td>
+          <td><%= radio_button :evaluation, :morals, true %><label>Yes</label></td>
+          <td><%= radio_button :evaluation, :morals, false %><label>No</label></td>
+        </tr>
+        <tr>
+          <td class="question">3. Drug or alcohol problem</td>
+          <td><%= radio_button :evaluation, :drugs, true %><label>Yes</label></td>
+          <td><%= radio_button :evaluation, :drugs, false %><label>No</label></td>
+        </tr>
+        <tr>
+          <td class="question">4. Bad attitude toward evangelism</td>
+          <td><%= radio_button :evaluation, :bad_evangelism, true %><label>Yes</label></td>
+          <td><%= radio_button :evaluation, :bad_evangelism, false %><label>No</label></td>
+        </tr>
+        <tr>
+          <td class="question">5. Unresponsive to authority</td>
+          <td><%= radio_button :evaluation, :authority, true %><label>Yes</label></td>
+          <td><%= radio_button :evaluation, :authority, false %><label>No</label></td>
+        </tr>
+        <tr>
+          <td class="question">6. Eating Disorder</td>
+          <td><%= radio_button :evaluation, :eating, true %><label>Yes</label></td>
+          <td><%= radio_button :evaluation, :eating, false %><label>No</label></td>
+        </tr>
+      </tbody>
+    </table>
     
-    
-    <div class="scale field">
-      <div class="question"><h3>Qualifying Factors</h3></div>
-      <div class="grid">
-      </div>
-      <div class="score">
-        <div class="weight">Factor Weight</div>
-        <div class="total">Factor Score</div>
-      </div>
-    </div>
-    
-    
-    <div class="scale field">
-      <div class="question">1. Spiritual Maturity/Knowledge of and demonstration of Spirit-filled life</div>
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :spiritual_maturity, 7 %></span></div>
-      </div>
-      <div class="score">
-        <div class="weight">10</div>
-        <div class="total"><%= @evaluation.spiritual_maturity_score%></div>
-      </div>
-    </div>
-    
-    
-    <div class="scale field">
-      <div class="question">2. Attitude toward Authority and General Teachability</div>
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :teachability, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :teachability, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :teachability, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :teachability, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :teachability, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :teachability, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :teachability, 7 %></span></div>
-      </div>
-      <div class="score">
-        <div class="weight">10</div>
-        <div class="total"><%= @evaluation.teachability_score%></div>
-      </div>
-    </div>
-    
-    
-    <div class="scale field">
-      <div class="question">3. Leadership Displayed or Leadership Potential</div>      
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :leadership, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :leadership, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :leadership, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :leadership, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :leadership, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :leadership, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :leadership, 7 %></span></div>
-      </div>
-      <div class="score">
-        <div class="weight">8</div>
-        <div class="total"><%= @evaluation.leadership_score%></div>
-      </div>
-    </div> 
-    
-    
-    <div class="scale field">
-      <div class="question">4. Emotional Stability</div>     
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :stability, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :stability, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :stability, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :stability, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :stability, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :stability, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :stability, 7 %></span></div>
-      </div>      
-      <div class="score">
-        <div class="weight">7</div>
-        <div class="total"><%= @evaluation.stability_score%></div>
-      </div>
-    </div>
-    
-    
-    <div class="scale field">
-      <div class="question">5. Attitude toward Evangelism</div>     
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :good_evangelism, 7 %></span></div>
-      </div>      
-      <div class="score">
-        <div class="weight">7</div>
-        <div class="total"><%= @evaluation.good_evangelism_score%></div>
-      </div>
-    </div>
-    
-    
-    <div class="scale field">
-      <div class="question">6. Reason for applying to a project</div>     
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :reason, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :reason, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :reason, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :reason, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :reason, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :reason, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :reason, 7 %></span></div>
-      </div>      
-      <div class="score">
-        <div class="weight">6</div>
-        <div class="total"><%= @evaluation.reason_score%></div>
-      </div>
-    </div>
-    
-    <div class="scale field">
-      <div class="question">7. Social Maturity</div>     
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :social_maturity, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :social_maturity, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :social_maturity, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :social_maturity, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :social_maturity, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :social_maturity, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :social_maturity, 7 %></span></div>
-      </div>      
-      <div class="score">
-        <div class="weight">6</div>
-        <div class="total"><%= @evaluation.social_maturity_score%></div>
-      </div>
-    </div>
-    
-    <div class="scale field">
-      <div class="question">8. Amount of CCC involvement</div>     
-      <div class="grid">
-        <div class="eitem"><label>1</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 1 %></span></div>
-        <div class="eitem"><label>2</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 2 %></span></div>
-        <div class="eitem"><label>3</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 3 %></span></div>
-        <div class="eitem"><label>4</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 4 %></span></div>
-        <div class="eitem"><label>5</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 5 %></span></div>
-        <div class="eitem"><label>6</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 6 %></span></div>
-        <div class="eitem"><label>7</label><span class="value"><%= radio_button :evaluation, :ccc_involvement, 7 %></span></div>
-      </div>      
-      <div class="score">
-        <div class="weight">6</div>
-        <div class="total"><%= @evaluation.ccc_involvement_score%></div>
-      </div>
-    </div>
-    
-    
-    <div class="scale field">
-      <div class="question">TOTAL SCORE</div>         
-      <div class="score">
-        <div class="total"><%= @evaluation.total_score%></div>
-      </div>
-    </div>
-    
-    <hr/>
-    
-    <h3>Disqualifying Factors</h3>
-    Check if applies
-    
-    
-    <div class="field">
-      <div class="question">1. Charismatic involvement</div>
-      <div class="score">    
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :charismatic, true %></span><label>Yes</label></div>
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :charismatic, false %></span><label>No</label></div>
-      </div>
-    </div>    
-    <div class="field">
-      <div class="question">2. Moral Problem</div>
-      <div class="score">    
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :morals, true %></span><label>Yes</label></div>
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :morals, false %></span><label>No</label></div>
-      </div>
-    </div>  
-    <div class="field">
-      <div class="question">3. Drug or alcohol problem</div>
-      <div class="score">    
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :drugs, true %></span><label>Yes</label></div>
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :drugs, false %></span><label>No</label></div>
-      </div>
-    </div>  
-    <div class="field">
-      <div class="question">4. Bad attitude toward evangelism</div>
-      <div class="score">    
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :bad_evangelism, true %></span><label>Yes</label></div>
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :bad_evangelism, false %></span><label>No</label></div>
-      </div>
-    </div>    
-    <div class="field">
-      <div class="question">5. Unresponsive to authority</div>
-      <div class="score">    
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :authority, true %></span><label>Yes</label></div>
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :authority, false %></span><label>No</label></div>
-      </div>
-    </div>  
-    <div class="field">
-      <div class="question">6. Eating Disorder</div>
-      <div class="score">    
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :eating, true %></span><label>Yes</label></div>
-        <div class="eitem"><span class="value"><%= radio_button :evaluation, :eating, false %></span><label>No</label></div>
-      </div>
-    </div>  
 
-
     <div class="field">
-      <div class="question">Any other comments of importance in selection:</div>
+      <div class="question"><h3>Any other comments of importance in selection:</h3></div>
       <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
     </div>    
     
-    <hr/>
-    <input type="submit" value="Save">
-    
+    <div class="actionwrap">
+    <input type="submit" value="Save" class="savebut">
+    </div>    
     
     
     <% end %>
