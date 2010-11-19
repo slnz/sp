@@ -17,6 +17,5 @@ $(function() {
 			total += Number($(this).html());
 		});
 		$('#total_score span').html(total);
-		$('#total_score input').val(total);
 	})
 });

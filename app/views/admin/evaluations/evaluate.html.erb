@@ -63,7 +63,8 @@
     </table>
     
   
-    <%= form_tag do %>
+    <%= form_for(@evaluation, :url => @evaluation.new_record? ? admin_evaluations_path : admin_evaluation_path(@evaluation)) do |form| %>
+      <%= hidden_field_tag :application_id, @application.id %>
     
     <div class="actionwrap">
       <input type="submit" value="Save" class="savebut">
@@ -79,7 +80,11 @@
         <td class="title">Change Status</td><td><%= select_tag :event, options_for_select((@application.valid_events.map {|s| [s.to_s.humanize, s.to_s]}).insert(0, '')), :onchange => "displayWarning()"%></td>
       </tr>
       <tr>
-        <td class="title">Move this student to a different project:</td><td><%= select(:application, :project_id, @projects.collect {|p| [p.name, p.id]}, :include_blank => true) %></td>
+        <td class="title">Move this student to a different project:</td>
+        <td>
+          <%= select(:application, :project_id, @projects.collect {|p| [p.name, p.id]}, :include_blank => true) %>
+          <%= tip("This list is only showing projects that still have room for #{@person.human_gender} applicants") %>
+        </td>
       </tr>
       <tr>
         <td class="title">Applicant Notified (Sends an email to an accepted applicant to get them started with MPD)</td>
@@ -117,8 +122,8 @@
             </tr>
           </table>
         </td>
-        <td class="weight">10</td>
-        <td class="score"><%= @evaluation.spiritual_maturity_score.to_i * 10 %></td>
+        <td class="weight"><%= SpEvaluation::SPIRITUAL_MATURITY %></td>
+        <td class="score"><%= @evaluation.spiritual_maturity_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -137,8 +142,8 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">10</td>
-        <td class="score"><%= @evaluation.teachability_score.to_i * 10 %></td>
+        <td class="weight"><%= SpEvaluation::TEACHABILITY %></td>
+        <td class="score"><%= @evaluation.teachability_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -157,8 +162,8 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">8</td>
-        <td class="score"><%= @evaluation.leadership_score.to_i * 8 %></td>
+        <td class="weight"><%= SpEvaluation::LEADERSHIP %></td>
+        <td class="score"><%= @evaluation.leadership_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -177,8 +182,8 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">7</td>
-        <td class="score"><%= @evaluation.stability_score.to_i * 7 %></td>
+        <td class="weight"><%= SpEvaluation::STABILITY %></td>
+        <td class="score"><%= @evaluation.stability_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -197,8 +202,8 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">7</td>
-        <td class="score"><%= @evaluation.good_evangelism_score.to_i * 7 %></td>
+        <td class="weight"><%= SpEvaluation::GOOD_EVANGELISM %></td>
+        <td class="score"><%= @evaluation.good_evangelism_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -217,8 +222,8 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">6</td>
-        <td class="score"><%= @evaluation.reason_score.to_i * 6 %></td>
+        <td class="weight"><%= SpEvaluation::REASON %></td>
+        <td class="score"><%= @evaluation.reason_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -237,8 +242,8 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">6</td>
-        <td class="score"><%= @evaluation.social_maturity_score.to_i * 6 %></td>
+        <td class="weight"><%= SpEvaluation::SOCIAL_MATURITY %></td>
+        <td class="score"><%= @evaluation.social_maturity_score %></td>
       </tr>
       <tr class="question">
         <td class="question calc">
@@ -257,13 +262,13 @@
             </tr>
           </table>  
         </td>
-        <td class="weight">6</td>
-        <td class="score"><%= @evaluation.ccc_involvement_score.to_i * 6 %></td>
+        <td class="weight"><%= SpEvaluation::CCC_INVOLVEMENT %></td>
+        <td class="score"><%= @evaluation.ccc_involvement_score %></td>
       </tr>
       <tr>
         <td>TOTAL SCORE</td>
         <td></td>
-        <td id="total_score"><span><%= @evaluation.total_score %></span><%= hidden_field :evaluation, :total_score %></td>
+        <td id="total_score"><span><%= @evaluation.total_score %></span></td>
       </tr>                
     </table>
       

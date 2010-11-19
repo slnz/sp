@@ -1,11 +1,4 @@
 Sp2::Application.routes.draw do
-  get "evaluations/new"
-
-  get "evaluations/edit"
-
-  get "evaluations/update"
-
-  get "evaluations/create"
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/failure' => 'authentications#failed'
@@ -19,6 +12,12 @@ Sp2::Application.routes.draw do
 
   # Sample resource route within a namespace:
   namespace :admin do
+    resources :evaluations do
+      collection do
+        get :evaluate
+      end
+    end
+    
     resource :reports do
       
     end
