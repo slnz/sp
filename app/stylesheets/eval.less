@@ -3,9 +3,13 @@
 #evaluation {
   padding: 10px;
   
+  h3 {
+    margin: 0;
+  }
+  
   #leftside {
     float: left;
-    width: 250px;  
+    width: 235px;  
     ul {
       list-style: none;
       padding: 0;
@@ -14,52 +18,127 @@
         display: block;
       }
     }
+    ul#pagename {
+      margin:20px 0;
+      li {
+        border-bottom: 1px dotted silver;
+        a {padding: 5px; display: block;}
+        a:hover {background: #efefef;}
+      }
+    }
+    .schoolleft {
+      font-size: 12px;
+      margin-top: -18px;
+      display: block;
+    }
   }
   
   #evalcontent {
     float: right;
     width: 730px;
-    .eitem {
-      border-bottom: 1px solid silver;
-      padding: 2px 0;
-      label {
-        width: 200px;
-        padding: 0;
-        display: inline-block;
-      }
-      span.value {
-        line-height: 100%;
-        display: inline-block;
-        float: right;
-      }
+    
+    .savebut {
+      font-size: 18px;
+      margin: 0 0 0;
     }
-    #col1 .eitem label {
-      width: 100px;
-    }
-    .scale {
-      .eitem {
-        background: #0B486B;
+    
+    .datatable {
+      border: 1px solid #999;
+      width: 100%;
+      margin: 0 0 20px 0;
+      td.question {width: 70%; text-align: left;}
+      th {text-align: left;}
+      td {text-align: center; padding: 5px;}
+      th.tally {text-align: center;}
+      th {background: #efefef; padding: 5px;}
+      td.great, td.poor {
+        font-size: 11px;
+      }
+      td.weight {font-weight: bold; font-size: 16px;}
+      td.score {font-weight: bold; font-size: 18px;}
+      td.great {
+        background:#06681b;
         color: #fff;
-        float: left;
-        -moz-border-radius: 3px;
-        padding: 3px;
-        margin-right: 4px;
+      }
+      td.poor {
+        background: #ffd200;
+      }
+    }
+    
+    
+    .question table{
+      width: 100%;
+      margin: 5px 0;
+      td {
+        text-align: center;
+        background: #efefef;
         label {
-          width: auto;
+          padding: 0;
         }
       }
     }
+    .field {
+      padding: 5px 0;
+      border-bottom: 1px solid silver;
+      margin-bottom: 5px;
+    }
+    
+    .col2 {
+      td {
+        text-align: left;
+      }
+      td.title {
+        width: 30%;
+        font-weight: bold;
+      }
+    }
+    
   }
-  .summarytable {
+  
+  
+  
+  
+
+  
+  #summarygreen {
+    font-size: 11px;
     background: #CFF09E;
-    padding: 10px;
-    .column {
-      border-right: 1px solid silver;
+    padding: 4px;
+    td {
+      border-right:1px solid #999;
+      vertical-align: top;
+    }
+    .summarytable {
+      background: #CFF09E;
       float: left;
-      height: 174px;
-      margin-right: 10px;
-      padding-right: 10px;
+      padding: 10px;
+      
+      .column {
+        border-right: 1px solid silver;
+        float: left;
+        height: 174px;
+        margin-right: 10px;
+        padding-right: 10px;
+      }
+      .title {
+        font-weight: bold;
+      }
+      td {
+        border-right: none;
+      }
     }
   }
+  
+  .actionwrap {
+    background: #efefef;
+    padding: 5px;
+    margin: 10px 0;
+  }
+  
+  
+    
+
+  
+
   
 }
