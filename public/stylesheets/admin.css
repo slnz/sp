@@ -142,6 +142,7 @@ h3.critical {
   float: right;
 }
 #global #menuright li a { background: none; }
+#global #menu { width: auto; }
 #primary {
   padding: 0 25px 0 35px;
   padding-bottom: 50px;
