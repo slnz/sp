@@ -18,4 +18,8 @@ $(function() {
 		});
 		$('#total_score span').html(total);
 	})
+	
+	$('.evaluation_page_link').bind('ajax:before', function() {
+		$('#evalcontent').html('<img src="/images/spinner.gif" class="spinner" />');
+	});
 });

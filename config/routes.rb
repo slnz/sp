@@ -13,6 +13,10 @@ Sp2::Application.routes.draw do
   # Sample resource route within a namespace:
   namespace :admin do
     resources :evaluations do
+      member do
+        get :page
+        get :references
+      end
       collection do
         get :evaluate
       end

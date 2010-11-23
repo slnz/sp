@@ -1,16 +1,10 @@
 class Admin::EvaluationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter :get_evaluation, :only => [:update, :page, :references]
   layout 'admin'
-  # def new
-  # end
-  # 
-  # def edit
-  # end
 
   def update
-    @evaluation = SpEvaluation.includes(:sp_application).find(params[:id])
     @evaluation.update_attributes(params[:evaluation])
-    @application = @evaluation.sp_application
     update_evaluation and return
   end
 
@@ -29,6 +23,21 @@ class Admin::EvaluationsController < ApplicationController
     projects_base = SpProject.current.uses_application.order(:name)
     @projects = @person.is_male? ? projects_base.not_full_men : projects_base.not_full_women
     @projects = [@application.project] + @projects if @application.project && !@projects.include?(@application.project)
+  end
+  
+  def page
+    @page = Page.find(params[:page_id])
+    @answer_sheet = @application
+  end
+  
+  def references
+    # Collect all questions asked for consolidated display of answers
+    @elements = []
+    @references = @application.reference_sheets
+    @references.reject! {|r| !r.question_sheet}
+    @references.each do |reference|
+      @elements = @elements | reference.question_sheet.elements
+    end
   end
   
   protected
@@ -61,6 +70,11 @@ class Admin::EvaluationsController < ApplicationController
                                  'moved_by' => current_person.informal_full_name}).deliver
         end
     end
+  end
+  
+  def get_evaluation
+    @evaluation = SpEvaluation.includes(:sp_application).find(params[:id])
+    @application = @evaluation.sp_application
   end
 
 end

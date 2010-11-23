@@ -3,11 +3,12 @@
   <span class="schoolleft">School: <%= @person.campus %></span>
   
   <ul id="pagename">
-    <li><%= link_to "Evaluator's Summary" %></li>
-    <% @presenter.pages.each do |page| %>
+    <li><%= link_to("Evaluator's Summary", evaluate_admin_evaluations_path(:application_id => @application.id), :remote => true, :class => 'evaluation_page_link') %></li>
+    <% @presenter.pages[0..-2].each do |page| %>
       <% if page.has_questions? %>
-        <li><%= link_to(page.label) %></li>
+        <li><%= link_to(page.label, page_admin_evaluation_path(@evaluation, :page_id => page.id), :remote => true, :class => 'evaluation_page_link') %></li>
       <% end %>
     <% end %>
+    <li><%= link_to("References", references_admin_evaluation_path(@evaluation), :remote => true, :class => 'evaluation_page_link') %></li>
   </ul>
 </div>

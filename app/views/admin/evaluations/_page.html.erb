@@ -1,0 +1,6 @@
+<div class="page">
+  <h3><%= @page.label %></h3>
+  <ul class="questions readonly">
+    <%= render :partial => 'answer_sheets/element', :collection => @page.elements, :locals => {:elements => @page.elements, :answer_sheet => @answer_sheet} %>
+  </ul>
+</div>

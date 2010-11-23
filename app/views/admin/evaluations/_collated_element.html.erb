@@ -1,0 +1,38 @@
+<% if element.kind == "QuestionGrid" -%>
+	<table class="grid">
+  	<%- if element.cols -%>
+  	<tr>
+  	<%- element.cols.split(';').each do |header| -%>
+  		<th><%= header || '&nbsp;' %></th>
+  	<%- end -%>
+  	</tr>
+  	<%- end -%>
+  	<tr>
+  		<%- col_count = 0
+  			element.elements.each do |grid_element| -%>
+  		<td id="element_<%= element.id %>">
+  			<% unless %w(Paragraph).include?(grid_element.kind) -%>
+    			<%= grid_element.label + ': ' if grid_element.label.present? %> <%= grid_element.display_response(answer_sheet) %>
+  			<% end -%>
+  		</td>
+  		<%- 	col_count += 1
+  				if col_count % element.num_cols == 0 then col_count = 0 -%></tr><tr><%- end -%>
+  		<%-	end -%>
+  		<%- while col_count < element.num_cols do 
+  				col_count += 1-%>
+  				<td>&nbsp;</td>
+  		<%- end unless col_count == 0-%>
+  	</tr>
+	</table>
+<% else -%>
+  <% if element.question? -%>
+    <% answer = element.display_response(answer_sheet) %>
+    <span class="answer"><%= answer %></span>
+    <% if element.is_a?(ChoiceField) && answer == 'Yes' && element.elements.present? %>
+      - 
+      <% element.elements.each do |conditional| %>
+        <%= render('collated_element', :element => conditional, :answer_sheet => answer_sheet) %>
+      <% end %>
+    <% end %>
+  <% end -%>
+<% end -%>
