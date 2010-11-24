@@ -111,3 +111,20 @@
   padding: 5px;
   margin: 10px 0;
 }
+#evaluation ul.questions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#evaluation ul.questions label { padding: 4px 0; }
+#evaluation ul.questions li {
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+}
+#evaluation ul.questions span.answer {
+  background: #f1edcc;
+  border: 1px dotted #eabd77;
+  padding: 5px;
+  display: block;
+}
