@@ -1,0 +1,10 @@
+<% if params[:application] == 'true' %>
+  <% @presenter.pages[0..-2].each do |page| %>
+    <% if page.has_questions? %>
+      <%= render 'page', :page => page %>
+    <% end %>
+  <% end %>
+<% end %>
+<% if params[:references] == 'true' %>
+  <%= render('references') %>
+<% end %>

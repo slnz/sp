@@ -1,1 +1,1 @@
-$('#evalcontent').html('<%= escape_javascript(render('page')) %>')
+$('#evalcontent').html('<%= escape_javascript(render('page', :page => @page)) %>')

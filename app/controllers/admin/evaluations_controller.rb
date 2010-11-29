@@ -1,6 +1,6 @@
 class Admin::EvaluationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
-  before_filter :get_evaluation, :only => [:update, :page, :references]
+  before_filter :get_evaluation, :only => [:update, :page, :references, :print]
   layout 'admin'
 
   def update
@@ -32,12 +32,19 @@ class Admin::EvaluationsController < ApplicationController
   
   def references
     # Collect all questions asked for consolidated display of answers
-    @elements = []
-    @references = @application.reference_sheets
-    @references.reject! {|r| !r.question_sheet}
-    @references.each do |reference|
-      @elements = @elements | reference.question_sheet.elements
+    set_up_reference_elements
+  end
+  
+  def print
+    @person = @application.person
+    @answer_sheet = @application 
+    if params[:application] == 'true'
+      @presenter = AnswerPagesPresenter.new(self, @application)
     end
+    if params[:references] == 'true'
+      set_up_reference_elements
+    end
+    render :layout => 'print'
   end
   
   protected
@@ -75,6 +82,15 @@ class Admin::EvaluationsController < ApplicationController
   def get_evaluation
     @evaluation = SpEvaluation.includes(:sp_application).find(params[:id])
     @application = @evaluation.sp_application
+  end
+  
+  def set_up_reference_elements
+    @elements = []
+    @references = @application.reference_sheets
+    @references.reject! {|r| !r.question_sheet}
+    @references.each do |reference|
+      @elements = @elements | reference.question_sheet.elements
+    end
   end
 
 end

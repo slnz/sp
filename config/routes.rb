@@ -16,6 +16,8 @@ Sp2::Application.routes.draw do
       member do
         get :page
         get :references
+        get :print_setup
+        get :print
       end
       collection do
         get :evaluate

@@ -47,7 +47,7 @@ class SpUser < ActiveRecord::Base
   end
 
   def partnerships
-    partnerships = [ministry_lookup(region), ministry_lookup(person.ministry), ministry_lookup(person.strategy)].compact
+    partnerships = [ministry_lookup(region), ministry_lookup(person.ministry), ministry_lookup(person.strategy), ministry_exceptions(ssm_id)].compact
     partnerships.reject! {|p| p.blank?}
     partnerships
   end
@@ -99,5 +99,10 @@ class SpUser < ActiveRecord::Base
       mappings = {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", 
                   "JF" => "Jesus Film", "JESUS Film Project" => 'Jesus Film', "EPI" => "Epic", 'BRD' => 'Bridges'}
       mappings[ministry] || ministry
+    end
+    
+    def ministry_exceptions(user_id)
+      exceptions = {45460 => 'MK2MK'}
+      exceptions[user_id]
     end
 end

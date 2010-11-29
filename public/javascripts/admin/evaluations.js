@@ -22,4 +22,20 @@ $(function() {
 	$('.evaluation_page_link').bind('ajax:before', function() {
 		$('#evalcontent').html('<img src="/images/spinner.gif" class="spinner" />');
 	});
+	$('.print_button').click(function() {
+		$("#print_options").dialog({
+			resizable: false,
+			height:240,
+			modal: true,
+			buttons: {
+				Cancel: function() {
+					$(this).dialog('close');
+				},
+				Print: function() {
+					$(this).dialog('close');
+					$('#print-options-form').submit();
+				}
+			}
+		});
+	});
 });
