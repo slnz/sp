@@ -19,7 +19,7 @@
             </tr>
             <% @references.each do |reference| %>
               <tr>
-                <td><%= reference.question.label.split(/:| \(/).first %>: </td>
+                <td class="col1"><%= reference.question.label.split(/:| \(/).first %>: </td>
                 <% element.elements.each do |grid_element| -%>
                   <td><%= render 'collated_element', :element => grid_element, :answer_sheet => reference %></td>
                 <% end %>
@@ -31,7 +31,7 @@
             <% @references.each do |reference| %>
               <% if !element.question? || element.object_name.present? || reference.has_answer_for?(element.id)  %>
                 <tr>
-                  <td><%= reference.question.label.split(/:| \(/).first %>: </td>
+                  <td class="col1"><%= reference.question.label.split(/:| \(/).first %>: </td>
                   <td><%= render 'collated_element', :element => element, :answer_sheet => reference %></td>
                 </tr>
               <% end %>
