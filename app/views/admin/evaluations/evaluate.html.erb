@@ -1,3 +1,16 @@
+<%= link_to_function('Print Application', '', :class => 'print_button') %>
+<div id="print_options" style="display:none;" title="Print Options">
+  <%= form_tag(print_admin_evaluation_path(@evaluation), :method => :get, :id => 'print-options-form') do %>
+  <p>
+    <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+    <span id="dialog-confirm-message">
+      What would you like to print? <br />
+      <%= check_box_tag 'application', true, :checked => true %> Application <br />
+      <%= check_box_tag 'references', true, :checked => true %> References
+    </span>
+  </p>
+  <% end %>
+</div>
 <div id="evaluation">
 
   <%= render :partial => 'left_side' %>
