@@ -16,7 +16,7 @@ class Admin::EvaluationsController < ApplicationController
   
   def evaluate
     @application = SpApplication.includes(:person).find(params[:application_id])
-    @evaluation = @application.evaluation || SpEvaluation.new(:application_id => @application.id)
+    @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
     @person = @application.person
     @answer_sheet = @application 
     @presenter = AnswerPagesPresenter.new(self, @application)
