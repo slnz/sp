@@ -20,8 +20,19 @@ label b {
 }
 
 span.answer {
-  text-decoration: underline;
+  font-weight: bold;
 }
+
+label.desc {
+  font-weight: normal;
+}
+
+.col1 {
+  font-weight: bold;
+  width: 150px;
+}
+
+td span.answer {font-weight: normal;}
 
 table {
   padding: 0;
@@ -34,11 +45,17 @@ td {
 }
 
 ul {
-  padding: 0px 0px 0px 2em;
+  padding: 0px 0px 0px 0em;
+  list-style: none;
 }
 
 li {
   margin: 5px 0;
   padding: 5px 0;
   border-bottom: 1px dotted silver;
+}
+
+ul.questions li {
+ padding-left: 20px;
+ background: url(/images/printbullet.png) no-repeat -5px 2px;
 }
