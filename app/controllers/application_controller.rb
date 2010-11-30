@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
     def search
       if params[:name].present?
         term = '%' + params[:name].strip + '%'
-        conditions = ["preferredName like ? OR firstName like ? OR lastName like ? OR concat(firstname, ' ', lastname) like ? OR concat(preferredName, ' ', lastname) like ?", term, term, term, params[:name].strip + '%', params[:name].strip + '%']
+        conditions = ["preferredName like ? OR firstName like ? OR lastName like ? OR concat(firstName, ' ', lastName) like ? OR concat(preferredName, ' ', lastName) like ?", term, term, term, params[:name].strip + '%', params[:name].strip + '%']
         @people = Person.where(conditions).includes(:user).limit(10)
         @total = Person.where(conditions).count
         respond_with(@people)

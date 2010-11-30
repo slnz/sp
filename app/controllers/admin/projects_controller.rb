@@ -17,7 +17,7 @@ class Admin::ProjectsController < ApplicationController
     set_up_pagination
     set_up_filters
     set_order
-    @projects = @base.includes([:sp_staff]).paginate(:page => params[:page], :per_page => @per_page)
+    @projects = @base.includes(:sp_staff => :person).paginate(:page => params[:page], :per_page => @per_page)
     respond_with(@products)
   end
   
