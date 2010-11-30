@@ -1,4 +1,15 @@
 #evaluation { padding: 10px; }
+#evaluation a.print_button {
+  -moz-border-radius: 7px 7px 7px 7px;
+  background: none repeat scroll 0 0 #efefef;
+  border: 1px solid silver;
+  color: #000000;
+  display: block;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 8px 11px;
+  width: 93px;
+}
 #evaluation h3 { margin: 0; }
 #evaluation #leftside {
   float: left;
@@ -83,6 +94,29 @@
   width: 30%;
   font-weight: bold;
 }
+#evaluation #evalcontent #referencesview {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#evaluation #evalcontent #referencesview li {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+#evaluation #evalcontent #referencesview .tablebgwrap { background: #f1edcc; }
+#evaluation #evalcontent #referencesview table tr.headerrow {
+  background: #e4d1a4;
+  font-weight: bold;
+}
+#evaluation #evalcontent #referencesview table tr.headerrow td { padding: 1px 2px; }
+#evaluation #evalcontent #referencesview table td {
+  min-width: 160px;
+  padding-right: 10px;
+  vertical-align: top;
+}
+#evaluation #evalcontent #referencesview table td.col1 { width: 200px; }
+#evaluation #evalcontent #referencesview table td.titlerow { width: 200px; }
 #evaluation #summarygreen {
   font-size: 11px;
   background: #cff09e;

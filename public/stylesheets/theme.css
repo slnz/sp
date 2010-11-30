@@ -1,3 +1,5 @@
+a {outline: none;}
+
 #headwrap,
 #footerwrap {
   width: 1000px;
@@ -19,6 +21,11 @@
 #preview {
   border-color: #421f07;
   min-height: 500px;
+  background: #fff8e0;
+}
+
+#list-pages li.active {
+  background: #fff8e0;
 }
 
 #projecttitle {
@@ -153,7 +160,7 @@ input.radio {
 label.choice {
   margin-left: 25px
   min-height: 25px;
-  border: 1px solid #fff;
+  border: 1px solid #fff8e0;
 }
 
 .yesno {
@@ -334,7 +341,7 @@ li.questiongrid div.row {
   min-height: 70px;
   min-height: 80px;
   margin-right: 10px;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #fff8e0;
 }
 
 #page-name {

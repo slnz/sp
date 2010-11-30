@@ -3,6 +3,18 @@
 #evaluation {
   padding: 10px;
   
+  a.print_button {
+    -moz-border-radius: 7px 7px 7px 7px;
+    background: none repeat scroll 0 0 #EFEFEF;
+    border: 1px solid silver;
+    color: #000000;
+    display: block;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 8px 11px;
+    width: 93px;
+  }
+  
   h3 {
     margin: 0;
   }
@@ -90,6 +102,39 @@
       td.title {
         width: 30%;
         font-weight: bold;
+      }
+    }
+    
+    #referencesview {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        border-bottom: 1px solid #E0E0E0;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+      }
+      .tablebgwrap {
+        background: #F1EDCC;
+      }
+      table {
+        tr.headerrow {
+          background: #e4d1a4;
+          font-weight: bold;
+          td {
+            padding: 1px 2px;
+          }
+        }
+        
+        td {
+          min-width: 160px;
+          padding-right: 10px;
+          vertical-align: top;
+        }
+        td.col1, td.titlerow {
+          width: 200px;
+        }
       }
     }
     

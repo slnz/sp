@@ -1,18 +1,20 @@
 <h1>References</h1>
-<ul>
+<ul id="referencesview">
   <% @elements.each do |element| %>
     <% if element.reuseable? %>
       <li>
         <label class="desc"><%= raw element.label %></label>
+        <div class="tablebgwrap">
         <% if element.kind == "QuestionGrid" && element.cols.to_s.split(';').length < 1 -%>
           <% headers = element.cols.to_s.split(';') %>
           <% if headers[0].to_s.strip.present? %>
             <div class="header"><%= headers[0] %></div>
           <% end %>
+          
           <table>
             <!-- header row -->
-            <tr>
-              <td></td>
+            <tr class="headerrow">
+              <td class="titlerow"></td>
               <% element.elements.each do |grid_element| -%>
                 <td><%= grid_element.label %></td>
               <% end %>
@@ -26,6 +28,7 @@
               </tr>
             <% end %>
           </table>
+  
         <% else %>
           <table>
             <% @references.each do |reference| %>
@@ -38,6 +41,7 @@
             <% end %>
           </table>
         <% end %>
+        </div>
       </li>
     <% end %>
   <% end %>
