@@ -28,11 +28,11 @@ label.desc {
 }
 
 .col1 {
-  font-weight: bold;
-  width: 150px;
+/*  font-weight: bold;*/
+  width: 175px;
 }
 
-td span.answer {font-weight: normal;}
+td span.answer {display:block;}
 
 table {
   padding: 0;
