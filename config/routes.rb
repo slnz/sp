@@ -43,6 +43,9 @@ Sp2::Application.routes.draw do
       end
     end
     resources :applications do 
+      member do
+        get :donations
+      end
       collection do
         get :search
         post :search_results

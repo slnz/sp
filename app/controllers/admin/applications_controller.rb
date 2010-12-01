@@ -75,6 +75,10 @@ class Admin::ApplicationsController < ApplicationController
     end
   end
   
+  def donations
+    @application = SpApplication.includes(:person, :donations).find(params[:id])
+  end
+  
   protected
     def set_up_search_form
       @region_options = Region.order('region')
