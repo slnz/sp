@@ -1,6 +1,8 @@
 <div id="leftside">
   <h2><%= @person.informal_full_name%></h2>
-  <span class="schoolleft">School: <%= @person.campus %></span>
+  <% if @person.campus.present? %>
+    <span class="schoolleft">School: <%= @person.campus %></span>
+  <% end %>
   
   <%= link_to_function('Print Application', '', :class => 'print_button') %>
   <div id="print_options" style="display:none;" title="Print Options">

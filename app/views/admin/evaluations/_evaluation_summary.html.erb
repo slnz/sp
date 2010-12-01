@@ -33,7 +33,7 @@
         <% @application.reference_sheets.each do |reference| -%>
           <% if reference.name.present? %>
             <tr>
-              <td class="title"><%= reference.question.label %></td>
+              <td class="title"><%= reference.display_type %></td>
               <td class="<% if reference.completed? %>complete<%else%>incomplete<%end%>"><%= reference.status.titleize %></td>
             </tr> 
           <% end %>

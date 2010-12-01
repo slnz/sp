@@ -3,18 +3,24 @@
   	<label class="desc"><%= element.label %></label>
   	<table class="grid">
   	<%- if element.cols -%>
-  	<tr>
-  	<%- element.cols.split(';').each do |header| -%>
-  		<th><%= header || '&nbsp;' %></th>
-  	<%- end -%>
-  	</tr>
+
   	<%- end -%>
   	<tr>
   		<%- col_count = 0
   			element.elements.each do |grid_element| -%>
   		<td id="element_<%= element.id %>">
   			<% unless %w(Paragraph).include?(grid_element.kind) -%>
-    			<%= grid_element.display_response(answer_sheet) %>
+    			<%= grid_element.label + ': ' if grid_element.label.present? %>
+    			<strong>
+    			<% case grid_element.attribute_name %>
+  			  <% when 'gender' %>
+  			    <%= @answer_sheet.person.human_gender %>
+  			  <% when 'maritalStatus' %>
+  			    <%= @answer_sheet.person.marital_status %>
+    			<% else %>
+      			<%= grid_element.display_response(answer_sheet) %>
+      		<% end %>
+      		</strong> 
   			<% end -%>
   		</td>
   		<%- 	col_count += 1
@@ -31,6 +37,7 @@
   <% if element.question? -%>
     <li>
       <label class="desc"><%= element.label %></label>
+      <% if ['essay', 'checkbox'].include?(element.style) %><br/><% end %>
       <span class="answer"><%= element.display_response(answer_sheet) %></span>
     </li>
   <% end -%>
