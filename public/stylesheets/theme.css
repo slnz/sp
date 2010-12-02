@@ -21,11 +21,11 @@ a {outline: none;}
 #preview {
   border-color: #421f07;
   min-height: 500px;
-  background: #fff8e0;
+  background: #fffef8;
 }
 
 #list-pages li.active {
-  background: #fff8e0;
+  background: #fffef8;
 }
 
 #projecttitle {
