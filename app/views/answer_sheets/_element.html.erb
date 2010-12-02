@@ -37,7 +37,10 @@
     <li>
       <label class="desc"><%= element.label %></label>
       <% if ['essay', 'checkbox'].include?(element.style) %><br/><% end %>
-      <span class="answer"><%= element.display_response(answer_sheet) %></span>
+      <% answer = element.display_response(answer_sheet) %>
+      <% if answer.present? %>
+        <span class="answer"><%= answer %></span>
+      <% end %>
     </li>
   <% end -%>
 <% end -%>
