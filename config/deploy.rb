@@ -41,7 +41,6 @@ task :staging do
   set :deploy_to, "/var/www/html/integration/#{application}"
   set :environment, 'development'
   set :rails_env, 'development'
-  set :branch, 'features'
 end
   
 task :production do

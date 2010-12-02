@@ -1,6 +1,7 @@
 class Admin::EvaluationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
   before_filter :get_evaluation, :only => [:update, :page, :references, :print]
+  before_filter :check_access
   layout 'admin'
 
   def update
@@ -8,12 +9,6 @@ class Admin::EvaluationsController < ApplicationController
     update_evaluation and return
   end
 
-  def create
-    @application = SpApplication.find(params[:application_id])
-    @evaluation = @application.create_evaluation(params[:evaluation])
-    update_evaluation and return
-  end
-  
   def evaluate
     @application = SpApplication.includes(:person).find(params[:application_id])
     @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
@@ -90,6 +85,16 @@ class Admin::EvaluationsController < ApplicationController
     @references.reject! {|r| !r.question_sheet}
     @references.each do |reference|
       @elements = @elements | reference.question_sheet.elements
+    end
+  end
+
+  def check_access
+    if params[:application_id] && !@application
+      @application = SpApplication.find(params[:application_id])
+    end
+    unless sp_user && sp_user.can_evaluate_applicant?(@application)
+      flash[:error] = "You don't have permission to evaluate that applicant"
+      redirect_to '/admin' and return false
     end
   end
 
