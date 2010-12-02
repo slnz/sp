@@ -27,9 +27,6 @@
         
        
       <% if @application.reference_sheets.present? -%>
-        <tr>
-          <th colspan="2">References </th>
-        </tr>
         <% @application.reference_sheets.each do |reference| -%>
           <% if reference.name.present? %>
             <tr>
@@ -74,7 +71,7 @@
     <td class="title">Move this student to a different project:</td>
     <td>
       <%= select(:application, :project_id, @projects.collect {|p| [p.name, p.id]}, :include_blank => true) %>
-      <%= tip("This list is only showing projects that still have room for #{@person.human_gender} applicants") %>
+      <%= tip("This list is only showing projects that still have room for #{@person.human_gender} applicants. Please Note: Different projects have different application questions, so students may be required to fill out additional questions. This will un-submit their application.") %>
     </td>
   </tr>
   <tr>
@@ -83,7 +80,9 @@
   </tr>
 </table>
   
-
+<hr />
+<h2> Evaluation Helpers (optional)</h2>
+<hr style="margin-bottom:-3px" />
 <div class="field">
   <div class="question"><h3>Notes:</h3></div>
   <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
@@ -257,7 +256,7 @@
     <td class="score"><%= @evaluation.ccc_involvement_score %></td>
   </tr>
   <tr>
-    <td>TOTAL SCORE</td>
+    <td>TOTAL SCORE (out of 420)</td>
     <td></td>
     <td id="total_score"><span><%= @evaluation.total_score %></span></td>
   </tr>                
@@ -268,8 +267,8 @@
 <table class="datatable">
   <thead>
     <tr>
-      <th>Disqualifying Factors</th>
-      <th colspan="2" class="tally">Check if applies</th>
+      <th>Areas of Concern</th>
+      <th colspan="2" class="tally"></th>
     </tr>
   </thead>
   <tbody>
