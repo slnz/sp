@@ -14,3 +14,4 @@ config/facebook.yml
 public/packages/
 config/initializers/active_merchant.rb
 config/initializers/email.rb
+*.swp

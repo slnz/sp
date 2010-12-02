@@ -23,8 +23,8 @@
     <tr>
     	<td><b><%= year %></b></td>
     	<td nowrap="nowrap">
-    	  <% if false && (sp_user.can_evaluate_applicant?(application)) %>
-      		<%= link_to(person.informal_full_name, admin_application_path(application)) %>
+    	  <% if sp_user.can_evaluate_applicant?(application) %>
+      		<%= link_to(person.informal_full_name, evaluate_admin_evaluations_path(:application_id => application.id)) %>
       	<% else %>
       	  <%= person.informal_full_name %>
       	<% end %>

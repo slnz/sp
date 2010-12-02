@@ -5,9 +5,9 @@
   <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
   <td class="campus"><%= person.campus %></td>
   <td class="accdate"><%= l app.accepted_at.to_date if app.accepted_at  %></td>
-  <td class="balance"><%= number_to_currency(app.account_balance.to_i, :precision => 0) %></td>
+  <td class="balance"><%= link_to(number_to_currency(app.account_balance.to_i, :precision => 0), donations_admin_application_path(app)) %></td>
   <td class="designation"><%= app.designation_number %></td>
   <% if sp_user.can_evaluate_applicant?(app) %>
-    <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), '', :title => 'Evaluate ' + person.to_s) %></td>
+    <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
   <% end %>
 </tr>

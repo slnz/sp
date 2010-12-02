@@ -1,0 +1,49 @@
+<% if element.kind == "QuestionGrid" -%>
+  <li>
+  	<label class="desc"><%= element.label %></label>
+  	<table class="grid">
+  	<tr>
+      <% element.elements.each do |grid_element| -%>
+        <% if grid_element.display_response(answer_sheet).to_s.strip.present? %>
+          <% unless %w(Paragraph).include?(grid_element.kind) -%>
+            <td id="element_<%= element.id %>">
+              <%= grid_element.label + ': ' if grid_element.label.present? %>
+            </td>
+          <% end -%>
+        <% end %>
+      <% end %>
+    </tr>
+    <tr>
+      <% element.elements.each do |grid_element| -%>
+        <% if grid_element.display_response(answer_sheet).to_s.strip.present? %>
+          <% unless %w(Paragraph).include?(grid_element.kind) -%>
+            <td id="element_<%= element.id %>">
+              <span class="answer">
+                <% case grid_element.attribute_name %>
+                <% when 'gender' %>
+                  <%= @answer_sheet.person.human_gender %>
+                <% when 'maritalStatus' %>
+                  <%= @answer_sheet.person.marital_status %>
+                <% else %>
+                  <%= grid_element.display_response(answer_sheet) %>
+                <% end %>
+              </span>
+            </td>
+          <% end -%>
+        <% end %>
+      <% end %>
+    </tr>
+  </table>
+  </li>
+<% elsif element.question_grid_id.nil? && element.conditional_id.nil? -%>
+  <% if element.question? -%>
+    <li>
+    <label class="desc"><%= element.label %></label>
+    <% if ['essay', 'checkbox'].include?(element.style) %><br/><% end %>
+    <% answer = element.display_response(answer_sheet) %>
+    <% if answer.present? %>
+      <span class="answer"><%= answer %></span>
+    <% end %>
+    </li>
+  <% end -%>
+<% end -%>

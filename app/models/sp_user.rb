@@ -92,15 +92,23 @@ class SpUser < ActiveRecord::Base
       base.create!(:person_id => p.id, :ssm_id => p.user.id) if base
     end
   end
-  
-  
+
+
   protected
     def ministry_lookup(ministry)
-      mappings = {"KEY" => "Keynote", "MIL" => "Valor", "SV" => "Student Venture", "SVNO" => "Student Venture", 
-                  "JF" => "Jesus Film", "JESUS Film Project" => 'Jesus Film', "EPI" => "Epic", 'BRD' => 'Bridges'}
+      mappings = {
+        "KEY"                => "Keynote",
+        "MIL"                => "Valor",
+        "SV"                 => "Student Venture",
+        "SVNO"               => "Student Venture",
+        "JF"                 => "Jesus Film",
+        "JESUS Film Project" => 'Jesus Film',
+        "EPI"                => "Epic",
+        'BRD'                => 'Bridges'}
       mappings[ministry] || ministry
     end
     
+    # For people who just can't get their PS data right
     def ministry_exceptions(user_id)
       exceptions = {45460 => 'MK2MK'}
       exceptions[user_id]

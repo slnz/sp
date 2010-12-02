@@ -1,0 +1,31 @@
+<div id="leftside">
+  <h2><%= @person.informal_full_name%></h2>
+  <% if @person.campus.present? %>
+    <span class="schoolleft">School: <%= @person.campus %></span>
+  <% end %>
+  
+  <%= link_to_function('Print Application', '', :class => 'print_button') %>
+  <div id="print_options" style="display:none;" title="Print Options">
+    <%= form_tag(print_admin_evaluation_path(@evaluation), :method => :get, :id => 'print-options-form') do %>
+    <p>
+      <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+      <span id="dialog-confirm-message">
+        What would you like to print? <br />
+        <%= check_box_tag 'application', true, :checked => true %> Application <br />
+        <%= check_box_tag 'references', true, :checked => true %> References <br />
+        <!-- <%= check_box_tag 'skip_nos', true %> Hide Questions Answered 'No' -->
+      </span>
+    </p>
+    <% end %>
+  </div>
+  
+  <ul id="pagename">
+    <li><%= link_to("Evaluator's Summary", evaluate_admin_evaluations_path(:application_id => @application.id), :remote => true, :class => 'evaluation_page_link') %></li>
+    <% @presenter.pages[0..-2].each do |page| %>
+      <% if page.has_questions? %>
+        <li><%= link_to(page.label, page_admin_evaluation_path(@evaluation, :page_id => page.id), :remote => true, :class => 'evaluation_page_link') %></li>
+      <% end %>
+    <% end %>
+    <li><%= link_to("References", references_admin_evaluation_path(@evaluation), :remote => true, :class => 'evaluation_page_link') %></li>
+  </ul>
+</div>

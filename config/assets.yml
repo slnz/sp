@@ -14,6 +14,14 @@ javascripts:
     - public/javascripts/rails.js
     - public/javascripts/rails.extra.js
     - public/javascripts/application.js
+  admin:
+    - public/javascripts/qe/qe.common.js
+    - public/javascripts/rails.js
+    - public/javascripts/rails.extra.js
+    - public/javascripts/admin/projects.js
+    - public/javascripts/admin/admin.js
+    - public/javascripts/admin/users.js
+    - public/javascripts/admin/evaluations.js
     
 stylesheets:
   base:
