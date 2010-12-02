@@ -1,6 +1,7 @@
 <div id="leftside">
   <h2><%= @person.informal_full_name%></h2>
   <% if @person.campus.present? %>
+    <br />
     <span class="schoolleft">School: <%= @person.campus %></span>
   <% end %>
   
