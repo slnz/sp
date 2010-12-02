@@ -15,6 +15,7 @@ Sp2::Application.routes.draw do
     resources :evaluations do
       member do
         get :page
+        get :payments
         get :references
         get :print_setup
         get :print
@@ -45,6 +46,7 @@ Sp2::Application.routes.draw do
     resources :applications do 
       member do
         get :donations
+        get :waive_fee
       end
       collection do
         get :search
@@ -71,6 +73,9 @@ Sp2::Application.routes.draw do
       get :apply
     end
     resources :payments do
+      member do
+        get :approve
+      end
       collection do
         post :staff_search
       end

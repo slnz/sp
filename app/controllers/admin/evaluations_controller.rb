@@ -1,6 +1,6 @@
 class Admin::EvaluationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
-  before_filter :get_evaluation, :only => [:update, :page, :references, :print]
+  before_filter :get_evaluation, :only => [:update, :page, :references, :print, :payments]
   before_filter :check_access
   layout 'admin'
 
@@ -28,6 +28,10 @@ class Admin::EvaluationsController < ApplicationController
   def references
     # Collect all questions asked for consolidated display of answers
     set_up_reference_elements
+  end
+
+  def payments
+    
   end
   
   def print

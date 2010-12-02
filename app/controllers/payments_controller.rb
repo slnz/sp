@@ -16,7 +16,7 @@ class PaymentsController < ApplicationController
     end
     @payment.status = "Approved" # set the status so a default radio button will be selected
   end
-  
+
   def create
     SpPayment.transaction do
       @payment = SpPayment.new(params[:payment])
@@ -80,7 +80,24 @@ class PaymentsController < ApplicationController
     staff_payment_processed_email(@payment)
     @payment.application.complete
   end
-  
+
+  def approve
+    @payment = SpPayment.find(params[:id])
+    @payment.auth_code = sp_user.user.person.accountNo
+    case @payment.payment_type
+    when 'Staff'
+      staff_approval
+      staff_payment_processed_email(@payment)
+    when 'Mail'
+      Notifier.notification(@application.email, # RECIPIENTS
+                            "gosummerproject@uscm.org", # FROM
+                            "Check Received", # LIQUID TEMPLATE NAME
+                            {'name' => @application.name}).deliver
+    end
+    @payment.approve!
+    @payment.application.complete
+  end
+
   def staff_search
     @payment = @application.payments.new(params[:payment])
     if @payment.staff_first.strip.empty? || @payment.staff_last.strip.empty?

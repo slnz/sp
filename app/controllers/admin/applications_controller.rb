@@ -1,5 +1,7 @@
 class Admin::ApplicationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter :get_application, :only => [:waive_fee, :donations]
+
   respond_to :html, :js
   
   layout 'admin'
@@ -76,7 +78,11 @@ class Admin::ApplicationsController < ApplicationController
   end
   
   def donations
-    @application = SpApplication.includes(:person, :donations).find(params[:id])
+  end
+
+  def waive_fee
+    @application.waive_fee!
+    redirect_to :back
   end
   
   protected
@@ -93,5 +99,9 @@ class Admin::ApplicationsController < ApplicationController
       else
         return ".country <> 'United States'"
       end
+    end
+
+    def get_application
+       @application = SpApplication.includes(:person, :donations).find(params[:id])
     end
 end
