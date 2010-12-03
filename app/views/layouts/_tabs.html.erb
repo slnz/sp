@@ -22,7 +22,7 @@
       <% end %>
     </ul>
     <ul id="menuright">
-      <% if sp_user.can_search? %>
+      <% if sp_user && sp_user.can_search? %>
         <li class="search withicon"><%= link_to('Search', '/admin/applications/search') %></li>      
       <% end %>
       <li><%= link_to('Logout', '/logout') %></li>
