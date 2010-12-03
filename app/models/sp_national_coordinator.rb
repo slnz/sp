@@ -21,6 +21,7 @@ class SpNationalCoordinator < SpUser
   def can_see_pd_reports?() true; end
   def can_see_rc_reports?() true; end
   def can_see_nc_reports?() true; end
+  def can_search?() true; end
   
   def scope(partner = nil)
     if partner

@@ -22,7 +22,7 @@ gem 'paperclip'
 
 gem 'dalli'
 gem 'liquid'
-
+gem 'excelsior'
 # gem 'RedCloth'
 
 gem 'aws-s3', :require => 'aws/s3'

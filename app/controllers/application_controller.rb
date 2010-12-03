@@ -21,8 +21,12 @@ class ApplicationController < ActionController::Base
         admin_projects_path
       elsif current_person.current_staffed_projects.length == 1
         admin_project_path(current_person.current_staffed_projects.first)
-      else
+      elsif sp_user.can_search?
         search_admin_applications_path
+      elsif sp_user.can_upload_ds?
+        admin_donation_services_path
+      else
+        no_admin_projects_path
       end
     end
     

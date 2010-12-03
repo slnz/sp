@@ -15,6 +15,7 @@ class SpUser < ActiveRecord::Base
   def can_see_other_regions?() false; end
   def can_waive_fee?() false; end
   def creatable_user_types() []; end
+  def can_search?() false; end
   def creatable_user_types_array(types = nil)
     types.nil? ? [] : SpRole.find(:all, :conditions => "user_class IN (#{types})", :order => 'role').map { |role| [role.role, role.user_class] }
   end

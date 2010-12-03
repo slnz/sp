@@ -8,12 +8,12 @@
       <th>Medium</th>
     </tr>
     <% @application.donations.each do |donation| %>
-    <tr>
-      <td><%= l(donation.donation_date) %></td>
-      <td><%= number_to_currency(donation.amount) %></td>
-      <td><%= donation.donor_name %></td>
-      <td><%= donation.medium %></td>
-    </tr>
+      <tr>
+        <td><%= l(donation.donation_date) %></td>
+        <td><%= number_to_currency(donation.amount) %></td>
+        <td><%= donation.donor_name %></td>
+        <td><%= donation.medium %></td>
+      </tr>
     <% end %>
   </table>
 </div>

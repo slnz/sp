@@ -1,6 +1,8 @@
 class Admin::ApplicationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
   before_filter :get_application, :only => [:waive_fee, :donations]
+  before_filter :can_waive_fee, :only => [:waive_fee]
+  before_filter :can_search, :only => [:search]
 
   respond_to :html, :js
   
@@ -103,5 +105,18 @@ class Admin::ApplicationsController < ApplicationController
 
     def get_application
        @application = SpApplication.includes(:person, :donations).find(params[:id])
+    end
+
+    def can_waive_fee
+      unless sp_user.can_waive_fee?
+        flash[:error] = 'You don\'t have permission to waive fees.'
+        redirect_to :back and return false
+      end
+    end
+
+    def can_search
+      unless sp_user.can_search?
+        redirect_to no_admin_projects_path and return false
+      end
     end
 end

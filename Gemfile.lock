@@ -57,6 +57,7 @@ GEM
     dynamic_form (1.1.3)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    excelsior (0.1.0)
     faraday (0.5.3)
       addressable (~> 2.2.2)
       multipart-post (~> 1.0.1)
@@ -203,6 +204,7 @@ DEPENDENCIES
   carmen (= 0.1.1)
   dalli
   dynamic_form
+  excelsior
   google-geocode
   hoptoad_notifier
   jammit

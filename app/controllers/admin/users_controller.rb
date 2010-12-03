@@ -13,6 +13,9 @@ class Admin::UsersController < ApplicationController
               when 'regional'
                 @role = 'Regional Coordinator'
                 SpUser.where(:type => 'SpRegionalCoordinator')
+              when 'donation_services'
+                @role = 'Donation Services User'
+                SpUser.where(:type => 'SpDonationServices')
               when 'directors'
                 @role = 'Director'
                 SpUser.where(:type => 'SpDirector')
@@ -36,7 +39,7 @@ class Admin::UsersController < ApplicationController
   end
   
   def create
-    unless %w{national regional}.include?(params[:type]) && params[:person_id].present?
+    unless %w{national regional donation_services}.include?(params[:type]) && params[:person_id].present?
       render :nothing => true and return 
     end
     base = case params[:type]
@@ -44,6 +47,8 @@ class Admin::UsersController < ApplicationController
              SpNationalCoordinator
            when 'regional'
              SpRegionalCoordinator
+           when 'donation_services'
+             SpDonationServices
            end
     
     p = Person.find(params[:person_id])

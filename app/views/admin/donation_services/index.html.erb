@@ -1,0 +1,17 @@
+<div class="pagepad">
+  Using the link below, download a comma seperated file containing all the Summer Project Applicants that 
+  still need Account numbers. <br />
+  <br />
+
+  <%= link_to("Download list of applicants", download_admin_donation_services_path)%><br />
+  <% form_tag(upload_admin_donation_services_path, :multipart => true) do %>
+
+
+    <br />
+    Once you have the account numbers back from the Donations system in a <strong>comma seperated</strong> file format, use the form
+    below to upload the file.<br /><br />
+    <%= file_field("upload", "upload")%>
+    <%= submit_tag("Upload File")%>
+
+  <% end %>
+</div>
