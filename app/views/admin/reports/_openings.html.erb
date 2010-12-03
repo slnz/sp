@@ -1,0 +1,27 @@
+<% @percentages.each do |percentage, projects| %>
+  <h3> <%= percentage %> Full </h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Fullness</th>
+        <th>APD Email</th>
+        <th>Primary Partner</th>
+        <th>Project Length</th>
+        <th>Ministry Focus</th>
+        <th>Project Type</th>
+      </tr>
+    </thead>
+    <% projects.each do |project| %>
+      <tr>
+        <td><%= project.name %></td>
+        <td><%= number_with_precision(project.send("percent_full_#{gender}"), :precision => 0) %>%</td>
+        <td><%= project.apd.try(:email) %></td>
+        <td><%= project.primary_partner %></td>
+        <td><%= project.weeks.to_i %> </td>
+        <td><%= project.primary_ministry_focus %></td>
+        <td><%= project.report_stats_to %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

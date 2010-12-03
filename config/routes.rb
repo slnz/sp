@@ -32,7 +32,11 @@ Sp2::Application.routes.draw do
     end
     
     resource :reports do
-      
+      get :director
+      get :preference
+      get :female_openings
+      get :male_openings
+      get :ministry_focus
     end
     resources :people
     resources :users do

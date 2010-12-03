@@ -1,0 +1,41 @@
+<div class="pagepad">
+  <%= link_to("<< Back to report list", director_admin_reports_path) %>
+  <h1>Students who preferenced your project</h1>
+  <% @applications.each do |project, applications| %>
+    <h3><%= project.name %></h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Region</th>
+          <th>School</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th># Preference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% applications.each do |application| %>
+          <tr>
+            <td><%= application.name %></td>
+            <td><%= application.person.human_gender %></td>
+            <td><%= application.person.region %></td>
+            <td><%= application.person.campus %></td>
+            <td><%= mail_to(application.email) %></td>
+            <td><%= application.status.titleize %></td>
+            <td>
+              <%= 
+                case project.id
+                when application.project_id then 1
+                when application.preference1_id then 2
+                when application.preference2_id then 3
+                end
+              %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
