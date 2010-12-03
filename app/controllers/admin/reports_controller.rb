@@ -24,6 +24,20 @@ class Admin::ReportsController < ApplicationController
     end
   end
 
+  def male_openings
+    @percentages = {'0-50%' => [], '51-99%' => [], '100%' => []}
+    SpProject.current.uses_application.order(:name).each do |project|
+      case 
+      when project.percent_full_men < 50
+        @percentages['0-50%'] << project
+      when project.percent_full_men < 100
+        @percentages['51-99%'] << project
+      else
+        @percentages['100%'] << project
+      end
+    end
+  end
+
   def female_openings
     @percentages = {'0-50%' => [], '51-99%' => [], '100%' => []}
     SpProject.current.uses_application.order(:name).each do |project|

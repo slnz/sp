@@ -1,5 +1,5 @@
-<div class="pagepad">
+<div class="pagepad reportpage">
   <%= link_to("<< Back to report list", director_admin_reports_path) %>
   <h1>Male application openings</h1>
-  <%= render 'openings' %>
+  <%= render 'openings', :gender => 'men' %>
 </div>
