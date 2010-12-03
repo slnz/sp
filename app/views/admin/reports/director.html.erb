@@ -2,20 +2,27 @@
   <%= link_to("<< Back to all reports", admin_reports_path) unless sp_user.is_a?(SpDirector)%>
   <h1>Director Reports</h1>
   <div id="dashboardlist" class="dashboardlist">
-    <% if current_person.directed_projects.length > 0 %>
-      <%= link_to('All applicants who preferenced my project', preference_admin_reports_path) %>
-      <%= tip('Shows a list of all the students who put your project as on of their preferences') %>
-    <% end %>
-    <br />
-    <%= link_to('Female application openings', female_openings_admin_reports_path) %>
-    <%= tip('Shows a list of projects which are 0-49% full, 50-99% full, or 100% full so you can know where to move applicants to') %>
-    <br />
-    <%= link_to('Male application openings', male_openings_admin_reports_path) %>
-    <%= tip('Shows a list of projects which are 0-49% full, 50-99% full, or 100% full so you can know where to move applicants to') %>
-    <br />
-    <%= link_to('Projects sorted by ministry focus', ministry_focus_admin_reports_path) %>
-    <%= tip('Shows a list of all projects grouped by ministry focus') %>
-
+    <ul>
+       
+      <% if current_person.directed_projects.length > 0 %>
+      <li> 
+        <%= link_to('All applicants who preferenced my project', preference_admin_reports_path) %>
+        <%= tip('Shows a list of all the students who put your project as on of their preferences') %>
+      </li>
+      <% end %>
+      <li>   
+        <%= link_to('Female application openings', female_openings_admin_reports_path) %>
+        <%= tip('Shows a list of projects which are 0-49% full, 50-99% full, or 100% full so you can know where to move applicants to') %>
+      </li>  
+      <li>
+        <%= link_to('Male application openings', male_openings_admin_reports_path) %>
+        <%= tip('Shows a list of projects which are 0-49% full, 50-99% full, or 100% full so you can know where to move applicants to') %>
+      </li>
+      <li>
+        <%= link_to('Projects sorted by ministry focus', ministry_focus_admin_reports_path) %>
+        <%= tip('Shows a list of all projects grouped by ministry focus') %>
+      </li>
+    </ul>
   </div>
 </div>
 
