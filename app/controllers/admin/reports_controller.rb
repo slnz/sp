@@ -64,6 +64,8 @@ class Admin::ReportsController < ApplicationController
     end
 
     def check_access
-      
+      unless sp_user.can_see_reports?
+        redirect_to('/admin', :error => "You don't have access to the reports section") and return false
+      end
     end
 end
