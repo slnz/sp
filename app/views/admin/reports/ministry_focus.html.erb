@@ -1,0 +1,22 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to report list", director_admin_reports_path) %>
+  <h1>Projects by ministry focus</h1>
+  <% @focuses.each do |focus| %>
+    <h3><%= focus %></h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Project Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% focus.sp_projects.current.each do |project| %>
+          <tr>
+            <td><%= project.name %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
