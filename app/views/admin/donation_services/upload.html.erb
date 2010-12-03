@@ -1,2 +1,28 @@
-<h1>Admin::DonationServices#upload</h1>
-<p>Find me in app/views/admin/donation_services/upload.html.erb</p>
+<div class="pagepad">
+  <h1>Account Number Confirmation</h1>
+  <% if !@error_messages.empty? %>
+    <b><%= @filename %></b> could not be processed due to these errors:
+    <ul>
+      <% @error_messages.each do |message|%>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <b><%= @filename %></b> successfully uploaded and processed.
+    <br/>
+    <%= @num_emails_sent %> emails were sent.
+    <br/>
+    <% if !@warning_messages.empty? %>
+      However, there were some warnings:
+      <ul>
+        <% @warning_messages.each do |message|%>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+  <br>
+  <br>
+  Click <%= link_to("here", admin_donation_services_path)%> to go back to the upload page.
+  <br>
+</div>

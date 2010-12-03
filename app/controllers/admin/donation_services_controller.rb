@@ -124,7 +124,7 @@ class Admin::DonationServicesController < ApplicationController
       end
     end
 
-    render(:text => out )
+    send_data(out, :filename => "sp_need_account_no.txt", :type => 'text/tab' )
   end
 
   def upload
@@ -226,7 +226,14 @@ class Admin::DonationServicesController < ApplicationController
                 person.save!
                 @warning_messages << "No leaders have been notified of applicant #{app_id}'s designation number assignment"
               else
-                email = SpProjectMailer.deliver_designation_number_assignment(project, application.person, designation_number, donor_number, recipients)
+                Notifier.notification(recipients, # RECIPIENTS
+                                      "gosummerproject@uscm.org", # FROM
+                                      "Designation Number Assigned", # LIQUID TEMPLATE NAME
+                                      {'name' => application.name,
+                                       'project_name' => project.name,
+                                       'email' => application.email,
+                                       'designation_number' => designation_number,
+                                       'donor_number' => donor_number}).deliver
                 @num_emails_sent += 1
                 application.save!
                 person.save!
@@ -261,7 +268,7 @@ class Admin::DonationServicesController < ApplicationController
       end
     end
   end
-  
+
   def check_has_permission
     unless sp_user.can_upload_ds?
       flash[:error] = "You don't have permission to upload account numbers."

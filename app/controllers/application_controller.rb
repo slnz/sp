@@ -110,8 +110,15 @@ class ApplicationController < ActionController::Base
     
     def search
       if params[:name].present?
-        term = '%' + params[:name].strip + '%'
-        conditions = ["preferredName like ? OR firstName like ? OR lastName like ? OR concat(firstName, ' ', lastName) like ? OR concat(preferredName, ' ', lastName) like ?", term, term, term, params[:name].strip + '%', params[:name].strip + '%']
+
+        query = params[:name].strip.split(' ')
+        first, last = query[0].to_s + '%', query[1].to_s + '%'
+        if last == '%'
+          conditions = ["preferredName like ? OR firstName like ? OR lastName like ?", first, first, first]
+        else
+          conditions = ["(preferredName like ? OR firstName like ?) AND lastName like ?", first, first, last]
+        end
+
         @people = Person.where(conditions).includes(:user).limit(10)
         @total = Person.where(conditions).count
         respond_with(@people)
@@ -119,8 +126,8 @@ class ApplicationController < ActionController::Base
         render :nothing => true
       end
     end
-    
-    
+
+
     def initialize_addresses
       # if @application.respond_to?(:person) && (@application.person.current_address.nil? || @application.person.current_address.nil? ||
       #                                           @application.person.emergency_address.nil?)
