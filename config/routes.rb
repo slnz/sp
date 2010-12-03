@@ -37,6 +37,13 @@ Sp2::Application.routes.draw do
       get :female_openings
       get :male_openings
       get :ministry_focus
+      get :regional
+      get :national
+      get :partner
+      get :region
+      get :missional_team
+      get :school
+      get :applicants
     end
     resources :people
     resources :users do
