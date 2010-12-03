@@ -28,4 +28,5 @@ $(function() {
 		$(this).callRemote();
     e.preventDefault();
 	});
+	$('tr:odd').addClass('odd');
 });
