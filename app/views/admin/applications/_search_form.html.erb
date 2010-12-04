@@ -1,33 +1,32 @@
 <div id="search_applicant_wrap">
   <h4 id="showhide">Search Criteria
-  <% if params[:action] == 'search_results' %>
-    <span style="float: right;">
-      <a href="" id="showrr">Show</a> / 
-      <a href="" id="hidrr">Hide</a>
-    </span>
-  <% end %>
-  
+    <% if params[:action] == 'search_results' %>
+      <span style="float: right;">
+        <a href="" id="showrr">Show</a> / 
+        <a href="" id="hidrr">Hide</a>
+      </span>
+    <% end %>
+
   </h4>
   <div id="allfields">
-  <%= form_tag search_results_admin_applications_path do %>
-    <% cache(:expires_in => 1.day) do %>
+    <%= form_tag search_results_admin_applications_path do %>
       <div class="fieldgroup">
         <label for="first_name">First Name</label>
         <%= text_field_tag 'first_name', params[:first_name]%>
-        
+
         <label for="last_name">Last Name</label>
         <%= text_field_tag 'last_name', params[:last_name] %>
-        
+
         <label for="school">School</label>
         <%= select_tag 'school', options_for_select(@school_options.map(&:name).insert(0,''), params[:school])%>
       </div>
-      
+
       <div class="fieldgroup">
         <label for="team">Missional Team</label>
         <%= select_tag 'team', options_for_select(@team_options.map {|t| [t.name, t.id]}.insert(0,''), params[:team].to_i)%>
-        
+
         <div class="clear"></div>
-        
+
         <div class="fieldinline">
           <label for="project_type">Project Type</label>
           <%= select_tag "project_type", options_for_select(['','US','International'], params[:project_type])%>
@@ -36,9 +35,9 @@
           <label for="region">Region</label>
           <%= select_tag 'region', options_for_select(@region_options.map(&:region), params[:region])%>
         </div>
-        
+
         <div class="clear"></div>
-        
+
         <div class="fieldinline">
           <label for="city">City</label>
           <%= text_field_tag 'city', params[:city] %>
@@ -48,14 +47,14 @@
           <%= select_tag "state", options_for_select(State::NAMES.insert(0,['','']), params[:state]) %>
         </div>
       </div>
-      
+
       <div class="fieldgroup">
         <label for="designation">Designation (Account)#</label>
         <%= text_field_tag 'designation', params[:designation] %>
 
         <label for="status">Status</label>
         <%= select_tag "status", options_for_select(SpApplication.statuses.insert(0,''), params[:status])%>
-        
+
         <div class="clear"></div>
         <div class="fieldinline">
           <label for="year">Year</label>
@@ -67,29 +66,28 @@
         </div>
 
       </div>
-      
+
       <div class="clear"></div>
-           
+
       <button type="submit" value="Search Applicants" name="commit">
         <span>Search</span>
       </button>
     <% end %>
-  <% end %>
   </div>
-  
-<script>
-$("#showrr").click(function () {
-  $("#allfields").show("fast", function () {
-    /* use callee so don't have to name the function */
-    $(this).next("div").show("fast", arguments.callee);
-  });
-  return false;
-});
-$("#hidrr").click(function () {
-  $("#allfields").hide(250);
-  return false;
-});
 
-</script>
+  <script>
+    $("#showrr").click(function () {
+      $("#allfields").show("fast", function () {
+        /* use callee so don't have to name the function */
+        $(this).next("div").show("fast", arguments.callee);
+      });
+      return false;
+    });
+    $("#hidrr").click(function () {
+      $("#allfields").hide(250);
+      return false;
+    });
+
+  </script>
 
 </div>
