@@ -387,7 +387,7 @@ class Admin::ProjectsController < ApplicationController
       end
     
       if parent_refs
-        addresses = SpParentReference.find(:all, :conditions => ["application_id = sp_applications.id AND project_id = ?", @project.id], :include => :sp_application).collect(&:email)
+        addresses = ReferenceSheet.where('sp_applications.project_id' => @project.id, 'sp_elements.style' => 'parent').includes(:applicant_answer_sheet, :question).collect(&:email)
         addresses.reject!(&:blank?)
         addresses.uniq!
       else
