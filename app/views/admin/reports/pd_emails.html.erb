@@ -1,0 +1,39 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
+
+  <h1>Director Emails</h1>
+  <ul>
+    <li>
+    <a class="pd_type" href="#">PDs</a>
+    <div style="display:none">
+      <% @pds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">APDs</a>
+    <div style="display:none">
+      <% @apds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">OPDs</a>
+    <div style="display:none">
+      <% @opds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">All</a>
+    <div style="display:none">
+      <% @pds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+  </div>

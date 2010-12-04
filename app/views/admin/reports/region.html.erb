@@ -1,0 +1,53 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %> <br />
+  <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
+  <% if @regions.present? %>
+    <h1>Applicaitons for by student region</h1>
+    <ul>
+      <% @regions.each do |region| %>
+        <li><%= link_to(region, region_admin_reports_path(:region => region)) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if @applications %>
+    <br /><%= link_to("<< Back to region list", region_admin_reports_path) %>
+
+    <h1>Applicaitons for <%= params[:region] %> region</h1>
+    <%= will_paginate @applications %>
+    <table>
+      <thead>
+        <tr>
+          <th>Accepted To</th>
+          <th>Status</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>School</th>
+          <th>Missional Team</th>
+          <th>1st Preference</th>
+          <th>2nd Preference</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @applications.each do |application| %>
+          <tr>
+            <td><%= application.project.name if application.accepted? %></td>
+            <td><%= application.status.titleize %></td>
+            <td><%= application.name %></td>
+            <td><%= application.person.human_gender %></td>
+            <td><%= application.person.campus %></td>
+            <td><%= application.person.target_area.try(:ministry_teams).try(:first) %></td>
+            <td><%= application.preference1 || application.project %></td>
+            <td><%= application.preference2 %></td>
+            <td><%= mail_to(application.email) %></td>
+            <td><%= application.person.phone %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @applications %>
+  <% end %>
+</div>
+
+

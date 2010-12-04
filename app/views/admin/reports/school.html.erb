@@ -1,0 +1,50 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
+  <% if @schools %>
+    <h1>Applicaitons by school</h1>
+    <ul>
+      <% @schools.each do |school| %>
+        <li><%= link_to(school, school_admin_reports_path(:school => school)) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if @applications %>
+    <br /><%= link_to("<< Back to school list", school_admin_reports_path) %>
+
+    <h1>Applicaitons for <%= params[:school] %></h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Accepted To</th>
+          <th>Status</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>1st Preference</th>
+          <th>2nd Preference</th>
+          <th>3nd Preference</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @applications.each do |application| %>
+          <tr>
+            <td><%= application.project.name if application.accepted? %></td>
+            <td><%= application.status.titleize %></td>
+            <td><%= application.name %></td>
+            <td><%= application.person.human_gender %></td>
+            <td><%= application.preference1 || application.project %></td>
+            <td><%= application.preference2 %></td>
+            <td><%= application.preference3 %></td>
+            <td><%= mail_to(application.email) %></td>
+            <td><%= application.person.phone %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+
+

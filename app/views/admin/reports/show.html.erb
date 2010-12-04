@@ -1,10 +1,15 @@
 <div class="pagepad reportpage">
+  <%= flash[:error] %>
   <h1>Reports</h1>
   <div id="dashboardlist" class="dashboardlist">
     <ul>
       <li><%= link_to('Director Reports', director_admin_reports_path) %></li>
-      <li><%= link_to('Regional Coordinator Reports', regional_admin_reports_path) %></li>
-      <li><%= link_to('National Coordinator Reports', national_admin_reports_path) %></li>
+      <% if sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpNationalCoordinator) %>
+        <li><%= link_to('Regional Coordinator Reports', regional_admin_reports_path) %></li>
+      <% end %>
+      <% if sp_user.is_a?(SpNationalCoordinator) %>
+        <li><%= link_to('National Coordinator Reports', national_admin_reports_path) %></li>
+      <% end %>
     </ul>
   </div>
 </div>

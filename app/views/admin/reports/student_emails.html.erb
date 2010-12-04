@@ -1,0 +1,25 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
+  <h1>Student Email Addresses</h1>
+
+  <% if @statuses.present? %>
+    <ul>
+      <% @statuses.each do |status| %>
+        <li><%= link_to(status.titleize, student_emails_admin_reports_path(:status => status)) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if @applications %>
+    <br /><%= link_to("<< Back to status list", student_emails_admin_reports_path) %>
+
+    <h3><%= params[:status].titleize %></h3>
+    <% @applications.each do |application| %>
+      <% if application.email.present? %>
+        <%= application.email %> <br />
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+

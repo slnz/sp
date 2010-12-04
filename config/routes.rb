@@ -44,6 +44,8 @@ Sp2::Application.routes.draw do
       get :missional_team
       get :school
       get :applicants
+      get :pd_emails
+      get :student_emails
     end
     resources :people
     resources :users do

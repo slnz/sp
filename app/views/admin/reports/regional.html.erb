@@ -1,0 +1,26 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %>
+  <h1>Regional Coordinator Reports</h1>
+  <div id="dashboardlist" class="dashboardlist">
+    <ul>
+      <li>
+        <%= link_to('All applicants by partner (region/ministry) of project', partner_admin_reports_path) %>
+        <%= tip('Shows a list of every student who has applied to projects that are "owned" by each partner - i.e. all the projects that have their region/ministry listed as the primary partner)') %>
+      </li>
+      <li>
+        <%= link_to('All applicants by student\'s region', region_admin_reports_path) %>
+        <%= tip('Shows a list of every student who has applied to projects from a particular US region (IF the student\'s school has a region associated with it in our system)') %>
+      </li>
+      <li>
+        <%= link_to('All applicants by missional (ministry) team', missional_team_admin_reports_path) %>
+        <%= tip('Shows a list of every student who has applied to projects from a missional team (IF the student\'s school has a missional team associated with it in our system)') %>
+      </li>
+      <li>
+        <%= link_to('All applicants by school', school_admin_reports_path) %>
+        <%= tip('Shows a list of every student who has applied to projects from a particular school (college/high school)') %>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

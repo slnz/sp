@@ -27,9 +27,9 @@
             <td>
               <%= 
                 case project.id
-                when application.project_id then 1
-                when application.preference1_id then 2
-                when application.preference2_id then 3
+                when (application.preference1_id ? application.preference1_id : application.project_id) then 1
+                when application.preference2_id then 2
+                when application.preference3_id then 3
                 end
               %>
             </td>

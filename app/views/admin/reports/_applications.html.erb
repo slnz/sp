@@ -1,0 +1,35 @@
+<%= will_paginate @applications %> Showing <strong><%= @applications.offset + 1 %></strong> - <strong><%= @applications.offset + @applications.per_page %></strong> of <strong><%= @applications.total_entries %></strong>
+<table>
+  <thead>
+    <tr>
+      <th>Accepted To</th>
+      <th>Status</th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Region</th>
+      <th>Missional Team</th>
+      <th>School</th>
+      <th>1st Preference</th>
+      <th>Email</th>
+      <th>Phone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @applications.each do |application| %>
+      <tr>
+        <td><%= application.project.name if application.accepted? %></td>
+        <td><%= application.status.titleize %></td>
+        <td><%= application.name %></td>
+        <td><%= application.person.human_gender %></td>
+        <td><%= application.person.region %></td>
+        <td><%= application.person.target_area.try(:ministry_teams).try(:first) %></td>
+        <td><%= application.person.campus %></td>
+        <td><%= application.preference1 || application.project %></td>
+        <td><%= mail_to(application.email) %></td>
+        <td><%= application.person.phone %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @applications %>
+

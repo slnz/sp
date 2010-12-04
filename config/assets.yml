@@ -22,6 +22,7 @@ javascripts:
     - public/javascripts/admin/admin.js
     - public/javascripts/admin/users.js
     - public/javascripts/admin/evaluations.js
+    - public/javascripts/admin/reports.js
     
 stylesheets:
   base:

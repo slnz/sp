@@ -25,6 +25,7 @@ $(function() {
 		}
 	});
 	$('.pagination a').live('click', function(e) {
+		$(this).html('<img src="/images/spinner.gif" />');
 		$(this).callRemote();
     e.preventDefault();
 	});
