@@ -19,6 +19,13 @@
     <td class="left">Last Name:</td>
     <td><%= pf.text_field :lastName %></td>
   </tr>
+  <tr>
+    <td class="left">Gender:</td>
+    <td>
+      <%= pf.radio_button :gender, '1' %> Male 
+      <%= pf.radio_button :gender, '0' %> Feale 
+    </td>
+  </tr>
   <%= pf.fields_for @person.current_address do |af| %>
   <tr>
     <td class="left">Email:</td>
