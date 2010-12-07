@@ -105,7 +105,8 @@ class SpUser < ActiveRecord::Base
         "JF"                 => "Jesus Film",
         "JESUS Film Project" => 'Jesus Film',
         "EPI"                => "Epic",
-        'BRD'                => 'Bridges'}
+        'BRD'                => 'Bridges',
+        'DES'                => 'Destino'}
       mappings[ministry] || ministry
     end
     
