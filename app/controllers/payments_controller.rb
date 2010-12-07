@@ -2,7 +2,7 @@
 class PaymentsController < ApplicationController
   prepend_before_filter :ssm_login_required, :except => [:edit, :update]
   prepend_before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :only => [:edit, :update]
-  before_filter :setup
+  before_filter :setup, :except => [:edit, :update]
   
   # Allow applicant to edit payment
   # /applications/1/payment_page/edit
