@@ -32,7 +32,7 @@ class Admin::DonationServicesController < ApplicationController
                                                       currentAddress.fk_personId = person.personID) left join ministry_newaddress permanentAddress on
                                                       (permanentAddress.addressType = 'permanent' and permanentAddress.fk_personId = person.personID) 
                                                       left join ministry_person spouse on (person.fk_spouseID = spouse.personID) where app.year = '#{SpApplication::YEAR}'
-                                                      and app.status IN ('accepted_as_intern','accepted_as_participant') and app.designation_number is null and 
+                                                      and app.status IN ('accepted_as_student_staff','accepted_as_participant') and app.designation_number is null and 
                                                       project.scholarship_designation > '1000000' and project.scholarship_designation < '3000000' and
                                                       project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
                                                       by person.lastName, person.firstName;");

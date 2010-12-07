@@ -148,7 +148,7 @@ class Admin::ProjectsController < ApplicationController
      "GraduationDate", "Applied for leadership"]
     
     sheet1.row(r += 1).concat(applicant_column_headers)
-    applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_intern', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
+    applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
     
     applications.each do |app|
       values = set_values_from_person(app.person)
@@ -327,27 +327,27 @@ class Admin::ProjectsController < ApplicationController
         applicant_conditions = "status NOT IN ('declined', 'withdrawn')"
         include_applicants = true
       when 'all_accepted'
-        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant')"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant')"
         include_applicants = true
       when 'accepted_men'
-        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant') AND ministry_person.gender = 1"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 1"
         include_applicants = true
       when 'accepted_women'
-        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant') AND ministry_person.gender = 0"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 0"
         include_applicants = true
       when 'pending_students'
         applicant_conditions = "status IN ('started', 'submitted')"
         include_applicants = true
       when 'staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_intern')"
+        applicant_conditions = "status IN ('accepted_as_student_staff')"
         include_applicants = true
         include_staff = true
       when 'men_staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_intern') AND ministry_person.gender = 1"
+        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = 1"
         include_applicants = true
         include_staff = true
       when 'women_staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_intern') AND ministry_person.gender = 0"
+        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = 0"
         include_applicants = true
         include_staff = true
       when 'parent_refs'
@@ -355,7 +355,7 @@ class Admin::ProjectsController < ApplicationController
         include_staff = false
         parent_refs = true
       else
-        applicant_conditions = "status IN ('accepted_as_intern', 'accepted_as_participant')"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant')"
         include_staff = true
         include_applicants = true
       end

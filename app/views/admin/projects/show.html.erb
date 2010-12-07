@@ -27,7 +27,7 @@
       <div id="tabs">
         <ul class="tabs">
           <li><%= link_to("Participants (#{@accepted_participants.length})", '#participants') %></li>
-          <li><%= link_to("Interns (#{@accepted_interns.length})", '#interns') %></li>
+          <li><%= link_to("S. Staff (#{@accepted_interns.length})", '#interns') %></li>
           <li><%= link_to("Ready (#{@ready_to_evaluate.length})", '#ready') %></li> 
           <li><%= link_to("Submitted (#{@submitted.length})", '#submitted') %></li> 
           <li><%= link_to("Started (#{@not_submitted.length})", '#not_submitted') %></li> 
@@ -124,7 +124,7 @@
               <th class="name">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
-              <th class="intern">Intern</th>
+              <th class="intern">S. Staff</th>
               <th class="status">Status</th>
               <th class="evaluate">Eval</th>
             </tr>
