@@ -3,7 +3,7 @@ class Admin::ReportsController < ApplicationController
   layout 'admin'
   def show
     if sp_user.is_a?(SpDirector)
-      redirect_to :director and return
+      redirect_to :action => :director and return
     end
   end
 
