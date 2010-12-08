@@ -1,7 +1,7 @@
 
 <div class="pagepad">
   <div class="backbutton floatleft">
-    <a href="">Back to <%= @project.name %></a>
+    <%= link_to('Back to ' + @project.name, admin_project_path(@project, :year => @year)) %>
   </div>
   <hr/>
   <h2>Donations Summary:</h2>
