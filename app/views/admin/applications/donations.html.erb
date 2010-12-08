@@ -1,8 +1,16 @@
-<%= @project.name %>
-<%= @application.year %>
+
 <div class="pagepad">
-  <h2>Donations for <%= @application.person %> &mdash; <%= number_to_currency(@application.account_balance.to_i, :precision => 0) %></h2>
-  <table class="people">
+  <div class="backbutton floatleft">
+    <a href="">Back to <%= @project.name %></a>
+  </div>
+  <hr/>
+  <h2>Donations Summary:</h2>
+    <div class="donationsub">
+      <%= @application.person %> &mdash; <%= number_to_currency(@application.account_balance.to_i, :precision => 0) %><br/>
+      <%= @project.name %>: <%= @application.year %>
+    </div>
+    
+  <table class="people donations">
     <tr>
       <th>Date</th>
       <th>Amount</th>
@@ -12,10 +20,27 @@
     <% @application.donations.each do |donation| %>
       <tr>
         <td><%= l(donation.donation_date) %></td>
-        <td><%= number_to_currency(donation.amount) %></td>
+        <td class="amount"><%= number_to_currency(donation.amount) %></td>
         <td><%= donation.donor_name %></td>
-        <td><%= donation.medium %></td>
+        <td><span class="sprited sprite-<%= donation.medium.downcase.gsub(/\s+/,'_') %>"><%= donation.medium %></span></td>
       </tr>
+      
     <% end %>
+    <tr class="totals">
+      <td>Total: </td>
+      <td colspan="3">
+        <%= number_to_currency(@application.account_balance.to_i, :precision => 0) %>
+      </td>
+    </tr>
   </table>
 </div>
+
+<script>
+$(document).ready(function() {
+
+  $('table.donations tbody tr:odd').addClass('odd');
+
+  $('table.donations tbody tr:even').addClass('even');
+
+});
+</script>
