@@ -80,10 +80,10 @@ class Admin::ReportsController < ApplicationController
     if params[:team].present?
       @schools = TargetArea.joins(:ministry_activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
       @applications = SpApplication.where("#{Person.table_name}.campus" => @schools, :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
-      @team = MinistryLocalLevel.find(params[:team])
+      @team = Team.find(params[:team])
     else
       schools = SpApplication.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year})")
-      @teams = MinistryLocalLevel.where("#{TargetArea.table_name}.name" => schools).includes(:target_areas).order("#{MinistryLocalLevel.table_name}.name")
+      @teams = Team.where("#{TargetArea.table_name}.name" => schools).includes(:target_areas).order("#{Team.table_name}.name")
     end
   end
 
