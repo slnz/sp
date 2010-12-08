@@ -80,6 +80,7 @@ class Admin::ApplicationsController < ApplicationController
   end
   
   def donations
+    @project = @application.project
   end
 
   def waive_fee

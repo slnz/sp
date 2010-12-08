@@ -1,3 +1,5 @@
+<%= @project.name %>
+<%= @application.year %>
 <div class="pagepad">
   <h2>Donations for <%= @application.person %> &mdash; <%= number_to_currency(@application.account_balance.to_i, :precision => 0) %></h2>
   <table class="people">
