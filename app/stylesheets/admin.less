@@ -896,6 +896,56 @@ table.people {
   .name {width: 23%;}
   .evaluate img {vertical-align: bottom;}
 }
+
+/* Donations Tables - based on People Table */
+table.donations {
+  .sprited {min-width: 155px; padding-left: 20px; display: block; background: url("/images/donation_sprite/sprite.png") no-repeat;}
+  .sprite-amex{ background-position: 0 0; width: 16px; height: 16px; } 
+  .sprite-cashiers_check{ background-position: 0 -66px; width: 16px; height: 17px; } 
+  .sprite-diners_club{ background-position: 0 -133px; width: 16px; height: 16px; } 
+  .sprite-discover{ background-position: 0 -199px; width: 16px; height: 11px; } 
+  .sprite-electronic_funds_transfer{ background-position: 0 -260px; width: 16px; height: 17px; } 
+  .sprite-internal_gift_transfer{ background-position: 0 -327px; width: 16px; height: 16px; } 
+  .sprite-mastercard{ background-position: 0 -393px; width: 16px; height: 10px; } 
+  .sprite-money_order{ background-position: 0 -453px; width: 16px; height: 16px; } 
+  .sprite-non-cash_gift{ background-position: 0 -519px; width: 16px; height: 16px; } 
+  .sprite-other_credit_card{ background-position: 0 -585px; width: 16px; height: 16px; } 
+  .sprite-personal_check{ background-position: 0 -651px; width: 16px; height: 17px; } 
+  .sprite-visa{ background-position: 0 -718px; width: 16px; height: 16px; } 
+  .sprite-wire_transfer{ background-position: 0 -784px; width: 16px; height: 16px; } 
+  td {
+    border: 1px solid #ccc;
+    padding: 2px 6px; 
+  }
+  tr.odd {background: #f0f0f0;}
+  tr.even {background: #fff; }
+  th {
+    background: #c0e2f6;
+    text-align: left;
+    border: 1px solid #ccc;
+    padding: 2px 6px;
+  }
+  tr.totals {
+    font-size: 14px;
+    font-weight: bold;
+    background: #fff;
+    td {
+      padding: 8px 6px;
+      border: none;
+    }
+  }
+  td.amount, tr:hover {
+    background:#e0f2fd;
+  }
+}
+
+.donationsub {
+  font-size: 18px;
+}
+.floatleft {
+  float: none;
+  text-align: left !important;
+}
   
 /* Users Tables - based on People Table */
 

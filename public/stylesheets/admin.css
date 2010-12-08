@@ -859,6 +859,105 @@ table.people td { border-bottom: 1px solid #efefef; }
 table.people td a { color: #0b486b; }
 table.people .name { width: 23%; }
 table.people .evaluate img { vertical-align: bottom; }
+table.donations .sprited {
+  min-width: 155px;
+  padding-left: 20px;
+  display: block;
+  background: url("/images/donation_sprite/sprite.png") no-repeat;
+}
+table.donations .sprite-amex {
+  background-position: 0 0;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-cashiers_check {
+  background-position: 0 -66px;
+  width: 16px;
+  height: 17px;
+}
+table.donations .sprite-diners_club {
+  background-position: 0 -133px;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-discover {
+  background-position: 0 -199px;
+  width: 16px;
+  height: 11px;
+}
+table.donations .sprite-electronic_funds_transfer {
+  background-position: 0 -260px;
+  width: 16px;
+  height: 17px;
+}
+table.donations .sprite-internal_gift_transfer {
+  background-position: 0 -327px;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-mastercard {
+  background-position: 0 -393px;
+  width: 16px;
+  height: 10px;
+}
+table.donations .sprite-money_order {
+  background-position: 0 -453px;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-non-cash_gift {
+  background-position: 0 -519px;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-other_credit_card {
+  background-position: 0 -585px;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-personal_check {
+  background-position: 0 -651px;
+  width: 16px;
+  height: 17px;
+}
+table.donations .sprite-visa {
+  background-position: 0 -718px;
+  width: 16px;
+  height: 16px;
+}
+table.donations .sprite-wire_transfer {
+  background-position: 0 -784px;
+  width: 16px;
+  height: 16px;
+}
+table.donations td {
+  border: 1px solid #cccccc;
+  padding: 2px 6px;
+}
+table.donations tr.odd { background: #f0f0f0; }
+table.donations tr.even { background: #ffffff; }
+table.donations th {
+  background: #c0e2f6;
+  text-align: left;
+  border: 1px solid #cccccc;
+  padding: 2px 6px;
+}
+table.donations tr.totals {
+  font-size: 14px;
+  font-weight: bold;
+  background: #ffffff;
+}
+table.donations tr.totals td {
+  padding: 8px 6px;
+  border: none;
+}
+table.donations td.amount { background: #e0f2fd; }
+table.donations tr:hover { background: #e0f2fd; }
+.donationsub { font-size: 18px; }
+.floatleft {
+  float: none;
+  text-align: left !important;
+}
 table.manageusers tr:hover { background: #eeeeee; }
 table.manageusers thead tr:hover { background: none; }
 .ui-dialog {
