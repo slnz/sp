@@ -78,7 +78,7 @@ class Admin::ReportsController < ApplicationController
 
   def missional_team
     if params[:team].present?
-      @schools = TargetArea.joins(:ministry_activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
+      @schools = TargetArea.joins(:activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
       @applications = SpApplication.where("#{Person.table_name}.campus" => @schools, :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
       @team = Team.find(params[:team])
     else

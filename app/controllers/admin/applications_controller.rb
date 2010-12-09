@@ -31,7 +31,7 @@ class Admin::ApplicationsController < ApplicationController
       # rather than join the team stuff into the main query it's going to be
       # cleaner to query out the campuses associated with this team seperately.
       # I know that means an extra query, but trust me, it's better.
-      @schools = TargetArea.joins(:ministry_activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
+      @schools = TargetArea.joins(:activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
       if @schools.empty?
         conditions[0] << " 1 <> 1 "
       else
