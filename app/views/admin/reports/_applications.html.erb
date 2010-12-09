@@ -22,7 +22,7 @@
         <td><%= application.name %></td>
         <td><%= application.person.human_gender %></td>
         <td><%= application.person.region %></td>
-        <td><%= application.person.target_area.try(:ministry_teams).try(:first) %></td>
+        <td><%= application.person.target_area.try(:teams).try(:first) %></td>
         <td><%= application.person.campus %></td>
         <td><%= application.preference1 || application.project %></td>
         <td><%= mail_to(application.email) %></td>
