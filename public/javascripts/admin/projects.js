@@ -19,7 +19,7 @@ $(function() {
 			$(this).addClass("selected");
 		},function () {
 			$(this).removeClass("selected");
-			if($('div.poptions li a.selected').length === 0) { $('#filter_all').addClass("selected"); }
+			if($('div.poptions li a.selected').length == 0) { $('#filter_all').addClass("selected"); }
 		}
 	);
 	
@@ -41,7 +41,7 @@ $(function() {
 			partners[i] = $(this).attr('data-partner');
 		});
 		if(partners.length > 0) { filters['partners'] = partners; }
-		if($('#closed:checked')[0] !== null) { filters['closed'] = true; }
+		if($('#closed:checked')[0] != null) { filters['closed'] = true; }
 		document.location = $(this).attr('rel') + '?' + $.param(filters);
 			
 	});
@@ -50,7 +50,7 @@ $(function() {
 	// Find as you type
 	var search_prompt = 'Type here to filter';
 	$('#dashboardlist .search').each(function() {
-		if ($(this).val() === '') {
+		if ($(this).val() == '') {
 			$(this).val(search_prompt);
 			$(this).addClass('prompt');
 		}
@@ -60,7 +60,7 @@ $(function() {
 			$(this).removeClass('prompt');
 		}
 	}).blur(function() {
-		if ($(this).val() === '') {
+		if ($(this).val() == '') {
 			$(this).val(search_prompt);
 			$(this).addClass('prompt');
 		}
@@ -73,7 +73,7 @@ $(function() {
 		$.ajaxCount++;
 		$.ajax({url: $(this).attr('rel') + '?' + $.param(params), dataType: 'script', complete: function() {
 																																															$.ajaxCount--;
-																																															if($.ajaxCount === 0) { $('#spinner_' + param).hide(); }
+																																															if($.ajaxCount == 0) { $('#spinner_' + param).hide(); }
 																																														}});
 	});
 	// END Find as you type
@@ -95,10 +95,10 @@ $(function() {
 	// Person Info
 	$("a.person").live('click', function() {
 		id = $(this).attr('data-id');
-		if (id !== null) {
+		if (id != null) {
 			name = $(this).html();
 			dom = 'leader_details' + id;
-			if ($('#' + dom)[0] === null) {
+			if ($('#' + dom)[0] == null) {
 				$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
 				$.ajax({dataType: 'script',
 								type:'GET', 
@@ -119,7 +119,7 @@ $(function() {
 				};
 			// If this is a leader, provide the option to change the leader
 			var leader_link = $(this).closest('.leader_cell').find('.edit-leader');
-			if (leader_link[0] !== null) {
+			if (leader_link[0] != null) {
 				var project_id = leader_link.attr('data-id');
 				var leader = leader_link.attr('data-leader');
 				if ( project_id && leader ) {
@@ -231,13 +231,13 @@ $(function() {
 	// Send project email
 	$('#email_form').submit(function() {
 		var message = '';
-		if ($.trim($('#to').val()) === '') {
+		if ($.trim($('#to').val()) == '') {
 			message += 'You need to put in at least one email address to send this email to.<br />';
 		}
-		if ($.trim($('#subject').val()) === '') {
+		if ($.trim($('#subject').val()) == '') {
 			message += 'Please provide a subject for your email.<br />';
 		}
-		if (message !== '') {
+		if (message != '') {
 			$('#dialog-confirm').attr('title', 'Slow down :)');
 			$('#dialog-confirm-message').html(message);
 			$("#dialog-confirm").dialog({
@@ -268,7 +268,7 @@ $(function() {
 
 	$('#group').change(function() {
 		$('#to').val(emails[$('#group').val()]);
-		if ($.trim($('#to').val()) === '') {
+		if ($.trim($('#to').val()) == '') {
 			$('#dialog-confirm').attr('title', 'Check your project year');
 			var year = $('#changeyear').html();
 			$('#dialog-confirm-message').html("There aren't any people in the group you selected for the " + year + " project year. Try choosing a different year from the dropdown, or manually enter some email addresses.");
