@@ -151,7 +151,7 @@ class PaymentsController < ApplicationController
         Notifier.notification(@application.email, # RECIPIENTS
                               "gosummerproject@uscm.org", # FROM
                               "Applicant Staff Payment Receipt", # LIQUID TEMPLATE NAME
-                              {'applicant_full_name' => @person.informal_full_name}).deliver
+                              {'applicant_full_name' => @application.name}).deliver
         # Send notice to Tool Owner
         Notifier.notification("gosummerproject@uscm.org", # RECIPIENTS - HARD CODED!
                               "help@campuscrusadeforchrist.com", # FROM
@@ -165,7 +165,7 @@ class PaymentsController < ApplicationController
         Notifier.notification(@application.email, # RECIPIENTS
                               "gosummerproject@uscm.org", # FROM
                               "Payment Refusal", # LIQUID TEMPLATE NAME
-                              {'applicant_full_name' => @person.informal_full_name}).deliver
+                              {'applicant_full_name' => @application.name}).deliver
       end
     end
 end
