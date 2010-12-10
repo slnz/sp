@@ -2,7 +2,7 @@
 class PaymentsController < ApplicationController
   prepend_before_filter :ssm_login_required, :except => [:edit, :update]
   prepend_before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :only => [:edit, :update]
-  before_filter :setup, :except => [:edit, :update]
+  before_filter :setup, :except => [:edit, :update, :approve]
   
   # Allow applicant to edit payment
   # /applications/1/payment_page/edit
@@ -83,6 +83,7 @@ class PaymentsController < ApplicationController
 
   def approve
     @payment = SpPayment.find(params[:id])
+    @application = @payment.application
     @payment.auth_code = sp_user.user.person.accountNo
     case @payment.payment_type
     when 'Staff'
