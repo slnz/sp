@@ -11,13 +11,13 @@ $(function() {
 	$('.calc input').click(function() {
 		var row = $(this).closest('tr.question');
 		var value = $(this).val();
-		$('.score', row).html(Number($('.weight', 	row).html() * value))
+		$('.score', row).html(Number($('.weight', 	row).html() * value));
 		var total = 0;
 		$('.score').each(function() {
 			total += Number($(this).html());
 		});
 		$('#total_score span').html(total);
-	})
+	});
 	
 	$('.evaluation_page_link').bind('ajax:before', function() {
 		$('#evalcontent').html('<img src="/images/spinner.gif" class="spinner" />');

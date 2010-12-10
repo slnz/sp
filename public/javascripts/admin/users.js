@@ -49,4 +49,4 @@ $(function() {
 		$('#user_search_results').html('<img src="/images/spinner.gif" />');
 		return false;
 	});
-})
+});

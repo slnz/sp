@@ -12,7 +12,7 @@ $(function() {
                        error: function (xhr, status, error) {
                            $('body').trigger('ajax:failure', [xhr, status, error]);
                        }
-						})
+						});
 		return false;
 	});
 });

@@ -6,4 +6,4 @@ $(function() {
     $(this).next('div').toggle();  
   });
 
-})
+});

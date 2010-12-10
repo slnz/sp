@@ -15,7 +15,7 @@ var MessageBlock = Class.create({
   },
   
   update: function(errors) {
-    if (!errors || Object.keys(errors).size() == 0) {
+    if (!errors || Object.keys(errors).size() === 0) {
       new Effect.Fade(this.message_block);
       return;
     }
@@ -28,7 +28,7 @@ var MessageBlock = Class.create({
           $A(errors[error_type]).map(function(error) {
             return Builder.node('li', error);
           })
-        )
+        );
       );
     }
     
