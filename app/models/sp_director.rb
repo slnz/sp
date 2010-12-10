@@ -1,4 +1,5 @@
 class SpDirector < SpUser
+  def can_search?() true; end
   def can_add_applicant?() true; end
   def can_edit_applicant_info?() true; end
   def can_evaluate_applicant?(app=nil)
