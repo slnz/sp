@@ -16,8 +16,11 @@
         <% end %>
         
         <% if current_user.developer? %>
-         <li><%= link_to('Forms', admin_question_sheets_path, :class => (params[:controller] == 'admin/question_sheets') ? 'selected' : '') %></li>
-         <li><%= link_to('Emails', admin_email_templates_path, :class => (params[:controller] == 'admin/email_templates') ? 'selected' : '') %></li>
+           <li><%= link_to('Forms', admin_question_sheets_path, :class => (params[:controller] == 'admin/question_sheets') ? 'selected' : '') %></li>
+           <li><%= link_to('Emails', admin_email_templates_path, :class => (params[:controller] == 'admin/email_templates') ? 'selected' : '') %></li>
+        <% end %>
+        <% if sp_user.can_upload_ds? %>
+          <li><%= link_to('Donation Services', admin_donation_services_path, :class => (params[:controller] == 'admin/donation_services') ? 'selected' : '') %></li>
         <% end %>
       <% end %>
     </ul>

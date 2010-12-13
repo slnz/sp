@@ -23,8 +23,6 @@ class ApplicationController < ActionController::Base
         admin_project_path(current_person.current_staffed_projects.first)
       elsif sp_user.can_search?
         search_admin_applications_path
-      elsif sp_user.can_upload_ds?
-        admin_donation_services_path
       else
         no_admin_projects_path
       end
