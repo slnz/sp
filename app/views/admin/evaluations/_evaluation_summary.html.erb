@@ -43,7 +43,7 @@
   <td style="border: none;">
     <table class="summarytable" style="border-right: none;">
       <tr>
-        <td class="title">Applying for Summer Internship?</td>
+        <td class="title">Applying for Student Staff?</td>
         <td><%= @application.apply_for_leadership? ? "Yes" : "No" %></td>
       </tr>
     </table>
@@ -64,10 +64,7 @@
     <td class="title">Applicant</td><td><%= @person.informal_full_name %></td>
   </tr>
   <tr>
-    <td class="title">Status</td><td><%= @application.status.titleize %></td>
-  </tr>
-  <tr>
-    <td class="title">Change Status</td><td><%= select_tag :event, options_for_select((@application.valid_events.map {|s| [s.to_s.humanize, s.to_s]}).insert(0, '')), :onchange => "displayWarning()"%></td>
+    <td class="title">Status</td><td><%= select_tag :event, options_for_select((@application.valid_events.map {|s| [@application.next_state_for_event(s).to_s.humanize, s.to_s]}).insert(0, [@application.current_state.to_s.humanize, ''])), :onchange => "displayWarning()"%></td>
   </tr>
   <tr>
     <td class="title">Move this student to a different project:</td>

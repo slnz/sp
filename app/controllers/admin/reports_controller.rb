@@ -112,12 +112,12 @@ class Admin::ReportsController < ApplicationController
       statuses = case params[:status]
                  when 'accepted' then SpApplication.accepted_statuses
                  when 'started' then SpApplication.uncompleted_statuses
-                 when 'completed' then SpApplication.ready_statuses
+                 when 'ready' then SpApplication.ready_statuses
                  when 'withdrawn' then 'withdrawn'
                  end
       @applications = SpApplication.where(:status => statuses, :year => year).where(Address.table_name + ".email <> ''").includes(:project, {:person => :current_address})
     else
-      @statuses = %w{accepted completed started withdrawn}
+      @statuses = %w{accepted ready started withdrawn}
     end
   end
 
