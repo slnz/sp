@@ -17,13 +17,17 @@
       <% element.elements.each do |grid_element| -%>
         <% if grid_element.display_response(answer_sheet).to_s.strip.present? %>
           <% unless %w(Paragraph).include?(grid_element.kind) -%>
-            <td id="element_<%= element.id %>">
+            <td id="element_<%= grid_element.id %>">
               <span class="answer">
                 <% case grid_element.attribute_name %>
                 <% when 'gender' %>
                   <%= @answer_sheet.person.human_gender %>
                 <% when 'maritalStatus' %>
                   <%= @answer_sheet.person.marital_status %>
+                <% when 'preference2_id' %>
+                  <%= @answer_sheet.preference2.try(:name) %>
+                <% when 'preference3_id' %>
+                  <%= @answer_sheet.preference3.try(:name) %>
                 <% else %>
                   <%= grid_element.display_response(answer_sheet) %>
                 <% end %>
