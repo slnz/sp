@@ -16,13 +16,21 @@
             <tr class="headerrow">
               <td class="titlerow"></td>
               <% element.elements.each do |grid_element| -%>
-                <td><%= grid_element.label %></td>
+                <td>
+                  <%= grid_element.label %>
+                </td>
               <% end %>
             </tr>
             <% @references.each do |reference| %>
               <% if element.elements.detect {|e| e.object_name.present?} || element.elements.detect {|e| reference.has_answer_for?(e.id)} %>
                 <tr>
-                  <td class="col1" nowrap="nowrap"><%= reference.display_type %>: </td>
+                  <td class="col1" nowrap="nowrap">
+                    <% if sp_user.can_edit_references? %>
+                      <%= link_to(reference.display_type + ':', edit_reference_sheet_url(reference, :a => reference.access_key), :target => '_blank') %>
+                    <% else %>
+                      <%= reference.display_type %>: 
+                    <% end %>
+                  </td>
                   <% element.elements.each do |grid_element| -%>
                     <td><%= render 'collated_element', :element => grid_element, :answer_sheet => reference %></td>
                   <% end %>
