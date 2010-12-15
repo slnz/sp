@@ -76,7 +76,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
-                <td class="accdate"><%= l app.completed_at.to_date if app.completed_at %></td>
+                <td class="accdate deadline<%= app.deadline_met %>"><%= l app.completed_at.to_date if app.completed_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
                   <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
