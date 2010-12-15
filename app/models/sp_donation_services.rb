@@ -1,5 +1,6 @@
 class SpDonationServices < SpUser
   def can_upload_ds?() true; end
+  def can_search?() true; end
   def can_see_dashboard?() true; end
   
   def scope(partner = nil)
