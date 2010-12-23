@@ -66,10 +66,11 @@ class Admin::EvaluationsController < ApplicationController
     end
     def log_changed_project
       if @project && params[:application][:project_id].to_i != @project.id
+        @new_project = SpProject.find(params[:application][:project_id])
         SpApplicationMove.create!(:application_id => @application.id, :old_project_id => @project.id, :new_project_id => @application.project.id,
                                         :moved_by_person_id => current_person.id)
-        if new_contact = @application.project.contact
-          Notifier.notification(new_contact.email, # RECIPIENTS
+        [@project.pd, @project.apd, @new_project.pd, @new_project.apd].compact.each do |contact|
+          Notifier.notification(contact.email, # RECIPIENTS
                                 Questionnaire.from_email, # FROM
                                 "Application Moved", # LIQUID TEMPLATE NAME
                                 {'applicant_name' => @application.name,

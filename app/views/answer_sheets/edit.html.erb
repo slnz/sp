@@ -4,6 +4,9 @@
     	<!-- Max size 270w x 100h -->
     	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
 		<% end %>
+		<% if @reference_sheet %>
+		  Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
+		<% end %>
   </div>
   <div id="panel">
     <%= render :partial => 'answer_sheets/pages_list' %>
