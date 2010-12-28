@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
         conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
         conditions[0] << "#{SpProject.table_name}.year = ? "
         conditions[0] << "#{SpProject.table_name}.project_status = 'open'"
-        conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
+        conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_student_men_applicants + #{SpProject.table_name}.max_student_women_applicants)"
         conditions[1] << year
         unless params[:all] == 'true'
           
