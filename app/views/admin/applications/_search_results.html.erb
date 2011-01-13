@@ -1,0 +1,39 @@
+<h1>Summer Project Applicants: Search Results</h1>
+
+
+<%= render :partial => 'search_form' %>
+
+<% year = '' %>
+<table class="people manageusers">
+  <tr>
+  	<th>Year</th>
+  	<th>Name</th>
+  	<th>Accepted</th>
+  	<th>App. Ready</th>
+  	<th>School</th>
+  	<th>Assignment</th>
+  </tr>
+
+<% @applications.each_with_index do |application, i| %>
+  <% person = application.person || Person.new %>
+  <% address = person.current_address || Address.new  %>
+  <% project = application.project || SpProject.new %>
+	<% year = application.year %>
+  <tr>
+  	<td><b><%= year %></b></td>
+  	<td nowrap="nowrap">
+  	  <% if sp_user.can_evaluate_applicant?(application) %>
+    		<%= link_to(person.informal_full_name, evaluate_admin_evaluations_path(:application_id => application.id)) %>
+    	<% else %>
+    	  <%= person.informal_full_name %>
+    	<% end %>
+  	</td>
+  	<td><%= application.status.titleize%></td>
+  	<td><%= l(application.completed_at) if application.completed_at %></td>
+  	<td><%= person.campus if person.campus%></td>
+  	<td><%= project.id && (sp_user.person.staffed_projects.include?(project) || sp_user.is_a?(SpNationalCoordinator)) ? link_to(project.name, admin_project_path(project)) : project.name %></td>
+  </tr>
+<% end -%>
+</table>
+<%= will_paginate(@applications, :params => params.slice(:first_name, :last_name, :school, :team, :project_type, :region, :city, :state, 
+                                                         :designation, :status, :year, :preference)) %>
