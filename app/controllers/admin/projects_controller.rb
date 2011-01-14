@@ -61,7 +61,7 @@ class Admin::ProjectsController < ApplicationController
   def show
     applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
     @accepted_participants = applications.accepted_participants.for_year(@year)
-    @accepted_interns = applications.accepted_interns.for_year(@year)
+    @accepted_student_staff = applications.accepted_student_staff.for_year(@year)
     @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
     @submitted = applications.submitted.for_year(@year)
     @not_submitted = applications.not_submitted.for_year(@year)
@@ -198,10 +198,10 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def email
-    @group_options = [['',''],['Staff/Interns + Accepted Students (Team)','team'],['All Applicants (except withdrawn/denied)','all_applicants'],
+    @group_options = [['',''],['Staff/S. Staff + Accepted Students (Team)','team'],['All Applicants (except withdrawn/denied)','all_applicants'],
                   ['All Accepted Students','all_accepted'],['Accepted Men','accepted_men'],['Accepted Women','accepted_women'],
-                  ['Pending Students','pending_students'],['All Staff and Interns','staff_and_interns'],
-                  ['Men Staff and Interns','men_staff_and_interns'],['Women Staff and Interns','women_staff_and_interns']]
+                  ['Pending Students','pending_students'],['All Staff and S. Staff','staff_and_interns'],
+                  ['Men Staff and S. Staff','men_staff_and_interns'],['Women Staff and S. Staff','women_staff_and_interns']]
     @group_options << ['Parent References','parent_refs'] if @project.primary_partner == 'MK2MK'
     build_email_hash
   end

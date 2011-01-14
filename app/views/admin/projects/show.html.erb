@@ -27,7 +27,7 @@
       <div id="tabs">
         <ul class="tabs">
           <li><%= link_to("Participants (#{@accepted_participants.length})", '#participants') %></li>
-          <li><%= link_to("S. Staff (#{@accepted_interns.length})", '#interns') %></li>
+          <li><%= link_to("S. Staff (#{@accepted_student_staff.length})", '#interns') %></li>
           <li><%= link_to("Ready (#{@ready_to_evaluate.length})", '#ready') %></li> 
           <li><%= link_to("Submitted (#{@submitted.length})", '#submitted') %></li> 
           <li><%= link_to("Started (#{@not_submitted.length})", '#not_submitted') %></li> 
@@ -49,7 +49,7 @@
           <table class="people">
             <%= render :partial => 'accepted_header' %>
 
-            <% @accepted_interns.each do |app| %>
+            <% @accepted_student_staff.each do |app| %>
               <%= render 'accepted_student', :app => app %>
             <% end %>
           </table>
@@ -65,8 +65,8 @@
               <th class="name">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
-              <th class="accdate">Completed</th>
-              <th class="balance">Intern</th>
+              <th class="accdate">Ready</th>
+              <th class="balance">S. Staff</th>
               <th class="evaluate">Eval</th>
             </tr>
             <% @ready_to_evaluate.each do |app| %>
@@ -76,7 +76,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
-                <td class="accdate"><%= l app.completed_at.to_date if app.completed_at %></td>
+                <td class="accdate deadline<%= app.deadline_met %>"><%= l app.completed_at.to_date if app.completed_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
                   <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
@@ -95,7 +95,7 @@
               <th class="email"></th>
               <th class="campus">Campus</th>
               <th class="accdate">Submitted</th>
-              <th class="balance">Intern</th>
+              <th class="balance">S. Staff</th>
               <th class="evaluate">Eval</th>
             </tr>
 

@@ -1,5 +1,9 @@
 <div id="leftside">
   <h2><%= @person.informal_full_name%></h2>
+  <% if sp_user.can_su_application? %>
+    <span class="schoolleft"><%= link_to('edit this application', edit_application_path(@application), :target => '_blank') %></span>
+    <br />
+  <% end %>
   <% if @person.campus.present? %>
     <br />
     <span class="schoolleft">School: <%= @person.campus %></span>

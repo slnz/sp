@@ -5,7 +5,7 @@
       <tr>
         <th>Name</th>
         <th>Fullness</th>
-        <th>APD Email</th>
+        <th><%= gender == 'men' ? 'PD Email' : 'APD Email' %></th>
         <th>Primary Partner</th>
         <th>Project Length</th>
         <th>Ministry Focus</th>
@@ -16,7 +16,7 @@
       <tr>
         <td><%= project.name %></td>
         <td><%= number_with_precision(project.send("percent_full_#{gender}"), :precision => 0) %>%</td>
-        <td><%= project.apd.try(:email) %></td>
+        <td><%= gender == 'men' ? project.pd.try(:email) : project.apd.try(:email) %></td>
         <td><%= project.primary_partner %></td>
         <td><%= project.weeks.to_i %> </td>
         <td><%= project.primary_ministry_focus %></td>
