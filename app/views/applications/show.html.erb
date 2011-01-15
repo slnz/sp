@@ -25,10 +25,6 @@
         </tr>
         <tr>
           <td class="fieldname fieldbold">
-						References 
-						<% if @application.can_change_references? %>
-							(<%= link_to('edit', edit_application_path(@application)) %>)
-						<% end %>
 					</td>
           <td class="value"></td>
         </tr>
@@ -40,6 +36,13 @@
             </tr>
           <% end %>
         <% end %>
+				<% if @application.can_change_references? %>
+          <tr>
+            <td colspan="2">
+  						<%= link_to('Click here to edit your references\' information', edit_application_path(@application)) %>
+  				  </td>
+  				</tr>
+				<% end %>
         <tr>
           <td colspan="2" class="divide"></td>
         </tr>
