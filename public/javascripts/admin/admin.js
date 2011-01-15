@@ -1,4 +1,21 @@
 $(function() {
+	$('.search_show_all_link').live('click', function() {
+		$('#spinner_leader_search').show();
+		$('#show_all').val('true')
+		var form = $('#leader_search_form')
+		$.ajax({url: form.attr('action'), 
+			data: form.serialize(), 
+			dataType: 'script', 
+			type: 'POST',
+			success: function(data) {
+				$('#leader_search_results').html(data);
+			  $("#leader_search_results").show();
+			},
+			complete: function() {$('#spinner_leader_search').hide();}
+		});
+		return false;
+	});
+	
 	$('.inlinetip a.prompt').click(function() {
 		$(this).hide();
 		$(this).next('.tip').show();

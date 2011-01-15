@@ -117,7 +117,8 @@ class ApplicationController < ActionController::Base
           conditions = ["(preferredName like ? OR firstName like ?) AND lastName like ?", first, first, last]
         end
 
-        @people = Person.where(conditions).includes(:user).limit(10)
+        @people = Person.where(conditions).includes(:user)
+        @people = @people.limit(10) unless params[:show_all].to_s == 'true'
         @total = Person.where(conditions).count
         respond_with(@people)
       else

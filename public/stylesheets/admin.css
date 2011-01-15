@@ -980,7 +980,7 @@ table.manageusers thead tr:hover { background: none; }
   margin: 0;
   padding: 0;
   height: 230px;
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid silver;
   margin: 10px 0;
 }

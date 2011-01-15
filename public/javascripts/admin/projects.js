@@ -177,7 +177,7 @@ $(function() {
 		$('#leader_search_type').val($(this).attr('data-leader'));
 		el.dialog({
 			resizable: false,
-			height:427,
+			height:444,
 			width:400,
 			modal: true,
 			buttons: {
