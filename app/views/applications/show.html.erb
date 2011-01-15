@@ -69,25 +69,25 @@
         <% if @application.project.pd.present? %>
           <tr>
             <td class="fieldname fieldbold">Project Director:</td>
-            <td class="value"><%= @application.project.pd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+            <td class="value"><%= @application.project.pd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.pd.email}") %></td>
           </tr>
         <% end %>
         <% if @application.project.apd.present? %>
           <tr>
             <td class="fieldname fieldbold">Assistant Project Director:</td>
-            <td class="value"><%= @application.project.apd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+            <td class="value"><%= @application.project.apd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.apd.email}") %></td>
           </tr>
         <% end %>
         <% if @application.project.opd.present? %>
           <tr>
             <td class="fieldname fieldbold">Operations Project Director:</td>
-            <td class="value"><%= @application.project.opd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+            <td class="value"><%= @application.project.opd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.opd.email}") %></td>
           </tr>
         <% end %>
         <% if @application.project.coordinator.present? %>
           <tr>
             <td class="fieldname fieldbold">Coordinator:</td>
-            <td class="value"><%= @application.project.coordinator.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:") %></td>
+            <td class="value"><%= @application.project.coordinator.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.coordinator.email}") %></td>
           </tr>
         <% end %>
         
