@@ -1,4 +1,5 @@
 $(function() {
+	$('.reference_send_invite').button();
 	// Payment submission
 	$('.submit_payment').live('click', function() {
 		var form = $(this).closest('form');
