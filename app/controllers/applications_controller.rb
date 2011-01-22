@@ -19,13 +19,14 @@ class ApplicationsController < AnswerSheetsController
     
     if @application && @application.year == @application.project.try(:year)
       if @project
+        # They are switching projects
         if params[:force] == 'true' 
           @application.update_attribute(:project_id, params[:p])
           # Do a redirect to reset variables
           redirect_to apply_path
           return false
         else
-          # I they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
+          # If they alreay started an appliation for another project, and are now trying to do this one, we need to ask them what to do 
           if @application.project.present? && @application.project != @project 
             redirect_to multiple_projects_application_path(@application, :p => params[:p])
             return false
@@ -34,7 +35,6 @@ class ApplicationsController < AnswerSheetsController
       end
 
       @project ||= @application.project
-      # If not, then we need a project param
     else
       if @project
         @application = current_person.sp_applications.where(:project_id => @project.id, :year => @project.year).first
@@ -44,8 +44,6 @@ class ApplicationsController < AnswerSheetsController
         return false
       end
     end
-    
-    # if @application.submitted?
     
     # Make sure we have the right questions sheets from this project
     unless @application.question_sheets.collect(&:id).sort == [@project.basic_info_question_sheet_id, @project.template_question_sheet_id].sort

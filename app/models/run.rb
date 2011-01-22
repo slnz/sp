@@ -90,81 +90,81 @@ class Run
   end
   
   # Need to fix parent_id's after this
-  def self.create_parent_reference
-    ref_element = Element.new
-    ref_element.type = "SpParentReference"
-    ref_element.text = "Parent Reference (Required if you are in High School)"
-    ref_element.question_table = "answers"
-    ref_element.question_column = ""
-    ref_element.position = 4
-    ref_element.max_length = 0
-    ref_element.save!
-    
-    ref_pe = PageElement.new
-    ref_pe.page_id = 16
-    ref_pe.element_id = ref_element.id
-    ref_pe.position = 4
-    ref_pe.save!
-    
-    parent_questionnaire = Questionnaire.new
-    parent_questionnaire.title = "Parent Reference Questionnaire"
-    parent_questionnaire.type = "SpQuestionnaire"
-    parent_questionnaire.save!
-    
-    ques_pages = QuestionnairePage.find_all_by_questionnaire_id(3, :order => "position")
-    ques_pages.each do |old_qp|
-      new_qp = QuestionnairePage.new
-      new_qp.questionnaire_id = parent_questionnaire.id
-      
-        old_page = Page.find(old_qp.page_id)
-        new_page = Page.new
-        new_page.title = old_page.title
-        new_page.url_name = old_page.url_name
-        new_page.hidden = old_page.hidden
-        new_page.save!
-        
-        old_page_elements = PageElement.find_all_by_page_id(old_page.id, :order => "position")
-        old_page_elements.each do |old_pe|
-          new_pe = PageElement.new
-          new_pe.page_id = new_page.id
-          
-            if(old_pe.page_id != 22 && old_pe.page_id != 25)
-              old_element = Element.find(old_pe.element_id)
-              new_element = Element.new
-              new_element.parent_id = old_element.parent_id #temporary
-              new_element[:type] = old_element[:type]
-              new_element.text = old_element.text
-              new_element.is_required = old_element.is_required
-              new_element.question_table = old_element.question_table
-              new_element.question_column = old_element.question_column
-              new_element.position = old_element.position
-              new_element.max_length = old_element.max_length
-              new_element.is_confidential = old_element.is_confidential
-              new_element.save!
-              
-              old_question_options = QuestionOption.find_all_by_question_id(old_element.id, :order => "position")
-              old_question_options.each do |old_qo|
-                new_qo = QuestionOption.new
-                new_qo.question_id = new_element.id
-                new_qo.option = old_qo.option
-                new_qo.value = old_qo.option
-                new_qo.position = old_qo.position
-                new_qo.save!
-              end
-            else
-              new_element = Element.find(old_pe.element_id)
-            end
-                    
-          new_pe.element_id = new_element.id
-          new_pe.position = old_pe.position
-          new_pe.save!
-        end
-      
-      new_qp.page_id = new_page.id
-      new_qp.position = old_qp.position
-      new_qp.save!
-    end
-  end
+  # def self.create_parent_reference
+  #   ref_element = Element.new
+  #   ref_element.type = "SpParentReference"
+  #   ref_element.text = "Parent Reference (Required if you are in High School)"
+  #   ref_element.question_table = "answers"
+  #   ref_element.question_column = ""
+  #   ref_element.position = 4
+  #   ref_element.max_length = 0
+  #   ref_element.save!
+  #   
+  #   ref_pe = PageElement.new
+  #   ref_pe.page_id = 16
+  #   ref_pe.element_id = ref_element.id
+  #   ref_pe.position = 4
+  #   ref_pe.save!
+  #   
+  #   parent_questionnaire = Questionnaire.new
+  #   parent_questionnaire.title = "Parent Reference Questionnaire"
+  #   parent_questionnaire.type = "SpQuestionnaire"
+  #   parent_questionnaire.save!
+  #   
+  #   ques_pages = QuestionnairePage.find_all_by_questionnaire_id(3, :order => "position")
+  #   ques_pages.each do |old_qp|
+  #     new_qp = QuestionnairePage.new
+  #     new_qp.questionnaire_id = parent_questionnaire.id
+  #     
+  #       old_page = Page.find(old_qp.page_id)
+  #       new_page = Page.new
+  #       new_page.title = old_page.title
+  #       new_page.url_name = old_page.url_name
+  #       new_page.hidden = old_page.hidden
+  #       new_page.save!
+  #       
+  #       old_page_elements = PageElement.find_all_by_page_id(old_page.id, :order => "position")
+  #       old_page_elements.each do |old_pe|
+  #         new_pe = PageElement.new
+  #         new_pe.page_id = new_page.id
+  #         
+  #           if(old_pe.page_id != 22 && old_pe.page_id != 25)
+  #             old_element = Element.find(old_pe.element_id)
+  #             new_element = Element.new
+  #             new_element.parent_id = old_element.parent_id #temporary
+  #             new_element[:type] = old_element[:type]
+  #             new_element.text = old_element.text
+  #             new_element.is_required = old_element.is_required
+  #             new_element.question_table = old_element.question_table
+  #             new_element.question_column = old_element.question_column
+  #             new_element.position = old_element.position
+  #             new_element.max_length = old_element.max_length
+  #             new_element.is_confidential = old_element.is_confidential
+  #             new_element.save!
+  #             
+  #             old_question_options = QuestionOption.find_all_by_question_id(old_element.id, :order => "position")
+  #             old_question_options.each do |old_qo|
+  #               new_qo = QuestionOption.new
+  #               new_qo.question_id = new_element.id
+  #               new_qo.option = old_qo.option
+  #               new_qo.value = old_qo.option
+  #               new_qo.position = old_qo.position
+  #               new_qo.save!
+  #             end
+  #           else
+  #             new_element = Element.find(old_pe.element_id)
+  #           end
+  #                   
+  #         new_pe.element_id = new_element.id
+  #         new_pe.position = old_pe.position
+  #         new_pe.save!
+  #       end
+  #     
+  #     new_qp.page_id = new_page.id
+  #     new_qp.position = old_qp.position
+  #     new_qp.save!
+  #   end
+  # end
   
   def self.add_sp_users_to_mpd_tool
     users = SpUser.find(:all, :conditions => "type IN ('SpNationalCoordinator', 'SpRegionalCoordinator', 'SpDirector')")
