@@ -138,7 +138,7 @@ GEM
       oa-enterprise (= 0.1.6)
       oa-oauth (= 0.1.6)
       oa-openid (= 0.1.6)
-    paperclip (2.3.5)
+    paperclip (2.3.8)
       activerecord
       activesupport
     polyglot (0.3.1)
@@ -214,10 +214,10 @@ DEPENDENCIES
   message_block
   mysql2 (= 0.2.6)
   omniauth
-  paperclip
+  paperclip (~> 2.3.8)
   rack-contrib
   rails (~> 3.0.0)
   ruby-oci8
   spreadsheet
   tiny_mce
-  will_paginate (~> 3.0.pre2)
+  will_paginate (~> 3.0.0)
