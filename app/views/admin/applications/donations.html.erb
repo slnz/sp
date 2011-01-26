@@ -17,7 +17,7 @@
       <th>Donor Name</th>
       <th>Medium</th>
     </tr>
-    <% @application.donations.each do |donation| %>
+    <% @application.donations.for_year(@application.year).each do |donation| %>
       <tr>
         <td><%= l(donation.donation_date) %></td>
         <td class="amount"><%= number_to_currency(donation.amount) %></td>
