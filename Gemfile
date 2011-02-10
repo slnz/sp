@@ -9,7 +9,7 @@ gem 'mysql2', '0.2.6'
 # Deploy with Capistrano
 gem 'capistrano'
 
-gem 'will_paginate', '~> 3.0.0'
+gem 'will_paginate', '3.0.pre2'
 gem 'google-geocode'
 gem 'acts_as_versioned'
 # gem 'acts_as_state_machine'
