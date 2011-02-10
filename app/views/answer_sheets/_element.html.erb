@@ -45,17 +45,21 @@
 <% else -%>
   <% if element.question? -%>
     <li>
-    <label class="desc"><%= element.label %></label>
-    <% if ['essay', 'checkbox'].include?(element.style) %><br/><% end %>
-    <% answer = element.display_response(answer_sheet) %>
-    <% if answer.present? %>
-      <span class="answer"><%= answer %></span>
-      <% if element.kind == 'ChoiceField' && answer == 'Yes' && element.elements.present? %>
-        <ul>
-          <%= render :partial => 'answer_sheets/element', :collection => element.elements, :locals => {:elements => element.elements, :answer_sheet => @answer_sheet} %>
-        </ul>
+      <label class="desc"><%= element.label %></label>
+      <% if ['essay', 'checkbox'].include?(element.style) %><br/><% end %>
+      <% answer = element.display_response(answer_sheet) %>
+      <% if answer.present? %>
+        <% if element.kind == 'AttachmentField' %>
+          <span class="answer"><%= link_to(answer, element.responses(answer_sheet).first.try(:attachment).try(:url), :target => '_blank') %></span>
+        <% else %>
+          <span class="answer"><%= answer %></span>
+          <% if element.kind == 'ChoiceField' && answer == 'Yes' && element.elements.present? %>
+            <ul>
+              <%= render :partial => 'answer_sheets/element', :collection => element.elements, :locals => {:elements => element.elements, :answer_sheet => @answer_sheet} %>
+            </ul>
+          <% end %>
+        <% end %>
       <% end %>
-    <% end %>
     </li>
   <% end -%>
 <% end -%>
