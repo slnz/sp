@@ -22,6 +22,11 @@
       </div>
       
       <div class="field required">
+        <%= f.label :job, 'Can students get a job?' %>
+        <%= f.select :job, [['No',false],['Yes',true]] %>
+      </div>
+      
+      <div class="field required">
         <%= f.label(:display_location) do 
           raw 'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
           end %>
