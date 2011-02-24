@@ -13,6 +13,12 @@
     <td class="left">Preferred:</td>
     <td><%= f.text_field :preferredName %></td>
   </tr>
+  <%= f.fields_for :current_application do |af| %>
+    <tr>
+      <td class="left">Designation: </td>
+      <td><%= af.text_field :designation_number %></td>
+    </tr>
+  <% end %>
   <%= f.fields_for :current_address do |af| %>
     <tr>
       <td class="left">Phone:</td>

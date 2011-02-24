@@ -114,7 +114,7 @@ $(function() {
 					'Edit information': function() {
 						$('#person_' + id + '_info').hide();
 						$('#person_' + id + '_form').show();
-					  $('#leader_details' + id).dialog('option',{height:520, buttons: {}});
+					  $('#leader_details' + id).dialog('option',{height:560, buttons: {}});
 					}
 				};
 			// If this is a leader, provide the option to change the leader
