@@ -1,6 +1,6 @@
 require_dependency Rails.root.join('vendor','plugins','questionnaire_engine','app','controllers','answer_sheets_controller').to_s
 class AnswerSheetsController < ApplicationController
-  before_filter :login
+  prepend_before_filter :login
   
   def submit
     session[:attempted_submit] = true
