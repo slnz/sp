@@ -1,10 +1,10 @@
 class Run
 
   def self.weekly_tasks
-    send_leader_reminder_emails
+    #send_leader_reminder_emails
 #    send_stats_reminder_emails -- This is now in the infobase 
-    send_reference_reminder_emails
-    send_app_status_emails
+    #send_reference_reminder_emails
+    #send_app_status_emails
   end
   
   def self.daily_tasks
