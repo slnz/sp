@@ -8,7 +8,7 @@ class Run
   end
   
   def self.daily_tasks
-    check_apps_for_completion
+    # check_apps_for_completion
     SpDonation.update_from_peoplesoft
   end
   
