@@ -70,9 +70,6 @@ class Admin::ProjectsController < ApplicationController
   
   def download
     year = params[:year] || SpApplication::YEAR
-    headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = "attachment; filename=\"#{@project.name} - Roster - #{year}.xls\""
-    headers['Cache-Control'] = ''
     
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet(:name => @project.name)
@@ -165,7 +162,10 @@ class Admin::ProjectsController < ApplicationController
     end
     sio = StringIO.new
     book.write(sio)
-    render(:text => sio.string )
+    headers['Content-Type'] = "application/vnd.ms-excel"
+    headers['Content-Disposition'] = "attachment; filename=\"#{@project.name} - Roster - #{year}.xls\""
+    headers['Cache-Control'] = ''
+    send_data(sio.string, :type =>  "application/vnd.ms-excel", :filename => "#{@project.name} - Roster - #{year}.xls")
   end
   
   def dashboard
