@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '3.0.3'
+gem 'rails', '3.0.5'
 
-gem 'mysql2', '0.2.6'
+gem 'mysql2'#, '0.2.6'
 # gem 'mysql'
 
 # Deploy with Capistrano
