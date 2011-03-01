@@ -31,6 +31,7 @@ gem 'spreadsheet'
 # gem 'exception_notification', :git => "git://github.com/rails/exception_notification", :require => 'exception_notifier', :branch => 'master'
 gem 'hoptoad_notifier'
 gem 'jammit'
+gem 'less' 
 # gem 'unicode_utils'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
@@ -50,7 +51,6 @@ gem 'jammit'
 group :development do
   # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
-  gem 'less' # 1s
 end
 # 
 gem 'activerecord-oracle_enhanced-adapter'
