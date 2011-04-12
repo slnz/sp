@@ -6,4 +6,24 @@
     <%= text_field_tag :end, Date.today.to_s(:db), 'data-calendar' => true %>
     <%= submit_tag 'Download' %>
   <% end %>
+  <br/><br/>
+  Projects that are open and missing chartfields:
+  <table class="people">
+    <tr>
+      <th class="name">Project Name</th>
+      <th>Contact Name</th>
+      <th>Contact Role</th>
+      <th>Contact Phone</th>
+      <th>Contact Email</th>
+    </tr>
+    <% SpProject.current.missing_chart_field.order('name').each do |project| %>
+      <tr>
+        <td class="name"><%= project.name %></td>
+        <td><%= project.project_contact_name %></td>
+        <td><%= project.project_contact_role %></td>
+        <td><%= project.project_contact_phone %></td>
+        <td><%= mail_to(project.project_contact_email) %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>

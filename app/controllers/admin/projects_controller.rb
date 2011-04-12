@@ -226,7 +226,7 @@ class Admin::ProjectsController < ApplicationController
   def sos
     if request.post?
       # find all projects with starting dates in the given range
-      projects = SpProject.where(["start_date between ? and ?", params[:start], params[:end]]).includes({:sp_staff => :person})
+      projects = SpProject.current.has_chart_field.where(["start_date between ? and ?", params[:start], params[:end]]).includes({:sp_staff => :person}).order('name')
       out = ""
       CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
         projects.each do |project|
