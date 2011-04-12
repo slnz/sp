@@ -11,6 +11,7 @@
   <table class="people">
     <tr>
       <th class="name">Project Name</th>
+      <th>Start Date</th>
       <th>Contact Name</th>
       <th>Contact Role</th>
       <th>Contact Phone</th>
@@ -19,6 +20,7 @@
     <% SpProject.current.missing_chart_field.order('name').each do |project| %>
       <tr>
         <td class="name"><%= project.name %></td>
+        <td class="name"><%= l(project.start_date) %></td>
         <td><%= project.project_contact_name %></td>
         <td><%= project.project_contact_role %></td>
         <td><%= project.project_contact_phone %></td>
