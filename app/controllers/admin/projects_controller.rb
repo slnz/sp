@@ -1,3 +1,4 @@
+require 'csv'
 class Admin::ProjectsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_sp_user, :except => :no
   uses_tiny_mce :options => {:theme => 'advanced',
@@ -219,6 +220,37 @@ class Admin::ProjectsController < ApplicationController
       files = (params[:file] || {}).values
       email = ProjectMailer.team_email(to, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
       redirect_to admin_project_path(@project), :notice => "Your email has been sent"
+    end
+  end
+ 
+  def sos
+    if request.post?
+      # find all projects with starting dates in the given range
+      projects = SpProject.where(["start_date between ? and ?", params[:start], params[:end]]).includes({:sp_staff => :person})
+      out = ""
+      CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
+        projects.each do |project|
+          row = []
+          row_start = [project.id, project.name, project.city, project.state, project.country, project.start_date, project.end_date,
+                 project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
+                 project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
+          project.sp_staff.each do |staff|
+            p = staff.person
+            (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+              row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+            end
+            writer << row
+          end
+          project.sp_applications.accepted.each do |applicant|
+            p = applicant.person
+            (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+              row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+            end
+            writer << row
+          end
+        end
+      end
+      send_data(out, :filename => "sos.txt", :type => 'text/tab' )
     end
   end
   

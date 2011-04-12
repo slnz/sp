@@ -2,6 +2,8 @@ Sp2::Application.routes.draw do
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/failure' => 'authentications#failed'
+  match '/sos' => 'admin/projects#sos'
+
   resources :authentications
   
   resources :campuses do
