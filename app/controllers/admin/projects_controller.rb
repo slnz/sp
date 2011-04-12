@@ -234,17 +234,21 @@ class Admin::ProjectsController < ApplicationController
           row_start = [project.id, project.name, project.city, project.state, project.country, project.start_date, project.end_date,
                  project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
                  project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
-          project.sp_staff.each do |staff|
+          project.sp_staff.year(SpApplication::YEAR).each do |staff|
             p = staff.person
-            (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
-              row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+            if p
+              (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+                row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+              end
+              writer << row
             end
-            writer << row
           end
-          project.sp_applications.accepted.each do |applicant|
+          project.sp_applications.for_year(SpApplication::YEAR).accepted.includes(:person).each do |applicant|
             p = applicant.person
-            (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
-              row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+            if p
+              (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+                row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+              end
             end
             writer << row
           end

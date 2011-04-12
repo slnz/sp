@@ -2,8 +2,20 @@
   <% form_tag do %>
     Search for projects that start between the following dates:
     <br />
-    <%= text_field_tag :start, 1.month.ago.to_date.to_s(:db), 'data-calendar' => true %> and
-    <%= text_field_tag :end, Date.today.to_s(:db), 'data-calendar' => true %>
+    <%= text_field_tag :start, 1.month.ago.to_date.to_s(:db), 'data-calendar-db' => true %> and
+    <%= text_field_tag :end, Date.today.to_s(:db), 'data-calendar-db' => true %>
     <%= submit_tag 'Download' %>
   <% end %>
+  <br />
+  Note: This query runs only for the current Summer Project year, which is currently <%= SpApplication::YEAR %>  
+  
 </div>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+	    $('[data-calendar-db]').datepicker({changeYear:true,
+																	        yearRange: '<%= SpProject.minimum("year") %>:<%= SpProject.maximum("year") %>',
+																	        dateFormat: 'yy-mm-dd'})
+
+  });
+</script>
