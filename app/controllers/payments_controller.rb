@@ -51,10 +51,10 @@ class PaymentsController < ApplicationController
               else
                 @payment.errors.add_to_base("Credit card transaction failed: #{response.message}")
                 #Send email this way instead of raising error in order to still give an error message to user.
-                Notifier.deliver_notification('programmers@cojourners.com', # RECIPIENTS
-                                    "sp_error@uscm.org", # FROM
-                                    "Credit Card Error", # LIQUID TEMPLATE NAME
-                                    {'error' => "Credit card transaction failed: #{response.message} \n #{response.inspect} \n #{creditcard.inspect}"})
+                # Notifier.deliver_notification('programmers@cojourners.com', # RECIPIENTS
+                #                     "sp_error@uscm.org", # FROM
+                #                     "Credit Card Error", # LIQUID TEMPLATE NAME
+                #                     {'error' => "Credit card transaction failed: #{response.message} \n #{response.inspect} \n #{creditcard.inspect}"})
               end
             else
               @payment.errors.add(:card_number, "is invalid.  Check the number and/or the expiration date.")
