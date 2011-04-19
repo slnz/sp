@@ -230,11 +230,11 @@ class Admin::ProjectsController < ApplicationController
       out = ""
       CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
         projects.each do |project|
-          row = []
-          row_start = [project.id, project.name, project.city, project.state, project.country, project.start_date, project.end_date,
+          row_start = [project.id, project.name, project.city, project.state, project.country, l(project.start_date), l(project.end_date),
                  project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
                  project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
           project.sp_staff.year(SpApplication::YEAR).each do |staff|
+            row = []
             p = staff.person
             if p
               (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
@@ -244,6 +244,7 @@ class Admin::ProjectsController < ApplicationController
             end
           end
           project.sp_applications.for_year(SpApplication::YEAR).accepted.includes(:person).each do |applicant|
+            row = []
             p = applicant.person
             if p
               (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
