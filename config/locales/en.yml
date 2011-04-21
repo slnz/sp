@@ -8,6 +8,7 @@ en:
       # When no format has been given, it uses default.
       # You can provide other formats here if you like!
       default: "%m/%d/%Y"
+      ps: "%m/%d/%Y %H:%M:%S"
       short: "%b %d"
       long: "%B %d, %Y"
       

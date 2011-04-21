@@ -230,8 +230,8 @@ class Admin::ProjectsController < ApplicationController
       out = ""
       CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
         projects.each do |project|
-          row_start = [project.id, project.name, project.city, project.state, project.country, l(project.start_date), l(project.end_date),
-                 project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
+          row_start = [project.id, project.name, project.city, project.state, project.country, l(project.start_date, :format => :ps), l(project.end_date, :format => :ps),
+                 project.project_contact_name, project.project_contact_role[0..14], project.project_contact_phone, project.project_contact_email,
                  project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
           project.sp_staff.year(SpApplication::YEAR).each do |staff|
             row = []
