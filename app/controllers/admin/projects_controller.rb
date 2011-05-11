@@ -230,10 +230,11 @@ class Admin::ProjectsController < ApplicationController
       out = ""
       CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
         projects.each do |project|
+          contact = project.contact || Person.new
           row_start = [project.id, project.name, project.city, project.state, project.country, l((project.international? ? project.date_of_departure || project.start_date : project.start_date), :format => :ps), l((project.international? ? project.date_of_return || project.end_date : project.end_date), :format => :ps),
-                 project.project_contact_name, project.project_contact_role[0..14], project.project_contact_phone, project.project_contact_email,
+                 contact.full_name, contact.sp_staff.most_recent.first.try(:type).to_s[0..14], contact.phone, contact.email,
                  project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
-          project.sp_staff.year(SpApplication::YEAR).where("type <> 'Evaluator'").each do |staff|
+          project.sp_staff.year(SpApplication::YEAR).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
             row = []
             p = staff.person
             if p
