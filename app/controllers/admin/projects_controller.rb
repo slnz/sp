@@ -230,11 +230,12 @@ class Admin::ProjectsController < ApplicationController
       out = ""
       CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
         projects.each do |project|
-          row = []
-          row_start = [project.id, project.name, project.city, project.state, project.country, project.start_date, project.end_date,
-                 project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
+          contact = project.contact || Person.new
+          row_start = [project.id, project.name, project.city, project.state, project.country, l((project.international? ? project.date_of_departure || project.start_date : project.start_date), :format => :ps), l((project.international? ? project.date_of_return || project.end_date : project.end_date), :format => :ps),
+                 contact.full_name, contact.sp_staff.most_recent.first.try(:type).to_s[0..14], contact.phone, contact.email,
                  project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
-          project.sp_staff.year(SpApplication::YEAR).each do |staff|
+          project.sp_staff.year(SpApplication::YEAR).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
+            row = []
             p = staff.person
             if p
               (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
@@ -244,6 +245,7 @@ class Admin::ProjectsController < ApplicationController
             end
           end
           project.sp_applications.for_year(SpApplication::YEAR).accepted.includes(:person).each do |applicant|
+            row = []
             p = applicant.person
             if p
               (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
