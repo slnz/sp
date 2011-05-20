@@ -22,7 +22,7 @@
         <td><%= l(donation.donation_date) %></td>
         <td class="amount"><%= number_to_currency(donation.amount) %></td>
         <td><%= donation.donor_name %></td>
-        <td><span class="sprited sprite-<%= donation.medium.downcase.gsub(/\s+/,'_') %>"><%= donation.medium %></span></td>
+        <td><span class="sprited sprite-<%= donation.medium.to_s.downcase.gsub(/\s+/,'_') %>"><%= donation.medium %></span></td>
       </tr>
       
     <% end %>
