@@ -63,7 +63,7 @@ module ProjectsHelper
         pe=project_version.date_of_return.to_s
       end
       statLink=statLink+pe.to_time.to_i.to_s+"000"
-      statLink=statLink+"&redirect="+request.host+"%2Fprojects%2F"+project.id.to_s+"%2Froster&eventKeyID="+project_version.id.to_s
+      statLink=statLink+"&redirect=https://"+request.host+"%2Fprojects%2F"+project.id.to_s+"%2Froster&eventKeyID="+project_version.id.to_s
       statLink= link_to(text, statLink, options.merge({:target => '_blank'}))
       statLink
 
