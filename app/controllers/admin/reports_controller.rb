@@ -77,7 +77,7 @@ class Admin::ReportsController < ApplicationController
     #[11-08-11 11:10:20 AM] Josh Starcher: but you all end up at a specific project
 
     if params[:partner].present?
-      @projects = SpProject.current.with_partner(params[:partner])
+      @projects = SpProject.current.with_partner(params[:partner]).order("name ASC")
     elsif params[:project_id].present?
       @project = SpProject.find(params[:project_id])
     elsif sp_user.is_a?(SpNationalCoordinator)
@@ -87,7 +87,7 @@ class Admin::ReportsController < ApplicationController
       @partners = @partners & sp_user.partnerships
     elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpRegionalCoordinator)
       if current_person.current_staffed_projects.length > 1
-        @projects = current_person.directed_projects
+        @projects = current_person.directed_projects.order("name ASC")
       else
         @project = current_person.directed_projects.first
       end
