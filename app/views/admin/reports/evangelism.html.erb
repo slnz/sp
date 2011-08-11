@@ -1,31 +1,41 @@
-<div class="pagepad reportpage">
-<%= link_to("<< Back to all reports", admin_reports_path) %><br />
-<%= link_to("<< Back to director report list", director_admin_reports_path) %>
-<br/>
+<style>
+  .reportpage table th {
+    width: 50%;
+  }
+  .reportpage table {
+    width: 400px;
+  }
+</style>
 
-<%- if @partners %>
-  <h1>Partnerships</h1>
-  <ul>
-    <% @partners.each do |partner| %>
-      <li><%= link_to(partner, evangelism_admin_reports_path(:partner => partner)) %></li>
-    <% end %>
-  </ul>
-<%- elsif @projects.present? %>
-  <h1><%= params[:partner] %> Projects</h1>
-  <ul>
-    <% @projects.each do |project| %>
-      <li><%= link_to(project.name, evangelism_admin_reports_path(:project_id => project.id)) %><br/>
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to director report list", director_admin_reports_path) %>
+  <br/>
+
+  <%- if @partners %>
+    <h1>Partnerships</h1>
+    <ul>
+      <% @partners.each do |partner| %>
+        <li><%= link_to(partner, evangelism_admin_reports_path(:partner => partner)) %></li>
+      <% end %>
+    </ul>
+  <%- elsif @projects.present? %>
+    <h1><%= params[:partner] %> Projects</h1>
+    <ul>
+      <% @projects.each do |project| %>
+        <li><%= link_to(project.name, evangelism_admin_reports_path(:project_id => project.id)) %><br/>
         <%- if stat = project.statistics.last %>
           <%= render "stat", :stat => stat %>
           <br/>
         <%- end %>
-      </li>
-    <% end %>
-  </ul>
-<%- elsif @project.present? %>
-  <%- @project.statistics.each do |stat| %>
-    <%= render "stat", :stat => stat %>
+        </li>
+      <% end %>
+    </ul>
+  <%- elsif @project.present? %>
+    <%- @project.statistics.each do |stat| %>
+      <%= render "stat", :stat => stat %>
+    <%- end %>
+  <%- else %>
+    <P>No project or partnership given.</P>
   <%- end %>
-<%- else %>
-  <P>No project or partnership given.</P>
-<%- end %>
+</div>

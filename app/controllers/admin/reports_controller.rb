@@ -85,7 +85,7 @@ class Admin::ReportsController < ApplicationController
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
       partner
       @partners = @partners & sp_user.partnerships
-    elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpRegionalCoordinator)
+    elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpDirector)
       if current_person.current_staffed_projects.length > 1
         @projects = current_person.directed_projects.order("name ASC")
       else
@@ -95,7 +95,15 @@ class Admin::ReportsController < ApplicationController
   end
 
   def ready_after_deadline
-    
+    if sp_user.is_a?(SpNationalCoordinator)
+      @projects = SpProject.current.order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
+      partner
+      @partners = @partners & sp_user.partnerships
+      @projects = SpProject.current.with_partner(@partners).order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpDirector)
+      @projects = current_person.directed_projects.order("name ASC")
+    end
   end
 
   def region

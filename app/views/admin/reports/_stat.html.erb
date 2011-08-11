@@ -1,6 +1,13 @@
 <br/>
-<%- Statistic.column_names.each do |c| %>
-  <%- if v = stat.send(c) %>
-    <%= c %>: <%= v %><br/>
-  <%- end %>
+<table>
+  <tr><th>attribute</th><th>value</th></tr>
+<%- if stat.StatisticID %>
+    <%- Statistic.column_names.each do |c| %>
+      <%- if v = stat.send(c) %>
+        <tr><td><%= c %></td><td><%= v %></td>
+      <%- end %>
+    <%- end %>
+<%- else %>
+  <tr><td colspan="2"><I>no stats have been entered for this project</I></td></tr>
 <%- end %>
+</table>
