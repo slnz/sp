@@ -104,6 +104,18 @@ class Admin::ReportsController < ApplicationController
     elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpDirector)
       @projects = current_person.directed_projects.order("name ASC")
     end
+
+    project_ids = @projects.collect(&:id)
+    # Apply by Dec. 10 and hear back by Jan. 28
+    # Apply by Jan. 24 and hear back by Feb. 28
+    # Apply by Feb. 24 and hear back by Mar. 28
+    d0 = Date.parse("Feb 25, #{Date.today.year - 1}")
+    d1 = Date.parse("Dec 10, #{Date.today.year - 1}")
+    @d1_projects = SpProject.where(:id => project_ids).where(["completed_at > ? AND completed_at <= ?", d0, d1]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d2 = Date.parse("Jan 24, #{Date.today.year}")
+    @d2_projects = SpProject.where(:id => project_ids).where(["completed_at > ? AND completed_at <= ?", d1, d2]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d3 = Date.parse("Feb 24, #{Date.today.year}")
+    @d3_projects = SpProject.where(:id => project_ids).where(["completed_at > ? AND completed_at <= ?", d2, d3]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
   end
 
   def region

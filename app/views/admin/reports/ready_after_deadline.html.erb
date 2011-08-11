@@ -3,7 +3,6 @@
   <%= link_to("<< Back to report list", director_admin_reports_path) %>
 
   <h1>Ready Apps</h1>
-  <%= render 'openings', :gender => 'women' %>
 
   <table>
     <tr>
@@ -13,6 +12,15 @@
       <th>Applied by Jan 24</th>
       <th>Applied by Feb 24</th>
     </tr>
+    <%- for project in @projects %>
+      <tr>
+        <td><%= project.name %></td>
+        <td><%= project.try(:pd).try(:email) %></td>
+        <td><%= @d1_projects[project.name].try(:first).try(:app_count) %>
+        <td><%= @d2_projects[project.name].try(:first).try(:app_count) %>
+        <td><%= @d3_projects[project.name].try(:first).try(:app_count) %>
+      </tr>
+    <%- end %>
   </table>
 
 </div>
