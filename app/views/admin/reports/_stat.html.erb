@@ -1,0 +1,6 @@
+<br/>
+<%- Statistic.column_names.each do |c| %>
+  <%- if v = stat.send(c) %>
+    <%= c %>: <%= v %><br/>
+  <%- end %>
+<%- end %>
