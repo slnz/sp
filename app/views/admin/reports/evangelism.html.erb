@@ -1,36 +1,57 @@
-<%- @project.statistics.each do |stat| %>
-  <br/>
-  periodBegin: <%= stat.periodBegin %><br/>
-  periodEnd: <%= stat.periodEnd %><br/>
-  exposures: <%= stat.exposures %><br/>
-  exposuresViaMedia: <%= stat.exposuresViaMedia %><br/>
-  evangelisticOneOnOne: <%= stat.evangelisticOneOnOne %><br/>
-  evangelisticGroup: <%= stat.evangelisticGroup %><br/>
-  decisions: <%= stat.decisions %><br/>
-  attendedLastConf: <%= stat.attendedLastConf %><br/>
-  invldNewBlvrs: <%= stat.invldNewBlvrs %><br/>
-  invldStudents: <%= stat.invldStudents %><br/>
-  invldFreshmen: <%= stat.invldFreshmen %><br/>
-  invldSophomores: <%= stat.invldSophomores %><br/>
-  invldJuniors: <%= stat.invldJuniors %><br/>
-  invldSeniors: <%= stat.invldSeniors %><br/>
-  invldGrads: <%= stat.invldGrads %><br/>
-  studentLeaders: <%= stat.studentLeaders %><br/>
-  volunteers: <%= stat.volunteers %><br/>
-  staff: <%= stat.staff %><br/>
-  nonStaffStint: <%= stat.nonStaffStint %><br/>
-  staffStint: <%= stat.staffStint %><br/>
-  fk_Activity: <%= stat.fk_Activity %><br/>
-  multipliers: <%= stat.multipliers %><br/>
-  laborersSent: <%= stat.laborersSent %><br/>
-  decisionsHelpedByMedia: <%= stat.decisionsHelpedByMedia %><br/>
-  decisionsHelpedByOneOnOne: <%= stat.decisionsHelpedByOneOnOne %><br/>
-  decisionsHelpedByGroup: <%= stat.decisionsHelpedByGroup %><br/>
-  decisionsHelpedByOngoingReln: <%= stat.decisionsHelpedByOngoingReln %><br/>
-  ongoingEvangReln: <%= stat.ongoingEvangReln %><br/>
-  updated_by: <%= stat.updated_by %><br/>
-  updated_at: <%= stat.updated_at %><br/>
-  peopleGroup: <%= stat.peopleGroup %><br/>
-  holySpiritConversations: <%= stat.holySpiritConversations %><br/>
-  dollars_raised: <%= stat.dollars_raised %><br/>
+<div class="pagepad reportpage">
+<%= link_to("<< Back to all reports", admin_reports_path) %><br />
+<%= link_to("<< Back to director report list", director_admin_reports_path) %>
+<br/>
+
+<%- if @partners.present? %>
+  <h1>Partnerships</h1>
+  <ul>
+    <% @partners.each do |partner| %>
+      <li><%= link_to(partner, evangelism_admin_reports_path(:partner => partner)) %></li>
+    <% end %>
+  </ul>
+<%- elsif @projects.present? %>
+  <h1><%= params[:partner] %> Projects</h1>
+  <ul>
+    <% @projects.each do |project| %>
+      <li><%= link_to(project.name, evangelism_admin_reports_path(:project_id => project.id)) %></li>
+    <% end %>
+  </ul>
+<%- else %>
+  <%- @project.statistics.each do |stat| %>
+    <br/>
+    periodBegin: <%= stat.periodBegin %><br/>
+    periodEnd: <%= stat.periodEnd %><br/>
+    exposures: <%= stat.exposures %><br/>
+    exposuresViaMedia: <%= stat.exposuresViaMedia %><br/>
+    evangelisticOneOnOne: <%= stat.evangelisticOneOnOne %><br/>
+    evangelisticGroup: <%= stat.evangelisticGroup %><br/>
+    decisions: <%= stat.decisions %><br/>
+    attendedLastConf: <%= stat.attendedLastConf %><br/>
+    invldNewBlvrs: <%= stat.invldNewBlvrs %><br/>
+    invldStudents: <%= stat.invldStudents %><br/>
+    invldFreshmen: <%= stat.invldFreshmen %><br/>
+    invldSophomores: <%= stat.invldSophomores %><br/>
+    invldJuniors: <%= stat.invldJuniors %><br/>
+    invldSeniors: <%= stat.invldSeniors %><br/>
+    invldGrads: <%= stat.invldGrads %><br/>
+    studentLeaders: <%= stat.studentLeaders %><br/>
+    volunteers: <%= stat.volunteers %><br/>
+    staff: <%= stat.staff %><br/>
+    nonStaffStint: <%= stat.nonStaffStint %><br/>
+    staffStint: <%= stat.staffStint %><br/>
+    fk_Activity: <%= stat.fk_Activity %><br/>
+    multipliers: <%= stat.multipliers %><br/>
+    laborersSent: <%= stat.laborersSent %><br/>
+    decisionsHelpedByMedia: <%= stat.decisionsHelpedByMedia %><br/>
+    decisionsHelpedByOneOnOne: <%= stat.decisionsHelpedByOneOnOne %><br/>
+    decisionsHelpedByGroup: <%= stat.decisionsHelpedByGroup %><br/>
+    decisionsHelpedByOngoingReln: <%= stat.decisionsHelpedByOngoingReln %><br/>
+    ongoingEvangReln: <%= stat.ongoingEvangReln %><br/>
+    updated_by: <%= stat.updated_by %><br/>
+    updated_at: <%= stat.updated_at %><br/>
+    peopleGroup: <%= stat.peopleGroup %><br/>
+    holySpiritConversations: <%= stat.holySpiritConversations %><br/>
+    dollars_raised: <%= stat.dollars_raised %><br/>
+  <%- end %>
 <%- end %>

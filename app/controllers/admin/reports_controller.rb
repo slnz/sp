@@ -69,7 +69,13 @@ class Admin::ReportsController < ApplicationController
   end
 
   def evangelism
-    @project = SpProject.find params[:project_id]
+    if params[:partner].present?
+      @projects = SpProject.current.with_partner(params[:partner])
+    elsif params[:project_id].present?
+      @project = SpProject.find(params[:project_id])
+    elsif sp_user.is_a?(SpNationalCoordinator)
+      partner
+    end
   end
 
   def ready_after_deadline
