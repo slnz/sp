@@ -20,7 +20,19 @@
       </li>
       <li>
         <%= link_to('Projects sorted by ministry focus', ministry_focus_admin_reports_path) %>
-        <%= tip('Shows a list of all projects grouped by ministry focus') %>
+        <%= tip('') %>
+      </li>
+      <li>
+        <%= link_to('Project evangelism stats', evangelism_admin_reports_path(:project_id => 351)) %>
+        <%= tip('') %>
+      </li>
+      <li>
+        <%= link_to('Projects that have ready apps after project deadline', ready_after_deadline_admin_reports_path) %>
+        <%= tip('') %>
+      </li>
+      <li>
+        <%= link_to('mpd_summary', mpd_summary_admin_reports_path) %>
+        <%= tip('') %>
       </li>
     </ul>
   </div>

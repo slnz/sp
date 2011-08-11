@@ -1,0 +1,36 @@
+<%- @project.statistics.each do |stat| %>
+  <br/>
+  periodBegin: <%= stat.periodBegin %><br/>
+  periodEnd: <%= stat.periodEnd %><br/>
+  exposures: <%= stat.exposures %><br/>
+  exposuresViaMedia: <%= stat.exposuresViaMedia %><br/>
+  evangelisticOneOnOne: <%= stat.evangelisticOneOnOne %><br/>
+  evangelisticGroup: <%= stat.evangelisticGroup %><br/>
+  decisions: <%= stat.decisions %><br/>
+  attendedLastConf: <%= stat.attendedLastConf %><br/>
+  invldNewBlvrs: <%= stat.invldNewBlvrs %><br/>
+  invldStudents: <%= stat.invldStudents %><br/>
+  invldFreshmen: <%= stat.invldFreshmen %><br/>
+  invldSophomores: <%= stat.invldSophomores %><br/>
+  invldJuniors: <%= stat.invldJuniors %><br/>
+  invldSeniors: <%= stat.invldSeniors %><br/>
+  invldGrads: <%= stat.invldGrads %><br/>
+  studentLeaders: <%= stat.studentLeaders %><br/>
+  volunteers: <%= stat.volunteers %><br/>
+  staff: <%= stat.staff %><br/>
+  nonStaffStint: <%= stat.nonStaffStint %><br/>
+  staffStint: <%= stat.staffStint %><br/>
+  fk_Activity: <%= stat.fk_Activity %><br/>
+  multipliers: <%= stat.multipliers %><br/>
+  laborersSent: <%= stat.laborersSent %><br/>
+  decisionsHelpedByMedia: <%= stat.decisionsHelpedByMedia %><br/>
+  decisionsHelpedByOneOnOne: <%= stat.decisionsHelpedByOneOnOne %><br/>
+  decisionsHelpedByGroup: <%= stat.decisionsHelpedByGroup %><br/>
+  decisionsHelpedByOngoingReln: <%= stat.decisionsHelpedByOngoingReln %><br/>
+  ongoingEvangReln: <%= stat.ongoingEvangReln %><br/>
+  updated_by: <%= stat.updated_by %><br/>
+  updated_at: <%= stat.updated_at %><br/>
+  peopleGroup: <%= stat.peopleGroup %><br/>
+  holySpiritConversations: <%= stat.holySpiritConversations %><br/>
+  dollars_raised: <%= stat.dollars_raised %><br/>
+<%- end %>

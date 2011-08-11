@@ -39,6 +39,9 @@ Sp2::Application.routes.draw do
       get :female_openings
       get :male_openings
       get :ministry_focus
+      get :evangelism
+      get :ready_after_deadline
+      get :mpd_summary
       get :regional
       get :national
       get :partner

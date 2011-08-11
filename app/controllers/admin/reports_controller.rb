@@ -68,6 +68,14 @@ class Admin::ReportsController < ApplicationController
     end
   end
 
+  def evangelism
+    @project = SpProject.find params[:project_id]
+  end
+
+  def ready_after_deadline
+    
+  end
+
   def region
     if params[:region].present?
       @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
