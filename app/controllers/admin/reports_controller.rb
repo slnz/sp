@@ -69,12 +69,28 @@ class Admin::ReportsController < ApplicationController
   end
 
   def evangelism
+    #national: sees list of all partnerships
+    #[11-08-11 11:09:32 AM] Josh Starcher: regional: partnerships i'm involved in, or straight to the 1
+    #[11-08-11 11:09:45 AM] Josh Starcher: director: list of all projects i'm directing, or straight to the 1
+    #[11-08-11 11:09:55 AM] Josh Starcher: clicking on a partnership shows all projects in that partnership
+    #[11-08-11 11:10:10 AM] Josh Starcher: it's a funnel, and depending who you are you start in a different place
+    #[11-08-11 11:10:20 AM] Josh Starcher: but you all end up at a specific project
+
     if params[:partner].present?
       @projects = SpProject.current.with_partner(params[:partner])
     elsif params[:project_id].present?
       @project = SpProject.find(params[:project_id])
     elsif sp_user.is_a?(SpNationalCoordinator)
       partner
+    elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
+      partner
+      @partners = @partners & sp_user.partnerships
+    elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpRegionalCoordinator)
+      if current_person.current_staffed_projects.length > 1
+        @projects = current_person.directed_projects
+      else
+        @project = current_person.directed_projects.first
+      end
     end
   end
 
