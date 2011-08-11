@@ -2,7 +2,7 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %><br />
   <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
   <% if @teams.present? %>
-    <h1>Applicaitons for project parternships</h1>
+    <h1>Applications for project parternships</h1>
     <ul>
       <% @teams.each do |team| %>
         <li><%= link_to(team, missional_team_admin_reports_path(:team => team)) %></li>
@@ -12,7 +12,7 @@
   <% if @applications %>
     <br /><%= link_to("<< Back to team list", missional_team_admin_reports_path) %>
 
-    <h1>Applicaitons for <%= @team %></h1>
+    <h1>Applications for <%= @team %></h1>
     <table>
       <thead>
         <tr>

@@ -2,7 +2,7 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %> <br />
   <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
   <% if @regions.present? %>
-    <h1>Applicaitons for by student region</h1>
+    <h1>Applications for by student region</h1>
     <ul>
       <% @regions.each do |region| %>
         <li><%= link_to(region, region_admin_reports_path(:region => region)) %></li>
@@ -12,7 +12,7 @@
   <% if @applications %>
     <br /><%= link_to("<< Back to region list", region_admin_reports_path) %>
 
-    <h1>Applicaitons for <%= params[:region] %> region</h1>
+    <h1>Applications for <%= params[:region] %> region</h1>
     <%= will_paginate @applications %>
     <table>
       <thead>

@@ -2,7 +2,7 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %><br />
   <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
   <% if @partners.present? %>
-    <h1>Applicaitons for project parternships</h1>
+    <h1>Applications for project parternships</h1>
     <ul>
       <% @partners.each do |partner| %>
         <li><%= link_to(partner, partner_admin_reports_path(:partner => partner)) %></li>
@@ -12,7 +12,7 @@
   <% if @applications.present? %>
     <br /><%= link_to("<< Back to partner list", partner_admin_reports_path) %>
 
-    <h1>Applicaitons for <%= params[:partner] %> parternships</h1>
+    <h1>Applications for <%= params[:partner] %> parternships</h1>
     <%= will_paginate @applications %>
     <table>
       <thead>
