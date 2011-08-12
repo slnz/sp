@@ -96,7 +96,7 @@ class Admin::ReportsController < ApplicationController
     #[11-08-11 11:10:20 AM] Josh Starcher: but you all end up at a specific project
 
     if params[:partner].present?
-      @projects = SpProject.current.with_partner(params[:partner]).order("name ASC")
+      @projects = SpProject.with_partner(params[:partner]).order("name ASC")
     elsif params[:project_id].present?
       @project = SpProject.find(params[:project_id])
     elsif sp_user.is_a?(SpNationalCoordinator)
@@ -111,6 +111,23 @@ class Admin::ReportsController < ApplicationController
         @project = current_person.directed_projects.first
       end
     end
+  end
+
+  def evangelism_combined
+    if params[:partner].present?
+      @partners = [ params[:partner] ]
+      @statistic = Statistic.find_by_sql("select #{Statistic.column_names.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
+        "left join ministry_targetarea on sp_projects.id = ministry_targetarea.eventKeyID and eventType = 'SP' " +
+        "left join ministry_activity on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` " +
+        "left join ministry_statistic on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` " +
+        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')})").first
+    elsif sp_user.is_a?(SpNationalCoordinator)
+      partner
+    elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
+      partner
+      @partners = @partners & sp_user.partnerships
+    end
+
   end
 
   def ready_after_deadline

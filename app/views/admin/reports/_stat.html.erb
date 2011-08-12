@@ -3,6 +3,7 @@
   <tr><th>attribute</th><th>value</th></tr>
 <%- if stat.StatisticID %>
     <%- Statistic.column_names.each do |c| %>
+      <%- next if combined && %w(StatisticID periodBegin periodEnd Activity updated_at fk_Activity).include?(c) %>
       <%- if v = stat.send(c) %>
         <tr><td><%= c %></td><td><%= v %></td>
       <%- end %>

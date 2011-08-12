@@ -40,6 +40,7 @@ Sp2::Application.routes.draw do
       get :male_openings
       get :ministry_focus
       get :evangelism
+      get :evangelism_combined
       get :ready_after_deadline
       get :applications_by_status
       get :mpd_summary

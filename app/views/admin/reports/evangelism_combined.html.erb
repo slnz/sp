@@ -1,0 +1,28 @@
+<style>
+  .reportpage table th {
+    width: 50%;
+  }
+  .reportpage table {
+    width: 400px;
+  }
+</style>
+
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
+  <br/>
+
+  <%- if @statistic %>
+    <h1>Statistics for all <%= @partners.join(', ') %> Projects</h1>
+    <%= render "stat", :stat => @statistic, :combined => true %>
+  <%- elsif @partners %>
+    <h1>Partnerships</h1>
+    <ul>
+      <% @partners.each do |partner| %>
+        <li><%= link_to(partner, evangelism_combined_admin_reports_path(:partner => partner)) %></li>
+      <% end %>
+    </ul>
+  <%- else %>
+    <P>No project or partnership given.</P>
+  <%- end %>
+</div>
