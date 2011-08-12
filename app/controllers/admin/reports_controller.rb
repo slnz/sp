@@ -109,13 +109,47 @@ class Admin::ReportsController < ApplicationController
     # Apply by Dec. 10 and hear back by Jan. 28
     # Apply by Jan. 24 and hear back by Feb. 28
     # Apply by Feb. 24 and hear back by Mar. 28
-    d0 = Date.parse("Feb 25, #{Date.today.year - 1}")
-    d1 = Date.parse("Dec 10, #{Date.today.year - 1}")
-    @d1_projects = SpProject.where(:id => project_ids).where(["completed_at > ? AND completed_at <= ?", d0, d1]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
-    d2 = Date.parse("Jan 24, #{Date.today.year}")
-    @d2_projects = SpProject.where(:id => project_ids).where(["completed_at > ? AND completed_at <= ?", d1, d2]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
-    d3 = Date.parse("Feb 24, #{Date.today.year}")
-    @d3_projects = SpProject.where(:id => project_ids).where(["completed_at > ? AND completed_at <= ?", d2, d3]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d1 = Date.parse("Dec 10, #{SpApplication::YEAR - 1}")
+    @d1_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at <= ?", SpApplication::YEAR, d1]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d2 = Date.parse("Jan 24, #{SpApplication::YEAR}")
+    @d2_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication::YEAR, d1, d2]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d3 = Date.parse("Feb 24, #{SpApplication::YEAR}")
+    @d3_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication::YEAR, d2, d3]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+
+    @c1_cutoff = Date.parse("Jan 28, #{SpApplication::YEAR}")
+    @c2_cutoff = Date.parse("Feb 28, #{SpApplication::YEAR}")
+    @c3_cutoff = Date.parse("Mar 28, #{SpApplication::YEAR}")
+  end
+
+  def applications_by_status
+    if sp_user.is_a?(SpNationalCoordinator)
+      @projects = SpProject.current.order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
+      partner
+      @partners = @partners & sp_user.partnerships
+      @projects = SpProject.current.with_partner(@partners).order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpDirector)
+      @projects = current_person.directed_projects.order("name ASC")
+    end
+
+    @years = SpApplication.select("distinct year").order("year DESC").collect(&:year).compact
+    @year = params[:year] || @years.first
+
+    @counts = []
+    @counts << [ "Accepted as Participant", SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Accepted as Student Staff", SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Ready", SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Submitted", SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Unsubmitted", SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Started", SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (Accepted as Participant)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (Accepted as Student Staff)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (Ready)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (Submitted)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (Unsubmitted)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (Started)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Withdrawn (No status set)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Declined", SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
   end
 
   def region

@@ -1,0 +1,31 @@
+<style>
+  .pagepad.reportpage table {
+    width: 400px;
+  }
+</style>
+
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to report list", director_admin_reports_path) %>
+
+  <h1>Applications By Status</h1>
+  <p>Change year: <%= select_tag('year', options_for_select(@years, @year)) %></p>
+  <table>
+    <tr>
+      <th>Status</th>
+      <th>Count</th>
+    </tr>
+    <%- for label, number in @counts %>
+      <tr>
+        <td><%= label %></td>
+        <td><%= number %></td>
+      </tr>
+    <%- end %>
+  </table>
+</div>
+
+<script>
+  $('#year').change(function() {
+    window.location = "<%= applications_by_status_admin_reports_path %>?year=" + $("#year").val();
+  });
+</script>
