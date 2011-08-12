@@ -41,6 +41,7 @@ Sp2::Application.routes.draw do
       get :ministry_focus
       get :evangelism
       get :ready_after_deadline
+      get :applications_by_status
       get :mpd_summary
       get :regional
       get :national

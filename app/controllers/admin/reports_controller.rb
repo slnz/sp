@@ -1,3 +1,5 @@
+require 'csv'
+
 class Admin::ReportsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
   layout 'admin'
@@ -65,6 +67,23 @@ class Admin::ReportsController < ApplicationController
       @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
     else
       @partners = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?)
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Project Name", "Status", "Name", "Gender", "Region", 
+            "School", "1st Preference", "2nd Preference", "Email", "Phone" ]
+          @applications.each do |app|
+            csv << [ app.project.name, app.status.titleize, app.name, app.person.human_gender, app.person.region,
+              app.person.campus, app.preference1 || app.project, app.preference2, app.email, app.person.phone ]
+          end
+        end
+        render :text => csv
+      }
     end
   end
 
@@ -158,6 +177,24 @@ class Admin::ReportsController < ApplicationController
     else
       @regions = Region.standard_regions.collect(&:region)
     end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Accepted To", "Status", "Name", "Gender", "School", "Missional Team",
+                   "1st Preference", "2nd Preference", "Email", "Phone" ]
+          @applications.each do |app|
+            csv << [ (app.project.name if app.accepted?), app.status.titleize, app.name, app.person.human_gender,
+              app.person.campus, app.person.target_area.try(:teams).try(:first), app.preference1 || app.project,
+              app.preference2, app.email, app.person.phone ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def missional_team
@@ -169,6 +206,23 @@ class Admin::ReportsController < ApplicationController
       schools = SpApplication.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year})")
       @teams = Team.where("#{TargetArea.table_name}.name" => schools).includes(:target_areas).order("#{Team.table_name}.name")
     end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Accepted To", "Status", "Name", "Gender", "School", "1st Preference", "2nd Preference",
+            "3rd Preference", "Email", "Phone" ]
+          @applications.each do |app|
+            csv << [ (app.project.name if app.accepted?), app.status.titleize, app.name, app.person.human_gender,
+              app.person.campus, app.preference1 || app.project, app.preference2, app.preference3, 
+              app.email, app.person.phone ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def school
@@ -176,6 +230,22 @@ class Admin::ReportsController < ApplicationController
       @applications = SpApplication.where("#{Person.table_name}.campus" => params[:school], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
     else
       @schools = SpApplication.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year}) order by campus").reject(&:blank?)
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Accepted To", "Status", "Name", "Gender", "1st Preference", "2nd Preference", "3rd Preference",
+            "Email", "Phone" ]
+          @applications.each do |app|
+            csv << [ (app.project.name if app.accepted?), app.status.titleize, app.name, app.person.human_gender,
+              app.preference1 || app.project, app.preference2, app.preference3, app.email, app.person.phone ]
+          end
+        end
+        render :text => csv
+      }
     end
   end
 
