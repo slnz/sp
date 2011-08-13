@@ -5,7 +5,7 @@
     <h1>Applications for project parternships</h1>
     <ul>
       <% @partners.each do |partner| %>
-        <li><%= partner %> (<%= link_to('html', partner_admin_reports_path(:partner => partner)) %>, <%= link_to('csv', partner_admin_reports_path(:partner => partner, :format => 'csv')) %>)</li>
+        <li><%= partner %> (<%= link_to('html', partner_admin_reports_path(:partner => partner)) %> | <%= link_to('csv', partner_admin_reports_path(:partner => partner, :format => 'csv')) %>)</li>
       <% end %>
     </ul>
   <% end %>

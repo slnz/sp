@@ -1,20 +1,15 @@
-
-<%- if stat.StatisticID %>
-  <tr>
-    <td><%= stat.periodBegin.year if stat.periodBegin %></td>
-    <td><%= number_with_delimiter(stat.exposuresViaMedia.to_i) %></td>
-    <td><%= number_with_delimiter(stat.evangelisticOneOnOne.to_i) %></td>
-    <td><%= number_with_delimiter(stat.evangelisticGroup.to_i) %></td>
-    <td><%= number_with_delimiter(stat.decisions.to_i) %></td>
-    <td><%= number_with_delimiter(stat.decisionsHelpedByMedia.to_i) %></td>
-    <td><%= number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i) %></td>
-    <td><%= number_with_delimiter(stat.decisionsHelpedByGroup.to_i) %></td>
-    <td><%= number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i) %></td>
-    <td><%= number_with_delimiter(stat.holySpiritConversations.to_i) %></td>
-    <td><%= number_with_delimiter(stat.invldNewBlvrs.to_i) %></td>
-    <td><%= number_with_delimiter(stat.invldStudents.to_i) %></td>
-    <td><%= number_to_currency(stat.dollars_raised.to_i, precision: 0) %></td>
-  </tr>
-<%- else %>
-  <tr><td colspan="12"><em>no stats have been entered for this project</em></td></tr>
-<%- end %>
+<tr>
+  <td><%= stat.stat_year %></td>
+  <td><%= number_with_delimiter(stat.exposuresViaMedia.to_i) %></td>
+  <td><%= number_with_delimiter(stat.evangelisticOneOnOne.to_i) %></td>
+  <td><%= number_with_delimiter(stat.evangelisticGroup.to_i) %></td>
+  <td><%= number_with_delimiter(stat.decisions.to_i) %></td>
+  <td><%= number_with_delimiter(stat.decisionsHelpedByMedia.to_i) %></td>
+  <td><%= number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i) %></td>
+  <td><%= number_with_delimiter(stat.decisionsHelpedByGroup.to_i) %></td>
+  <td><%= number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i) %></td>
+  <td><%= number_with_delimiter(stat.holySpiritConversations.to_i) %></td>
+  <td><%= number_with_delimiter(stat.invldNewBlvrs.to_i) %></td>
+  <td><%= number_with_delimiter(stat.invldStudents.to_i) %></td>
+  <td><%= number_to_currency(stat.dollars_raised.to_i, precision: 0) %></td>
+</tr>
