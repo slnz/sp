@@ -124,6 +124,37 @@ class Admin::ReportsController < ApplicationController
 
   end
 
+  def emergency_contact
+    if sp_user.is_a?(SpNationalCoordinator)
+      @projects = SpProject.current.order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator)
+      @projects = sp_user.partnerships
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "name", "PDs", "start date", "end date", 
+            "contact 1 name", "contact 1 role", "contact 1 phone", "contact 1 email",
+            "contact 2 name", "contact 2 role", "contact 2 phone", "contact 2 email", 
+            "departure city", "destination city", "date of departure", "date of return",
+            "in country contact" ]
+          @projects.each do |project|
+            csv << [ project.name, 
+              [project.pd, project.apd, project.opd].compact.collect{ |pd| "#{pd.full_name} (#{pd.email}, #{pd.phone})" }.join(", "),
+              project.start_date, project.end_date, 
+              project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
+              project.project_contact2_name, project.project_contact2_role, project.project_contact2_phone, project.project_contact2_email,
+              project.departure_city, project.destination_city, project.date_of_departure, project.date_of_return, project.in_country_contact ]
+          end
+        end
+        render :text => csv
+      }
+    end
+  end
+
   def ready_after_deadline
     if sp_user.is_a?(SpNationalCoordinator)
       @projects = SpProject.current.order("name ASC")

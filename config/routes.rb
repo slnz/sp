@@ -42,6 +42,7 @@ Sp2::Application.routes.draw do
       get :evangelism
       get :evangelism_combined
       get :ready_after_deadline
+      get :emergency_contact
       get :applications_by_status
       get :mpd_summary
       get :regional
