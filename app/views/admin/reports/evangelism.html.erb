@@ -12,30 +12,37 @@
   <%= link_to("<< Back to director report list", director_admin_reports_path) %>
   <br/>
 
-  <%- if @partners %>
-    <h1>Partnerships</h1>
-    <ul>
-      <% @partners.each do |partner| %>
-        <li><%= link_to(partner, evangelism_admin_reports_path(:partner => partner)) %></li>
-      <% end %>
-    </ul>
-  <%- elsif @projects.present? %>
+  <%- if @projects.present? %>
     <h1><%= params[:partner] %> Projects</h1>
     <ul>
       <% @projects.each do |project| %>
-        <li><%= link_to(project.name, evangelism_admin_reports_path(:project_id => project.id)) %><br/>
-        <%- if stat = project.statistics.last %>
-          <%= render "stat", :stat => stat %>
-          <br/>
-        <%- end %>
+        <li><%= link_to(project.name, evangelism_admin_reports_path(:project_id => project.id)) %>
         </li>
       <% end %>
     </ul>
   <%- elsif @project.present? %>
-    <%- @project.statistics.each do |stat| %>
-      <%= render "stat", :stat => stat %>
-    <%- end %>
+  <br/>
+    <table>
+      <tr>
+        <th>Year</th>
+        <th>Media Exposures</th>
+        <th>Evangelistic One-One</th>
+        <th>Evangelistic Group</th>
+        <th>Decisions</th>
+        <th>Decisions Media</th>
+        <th>Decisions One-One</th>
+        <th>Decisions Group</th>
+        <th>Holy Spirit Convo</th>
+        <th>Involved New Blvrs</th>
+        <th>Involved Students</th>
+        <th>Students Leaders</th>
+        <th>Dollars Raised</th>
+      </tr>
+      <%- @project.statistics.each do |stat| %>
+        <%= render "stat", :stat => stat %>
+      <%- end %>
+    </table>
   <%- else %>
-    <P>No project or partnership given.</P>
+    <p>We couldn't find any projects that you're directing or have permission to view stats on.</p>
   <%- end %>
 </div>

@@ -1,14 +1,20 @@
-<br/>
-<table>
-  <tr><th>attribute</th><th>value</th></tr>
+
 <%- if stat.StatisticID %>
-    <%- Statistic.column_names.each do |c| %>
-      <%- next if combined && %w(StatisticID periodBegin periodEnd Activity updated_at fk_Activity).include?(c) %>
-      <%- if v = stat.send(c) %>
-        <tr><td><%= c %></td><td><%= v %></td>
-      <%- end %>
-    <%- end %>
+  <tr>
+    <td><%= stat.periodBegin.year if stat.periodBegin %></td>
+    <td><%= number_with_delimiter(stat.exposuresViaMedia.to_i) %></td>
+    <td><%= number_with_delimiter(stat.evangelisticOneOnOne.to_i) %></td>
+    <td><%= number_with_delimiter(stat.evangelisticGroup.to_i) %></td>
+    <td><%= number_with_delimiter(stat.decisions.to_i) %></td>
+    <td><%= number_with_delimiter(stat.decisionsHelpedByMedia.to_i) %></td>
+    <td><%= number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i) %></td>
+    <td><%= number_with_delimiter(stat.decisionsHelpedByGroup.to_i) %></td>
+    <td><%= number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i) %></td>
+    <td><%= number_with_delimiter(stat.holySpiritConversations.to_i) %></td>
+    <td><%= number_with_delimiter(stat.invldNewBlvrs.to_i) %></td>
+    <td><%= number_with_delimiter(stat.invldStudents.to_i) %></td>
+    <td><%= number_to_currency(stat.dollars_raised.to_i, precision: 0) %></td>
+  </tr>
 <%- else %>
-  <tr><td colspan="2"><I>no stats have been entered for this project</I></td></tr>
+  <tr><td colspan="12"><em>no stats have been entered for this project</em></td></tr>
 <%- end %>
-</table>
