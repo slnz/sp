@@ -15,7 +15,7 @@
     <% projects.each do |project| %>
       <tr>
         <td><%= project.name %></td>
-        <td><%= number_with_precision(project.send("percent_full_#{gender}"), :precision => 0) %>%</td>
+        <td><%= percentage == '100' ? 100 : number_with_precision(project.send("percent_full_#{gender}"), :precision => 0) %>%</td>
         <td><%= gender == 'men' ? project.pd.try(:email) : project.apd.try(:email) %></td>
         <td><%= project.primary_partner %></td>
         <td><%= project.weeks.to_i %> </td>

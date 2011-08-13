@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '3.0.5'
+gem 'rails', '~> 3.0.9'
 
-gem 'mysql2'#, '0.2.6'
+gem 'mysql2', '0.2.7'
 # gem 'mysql'
 
 # Deploy with Capistrano
@@ -51,10 +51,14 @@ gem 'less'
 group :development do
   # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
+  gem 'unicorn'
 end
-# 
-gem 'activerecord-oracle_enhanced-adapter'
-gem 'ruby-oci8'
-gem 'omniauth' # ~2s
+
+group :production do
+  gem 'ruby-oci8'
+  gem 'activerecord-oracle_enhanced-adapter'  
+end
+
+gem 'omniauth',  ">=0.2.6"  # ~2s
 gem 'message_block' # ~100ms
 gem 'rack-contrib' # 100ms

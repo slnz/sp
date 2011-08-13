@@ -24,4 +24,4 @@
 .reportpage h3.color_100 { color: #d60000; }
 .reportpage h3.color_0-50 { color: #52ae15; }
 .reportpage h3.color_51-99 { color: #ffba00; }
-.focus_name, .pd_type {cursor: pointer}
+.focus_name, .pd_type {cursor: pointer; color: #0B486B}
