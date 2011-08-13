@@ -86,6 +86,10 @@ class Admin::ReportsController < ApplicationController
       }
     end
   end
+  
+  def mpd_summary
+    
+  end
 
   def evangelism
     #national: sees list of all partnerships
@@ -110,11 +114,15 @@ class Admin::ReportsController < ApplicationController
   def evangelism_combined
     if params[:partner].present?
       @partners = [ params[:partner] ]
-      @statistic = Statistic.find_by_sql("select #{Statistic.column_names.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
+      columns_we_care_about = %w[exposuresViaMedia evangelisticOneOnOne evangelisticGroup decisions decisionsHelpedByMedia decisionsHelpedByOneOnOne 
+                                 decisionsHelpedByGroup decisionsHelpedByOngoingReln holySpiritConversations invldNewBlvrs invldStudents
+                                 dollars_raised]
+      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `stat_year`, #{columns_we_care_about.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
         "left join ministry_targetarea on sp_projects.id = ministry_targetarea.eventKeyID and eventType = 'SP' " +
         "left join ministry_activity on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` " +
         "left join ministry_statistic on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` " +
-        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')})").first
+        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by stat_year desc")
+      @statistics.select! {|s| s.stat_year.present?}
     elsif sp_user.is_a?(SpNationalCoordinator)
       partner
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?

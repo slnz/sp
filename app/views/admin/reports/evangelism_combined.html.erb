@@ -11,10 +11,18 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %><br />
   <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
   <br/>
-
-  <%- if @statistic %>
+  <%- if @statistics %>
     <h1>Statistics for all <%= @partners.join(', ') %> Projects</h1>
-    <%= render "stat", :stat => @statistic, :combined => true %>
+    <table>
+      <%= render 'stat_header' %>
+      <% if @statistics.present? %>
+        <% @statistics.each do |stat| %>
+          <%= render "stat", :stat => stat, :combined => true %>
+        <% end %>
+      <% else %>
+        <tr><td colspan="13"><em>None of the projects in this partnership have stats</em></td></tr>
+      <% end %>
+    </table>
   <%- elsif @partners %>
     <h1>Partnerships</h1>
     <ul>

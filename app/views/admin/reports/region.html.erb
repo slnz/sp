@@ -5,7 +5,7 @@
     <h1>Applications for by student region</h1>
     <ul>
       <% @regions.each do |region| %>
-        <li><%= region %> (<%= link_to('html', region_admin_reports_path(:region => region)) %>, <%= link_to('csv', region_admin_reports_path(:region => region, :format => 'csv')) %>)</li>
+        <li><%= region %> (<%= link_to('html', region_admin_reports_path(:region => region)) %> | <%= link_to('csv', region_admin_reports_path(:region => region, :format => 'csv')) %>)</li>
       <% end %>
     </ul>
   <% end %>

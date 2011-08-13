@@ -24,24 +24,15 @@
     <h1>Stats for <%= @project %></h1>
     <br/>
     <table>
-      <tr>
-        <th>Year</th>
-        <th>Media Exposures</th>
-        <th>Evangelistic One-One</th>
-        <th>Evangelistic Group</th>
-        <th>Decisions</th>
-        <th>Decisions Media</th>
-        <th>Decisions One-One</th>
-        <th>Decisions Group</th>
-        <th>Holy Spirit Convo</th>
-        <th>Involved New Blvrs</th>
-        <th>Involved Students</th>
-        <th>Students Leaders</th>
-        <th>Dollars Raised</th>
-      </tr>
-      <%- @project.statistics.each do |stat| %>
-        <%= render "stat", :stat => stat %>
-      <%- end %>
+      <%= render 'stat_header', :combined => false %>
+
+      <% if @project.statistics.present? %>
+        <%- @project.statistics.each do |stat| %>
+          <%= render "stat", :stat => stat %>
+        <%- end %>
+      <% else %>
+        <tr><td colspan="13"><em>There are no stats for this project</em></td></tr>
+      <% end %>
     </table>
   <%- else %>
     <p>We couldn't find any projects that you're directing or have permission to view stats on.</p>

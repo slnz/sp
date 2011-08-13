@@ -5,7 +5,7 @@
     <h1>Applications by school</h1>
     <ul>
       <% @schools.each do |school| %>
-        <li><%= school %> (<%= link_to('html', school_admin_reports_path(:school => school)) %>, <%= link_to('csv', school_admin_reports_path(:school => school, :format => 'csv')) %>)</li>
+        <li><%= school %> (<%= link_to('html', school_admin_reports_path(:school => school)) %> | <%= link_to('csv', school_admin_reports_path(:school => school, :format => 'csv')) %>)</li>
       <% end %>
     </ul>
   <% end %>
