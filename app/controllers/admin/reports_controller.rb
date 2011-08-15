@@ -335,6 +335,28 @@ class Admin::ReportsController < ApplicationController
     logger.info "xyz all #{@all.length}"
   end
 
+  def fee_by_staff
+    respond_to do |format|
+      format.html {
+        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+      }
+      format.csv { 
+        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
+          @payments.each do |payment|
+            csv << [ payment.payment_account_no,
+              payment.amount, payment.application.person.firstName, payment.application.person.lastName,
+              payment.status, payment.created_at
+            ]
+          end
+        end
+        render :text => csv
+      }
+    end
+  end
+
   def project_start_end
     @projects = SpProject.current
   end
