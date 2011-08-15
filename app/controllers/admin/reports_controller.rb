@@ -300,15 +300,43 @@ class Admin::ReportsController < ApplicationController
   end
 
   def applicants
-    @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+    respond_to do |format|
+      format.html {
+        @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+      }
+      format.csv { 
+        @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Accepted To", "Status", "Name", "Gender", "Region", "Missional Team", "School", "1st Preference",
+            "Email", "Phone" ]
+          @applications.each do |app|
+            csv << [ (app.project.name if app.accepted?),
+              app.status.titleize, app.name, app.person.human_gender, 
+              app.person.region, app.person.target_area.try(:teams).try(:first),
+              app.person.campus, app.preference1 || app.project,
+              app.email, app.person.phone ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def pd_emails
     base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).year(year)
     @pds = base.pd.collect(&:email).reject(&:blank?).uniq
+    logger.info "xyz pds #{@pds.count}"
     @apds = base.apd.collect(&:email).reject(&:blank?).uniq
+    logger.info "xyz apds #{@apds.count}"
     @opds = base.opd.collect(&:email).reject(&:blank?).uniq
+    logger.info "xyz opd #{@opds.count}"
     @all = @pds + @apds + @opds
+    logger.info "xyz all #{@all.length}"
+  end
+
+  def project_start_end
+    @projects = SpProject.current
   end
 
   def student_emails

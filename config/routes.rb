@@ -54,6 +54,7 @@ Sp2::Application.routes.draw do
       get :applicants
       get :pd_emails
       get :student_emails
+      get :project_start_end
     end
     resources :people
     resources :users do

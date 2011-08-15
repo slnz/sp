@@ -4,13 +4,16 @@
   <div id="dashboardlist" class="dashboardlist">
     <ul>
       <li>
-        <%= link_to('All applicants', applicants_admin_reports_path) %>
+        All applicants (<%= link_to('html', applicants_admin_reports_path) %>, <%= link_to('csv', applicants_admin_reports_path(:format => 'csv')) %>)
       </li>
       <li>
         <%= link_to('PD Emails', pd_emails_admin_reports_path) %>
       </li>
       <li>
         <%= link_to('Student emails', student_emails_admin_reports_path) %>
+      </li>
+      <li>
+        <%= link_to('Project Start/End Date', project_start_end_admin_reports_path) %>
       </li>
     </ul>
   </div>
