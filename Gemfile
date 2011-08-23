@@ -56,7 +56,7 @@ end
 
 group :production do
   gem 'ruby-oci8'
-  gem 'activerecord-oracle_enhanced-adapter'  
+  gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
 end
 
 gem 'omniauth',  ">=0.2.6"  # ~2s
