@@ -1,0 +1,63 @@
+<style>
+  .reportpage table th {
+    width: 50%;
+  }
+  .reportpage table {
+    width: 400px;
+  }
+</style>
+
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
+
+  <br/>
+
+  <%- if @projects.present? %>
+    <h1><%= params[:partner] %> Projects</h1>
+    <table>
+      <tr>
+        <th>name</th>
+        <th>PDs</th>
+        <th>start date</th>
+        <th>end date</th>
+        <th>contact 1 name</th>
+        <th>contact 1 role</th>
+        <th>contact 1 phone</th>
+        <th>contact 1 email</th>
+        <th>contact 2 name</th>
+        <th>contact 2 role</th>
+        <th>contact 2 phone</th>
+        <th>contact 2 email</th>
+        <th>departure city</th>
+        <th>destination city</th>
+        <th>date of departure</th>
+        <th>date of return</th>
+        <th>in country contact</th>
+      </tr> 
+      <% @projects.each do |project| %>
+        <tr>
+          <td><%= project.name %></td>
+          <td><%= [project.pd, project.apd, project.opd].compact.collect{ |pd| "#{pd.full_name} (#{pd.email}, #{pd.phone})" }.join(", ") %></td>
+          <td><%= project.start_date %></td>
+          <td><%= project.end_date %></td>
+          <td><%= project.project_contact_name %></td>
+          <td><%= project.project_contact_role %></td>
+          <td><%= project.project_contact_phone %></td>
+          <td><%= project.project_contact_email %></td>
+          <td><%= project.project_contact2_name %></td>
+          <td><%= project.project_contact2_role %></td>
+          <td><%= project.project_contact2_phone %></td>
+          <td><%= project.project_contact2_email %></td>
+          <td><%= project.departure_city %></td>
+          <td><%= project.destination_city %></td>
+          <td><%= project.date_of_departure %></td>
+          <td><%= project.date_of_return %></td>
+          <td><%= project.in_country_contact %></td>
+        </tr>
+      <% end %>
+    </table>
+  <%- else %>
+    <P>No project given.</P>
+  <%- end %>
+</div>

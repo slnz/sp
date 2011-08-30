@@ -144,6 +144,37 @@ class Admin::ReportsController < ApplicationController
 
   end
 
+  def emergency_contact
+    if sp_user.is_a?(SpNationalCoordinator)
+      @projects = SpProject.current.order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator)
+      @projects = sp_user.partnerships
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "name", "PDs", "start date", "end date", 
+            "contact 1 name", "contact 1 role", "contact 1 phone", "contact 1 email",
+            "contact 2 name", "contact 2 role", "contact 2 phone", "contact 2 email", 
+            "departure city", "destination city", "date of departure", "date of return",
+            "in country contact" ]
+          @projects.each do |project|
+            csv << [ project.name, 
+              [project.pd, project.apd, project.opd].compact.collect{ |pd| "#{pd.full_name} (#{pd.email}, #{pd.phone})" }.join(", "),
+              project.start_date, project.end_date, 
+              project.project_contact_name, project.project_contact_role, project.project_contact_phone, project.project_contact_email,
+              project.project_contact2_name, project.project_contact2_role, project.project_contact2_phone, project.project_contact2_email,
+              project.departure_city, project.destination_city, project.date_of_departure, project.date_of_return, project.in_country_contact ]
+          end
+        end
+        render :text => csv
+      }
+    end
+  end
+
   def ready_after_deadline
     if sp_user.is_a?(SpNationalCoordinator)
       @projects = SpProject.current.order("name ASC")
@@ -281,15 +312,65 @@ class Admin::ReportsController < ApplicationController
   end
 
   def applicants
-    @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+    respond_to do |format|
+      format.html {
+        @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+      }
+      format.csv { 
+        @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Accepted To", "Status", "Name", "Gender", "Region", "Missional Team", "School", "1st Preference",
+            "Email", "Phone" ]
+          @applications.each do |app|
+            csv << [ (app.project.name if app.accepted?),
+              app.status.titleize, app.name, app.person.human_gender, 
+              app.person.region, app.person.target_area.try(:teams).try(:first),
+              app.person.campus, app.preference1 || app.project,
+              app.email, app.person.phone ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def pd_emails
     base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).year(year)
     @pds = base.pd.collect(&:email).reject(&:blank?).uniq
+    logger.info "xyz pds #{@pds.count}"
     @apds = base.apd.collect(&:email).reject(&:blank?).uniq
+    logger.info "xyz apds #{@apds.count}"
     @opds = base.opd.collect(&:email).reject(&:blank?).uniq
+    logger.info "xyz opd #{@opds.count}"
     @all = @pds + @apds + @opds
+    logger.info "xyz all #{@all.length}"
+  end
+
+  def fee_by_staff
+    respond_to do |format|
+      format.html {
+        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+      }
+      format.csv { 
+        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
+          @payments.each do |payment|
+            csv << [ payment.payment_account_no,
+              payment.amount, payment.application.person.firstName, payment.application.person.lastName,
+              payment.status, payment.created_at
+            ]
+          end
+        end
+        render :text => csv
+      }
+    end
+  end
+
+  def project_start_end
+    @projects = SpProject.current
   end
 
   def student_emails

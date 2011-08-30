@@ -42,6 +42,7 @@ Sp2::Application.routes.draw do
       get :evangelism
       get :evangelism_combined
       get :ready_after_deadline
+      get :emergency_contact
       get :applications_by_status
       get :mpd_summary
       get :regional
@@ -53,6 +54,8 @@ Sp2::Application.routes.draw do
       get :applicants
       get :pd_emails
       get :student_emails
+      get :project_start_end
+      get :fee_by_staff
     end
     resources :people
     resources :users do

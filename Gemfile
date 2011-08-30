@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '~> 3.0.9'
+gem 'rails', '~> 3.0.10'
 
-gem 'mysql2', '0.2.7'
+gem 'mysql2', '~> 0.2.7'
 # gem 'mysql'
 
 # Deploy with Capistrano
@@ -56,7 +56,7 @@ end
 
 group :production do
   gem 'ruby-oci8'
-  gem 'activerecord-oracle_enhanced-adapter'  
+  gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
 end
 
 gem 'omniauth',  ">=0.2.6"  # ~2s
