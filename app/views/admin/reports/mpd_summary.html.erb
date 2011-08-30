@@ -2,8 +2,19 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %><br />
   <%= link_to("<< Back to director report list", director_admin_reports_path) %>
 
-  <h1>All Applications</h1>
-  <div id="applications">
-  </div>
+  <%- if @projects.present? %>
+    <h1>Projects</h1>
+    <ul>
+      <% @projects.each do |project| %>
+        <li><%= link_to(project.name, mpd_summary_admin_reports_path(:project_id => project.id)) %>
+        </li>
+      <% end %>
+    </ul>
+  <%- elsif @project.present? %>
+    <h1>MPD Summary for <%= @project %></h1>
+    <br/>
+  <%- else %>
+    <p>We couldn't find any projects that you're directing or have permission to view stats on.</p>
+  <%- end %>
 </div>
 

@@ -13,7 +13,7 @@
   <br/>
 
   <%- if @projects.present? %>
-    <h1><%= params[:partner] %> Projects</h1>
+    <h1>Projects</h1>
     <ul>
       <% @projects.each do |project| %>
         <li><%= link_to(project.name, evangelism_admin_reports_path(:project_id => project.id)) %>
