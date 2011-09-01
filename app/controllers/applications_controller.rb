@@ -5,6 +5,7 @@ class ApplicationsController < AnswerSheetsController
   
   def closed
     #redirect_to '/'
+    render :layout => false
   end
   
   def index
