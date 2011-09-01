@@ -12,6 +12,33 @@
     </ul>
   <%- elsif @project.present? %>
     <h1>MPD Summary for <%= @project %></h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Designation #</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Donor Name</th>
+          <th>Medium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(SpApplication::YEAR).each do |application| %>
+          <% person = application.person %>
+          <% application.donations.for_year(application.year).each do |donation| %>
+            <tr>
+              <td><%= person %></td>
+              <td><%= application.designation_number %></td>
+              <td><%= l(donation.donation_date) %></td>
+              <td class="amount"><%= number_to_currency(donation.amount) %></td>
+              <td><%= donation.donor_name %></td>
+              <td><span class="sprited sprite-<%= donation.medium.to_s.downcase.gsub(/\s+/,'_') %>"><%= donation.medium %></span></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
     <br/>
   <%- else %>
     <p>We couldn't find any projects that you're directing or have permission to view stats on.</p>
