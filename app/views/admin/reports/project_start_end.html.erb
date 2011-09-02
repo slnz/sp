@@ -1,0 +1,28 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
+  <h1>Project Start/End Dates</h1>
+
+  <table>
+    <tr>
+      <th>Project Name</th>
+      <th>Project Start</th>
+      <th>Project End</th>
+      <th>PD Email</th>
+      <th>APD Email</th>
+      <th>OPD Email</th>
+    </tr>
+  <% @projects.each do |project| %>
+    <tr>
+      <td><%= project.name %></td>
+      <td><%= project.start_date %></td>
+      <td><%= project.end_date %></td>
+      <td><%= project.pd.try(:email) %></td>
+      <td><%= project.apd.try(:email) %></td>
+      <td><%= project.opd.try(:email) %></td>
+    </tr>
+  <% end %>
+  </table>
+</div>
+
+

@@ -1,0 +1,28 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
+  <h1>Project Start/End Dates</h1>
+
+  <table>
+    <tr>
+      <th>Account NO</th>
+      <th>Amount</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Status</th>
+      <th>Created At</th>
+    </tr>
+  <% @payments.each do |payment| %>
+    <tr>
+      <td><%= payment.payment_account_no %></td>
+      <td><%= number_to_currency payment.amount %></td>
+      <td><%= payment.application.person.firstName %></td>
+      <td><%= payment.application.person.lastName %></td>
+      <td><%= payment.status %></td>
+      <td><%= payment.created_at %></td>
+    </tr>
+  <% end %>
+  </table>
+</div>
+
+
