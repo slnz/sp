@@ -337,13 +337,13 @@ class Admin::ReportsController < ApplicationController
 
   def pd_emails
     base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).year(year)
-    @pds = base.pd.collect(&:email).reject(&:blank?).uniq
+    @pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
     logger.info "xyz pds #{@pds.count}"
-    @apds = base.apd.collect(&:email).reject(&:blank?).uniq
+    @apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
     logger.info "xyz apds #{@apds.count}"
-    @opds = base.opd.collect(&:email).reject(&:blank?).uniq
+    @opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
     logger.info "xyz opd #{@opds.count}"
-    @all = @pds + @apds + @opds
+    @all = (@pds + @apds + @opds).uniq.sort
     logger.info "xyz all #{@all.length}"
   end
 
@@ -381,9 +381,22 @@ class Admin::ReportsController < ApplicationController
                  when 'ready' then SpApplication.ready_statuses
                  when 'withdrawn' then 'withdrawn'
                  end
-      @applications = SpApplication.where(:status => statuses, :year => year).where(Address.table_name + ".email <> ''").includes(:project, {:person => :current_address})
+      @emails = SpApplication.where(:status => statuses, :year => year).where(Address.table_name + ".email <> ''").where("isStaff <> 1 OR isStaff Is Null").includes(:person => :current_address).select('email').collect(&:email).uniq.compact
     else
       @statuses = %w{accepted ready started withdrawn}
+    end
+  end
+  
+  def sending_stats
+    totals = {}
+    @years = SpProject.connection.select_values("select distinct(year) from sp_projects order by year desc")
+    @years.each do |year|
+      totals[year] = {}
+      Region.standard_regions.each do |region|
+        scope = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where('sp_projects.primary_partner' => region.region)
+        totals[year][region.region] = {'WSN' => scope.where("country <> 'United States' AND country <> ''").count,
+                                       'USSP' => scope.where("country = 'United States'").count}
+      end
     end
   end
 
@@ -408,6 +421,7 @@ class Admin::ReportsController < ApplicationController
     end
 
     def year
-      year = SpProject.maximum(:year)
+      SpApplication::YEAR
+      # year = SpProject.maximum(:year)
     end
 end

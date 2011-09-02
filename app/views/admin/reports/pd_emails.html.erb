@@ -5,7 +5,7 @@
   <h1>Director Emails</h1>
   <ul>
     <li>
-    <a class="pd_type" href="#">PDs</a>
+    <a class="pd_type" href="#">PDs (primarily male)</a>
     <div style="display:none">
       <% @pds.each do |pd| %>
         <%= pd %><br />
@@ -13,7 +13,7 @@
     </div>
     </li>
     <li>
-    <a class="pd_type" href="#">APDs</a>
+    <a class="pd_type" href="#">PDs (primarily female)</a>
     <div style="display:none">
       <% @apds.each do |pd| %>
         <%= pd %><br />
@@ -31,7 +31,7 @@
     <li>
     <a class="pd_type" href="#">All</a>
     <div style="display:none">
-      <% @pds.each do |pd| %>
+      <% @all.each do |pd| %>
         <%= pd %><br />
       <% end -%>
     </div>

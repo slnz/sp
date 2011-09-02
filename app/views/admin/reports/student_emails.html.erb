@@ -10,14 +10,12 @@
       <% end %>
     </ul>
   <% end %>
-  <% if @applications %>
+  <% if @emails %>
     <br /><%= link_to("<< Back to status list", student_emails_admin_reports_path) %>
 
     <h3><%= params[:status].titleize %></h3>
-    <% @applications.each do |application| %>
-      <% if application.email.present? %>
-        <%= application.email %> <br />
-      <% end %>
+    <% @emails.each do |email| %>
+      <%= email %> <br />
     <% end %>
   <% end %>
 </div>

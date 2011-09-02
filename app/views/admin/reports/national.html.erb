@@ -4,7 +4,7 @@
   <div id="dashboardlist" class="dashboardlist">
     <ul>
       <li>
-        All applicants (<%= link_to('html', applicants_admin_reports_path) %>, <%= link_to('csv', applicants_admin_reports_path(:format => 'csv')) %>)
+        <%= link_to('All applicants', applicants_admin_reports_path) %> (<%= link_to('download', applicants_admin_reports_path(:format => 'csv')) %>)
       </li>
       <li>
         <%= link_to('PD Emails', pd_emails_admin_reports_path) %>
@@ -16,7 +16,10 @@
         <%= link_to('Project Start/End Date', project_start_end_admin_reports_path) %>
       </li>
       <li>
-        Project Application Fee Paid by Staff acct/chartfield Transfer (<%= link_to('html', fee_by_staff_admin_reports_path) %>, <%= link_to('csv', fee_by_staff_admin_reports_path(:format => 'csv')) %>)
+        <%= link_to('Project Application Fee Paid by Staff acct/chartfield Transfer', fee_by_staff_admin_reports_path(:format => 'csv')) %>
+      </li>
+      <li>
+        <%= link_to('Summer Project Sending Statistics', sending_stats_admin_reports_path) %> <!-- (<%= link_to('download', sending_stats_admin_reports_path(:format => 'csv')) %>) -->
       </li>
     </ul>
   </div>
