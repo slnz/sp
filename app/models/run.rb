@@ -37,10 +37,10 @@ class Run
   
   #In addition to running this method, change the constant in SpApplication.rb
   def self.change_sp_year
-    last_years = SpProject.find_all_by_year_and_project_status("2010", "open")
+    last_years = SpProject.find_all_by_year_and_project_status("2011", "open")
     last_years.each do |new_project|
-      new_project.save(false)
-      new_project.year = "2011"
+      new_project.save(:validate => false)
+      new_project.year = "2012"
       new_project.start_date = new_project.start_date + 1.year if new_project.start_date
       new_project.end_date = new_project.end_date + 1.year if new_project.end_date
       new_project.date_of_departure = new_project.date_of_departure + 1.year if new_project.date_of_departure
@@ -50,11 +50,7 @@ class Run
       new_project.current_students_women = 0
       new_project.current_applicants_men = 0
       new_project.current_applicants_women = 0
-      new_project.pd_id = nil
-      new_project.apd_id = nil
-      new_project.opd_id = nil
-      new_project.coordinator_id = nil
-      new_project.save(false)
+      new_project.save(:validate => false)
     end
     nil
   end

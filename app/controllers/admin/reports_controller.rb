@@ -88,7 +88,19 @@ class Admin::ReportsController < ApplicationController
   end
   
   def mpd_summary
-    
+    if params[:project_id].present?
+      @project = SpProject.find(params[:project_id])
+    elsif sp_user.is_a?(SpNationalCoordinator)
+      @projects = SpProject.current.order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
+      @projects = SpProject.with_partner(sp_user.partnerships).order("name ASC")
+    elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpDirector)
+      if current_person.directed_projects.length > 1
+        @projects = current_person.directed_projects.order("name ASC")
+      else
+        @project = current_person.directed_projects.first
+      end
+    end
   end
 
   def evangelism
