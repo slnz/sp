@@ -18,6 +18,8 @@
   <%= include_tiny_mce_if_needed %>
   <%#= tiny_mce_init %>
   <!-- <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> -->
+  
+  <%= yield :head %>
 
 
   <%= render :partial => 'layouts/ga' %>  

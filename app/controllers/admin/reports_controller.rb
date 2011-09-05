@@ -388,14 +388,14 @@ class Admin::ReportsController < ApplicationController
   end
   
   def sending_stats
-    totals = {}
+    @totals = {}
     @years = SpProject.connection.select_values("select distinct(year) from sp_projects order by year desc")
-    @years.each do |year|
-      totals[year] = {}
-      Region.standard_regions.each do |region|
+    Region.standard_regions.each do |region|
+      @totals[region.region] = {}
+      @years.each do |year|
         scope = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where('sp_projects.primary_partner' => region.region)
-        totals[year][region.region] = {'WSN' => scope.where("country <> 'United States' AND country <> ''").count,
-                                       'USSP' => scope.where("country = 'United States'").count}
+        @totals[region.region][year] = {'WSN' => scope.where("country <> 'United States' AND country <> ''").count,
+                                        'USSP' => scope.where("country = 'United States'").count}
       end
     end
   end

@@ -1,0 +1,136 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'highcharts' %>
+<% end %>
+
+<style type="text/css" media="screen">
+
+  th.year, tr.summary td {
+    background: none repeat scroll 0 0 blue !important;
+    color: white;
+    font-weight: bold;
+  }
+  
+  
+  th.year.current, tr.summary td.current {
+    background: red !important;
+  }
+  th.title {
+    background: white !important;
+    font-weight: normal !important;
+  }
+  th.total {
+    background: white !important;
+    font-weight: bold !important;
+  }
+</style>
+
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) %><br />
+  <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
+
+  <% columns = 5 %>
+  <% @total_wsn = {} %>
+  <% @total_ussp = {} %>
+  <h1>Summer Project Sending Statistics (# of Accepted Students) by Region</h1>
+  <% 1.upto((@years.length.to_f / columns).ceil) do |i| %>
+    <table>
+      <tr>
+        <% ((i-1) * columns).upto((i * columns) - 1).each do |j| %>
+          <% next unless @years[j] %>
+          <th class="year <%= 'current' if j == 0 %>"><%= @years[j] %></th>
+          <th class="title">WSN</th>
+          <th class="title">USSP</th>
+          <th class="total"><strong>TOTAL</strong></th>
+        <% end %>
+      </tr>
+      <% @totals.each do |region, years| %>
+        <tr>
+          <% ((i-1) * columns).upto((i * columns) - 1).each do |j| %>
+            <% year = @years[j] %>
+            <% next unless year %>
+            <% stats = years[year] %>
+            <% @total_wsn[year] ||= 0 %>
+            <% @total_wsn[year] += stats['WSN'] %>
+            <% @total_ussp[year] ||= 0 %>
+            <% @total_ussp[year] += stats['USSP'] %>
+            <td><%= region %></td>
+            <td><%= stats['WSN'] %></td>
+            <td><%= stats['USSP'] %></td>
+            <td><%= stats['WSN'] + stats['USSP'] %></td>
+          <% end %>
+        </tr>
+      <%- end %>
+      <tr class="summary">
+        <% ((i-1) * columns).upto((i * columns) - 1).each do |j| %>
+          <% year = @years[j] %>
+          <% next unless year %>
+          <td class="<%= 'current' if j == 0 %>">TOTAL</td>
+          <td class="<%= 'current' if j == 0 %>"><%= @total_wsn[year] %></td>
+          <td class="<%= 'current' if j == 0 %>"><%= @total_ussp[year] %></td>
+          <td class="<%= 'current' if j == 0 %> total"><%= @total_wsn[year] + @total_ussp[year] %></td>
+        <% end %>
+      </tr>
+    </table>
+    <br/><br/>
+  <% end %>
+</div>
+
+<div id="container">
+  
+</div>
+<script type="text/javascript" charset="utf-8">
+  var chart;
+$(document).ready(function() {
+   chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'container',
+         defaultSeriesType: 'line',
+         marginRight: 130,
+         marginBottom: 25
+      },
+      title: {
+         text: 'Summer Project Sending Statistics (# of Accepted Students) by Region',
+         x: -20 //center
+      },
+      xAxis: {
+         categories: ['<%= @years.reverse.join("','") %>']
+      },
+      yAxis: {
+         title: {
+            text: 'Number of participants'
+         },
+         plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+         }]
+      },
+      tooltip: {
+         formatter: function() {
+                   return '<b>'+ this.series.name +'</b><br/>'+
+               this.x +': '+ this.y +'Â°C';
+         }
+      },
+      legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'top',
+         x: -10,
+         y: 100,
+         borderWidth: 0
+      },
+      series: [{
+         name: 'WSN',
+         data: [<%= @years.reverse.collect {|year| @total_wsn[year]}.compact.join(",") %>]
+      }, {
+         name: 'USSP',
+         data: [<%= @years.reverse.collect {|year| @total_ussp[year]}.compact.join(",") %>]
+      }, {
+         name: 'Total',
+         data: [<%= @years.reverse.collect {|year| @total_ussp[year] + @total_wsn[year]}.compact.join(",") %>]
+      }]
+   });
+   
+   
+});
+</script>
