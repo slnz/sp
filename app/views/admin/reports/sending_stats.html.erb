@@ -5,14 +5,14 @@
 <style type="text/css" media="screen">
 
   th.year, tr.summary td {
-    background: none repeat scroll 0 0 blue !important;
+    background: none repeat scroll 0 0 #57aeef !important;
     color: white;
     font-weight: bold;
   }
   
   
   th.year.current, tr.summary td.current {
-    background: red !important;
+    background: #ad5c4e !important;
   }
   th.title {
     background: white !important;
@@ -21,6 +21,10 @@
   th.total {
     background: white !important;
     font-weight: bold !important;
+  }
+  
+  tr.summary td.black {
+    color: black !important;
   }
 </style>
 
@@ -64,9 +68,9 @@
         <% ((i-1) * columns).upto((i * columns) - 1).each do |j| %>
           <% year = @years[j] %>
           <% next unless year %>
-          <td class="<%= 'current' if j == 0 %>">TOTAL</td>
-          <td class="<%= 'current' if j == 0 %>"><%= @total_wsn[year] %></td>
-          <td class="<%= 'current' if j == 0 %>"><%= @total_ussp[year] %></td>
+          <td class="<%= 'current' if j == 0 %> black">TOTAL</td>
+          <td class="<%= 'current' if j == 0 %> black"><%= @total_wsn[year] %></td>
+          <td class="<%= 'current' if j == 0 %> black"><%= @total_ussp[year] %></td>
           <td class="<%= 'current' if j == 0 %> total"><%= @total_wsn[year] + @total_ussp[year] %></td>
         <% end %>
       </tr>
