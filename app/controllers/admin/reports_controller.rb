@@ -1,6 +1,7 @@
 require 'csv'
 
 class Admin::ReportsController < ApplicationController
+  include ActionView::Helpers::NumberHelper
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
   layout 'admin'
   def show
@@ -40,6 +41,32 @@ class Admin::ReportsController < ApplicationController
         @percentages['100'] << project
       end
     end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv = ""
+        CSV.generate(csv) do |csv|
+          gender = 'men'
+          @percentages.each do |percentage, projects|
+            csv << [ "#{percentage}% Full" ]
+            csv << [ "Name", "Fullness", "APD Email", "Primary Partner", "Project Length", "Ministry Focus", "Project Type" ]
+            projects.each do |project|
+              csv << [ project.name, 
+                percentage == '100' ? 100 : number_with_precision(project.send("percent_full_#{gender}"), :precision => 0),
+                gender == 'men' ? project.pd.try(:email) : project.apd.try(:email),
+                project.primary_partner,
+                project.weeks.to_i,
+                project.primary_ministry_focus,
+                project.report_stats_to
+              ]
+            end
+            csv << [ "" ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def female_openings
@@ -54,10 +81,51 @@ class Admin::ReportsController < ApplicationController
         @percentages['100'] << project
       end
     end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv = ""
+        CSV.generate(csv) do |csv|
+          gender = 'women'
+          @percentages.each do |percentage, projects|
+            csv << [ "#{percentage}% Full" ]
+            csv << [ "Name", "Fullness", "APD Email", "Primary Partner", "Project Length", "Ministry Focus", "Project Type" ]
+            projects.each do |project|
+              csv << [ project.name, 
+                percentage == '100' ? 100 : number_with_precision(project.send("percent_full_#{gender}"), :precision => 0),
+                gender == 'men' ? project.pd.try(:email) : project.apd.try(:email),
+                project.primary_partner,
+                project.weeks.to_i,
+                project.primary_ministry_focus,
+                project.report_stats_to
+              ]
+            end
+            csv << [ "" ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def ministry_focus
     @focuses = SpMinistryFocus.order(:name)
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Project Name", "PD Email Address" ]
+          @focus = SpMinistryFocus.find params[:focus_id]
+          @focus.sp_projects.current.each do |project|
+            csv << [ project.name, ([project.pd.try(:email), project.apd.try(:email)].compact.join(' or ')) ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def partner
@@ -120,6 +188,36 @@ class Admin::ReportsController < ApplicationController
       else
         @project = current_person.directed_projects.first
       end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Year", "Media Exposures", "Evangelistic One-One", "Evangelistic Group", "Decisions", 
+            "Decisions Media", "Decisions One-One", "Decisions Group", "Holy Spirit Convo",
+            "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised" ]
+          @project.statistics.each do |stat|
+            csv << [ 
+              stat.stat_year,
+              number_with_delimiter(stat.exposuresViaMedia.to_i),
+              number_with_delimiter(stat.evangelisticOneOnOne.to_i),
+              number_with_delimiter(stat.evangelisticGroup.to_i),
+              number_with_delimiter(stat.decisions.to_i),
+              number_with_delimiter(stat.decisionsHelpedByMedia.to_i),
+              number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
+              number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
+              number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i),
+              number_with_delimiter(stat.holySpiritConversations.to_i),
+              number_with_delimiter(stat.invldNewBlvrs.to_i),
+              number_with_delimiter(stat.invldStudents.to_i),
+              number_to_currency(stat.dollars_raised.to_i, precision: 0)
+            ]
+          end
+        end
+        render :text => csv
+      }
     end
   end
 
@@ -200,6 +298,25 @@ class Admin::ReportsController < ApplicationController
     @c1_cutoff = Date.parse("Jan 28, #{SpApplication::YEAR}")
     @c2_cutoff = Date.parse("Feb 28, #{SpApplication::YEAR}")
     @c3_cutoff = Date.parse("Mar 28, #{SpApplication::YEAR}")
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Project", "PD email", "Applied by Dec 10", "Applied by Jan 24", "Applied by Feb 24" ]
+          for project in @projects
+            csv << [ project.name, project.try(:pd).try(:email),
+              (Date.today >= @c1_cutoff) ? @d1_projects[project.name].try(:first).try(:app_count) : " ",
+              (Date.today >= @c2_cutoff) ? @d2_projects[project.name].try(:first).try(:app_count) : " ",
+              (Date.today >= @c3_cutoff) ? @d3_projects[project.name].try(:first).try(:app_count) : " "
+            ]
+          end
+        end
+        render :text => csv
+      }
+    end
+ 
   end
 
   def applications_by_status

@@ -5,6 +5,7 @@
   <p>Click on the name of a focus to see related projects</p>
   <% @focuses.each do |focus| %>
     <h3 class="focus_name"><%= focus %></h3>
+    <%= link_to "Download<br/><br/>".html_safe, ministry_focus_admin_reports_path(:format => 'csv', :focus_id => focus), :style => "display:none" %>
     <table id="<%= dom_id(focus) %>" style="display:none">
       <thead>
         <tr>

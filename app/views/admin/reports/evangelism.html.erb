@@ -22,7 +22,7 @@
     </ul>
   <%- elsif @project.present? %>
     <h1>Stats for <%= @project %></h1>
-    <br/>
+    <p><%= link_to "Download", evangelism_admin_reports_path(:format => "csv", :project_id => @project.id) %><p/>
     <table>
       <%= render 'stat_header', :combined => false %>
 
