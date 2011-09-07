@@ -24,7 +24,7 @@
         <%= tip('Shows the sum of the stats submitted for all projects in a partnership') %>
       </li>
       <li>
-        Emergency contact (<%= link_to('html', emergency_contact_admin_reports_path) %>, <%= link_to('csv', emergency_contact_admin_reports_path(:format => 'csv')) %>)
+        <%= link_to('Emergency contact', emergency_contact_admin_reports_path) %> (<%= link_to('download', emergency_contact_admin_reports_path(:format => 'csv')) %>)
         <%= tip('Shows project emergency contact info for projects under your care') %>
       </li>
     </ul>

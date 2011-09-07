@@ -176,7 +176,7 @@ class Admin::ReportsController < ApplicationController
         csv = ""
         CSV.generate(csv) do |csv|
           csv << [ "Student Name", "Designation #", "Date", "Amount", "Donor Name", "Medium" ]
-          @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(2011).each do |application|
+          @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(year).each do |application|
               person = application.person
               application.donations.for_year(application.year).each do |donation|
                 csv << [ person, application.designation_number, l(donation.donation_date),
@@ -258,6 +258,37 @@ class Admin::ReportsController < ApplicationController
       @partners = @partners & sp_user.partnerships
     end
 
+    if @statistics.present?
+      respond_to do |format|
+        format.html
+        format.csv { 
+          csv = ""
+          CSV.generate(csv) do |csv|
+            csv << [ "Year", "Media Exposures", "Evangelistic One-One", "Evangelistic Group", "Decisions", 
+              "Decisions Media", "Decisions One-One", "Decisions Group", "Holy Spirit Convo",
+              "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised" ]
+            @statistics.each do |stat|
+              csv << [ 
+                stat.stat_year,
+                number_with_delimiter(stat.exposuresViaMedia.to_i),
+                number_with_delimiter(stat.evangelisticOneOnOne.to_i),
+                number_with_delimiter(stat.evangelisticGroup.to_i),
+                number_with_delimiter(stat.decisions.to_i),
+                number_with_delimiter(stat.decisionsHelpedByMedia.to_i),
+                number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
+                number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
+                number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i),
+                number_with_delimiter(stat.holySpiritConversations.to_i),
+                number_with_delimiter(stat.invldNewBlvrs.to_i),
+                number_with_delimiter(stat.invldStudents.to_i),
+                number_to_currency(stat.dollars_raised.to_i, precision: 0)
+              ]
+            end
+          end
+          render :text => csv
+        }
+      end
+    end
   end
 
   def emergency_contact
@@ -487,13 +518,33 @@ class Admin::ReportsController < ApplicationController
   def pd_emails
     base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).year(year)
     @pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
-    logger.info "xyz pds #{@pds.count}"
     @apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
-    logger.info "xyz apds #{@apds.count}"
     @opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
-    logger.info "xyz opd #{@opds.count}"
     @all = (@pds + @apds + @opds).uniq.sort
-    logger.info "xyz all #{@all.length}"
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "email (#{params[:pd_type]})" ]
+          @emails = case params[:pd_type]
+          when 'pd_male'
+            @pds
+          when 'pd_female'
+            @apds
+          when 'opd'
+            @opds
+          when 'all'
+            @all
+          end
+          @emails.each do |email|
+            csv << [ email ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def fee_by_staff
@@ -534,6 +585,28 @@ class Admin::ReportsController < ApplicationController
     else
       @statuses = %w{accepted ready started withdrawn}
     end
+
+    if @emails.present?
+      respond_to do |format|
+        format.html {
+          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+        }
+        format.csv { 
+          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+          csv = ""
+          CSV.generate(csv) do |csv|
+            csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
+            @payments.each do |payment|
+              csv << [ payment.payment_account_no,
+                payment.amount, payment.application.person.firstName, payment.application.person.lastName,
+                payment.status, payment.created_at
+              ]
+            end
+          end
+          render :text => csv
+        }
+      end
+    end
   end
   
   def sending_stats
@@ -570,6 +643,7 @@ class Admin::ReportsController < ApplicationController
     end
 
     def year
+      return 2011
       SpApplication::YEAR
       # year = SpProject.maximum(:year)
     end

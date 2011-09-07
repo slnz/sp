@@ -27,7 +27,7 @@
     <h1>Partnerships</h1>
     <ul>
       <% @partners.each do |partner| %>
-        <li><%= link_to(partner, evangelism_combined_admin_reports_path(:partner => partner)) %></li>
+        <li><%= link_to(partner, evangelism_combined_admin_reports_path(:partner => partner)) %> (<%= link_to("download", evangelism_combined_admin_reports_path(:partner => partner, :format => 'csv')) %>)</li>
       <% end %>
     </ul>
   <%- else %>

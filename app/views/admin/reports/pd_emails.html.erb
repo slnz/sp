@@ -5,7 +5,7 @@
   <h1>Director Emails</h1>
   <ul>
     <li>
-    <a class="pd_type" href="#">PDs (primarily male)</a>
+    <a class="pd_type" href="#">PDs (primarily male)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'pd_male', :format => 'csv') %>)
     <div style="display:none">
       <% @pds.each do |pd| %>
         <%= pd %><br />
@@ -13,7 +13,7 @@
     </div>
     </li>
     <li>
-    <a class="pd_type" href="#">PDs (primarily female)</a>
+    <a class="pd_type" href="#">PDs (primarily female)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'pd_female', :format => 'csv') %>)
     <div style="display:none">
       <% @apds.each do |pd| %>
         <%= pd %><br />
@@ -21,7 +21,7 @@
     </div>
     </li>
     <li>
-    <a class="pd_type" href="#">OPDs</a>
+    <a class="pd_type" href="#">OPDs</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'opd', :format => 'csv') %>)
     <div style="display:none">
       <% @opds.each do |pd| %>
         <%= pd %><br />
@@ -29,7 +29,7 @@
     </div>
     </li>
     <li>
-    <a class="pd_type" href="#">All</a>
+    <a class="pd_type" href="#">All</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'all', :format => 'csv') %>)
     <div style="display:none">
       <% @all.each do |pd| %>
         <%= pd %><br />
