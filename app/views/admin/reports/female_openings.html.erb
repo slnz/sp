@@ -2,6 +2,5 @@
   <%= link_to("<< Back to all reports", admin_reports_path) unless sp_user.is_a?(SpDirector)%><br />
   <%= link_to("<< Back to report list", director_admin_reports_path) %>
   <h1>Female application openings</h1>
-  <p><%= link_to "Download", female_openings_admin_reports_path(:format => 'csv') %></p>
   <%= render 'openings', :gender => 'women' %>
 </div>

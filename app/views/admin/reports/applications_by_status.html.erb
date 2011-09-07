@@ -9,6 +9,7 @@
   <%= link_to("<< Back to report list", director_admin_reports_path) %>
 
   <h1>Applications By Status</h1>
+  <p><%= link_to "Download", applications_by_status_admin_reports_path(:format => 'csv') %></p>
   <p>Change year: <%= select_tag('year', options_for_select(@years, @year)) %></p>
   <table>
     <tr>

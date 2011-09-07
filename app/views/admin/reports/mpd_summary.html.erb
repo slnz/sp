@@ -12,6 +12,7 @@
     </ul>
   <%- elsif @project.present? %>
     <h1>MPD Summary for <%= @project %></h1>
+    <p><%= link_to "Download", mpd_summary_admin_reports_path(:format => 'csv', :project_id => @project.id) %></p>
     <table>
       <thead>
         <tr>
@@ -24,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(SpApplication::YEAR).each do |application| %>
+        <% @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(2011).each do |application| %>
           <% person = application.person %>
           <% application.donations.for_year(application.year).each do |donation| %>
             <tr>

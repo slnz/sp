@@ -169,6 +169,24 @@ class Admin::ReportsController < ApplicationController
         @project = current_person.directed_projects.first
       end
     end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Student Name", "Designation #", "Date", "Amount", "Donor Name", "Medium" ]
+          @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(2011).each do |application|
+              person = application.person
+              application.donations.for_year(application.year).each do |donation|
+                csv << [ person, application.designation_number, l(donation.donation_date),
+                  number_to_currency(donation.amount), donation.donor_name, donation.medium ]
+              end
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def evangelism
@@ -348,7 +366,21 @@ class Admin::ReportsController < ApplicationController
     @counts << [ "Withdrawn (Started)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
     @counts << [ "Withdrawn (No status set)", SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)").count ]
     @counts << [ "Declined", SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
-  end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Status", "Count" ]
+          for label, number in @counts
+            csv << [ label, number ]
+          end
+        end
+        render :text => csv
+      }
+    end
+   end
 
   def region
     if params[:region].present?
