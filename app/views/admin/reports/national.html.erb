@@ -13,7 +13,7 @@
         <%= link_to('Student emails', student_emails_admin_reports_path) %>
       </li>
       <li>
-        <%= link_to('Project Start/End Date', project_start_end_admin_reports_path) %>
+      <%= link_to('Project Start/End Date', project_start_end_admin_reports_path) %> (<%= link_to('download', project_start_end_admin_reports_path(:format => 'csv')) %>)
       </li>
       <li>
         <%= link_to('Project Application Fee Paid by Staff acct/chartfield Transfer', fee_by_staff_admin_reports_path(:format => 'csv')) %>

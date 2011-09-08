@@ -6,7 +6,7 @@
   <% if @statuses.present? %>
     <ul>
       <% @statuses.each do |status| %>
-        <li><%= link_to(status.titleize, student_emails_admin_reports_path(:status => status)) %></li>
+        <li><%= link_to(status.titleize, student_emails_admin_reports_path(:status => status)) %> (<%= link_to("download", student_emails_admin_reports_path(:status => status, :format => 'csv')) %>)</li>
       <% end %>
     </ul>
   <% end %>

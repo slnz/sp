@@ -571,6 +571,21 @@ class Admin::ReportsController < ApplicationController
 
   def project_start_end
     @projects = SpProject.current
+    respond_to do |format|
+      format.html
+      format.csv { 
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
+          @projects.each do |project|
+            csv << [ project.name, project.start_date, project.end_date,
+              project.pd.try(:email), project.apd.try(:email), project.opd.try(:email)
+            ]
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
   def student_emails
