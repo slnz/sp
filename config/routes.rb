@@ -57,6 +57,22 @@ Sp2::Application.routes.draw do
       get :project_start_end
       get :fee_by_staff
       get :sending_stats
+
+      get :total_num_applicants_by_partner_of_project
+      get :total_num_applicants_by_region
+      get :total_num_applicants_to_all_sps
+      get :total_num_applicants_to_wsn_sps_by_area
+      get :total_num_applicants_by_efm
+      get :total_num_applicants_to_hs_sps
+      get :total_num_applicants_to_other_ministry_sps
+
+      get :total_num_participants_by_partner_of_project
+      get :total_num_participants_by_region
+      get :total_num_participants_to_all_sps
+      get :total_num_participants_to_wsn_sps_by_area
+      get :total_num_participants_by_efm
+      get :total_num_participants_to_hs_sps
+      get :total_num_participants_to_other_ministry_sps
     end
     resources :people
     resources :users do

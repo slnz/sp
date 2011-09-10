@@ -3,6 +3,13 @@ require 'csv'
 class Admin::ReportsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
+  before_filter :set_total_applicant_statuses, :only => [ :total_num_applicants_by_partner_of_project,
+    :total_num_applicants_by_region, :total_num_applicants_to_all_sps, :total_num_applicants_to_wsn_sps_by_area,
+    :total_num_applicants_by_efm, :total_num_applicants_to_hs_sps, :total_num_applicants_to_other_ministry_sps ]
+  before_filter :set_total_participants_statuses, :only => [ :total_num_participants_by_partner_of_project,
+    :total_num_participants_by_region, :total_num_participants_to_all_sps, :total_num_participants_to_wsn_sps_by_area,
+    :total_num_participants_by_efm, :total_num_participants_to_hs_sps, :total_num_participants_to_other_ministry_sps ]
+
   layout 'admin'
   def show
     if sp_user.is_a?(SpDirector)
@@ -635,9 +642,704 @@ class Admin::ReportsController < ApplicationController
                                         'USSP' => scope.where("country = 'United States'").count}
       end
     end
+
+    respond_to do |format|
+      format.html
+      format.csv { 
+        columns = 5
+        @total_wsn = {}
+        @total_ussp = {}
+        csv = ""
+        CSV.generate(csv) do |csv|
+          1.upto((@years.length.to_f / columns).ceil) do |i|
+            row = []
+            ((i-1) * columns).upto((i * columns) - 1).each do |j|
+              next unless @years[j]
+              row += [ @years[j], "WSN", "USSP", "TOTAL" ]
+            end
+            csv << row
+            @totals.each do |region, years|
+              row = []
+              ((i-1) * columns).upto((i * columns) - 1).each do |j|
+                year = @years[j]
+                next unless year
+                stats = years[year]
+                @total_wsn[year] ||= 0
+                @total_wsn[year] += stats['WSN']
+                @total_ussp[year] ||= 0
+                @total_ussp[year] += stats['USSP']
+                row += [ region, stats['WSN'], stats['USSP'], stats['WSN'] + stats['USSP'] ]
+              end
+              csv << row
+            end
+            row = []
+            ((i-1) * columns).upto((i * columns) - 1).each do |j|
+              year = @years[j]
+              next unless year
+              row += [ "TOTAL", @total_wsn[year], @total_ussp[year], @total_wsn[year] + @total_ussp[year] ]
+            end
+            csv << row
+            csv << []
+          end
+        end
+        render :text => csv
+      }
+    end
   end
 
+  def total_num_applicants_by_partner_of_project
+    total_num_applicants_by_partner_of_project_fast
+  end
+
+  def total_num_applicants_by_partner_of_project_fast
+    @headers = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner ASC').reject!(&:blank?)
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        #@extra_query_parts = " AND project_status = 'open'"
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i][ "Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_applicants_by_partner_of_project_slow
+    @headers = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner ASC').reject!(&:blank?)
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = " AND (project_id IN (#{([0]+ps.collect(&:id)).join(',')}))"
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        #@year = year
+        @year = 2011
+        @counts[partner] ||= {}
+        @counts[partner][i] ||= {}
+        @counts[partner][i][ "Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[partner][i][ "Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+      end
+    end
+  end
+
+  def total_num_applicants_by_region
+    @headers = Region.standard_regions.collect(&:region)
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i][ "Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i][ "Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_applicants_to_all_sps
+    @headers = ["US", "WSN", "Other Ministries"]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        for status in @statuses
+          @counts[i][status] ||= {}
+        end
+
+        @extra_query_parts += " AND sp_projects.country = 'United States'"
+        @counts[i]["Accepted as Participant"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Accepted as Student Staff"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Ready"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Submitted"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Unsubmitted"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Started"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Accepted as Participant)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Accepted as Student Staff)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Ready)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Submitted)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Unsubmitted)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Started)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (No status set)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Declined"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+
+        # I'm still not sure how to get WSN
+        #    WSN means it's international, country <> 'United States'
+        #    US, WSN would be anything from the 10 regions, then Other Ministries would be any other partner that isn't one of the 10 regions regardless of the country
+        # But I don't see how to relate projects to regions...
+        @extra_query_parts = " AND sp_projects.country <> 'United States'"
+        @counts[i]["Accepted as Participant"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Accepted as Student Staff"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Ready"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Submitted"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Unsubmitted"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Started"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Accepted as Participant)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Accepted as Student Staff)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Ready)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Submitted)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Unsubmitted)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Started)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (No status set)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Declined"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+
+        @extra_query_parts = ""
+        @counts[i]["Accepted as Participant"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Accepted as Student Staff"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Ready"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Submitted"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Unsubmitted"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Started"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Accepted as Participant)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Accepted as Student Staff)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Ready)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Submitted)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Unsubmitted)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (Started)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Withdrawn (No status set)"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        @counts[i]["Declined"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_applicants_to_wsn_sps_by_area
+    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria & West Africa",
+      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i]["Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_applicants_by_efm
+    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria & West Africa",
+      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i]["Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_applicants_to_hs_sps
+    @headers = [ "Student Venture", "MK2MK" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = " AND sp_projects.name NOT LIKE '%spring%'"
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i][ "Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_applicants_to_other_ministry_sps
+    @headers = [ "Keynote", "HLIC", "Student Venture", "Campus Ministry - US summer project", "Campus Ministry - WSN summer project", "Other CCC ministry",
+      "Campus Ministry - US summer project", "Campus Ministry - WSN summer project", "Other CCC ministry" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i][ "Accepted as Participant"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Accepted as Student Staff"] = SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Ready"] = SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Submitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Unsubmitted"] = SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Started"] = SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Accepted as Participant)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Accepted as Student Staff)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Ready)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Submitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Unsubmitted)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (Started)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Withdrawn (No status set)"] = SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "Declined"] = SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+
+        @counts[i][ "Accepted as Participant"].merge!(SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Accepted as Student Staff"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Ready"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Submitted"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Unsubmitted"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Started"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (Accepted as Participant)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (Accepted as Student Staff)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (Ready)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (Submitted)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (Unsubmitted)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (Started)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND previous_status = 'started' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Withdrawn (No status set)"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+        @counts[i][ "Declined"].merge(SpApplication.joins(:person).where(:year => @year).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("report_stats_to").count)
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  #######
+  
+  def total_num_participants_by_partner_of_project
+    @statuses = [ "All Participants" ]
+    @headers = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner ASC').reject!(&:blank?)
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        #@extra_query_parts = " AND project_status = 'open'"
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_participants_by_region
+    @headers = Region.standard_regions.collect(&:region)
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_participants_to_all_sps
+    @headers = ["US", "WSN", "Other Ministries"]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        for status in @statuses
+          @counts[i][status] ||= {}
+        end
+
+        @extra_query_parts += " AND sp_projects.country = 'United States'"
+        @counts[i]["All Participants"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+        
+        # I'm still not sure how to get WSN
+        #    WSN means it's international, country <> 'United States'
+        #    US, WSN would be anything from the 10 regions, then Other Ministries would be any other partner that isn't one of the 10 regions regardless of the country
+        # But I don't see how to relate projects to regions...
+        @extra_query_parts = " AND sp_projects.country <> 'United States'"
+        @counts[i]["All Participants"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+
+        @extra_query_parts = ""
+        @counts[i]["All Participants"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_participants_to_wsn_sps_by_area
+    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria & West Africa",
+      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_participants_by_efm
+    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria & West Africa",
+      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_participants_to_hs_sps
+    @headers = [ "Student Venture", "MK2MK" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = " AND sp_projects.name NOT LIKE '%spring%'"
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
+
+  def total_num_participants_to_other_ministry_sps
+    @headers = [ "Keynote", "HLIC", "Student Venture", "Campus Ministry - US summer project", "Campus Ministry - WSN summer project", "Other CCC ministry",
+      "Campus Ministry - US summer project", "Campus Ministry - WSN summer project", "Other CCC ministry" ]
+
+    @counts = {}
+    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
+      (0..2).each do |i|
+        @extra_query_parts = ""
+        if i == 0
+          # male
+          @extra_query_parts += " AND (gender IN (1, '1'))"
+        elsif i == 1
+          # female
+          @extra_query_parts += " AND (gender IN (0, '0'))"
+        end
+        @year = 2011
+        @counts ||= {}
+        @counts[i] ||= {}
+        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        output_total_num_counts_to_csv
+      }
+    end
+  end
   protected
+    def output_total_num_counts_to_csv
+      csv = ""
+      CSV.generate(csv) do |csv|
+        row = []
+        @headers.each do |h|
+          row += [ "", h, "" ]
+        end
+        csv << row
+        row = []
+        @headers.each do |h|
+          row += [ "Male", "Female", "Total" ]
+        end
+        csv << row
+        for status in @statuses
+          row = []
+          for header in @headers
+            row += [ @counts[0][status][header], @counts[1][status][header], @counts[2][status][header] ]
+          end
+          csv << row
+        end
+      end
+      render :text => csv
+    end
+
+    def set_total_participants_statuses
+      @statuses = [ "All Participants" ]
+    end
+
+    def set_total_applicant_statuses
+      @statuses = [ "Accepted as Participant", "Accepted as Student Staff", "Ready", "Submitted", "Unsubmitted", "Started", 
+        "Withdrawn (Accepted as Participant)", "Withdrawn (Accepted as Student Staff)", "Withdrawn (Ready)", "Withdrawn (Submitted)", 
+        "Withdrawn (Unsubmitted)", "Withdrawn (Started)", "Withdrawn (No status set)", "Declined" ]
+    end
+
     def get_applications(project)
      SpApplication.preferrenced_project(project.id).for_year(project.year).order('ministry_person.lastName, ministry_person.firstName').includes(:person => :current_address)
     end
@@ -658,7 +1360,7 @@ class Admin::ReportsController < ApplicationController
     end
 
     def year
-      return 2011
+      #return 2011
       SpApplication::YEAR
       # year = SpProject.maximum(:year)
     end

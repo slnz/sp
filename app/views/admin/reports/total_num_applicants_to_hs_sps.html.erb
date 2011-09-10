@@ -1,0 +1,6 @@
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path) unless sp_user.is_a?(SpDirector)%><br />
+  <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
+  <h1>Total number of applicants to HS SPs</h1>
+  <%= render 'total_num_applicants' %>
+</div>

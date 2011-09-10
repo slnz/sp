@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <th>Status</th>
+    <% @headers.each do |h| %>
+      <th colspan='3'><%= h %></th>
+    <% end %>
+  </tr>
+  <tr>
+    <th>&nbsp;</th><!-- status -->
+    <% @headers.each do |h| %>
+      <th>Male</th>
+      <th>Female</th>
+      <th>Total</th>
+    <% end %>
+  </tr>
+  <% for status in @statuses %>
+    <tr>
+      <td><%= status %></td>
+      <% for header in @headers %>
+        <td><%= @counts[0][status][header] %></td>
+        <td><%= @counts[1][status][header] %></td>
+        <td><%= @counts[2][status][header] %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
