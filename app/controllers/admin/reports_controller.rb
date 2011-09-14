@@ -637,6 +637,7 @@ class Admin::ReportsController < ApplicationController
   
   def sending_stats
     @totals = {}
+    @other_totals = {}
     @years = SpProject.connection.select_values("select distinct(year) from sp_projects order by year desc")
     Region.standard_regions.each do |region|
       @totals[region.region] = {}
@@ -645,6 +646,9 @@ class Admin::ReportsController < ApplicationController
         @totals[region.region][year] = {'WSN' => scope.where("country <> 'United States' AND country <> ''").count,
                                         'USSP' => scope.where("country = 'United States'").count}
       end
+    end
+    @years.each do |year|
+      @other_totals[year] = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_regions.collect(&:region)).count
     end
 
     respond_to do |format|
@@ -659,7 +663,7 @@ class Admin::ReportsController < ApplicationController
             row = []
             ((i-1) * columns).upto((i * columns) - 1).each do |j|
               next unless @years[j]
-              row += [ @years[j], "WSN", "USSP", "TOTAL" ]
+              row += [ @years[j], "WSN", "USSP", "Other", "TOTAL" ]
             end
             csv << row
             @totals.each do |region, years|
@@ -680,7 +684,7 @@ class Admin::ReportsController < ApplicationController
             ((i-1) * columns).upto((i * columns) - 1).each do |j|
               year = @years[j]
               next unless year
-              row += [ "TOTAL", @total_wsn[year], @total_ussp[year], @total_wsn[year] + @total_ussp[year] ]
+              row += [ "TOTAL", @total_wsn[year], @total_ussp[year], @other_totals[year], @total_wsn[year] + @total_ussp[year] + @other_totals[year] ]
             end
             csv << row
             csv << []

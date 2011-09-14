@@ -32,7 +32,7 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %><br />
   <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
 
-  <% columns = 5 %>
+  <% columns = 4 %>
   <% @total_wsn = {} %>
   <% @total_ussp = {} %>
   <h1>Summer Project Sending Statistics (# of Accepted Students) by Region</h1>
@@ -44,6 +44,7 @@
           <th class="year <%= 'current' if j == 0 %>"><%= @years[j] %></th>
           <th class="title">WSN</th>
           <th class="title">USSP</th>
+          <th class="title">Other</th>
           <th class="total"><strong>TOTAL</strong></th>
         <% end %>
       </tr>
@@ -60,6 +61,7 @@
             <td><%= region %></td>
             <td><%= stats['WSN'] %></td>
             <td><%= stats['USSP'] %></td>
+            <td>&nbsp;</td>
             <td><%= stats['WSN'] + stats['USSP'] %></td>
           <% end %>
         </tr>
@@ -71,7 +73,8 @@
           <td class="<%= 'current' if j == 0 %> black">TOTAL</td>
           <td class="<%= 'current' if j == 0 %> black"><%= @total_wsn[year] %></td>
           <td class="<%= 'current' if j == 0 %> black"><%= @total_ussp[year] %></td>
-          <td class="<%= 'current' if j == 0 %> total"><%= @total_wsn[year] + @total_ussp[year] %></td>
+          <td class="<%= 'current' if j == 0 %> black"><%= @other_totals[year] %></td>
+          <td class="<%= 'current' if j == 0 %> total"><%= @total_wsn[year] + @total_ussp[year] + @other_totals[year] %></td>
         <% end %>
       </tr>
     </table>
@@ -97,7 +100,7 @@ $(document).ready(function() {
          x: -20 //center
       },
       xAxis: {
-         categories: ['<%= @years.reverse.join("','") %>']
+         categories: ['<%= @years[0..-1].reverse.join("','") %>']
       },
       yAxis: {
          title: {
@@ -125,13 +128,13 @@ $(document).ready(function() {
       },
       series: [{
          name: 'WSN',
-         data: [<%= @years.reverse.collect {|year| @total_wsn[year]}.compact.join(",") %>]
+         data: [<%= @years[0..-1].reverse.collect {|year| @total_wsn[year]}.compact.join(",") %>]
       }, {
          name: 'USSP',
-         data: [<%= @years.reverse.collect {|year| @total_ussp[year]}.compact.join(",") %>]
+         data: [<%= @years[0..-1].reverse.collect {|year| @total_ussp[year]}.compact.join(",") %>]
       }, {
          name: 'Total',
-         data: [<%= @years.reverse.collect {|year| @total_ussp[year] + @total_wsn[year]}.compact.join(",") %>]
+         data: [<%= @years[0..-1].reverse.collect {|year| @total_ussp[year] + @total_wsn[year] + @other_totals[year]}.compact.join(",") %>]
       }]
    });
    
