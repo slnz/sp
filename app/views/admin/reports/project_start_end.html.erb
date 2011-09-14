@@ -15,8 +15,8 @@
   <% @projects.each do |project| %>
     <tr>
       <td><%= project.name %></td>
-      <td><%= project.start_date %></td>
-      <td><%= project.end_date %></td>
+      <td><%= l project.start_date if project.start_date %></td>
+      <td><%= l project.end_date if project.end_date %></td>
       <td><%= project.pd.try(:email) %></td>
       <td><%= project.apd.try(:email) %></td>
       <td><%= project.opd.try(:email) %></td>
