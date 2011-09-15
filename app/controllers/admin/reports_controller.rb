@@ -710,7 +710,7 @@ class Admin::ReportsController < ApplicationController
                 @total_wsn[year] += stats['WSN']
                 @total_ussp[year] ||= 0
                 @total_ussp[year] += stats['USSP']
-                row += [ region, stats['WSN'], stats['USSP'], stats['WSN'] + stats['USSP'] ]
+                row += [ region, stats['WSN'], stats['USSP'], '', stats['WSN'] + stats['USSP'] ]
               end
               csv << row
             end
