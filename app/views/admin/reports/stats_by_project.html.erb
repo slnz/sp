@@ -1,0 +1,61 @@
+<p>Change year: <%= select_tag('year', options_for_select(@years, @year)) %></p>
+<script>
+  $('#year').change(function() {
+    window.location = "<%= request.url =~ /([^?]*)/; $1 %>?year=" + $("#year").val();
+  });
+</script>
+
+<div class="pagepad reportpage">
+  <%= link_to("<< Back to all reports", admin_reports_path)%><br />
+  <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
+  <br/>
+
+  <h1>Evangelism stats for all projects</h1>
+  <p><%= link_to "Download", stats_by_project_admin_reports_path(:format => "csv", :year => @year) %><p/>
+  <table>
+    <tr>
+      <th>Project</th>
+      <th># Weeks</th>
+      <th># Student Participants</th>
+      <th>Primary Partner</th>
+      <th>Project Type</th>
+      <th>PD Email</th>
+      <th>Media Exposures</th>
+      <th>Evangelistic One-One</th>
+      <th>Evangelistic Group</th>
+      <th>Decisions</th>
+      <th>Decisions Media</th>
+      <th>Decisions One-One</th>
+      <th>Decisions Group</th>
+      <th>Holy Spirit Convo</th>
+      <th>Involved New Blvrs</th>
+      <th>Involved Students</th>
+      <th>Students Leaders</th>
+      <th>Dollars Raised</th>
+    </tr>
+    <% SpProject.where(:year => @year).order('name').each do |project| %>
+      <% if stats = project.statistics.detect {|s| s.stat_year.to_i == @year} %>
+        <tr>
+          <td><%= project.name %></td>
+          <td><%= project.weeks %></td>
+          <td><%= project.sp_applications.for_year(@year).accepted.count %></td>
+          <td><%= project.primary_partner %></td>
+          <td><%= case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end %></td>
+          <td><%= project.contact.try(:email) %></td>
+          <td><%= number_with_delimiter(stat.exposuresViaMedia.to_i) %></td>
+          <td><%= number_with_delimiter(stat.evangelisticOneOnOne.to_i) %></td>
+          <td><%= number_with_delimiter(stat.evangelisticGroup.to_i) %></td>
+          <td><%= number_with_delimiter(stat.decisions.to_i) %></td>
+          <td><%= number_with_delimiter(stat.decisionsHelpedByMedia.to_i) %></td>
+          <td><%= number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i) %></td>
+          <td><%= number_with_delimiter(stat.decisionsHelpedByGroup.to_i) %></td>
+          <td><%= number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i) %></td>
+          <td><%= number_with_delimiter(stat.holySpiritConversations.to_i) %></td>
+          <td><%= number_with_delimiter(stat.invldNewBlvrs.to_i) %></td>
+          <td><%= number_with_delimiter(stat.invldStudents.to_i) %></td>
+          <td><%= number_to_currency(stat.dollars_raised.to_i, precision: 0) %></td>
+        </tr>
+      <% end %>
+    <%- end %>
+  </table>
+</div>
