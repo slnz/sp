@@ -602,7 +602,7 @@ class Admin::ReportsController < ApplicationController
   def stats_by_project
     set_years
     set_year    
-    @headers = [ "Project", "# Weeks", "# Student Participants", "Primary Partner", "APD EMail", "Project Type", "PD Email", 
+    @headers = [ "Project", "# Weeks", "# Student Participants", "Primary Partner", "Project Type", "PD Email", 
                 "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One', 
                 'Decisions Group', 'Holy Spirit Convo', 'Involved New Blvrs', 'Involved Students', 'Student Leaders', 'Dollars Raised' ]
     @rows = []
@@ -611,7 +611,7 @@ class Admin::ReportsController < ApplicationController
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner, 
                   case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end, 
                   project.contact.try(:email), number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i), 
-                  number_with_delimiter(stat.evangelisticGroup.to_i), number_with_delimiter(stat.decisions.to_i), 
+                  number_with_delimiter(stat.evangelisticGroup.to_i), 
                   number_with_delimiter(stat.decisionsHelpedByMedia.to_i), number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i), 
                   number_with_delimiter(stat.decisionsHelpedByGroup.to_i), number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i), 
                   number_with_delimiter(stat.holySpiritConversations.to_i), number_with_delimiter(stat.invldNewBlvrs.to_i), 
