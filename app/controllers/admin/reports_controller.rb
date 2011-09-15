@@ -394,8 +394,8 @@ class Admin::ReportsController < ApplicationController
     @year = params[:year] || @years.first
 
     @counts = []
-    @counts << [ "Accepted as Participant", SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
-    @counts << [ "Accepted as Student Staff", SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
+    @counts << [ "Accepted as Participant", SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_participant'").count ]
+    @counts << [ "Accepted as Student Staff", SpApplication.joins(:person).where(:year => @year).where("status = 'accepted_as_student_staff'").count ]
     @counts << [ "Ready", SpApplication.joins(:person).where(:year => @year).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
     @counts << [ "Submitted", SpApplication.joins(:person).where(:year => @year).where("status = 'submitted' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
     @counts << [ "Unsubmitted", SpApplication.joins(:person).where(:year => @year).where("status = 'unsubmitted' AND (isStaff <> 1 OR isStaff Is NULL)").count ]
@@ -428,7 +428,7 @@ class Admin::ReportsController < ApplicationController
     if params[:region].present?
       @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
     else
-      @regions = Region.standard_regions.collect(&:region)
+      @regions = Region.standard_region_codes
     end
 
     respond_to do |format|
@@ -598,6 +598,11 @@ class Admin::ReportsController < ApplicationController
       }
     end
   end
+  
+  def stats_by_project
+    set_years
+    set_year
+  end
 
   def student_emails
     if params[:status].present?
@@ -648,7 +653,7 @@ class Admin::ReportsController < ApplicationController
       end
     end
     @years.each do |year|
-      @other_totals[year] = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_regions.collect(&:region)).count
+      @other_totals[year] = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_region_codes).count
     end
 
     respond_to do |format|
@@ -1116,20 +1121,18 @@ class Admin::ReportsController < ApplicationController
     @headers = Region.standard_regions.collect(&:region)
 
     @counts = {}
-    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
-      (0..2).each do |i|
-        @extra_query_parts = ""
-        if i == 0
-          # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
-        elsif i == 1
-          # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
-        end
-        @counts ||= {}
-        @counts[i] ||= {}
-        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+    (0..2).each do |i|
+      @extra_query_parts = ""
+      if i == 0
+        # male
+        @extra_query_parts += " AND (gender IN (1, '1'))"
+      elsif i == 1
+        # female
+        @extra_query_parts += " AND (gender IN (0, '0'))"
       end
+      @counts ||= {}
+      @counts[i] ||= {}
+      @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
     end
 
     respond_to do |format|
@@ -1144,35 +1147,29 @@ class Admin::ReportsController < ApplicationController
     @headers = ["US", "WSN", "Other Ministries"]
 
     @counts = {}
-    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
-      (0..2).each do |i|
-        @extra_query_parts = ""
-        if i == 0
-          # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
-        elsif i == 1
-          # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
-        end
-        @counts ||= {}
-        @counts[i] ||= {}
-        for status in @statuses
-          @counts[i][status] ||= {}
-        end
-
-        @extra_query_parts += " AND sp_projects.country = 'United States'"
-        @counts[i]["All Participants"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
-        
-        # I'm still not sure how to get WSN
-        #    WSN means it's international, country <> 'United States'
-        #    US, WSN would be anything from the 10 regions, then Other Ministries would be any other partner that isn't one of the 10 regions regardless of the country
-        # But I don't see how to relate projects to regions...
-        @extra_query_parts = " AND sp_projects.country <> 'United States'"
-        @counts[i]["All Participants"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
-
-        @extra_query_parts = ""
-        @counts[i]["All Participants"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
+    scope = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')")
+    (0..2).each do |i|
+      this_scope = scope
+      if i == 0
+        # male
+        this_scope = scope.where("(gender IN (1, '1'))")
+      elsif i == 1
+        # female
+        this_scope = scope.where("(gender IN (0, '0'))")
       end
+      @counts ||= {}
+      @counts[i] ||= {}
+      for status in @statuses
+        @counts[i][status] ||= {}
+      end
+
+      @counts[i]["All Participants"]["US"] = this_scope.where("sp_projects.country = 'United States' AND primary_partner IN(?)", Region.standard_region_codes).count
+      
+      #    WSN means it's international, country <> 'United States'
+      #    US, WSN would be anything from the 10 regions, then Other Ministries would be any other partner that isn't one of the 10 regions regardless of the country
+      @counts[i]["All Participants"]["WSN"] = this_scope.where("sp_projects.country <> 'United States' AND primary_partner IN(?)", Region.standard_region_codes).count
+
+      @counts[i]["All Participants"]["Other Ministries"] = this_scope.where("primary_partner NOT IN(?)", Region.standard_region_codes).count
     end
 
     respond_to do |format|
@@ -1188,20 +1185,18 @@ class Admin::ReportsController < ApplicationController
       "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
 
     @counts = {}
-    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
-      (0..2).each do |i|
-        @extra_query_parts = ""
-        if i == 0
-          # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
-        elsif i == 1
-          # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
-        end
-        @counts ||= {}
-        @counts[i] ||= {}
-        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+    (0..2).each do |i|
+      @extra_query_parts = ""
+      if i == 0
+        # male
+        @extra_query_parts += " AND (gender IN (1, '1'))"
+      elsif i == 1
+        # female
+        @extra_query_parts += " AND (gender IN (0, '0'))"
       end
+      @counts ||= {}
+      @counts[i] ||= {}
+      @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").group("region").count
     end
 
     respond_to do |format|
@@ -1229,7 +1224,7 @@ class Admin::ReportsController < ApplicationController
         end
         @counts ||= {}
         @counts[i] ||= {}
-        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").group("region").count
+        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").group("region").count
       end
     end
 
@@ -1257,7 +1252,7 @@ class Admin::ReportsController < ApplicationController
         end
         @counts ||= {}
         @counts[i] ||= {}
-        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").joins(:project).group("primary_partner").count
       end
     end
 
@@ -1286,7 +1281,7 @@ class Admin::ReportsController < ApplicationController
         end
         @counts ||= {}
         @counts[i] ||= {}
-        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff') AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").joins(:project).group("primary_partner").count
       end
     end
 

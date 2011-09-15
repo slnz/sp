@@ -21,6 +21,9 @@
       <li>
         <%= link_to('Summer Project Sending Statistics', sending_stats_admin_reports_path) %> (<%= link_to('download', sending_stats_admin_reports_path(:format => 'csv')) %>)
       </li>
+      <li>
+        <%= link_to('Evangelism Stats by Project', stats_by_project_admin_reports_path) %> (<%= link_to('download', stats_by_project_admin_reports_path(:format => 'csv')) %>)
+      </li>
     </ul>
     <ul>
       <li>
@@ -29,14 +32,10 @@
       <li>
         <%= link_to('Total number of participants by region', total_num_participants_by_region_admin_reports_path) %> (<%= link_to('download', total_num_participants_by_region_admin_reports_path(:format => 'csv')) %>)
       </li>
-      <!-- <li>
-        <%= link_to('Total number of participants by all SPs', total_num_participants_to_all_sps_admin_reports_path) %> (<%= link_to('download', total_num_participants_to_all_sps_admin_reports_path(:format => 'csv')) %>)
-        I still find the definitions for US/WSN/Other Ministries ambiguous.  I'm sure you can write it quickly, I did most of the hard work already, it just needs the query adjusted.
-      </li>
       <li>
-        <%= link_to('Total number of participants to WSN SPs by area', total_num_participants_to_wsn_sps_by_area_admin_reports_path) %> (<%= link_to('download', total_num_participants_to_wsn_sps_by_area_admin_reports_path(:format => 'csv')) %>)
-        I can't figure out how to determine which area a project is in.  All I see in project is target area which doesn't look right.
+        <%= link_to('Total number of participants by all SPs', total_num_participants_to_all_sps_admin_reports_path) %> (<%= link_to('download', total_num_participants_to_all_sps_admin_reports_path(:format => 'csv')) %>)
       </li>
+      <!-- 
       <li>
         <%= link_to('Total number of participants by EFM', total_num_participants_by_efm_admin_reports_path) %> (<%= link_to('download', total_num_participants_by_efm_admin_reports_path(:format => 'csv')) %>)
         How do we determine EFM
