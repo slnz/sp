@@ -34,7 +34,7 @@
       <th>Dollars Raised</th>
     </tr>
     <% SpProject.where(:year => @year).order('name').each do |project| %>
-      <% if stats = project.statistics.detect {|s| s.stat_year.to_i == @year} %>
+      <% if stat = project.statistics.detect {|s| s.stat_year.to_i == @year} %>
         <tr>
           <td><%= project.name %></td>
           <td><%= project.weeks %></td>
