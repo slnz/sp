@@ -1,4 +1,5 @@
 <p>Change year: <%= select_tag('year', options_for_select(@years, @year)) %></p>
+<p><%= link_to "Download", params.merge(:format => "csv") %><p/>
 <script>
   $('#year').change(function() {
     window.location = "<%= request.url =~ /([^?]*)/; $1 %>?year=" + $("#year").val();
