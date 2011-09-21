@@ -1280,9 +1280,12 @@ class Admin::ReportsController < ApplicationController
   end
   
   def projects_summary
-    @projects = SpProject.current
+    @projects = SpProject.current.order('name')
     @headers = ['Name', '# Weeks', 'Max Participants','Accepted Participants','Accepted Student Staff', '# Staff', 'Student Cost', 'Staff Cost','Primary Partner','Secondary Partner','Tertiary Partner','Project Type','Uses USCM App']
-    @rows = @projects.collect {|p| [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.count, p.staff.count, p.student_cost, p.staff_cost, p.primary_partner, p.secondary_partner, p.tertiary_partner, p.report_stats_to, p.use_provided_application]}
+    @rows = @projects.collect do |p| 
+      who = case p.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
+      [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.count, p.staff.count, number_to_currency(p.student_cost.to_i, :precision => 0), number_to_currency(p.staff_cost.to_i, :precision => 0), p.primary_partner, p.secondary_partner, p.tertiary_partner, who, p.use_provided_application? ? 'Yes' : 'No']
+    end
   end
   
   protected
