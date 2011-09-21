@@ -1237,8 +1237,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_participants_by_efm
-    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria & West Africa",
-      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
+    @headers = [ "Bridges", 'Destino', 'Epic','Impact','Nations' ]
 
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
@@ -1253,7 +1252,7 @@ class Admin::ReportsController < ApplicationController
         end
         @counts ||= {}
         @counts[i] ||= {}
-        @counts[i]["All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").group("region").count
+        @counts[i]["All Participants"] = SpApplication.joins(:project, :person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").group("primary_partner").count
       end
     end
 
@@ -1281,7 +1280,7 @@ class Admin::ReportsController < ApplicationController
         end
         @counts ||= {}
         @counts[i] ||= {}
-        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").joins(:project).group("primary_partner").count
+        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where(:'sp_projects.high_school' => true).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").joins(:project).group("primary_partner").count
       end
     end
 

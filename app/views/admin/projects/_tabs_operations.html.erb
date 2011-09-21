@@ -28,6 +28,11 @@
         <%= f.label :intern_cost, 'Student Staff Cost' %>
         <%= f.text_field :intern_cost %>
       </div>
+      <% if sp_user.can_waive_fee? %>
+        <div class="field">
+          <%= f.check_box :high_school %> High Schoolers go on this project
+        </div>
+      <% end %>
       
       <hr />
       
