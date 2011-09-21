@@ -1293,8 +1293,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_participants_to_other_ministry_sps
-    @headers = [ "Keynote", "HLIC", "Student Venture", "Campus Ministry - US summer project", "Campus Ministry - WSN summer project", "Other CCC ministry",
-      "Campus Ministry - US summer project", "Campus Ministry - WSN summer project", "Other CCC ministry" ]
+    @headers = SpProject.connection.select_values("Select distinct(primary_partner) from sp_projects where report_stats_to = 'Other CCC ministry'")
 
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
