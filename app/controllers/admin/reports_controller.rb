@@ -3,16 +3,16 @@ require 'csv'
 class Admin::ReportsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
-  @total_applicant_actions = [ :total_num_applicants_by_partner_of_project,
+  @@total_applicant_actions = [ :total_num_applicants_by_partner_of_project,
     :total_num_applicants_by_region, :total_num_applicants_to_all_sps, :total_num_applicants_to_wsn_sps_by_area,
     :total_num_applicants_by_efm, :total_num_applicants_to_hs_sps, :total_num_applicants_to_other_ministry_sps ]
-  @total_participant_actions = [ :total_num_participants_by_partner_of_project,
+  @@total_participant_actions = [ :total_num_participants_by_partner_of_project,
     :total_num_participants_by_region, :total_num_participants_to_all_sps, :total_num_participants_to_wsn_sps_by_area,
     :total_num_participants_by_efm, :total_num_participants_to_hs_sps, :total_num_participants_to_other_ministry_sps ]
-  before_filter :set_total_applicant_statuses, :only => @total_applicant_actions
-  before_filter :set_total_participants_statuses, :only => @total_participant_actions
-  before_filter :set_year, :only => @total_applicant_actions + @total_participant_actions
-  before_filter :set_years, :only => @total_applicant_actions + @total_participant_actions
+  before_filter :set_total_applicant_statuses, :only => @@total_applicant_actions
+  before_filter :set_total_participants_statuses, :only => @@total_participant_actions
+  before_filter :set_year, :only => @@total_applicant_actions + @@total_participant_actions + [:projects_summary]
+  before_filter :set_years, :only => @@total_applicant_actions + @@total_participant_actions + [:projects_summary]
 
   layout 'admin'
   def show
@@ -1229,20 +1229,18 @@ class Admin::ReportsController < ApplicationController
     @headers = [ "Student Venture", "MK2MK" ]
 
     @counts = {}
-    SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
-      (0..2).each do |i|
-        @extra_query_parts = " AND sp_projects.name NOT LIKE '%spring%'"
-        if i == 0
-          # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
-        elsif i == 1
-          # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
-        end
-        @counts ||= {}
-        @counts[i] ||= {}
-        @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where(:'sp_projects.high_school' => true).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").joins(:project).group("primary_partner").count
+    (0..2).each do |i|
+      @extra_query_parts = " "
+      if i == 0
+        # male
+        @extra_query_parts += " AND (gender IN (1, '1'))"
+      elsif i == 1
+        # female
+        @extra_query_parts += " AND (gender IN (0, '0'))"
       end
+      @counts ||= {}
+      @counts[i] ||= {}
+      @counts[i][ "All Participants"] = SpApplication.joins(:person).where(:year => @year).where(:'sp_projects.high_school' => true).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')#{@extra_query_parts}").joins(:project).group("primary_partner").count
     end
 
     respond_to do |format|
@@ -1280,6 +1278,13 @@ class Admin::ReportsController < ApplicationController
       }
     end
   end
+  
+  def projects_summary
+    @projects = SpProject.current
+    @headers = ['Name', '# Weeks', 'Max Participants','Accepted Participants','Accepted Student Staff', '# Staff', 'Student Cost', 'Staff Cost','Primary Partner','Secondary Partner','Tertiary Partner','Project Type','Uses USCM App']
+    @rows = @projects.collect {|p| [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.count, p.staff.count, p.student_cost, p.staff_cost, p.primary_partner, p.secondary_partner, p.tertiary_partner, p.report_stats_to, p.use_provided_application]}
+  end
+  
   protected
     def output_total_num_counts_to_csv
       csv = ""
@@ -1325,13 +1330,16 @@ class Admin::ReportsController < ApplicationController
         redirect_to('/admin') and return false
       end
       if %w{regional partner region missional_team school}.include?(params[:action]) && !(sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpNationalCoordinator))
-        flash[:error] = 'You don\'t have access to those reports'
-        redirect_to(admin_reports_path) and return false
+        return no_access
       end
-      if %w{national applicants pd_emails student_emails}.include?(params[:action]) && !(sp_user.is_a?(SpNationalCoordinator))
-        flash[:error] = 'You don\'t have access to those reports'
-        redirect_to(admin_reports_path) and return false
+      if (%w{national applicants pd_emails student_emails project_start_end fee_by_staff sending_stats stats_by_project projects_summary} + @@total_applicant_actions + @@total_participant_actions).include?(params[:action]) && !(sp_user.is_a?(SpNationalCoordinator))
+        return no_access
       end
+    end
+      
+    def no_access
+      flash[:error] = 'You don\'t have access to those reports'
+      redirect_to(admin_reports_path) and return false
     end
 
     def year

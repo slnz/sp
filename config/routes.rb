@@ -58,6 +58,7 @@ Sp2::Application.routes.draw do
       get :fee_by_staff
       get :sending_stats
       get :stats_by_project
+      get :projects_summary
 
       get :total_num_applicants_by_partner_of_project
       get :total_num_applicants_by_region
