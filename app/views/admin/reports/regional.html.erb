@@ -31,13 +31,11 @@
     <ul>
       <li>
         <%= link_to('Total number of applicants by partner of project', total_num_applicants_by_partner_of_project_admin_reports_path) %> (<%= link_to('download', total_num_applicants_by_partner_of_project_admin_reports_path(:format => 'csv')) %>)
-        completed
       </li>
       <li>
         <%= link_to('Total number of applicants by region', total_num_applicants_by_region_admin_reports_path) %> (<%= link_to('download', total_num_applicants_by_region_admin_reports_path(:format => 'csv')) %>)
-        completed
       </li>
-      <li>
+      <!-- <li>
         <%= link_to('Total number of applicants by all SPs', total_num_applicants_to_all_sps_admin_reports_path) %> (<%= link_to('download', total_num_applicants_to_all_sps_admin_reports_path(:format => 'csv')) %>)
         I still find the definitions for US/WSN/Other Ministries ambiguous.  I'm sure you can write it quickly, I did most of the hard work already, it just needs the query adjusted.
       </li>
@@ -57,7 +55,7 @@
         <%= link_to('Total number of applicants to other ministry SPs', total_num_applicants_to_other_ministry_sps_admin_reports_path) %> (<%= link_to('download', total_num_applicants_to_other_ministry_sps_admin_reports_path(:format => 'csv')) %>)
         I'm not sure how to get "All other Partners that report stats to "Other CCC Ministries" in Operations Tab under Edit Project Info.
         I did go in to the code there and found some string descriptions of where they report to.  But I don't know how to translate them to partners.
-      </li>
+      </li> -->
     </ul>
   </div>
 </div>
