@@ -953,8 +953,8 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_applicants_to_wsn_sps_by_area
-    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria & West Africa",
-      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern & Eastern Africa", "Western Europe" ]
+    @headers = [ "East Asia Opportunities", "East Asia Orient", "Eastern Europe/Russia", "Francophone Africa", "Latin America", "NAME", "Nigeria and West Africa",
+      "North America and Oceania", "PACT", "South Asia", "SouthEast Asia", "Southern and Eastern Africa", "Western Europe" ]
 
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
