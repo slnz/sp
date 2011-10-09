@@ -17,14 +17,14 @@ module ProjectsHelper
     pe=Time.now.to_date
     statLink = ""
     if Rails.env.development?
-      statLink="https://staff.int.campuscrusadeforchrist.com/servlet/InfoBaseController?action=enterEventSuccessCriteria&eventType=SP"
+      statLink="http://info.int.uscm.org/stats/sp"
     elsif Rails.env.production?
-      statLink="https://staff.campuscrusadeforchrist.com/servlet/InfoBaseController?action=enterEventSuccessCriteria&eventType=SP"
+      statLink="https://infobase.uscm.org/stats/sp"
     else
-      statLink="http://localhost:8080/servlet/InfoBaseController?action=enterEventSuccessCriteria&eventType=SP"
+      statLink="http://localhost:3000/stats/sp"
     end
     if project_version.id.to_s==project.id.to_s
-      statLink=statLink+"&name="+project_version.name
+      statLink=statLink+"?name="+project_version.name
       statLink=statLink+"&region="+project_version.primary_partner
       statLink=statLink+"&strategy="
       statLink=statLink+"&email="
@@ -48,7 +48,7 @@ module ProjectsHelper
         pb=project_version.date_of_departure.to_s
 
       end
-      statLink=statLink+pb.to_time.to_i.to_s+"000"
+      statLink=statLink+pb
 
       statLink=statLink+"&periodEnd="
       if project_version.end_date && project_version.date_of_return
@@ -62,7 +62,7 @@ module ProjectsHelper
       elsif project_version.date_of_return
         pe=project_version.date_of_return.to_s
       end
-      statLink=statLink+pe.to_time.to_i.to_s+"000"
+      statLink=statLink+pe
       statLink=statLink+"&redirect=https://"+request.host+"%2Fadmin%2Fprojects%2F"+project.id.to_s+"&eventKeyID="+project_version.id.to_s
       statLink= link_to(text, statLink, options.merge({:target => '_blank'}))
       statLink
