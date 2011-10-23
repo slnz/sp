@@ -13,8 +13,8 @@ module ProjectsHelper
   
   # This method was written by Isaac Kimball
   def stat_link(project, project_version,text, options = {})
-    pb=Time.now.to_date
-    pe=Time.now.to_date
+    pb = Time.now.to_date
+    pe = Time.now.to_date
     statLink = ""
     if Rails.env.development?
       statLink="http://info.int.uscm.org/stats/sp"
@@ -23,14 +23,14 @@ module ProjectsHelper
     else
       statLink="http://localhost:3000/stats/sp"
     end
-    if project_version.id.to_s==project.id.to_s
-      statLink=statLink+"?name="+project_version.name
-      statLink=statLink+"&region="+project_version.primary_partner
-      statLink=statLink+"&strategy="
-      statLink=statLink+"&email="
+    if project_version.id.to_s == project.id.to_s
+      statLink = statLink + "?name=" + project_version.name
+      statLink = statLink + "&region=" + project_version.primary_partner
+      statLink = statLink + "&strategy="
+      statLink = statLink + "&email="
       if project_version.pd
         if project_version.pd_email
-          statLink=statLink+project_version.pd_email
+          statLink = statLink + project_version.pd_email
         end
       end
       statLink=statLink+"&isSecure="+(project_version.country_status=='open' ? "F":"T")
@@ -38,33 +38,32 @@ module ProjectsHelper
       statLink=statLink+"&periodBegin="
       if project_version.start_date && project_version.date_of_departure
         if project_version.start_date > project_version.date_of_departure
-          pb=project_version.start_date.to_s
+          pb = project_version.start_date
         else
-          pb=project_version.date_of_departure.to_s
+          pb = project_version.date_of_departure
         end
       elsif project_version.start_date
-        pb=project_version.start_date.to_s
+        pb = project_version.start_date
       elsif project_version.date_of_departure
-        pb=project_version.date_of_departure.to_s
-
+        pb = project_version.date_of_departure
       end
-      statLink=statLink+pb
+      statLink=statLink + pb.to_s
 
-      statLink=statLink+"&periodEnd="
+      statLink= statLink + "&periodEnd="
       if project_version.end_date && project_version.date_of_return
-        if project_version.end_date<project_version.date_of_return
-          pe=project_version.end_date.to_s
+        if project_version.end_date < project_version.date_of_return
+          pe = project_version.end_date
         else
-          pe=project_version.date_of_return.to_s
+          pe = project_version.date_of_return
         end
       elsif project_version.end_date
-        pe=project_version.end_date.to_s
+        pe = project_version.end_date
       elsif project_version.date_of_return
-        pe=project_version.date_of_return.to_s
+        pe = project_version.date_of_return
       end
-      statLink=statLink+pe
-      statLink=statLink+"&redirect=https://"+request.host+"%2Fadmin%2Fprojects%2F"+project.id.to_s+"&eventKeyID="+project_version.id.to_s
-      statLink= link_to(text, statLink, options.merge({:target => '_blank'}))
+      statLink = statLink + pe.to_s
+      statLink = statLink + "&redirect=https://" + request.host + "%2Fadmin%2Fprojects%2F" + project.id.to_s + "&eventKeyID=" + project_version.id.to_s
+      statLink = link_to(text, statLink, options.merge({:target => '_blank'}))
       statLink
 
     end
