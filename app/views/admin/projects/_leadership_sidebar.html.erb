@@ -30,7 +30,8 @@
       <table>
         <% [:pd,:apd,:opd, :coordinator].each do |leader| -%>
           <tr>
-            <td><%= [:pd,:apd,:opd].include?(leader) ? leader.upcase : leader.to_s.titleize %></td>
+            <!-- APD is now displayed as PD -->
+            <td><%= [:pd,:apd,:opd].include?(leader) ? [:apd].include?(leader) ? 'PD' : leader.upcase : leader.to_s.titleize %></td>
             <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader, :year => @year %></td>
           </tr>
         <% end %>
