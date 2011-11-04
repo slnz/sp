@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
     helper_method :sp_user
     
     def check_valid_user
-      if CASClient::Frameworks::Rails::Filter.filter(self) && AuthenticationFilter.filter(self)
+      if CASClient::Frameworks::Rails3::Filter.filter(self) && AuthenticationFilter.filter(self)
         unless current_user.developer?
         # unless sp_user && sp_user.can_edit_questionnaire?
           redirect_to '/'
