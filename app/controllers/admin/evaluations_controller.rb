@@ -1,5 +1,5 @@
 class Admin::EvaluationsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
   before_filter :get_evaluation, :only => [:update, :page, :references, :print, :payments]
   before_filter :check_access
   layout 'admin'

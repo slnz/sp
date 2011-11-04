@@ -2,7 +2,7 @@
 cas_logger = CASClient::Logger.new(RAILS_ROOT+'/log/cas.log')
 cas_logger.level = Logger::DEBUG
 
-CASClient::Frameworks::Rails::Filter.configure(
+CASClient::Frameworks::Rails3::Filter.configure(
   :cas_base_url  => "https://signin.mygcx.org/cas/",
   :username_session_key => :cas_user,
   :extra_attributes_session_key => :cas_extra_attributes,

@@ -1,6 +1,6 @@
 require 'csv'
 class Admin::DonationServicesController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
   before_filter :check_has_permission
 
   layout 'admin'

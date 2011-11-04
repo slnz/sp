@@ -3,4 +3,4 @@
 $: << File.expand_path(File.dirname(__FILE__))+'/lib'
 
 require 'casclient'
-require 'casclient/frameworks/rails/filter'
+require 'casclient/frameworks/rails3/filter'

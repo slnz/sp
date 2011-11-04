@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
+  before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter, :check_access
   respond_to :js, :html
   
   layout 'admin'
