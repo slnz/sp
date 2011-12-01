@@ -19,7 +19,8 @@ class SchoolPicker < Question
   
   def colleges(app=nil)
     unless self.state(app) == ""
-      return Campus.find_all_by_state_and_type(self.state(app), 'College', :order => :name).to_a.collect {|c| c.name} 
+      return Campus.where("state = ?", self.state(app)).where("type = 'College'")
+        .where("isClosed is null or isClosed <> 'T'").order(:name).all.collect {|c| c.name} 
     end
     []
   end
