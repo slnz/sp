@@ -51,8 +51,8 @@
         <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
       </div>
       <div class="field required">
-        <%= f.label :aoa, 'Region of the World' %>
-        <%= f.select :aoa, Aoa.all.collect {|a| [a.name]}, :include_blank => true %>
+        <%= f.label :world_region, 'Region of the World' %>
+        <%= f.select :world_region, WorldRegion.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
       
       <div class="multifield">
