@@ -1,4 +1,4 @@
-require 'hoptoad_notifier/capistrano'
+require 'airbrake/capistrano'
 # This defines a deployment "recipe" that you can feed to capistrano
 # (http://manuals.rubyonrails.com/read/book/17). It allows you to automate
 # (among other things) the deployment of your application.
@@ -129,6 +129,3 @@ namespace :deploy do
   end
 end
 after 'deploy:symlink', 'deploy:precache_assets'
-
-# require 'config/boot'
-require 'hoptoad_notifier/capistrano'
