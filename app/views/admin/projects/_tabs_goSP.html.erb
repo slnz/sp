@@ -52,7 +52,7 @@
       </div>
       <div class="field required">
         <%= f.label :world_region, 'Region of the World' %>
-        <%= f.select :world_region, WorldRegion.all.collect {|a| [a.name]}, :include_blank => true %>
+        <%= f.select :world_region, SpWorldRegion.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
       
       <div class="multifield">
