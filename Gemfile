@@ -23,6 +23,7 @@ gem 'paperclip', '~> 2.3.8'
 gem 'dalli'
 gem 'liquid'
 gem 'excelsior'
+gem 'newrelic_rpm'
 # gem 'RedCloth'
 
 gem 'aws-s3', :require => 'aws/s3'
@@ -59,6 +60,6 @@ group :production do
   gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
 end
 
-gem 'omniauth',  ">=0.2.6"  # ~2s
+gem 'omniauth',  "0.2.6"  # ~2s
 gem 'message_block' # ~100ms
 gem 'rack-contrib' # 100ms

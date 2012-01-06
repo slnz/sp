@@ -108,6 +108,7 @@ GEM
     net-ssh (2.2.0)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
+    newrelic_rpm (3.3.1)
     nokogiri (1.4.7)
     oa-basic (0.2.6)
       oa-core (= 0.2.6)
@@ -233,7 +234,8 @@ DEPENDENCIES
   mail_safe
   message_block
   mysql2 (~> 0.2.7)
-  omniauth (>= 0.2.6)
+  newrelic_rpm
+  omniauth (= 0.2.6)
   paperclip (~> 2.3.8)
   rack-contrib
   rails (~> 3.0.10)
