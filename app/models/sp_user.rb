@@ -77,23 +77,32 @@ class SpUser < ActiveRecord::Base
   def self.create_max_role(person_id)
     p = Person.find(person_id)
     if p && p.user
-      staffing = SpStaff.where(:person_id => p.id)
-      base =  case true
-              when !staffing.detect {|s| SpStaff::DIRECTORSHIPS.include?(s.type)}.nil?
-                SpDirector
-              when !staffing.detect {|s| s.type == 'Evaluator'}.nil?
-                SpEvaluator
-              when staffing.length > 0
-                SpProjectStaff
-              when p.isStaff?
-                SpUser
-              else
-                nil
-              end
-      base.create!(:person_id => p.id, :ssm_id => p.user.id) if base
+      max_role = get_max_role(person_id)
+      sp_user = SpUser.find_by_ssm_id(p.user.id)
+      if sp_user && sp_user.class != max_role
+        sp_user.try(:destroy)
+      else
+        max_role.create!(:person_id => p.id, :ssm_id => p.user.id) if max_role
+      end
     end
   end
-
+  
+  def self.get_max_role(person_id)
+    staffing = SpStaff.where(:person_id => person_id)
+    base =  case true
+            when !staffing.detect {|s| SpStaff::DIRECTORSHIPS.include?(s.type)}.nil?
+              SpDirector
+            when !staffing.detect {|s| s.type == 'Evaluator'}.nil?
+              SpEvaluator
+            when staffing.length > 0
+              SpProjectStaff
+            when p.isStaff?
+              SpUser
+            else
+              nil
+            end
+    base
+  end
 
   protected
     def ministry_lookup(ministry)
