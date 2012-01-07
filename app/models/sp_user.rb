@@ -88,6 +88,7 @@ class SpUser < ActiveRecord::Base
   end
   
   def self.get_max_role(person_id)
+    p = Person.find(person_id)
     staffing = SpStaff.where(:person_id => person_id)
     base =  case true
             when !staffing.detect {|s| SpStaff::DIRECTORSHIPS.include?(s.type)}.nil?
