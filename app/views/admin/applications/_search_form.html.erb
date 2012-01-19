@@ -33,7 +33,7 @@
         </div>
         <div class="fieldinline">
           <label for="region">Region</label>
-          <%= select_tag 'region', options_for_select(@region_options.map(&:region), params[:region])%>
+          <%= select_tag 'region', options_for_select(@region_options.map(&:region), params[:region]), :include_blank => true%>
         </div>
 
         <div class="clear"></div>
