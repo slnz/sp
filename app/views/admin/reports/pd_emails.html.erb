@@ -2,7 +2,7 @@
   <%= link_to("<< Back to all reports", admin_reports_path) %><br />
   <%= link_to("<< Back to national coordinator report list", national_admin_reports_path) %>
 
-  <h1>Director Emails</h1>
+  <h1>All Director Emails</h1>
   <ul>
     <li>
     <a class="pd_type" href="#">PDs (primarily male)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'pd_male', :format => 'csv') %>)
@@ -36,4 +36,113 @@
       <% end -%>
     </div>
     </li>
-  </div>
+  </ul>
+  
+  <h1>US Director Emails</h1>
+  <ul>
+    <li>
+    <a class="pd_type" href="#">PDs (primarily male)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'us_pd_male', :format => 'csv') %>)
+    <div style="display:none">
+      <% @us_pds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">PDs (primarily female)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'us_pd_female', :format => 'csv') %>)
+    <div style="display:none">
+      <% @us_apds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">OPDs</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'us_opd', :format => 'csv') %>)
+    <div style="display:none">
+      <% @us_opds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">All</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'us_all', :format => 'csv') %>)
+    <div style="display:none">
+      <% @us_all.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+  </ul>
+  
+  <h1>WSN Director Emails</h1>
+  <ul>
+    <li>
+    <a class="pd_type" href="#">PDs (primarily male)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'wsn_pd_male', :format => 'csv') %>)
+    <div style="display:none">
+      <% @wsn_pds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">PDs (primarily female)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'wsn_pd_female', :format => 'csv') %>)
+    <div style="display:none">
+      <% @wsn_apds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">OPDs</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'wsn_opd', :format => 'csv') %>)
+    <div style="display:none">
+      <% @wsn_opds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">All</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'wsn_all', :format => 'csv') %>)
+    <div style="display:none">
+      <% @wsn_all.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+  </ul>
+
+  <h1>Other Ministry Director Emails</h1>
+  <ul>
+    <li>
+    <a class="pd_type" href="#">PDs (primarily male)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'other_pd_male', :format => 'csv') %>)
+    <div style="display:none">
+      <% @other_pds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">PDs (primarily female)</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'other_pd_female', :format => 'csv') %>)
+    <div style="display:none">
+      <% @other_apds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">OPDs</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'other_opd', :format => 'csv') %>)
+    <div style="display:none">
+      <% @other_opds.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+    <li>
+    <a class="pd_type" href="#">All</a> (<%= link_to "download", pd_emails_admin_reports_path(:pd_type => 'other_all', :format => 'csv') %>)
+    <div style="display:none">
+      <% @other_all.each do |pd| %>
+        <%= pd %><br />
+      <% end -%>
+    </div>
+    </li>
+  </ul>
+</div>

@@ -533,6 +533,24 @@ class Admin::ReportsController < ApplicationController
     @opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
     @all = (@pds + @apds + @opds).uniq.sort
 
+    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - US summer project'").year(year)
+    @us_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
+    @us_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
+    @us_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
+    @us_all = (@us_pds + @us_apds + @us_opds).uniq.sort
+
+    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - WSN summer project'").year(year)
+    @wsn_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
+    @wsn_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
+    @wsn_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
+    @wsn_all = (@wsn_pds + @wsn_apds + @wsn_opds).uniq.sort
+
+    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Other CCC Ministry'").year(year)
+    @other_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
+    @other_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
+    @other_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
+    @other_all = (@other_pds + @other_apds + @other_opds).uniq.sort
+
     respond_to do |format|
       format.html
       format.csv { 
@@ -548,6 +566,30 @@ class Admin::ReportsController < ApplicationController
             @opds
           when 'all'
             @all
+          when 'us_pd_male'
+            @us_pds
+          when 'us_pd_female'
+            @us_apds
+          when 'us_opd'
+            @us_opds
+          when 'us_all'
+            @us_all
+          when 'wsn_pd_male'
+            @wsn_pds
+          when 'wsn_pd_female'
+            @wsn_apds
+          when 'wsn_opd'
+            @wsn_opds
+          when 'wsn_all'
+            @wsn_all
+          when 'other_pd_male'
+            @other_pds
+          when 'other_pd_female'
+            @other_apds
+          when 'other_opd'
+            @other_opds
+          when 'other_all'
+            @other_all
           end
           @emails.each do |email|
             csv << [ email ]
