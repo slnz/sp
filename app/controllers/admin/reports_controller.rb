@@ -876,13 +876,13 @@ class Admin::ReportsController < ApplicationController
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
       (0..2).each do |i|
-        @extra_query_parts = ""
+        @gender_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @gender_query_parts += " AND (gender IN (1, '1'))"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @gender_query_parts += " AND (gender IN (0, '0'))"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -890,7 +890,7 @@ class Admin::ReportsController < ApplicationController
           @counts[i][status] ||= {}
         end
 
-        @extra_query_parts += " AND sp_projects.country = 'United States'"
+        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Campus Ministry - US summer project'"
         @counts[i]["Accepted as Participant"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Accepted as Student Staff"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Ready"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
@@ -906,11 +906,7 @@ class Admin::ReportsController < ApplicationController
         @counts[i]["Withdrawn (No status set)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Declined"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
 
-        # I'm still not sure how to get WSN
-        #    WSN means it's international, country <> 'United States'
-        #    US, WSN would be anything from the 10 regions, then Other Ministries would be any other partner that isn't one of the 10 regions regardless of the country
-        # But I don't see how to relate projects to regions...
-        @extra_query_parts = " AND sp_projects.country <> 'United States'"
+        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Campus Ministry - WSN summer project'"
         @counts[i]["Accepted as Participant"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Accepted as Student Staff"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Ready"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
@@ -926,7 +922,7 @@ class Admin::ReportsController < ApplicationController
         @counts[i]["Withdrawn (No status set)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Declined"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
 
-        @extra_query_parts = ""
+        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Other CCC ministry'"
         @counts[i]["Accepted as Participant"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Accepted as Student Staff"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Ready"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
