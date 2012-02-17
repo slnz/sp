@@ -59,7 +59,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
-    carmen (0.1.1)
+    carmen (0.2.12)
     cocaine (0.2.0)
     dalli (1.0.5)
     dynamic_form (1.1.4)
@@ -223,7 +223,7 @@ DEPENDENCIES
   airbrake
   aws-s3
   capistrano
-  carmen (= 0.1.1)
+  carmen (~> 0.2.12)
   dalli
   dynamic_form
   excelsior
