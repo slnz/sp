@@ -238,7 +238,7 @@ DEPENDENCIES
   omniauth (= 0.2.6)
   paperclip (~> 2.3.8)
   rack-contrib
-  rails (~> 3.0.10)
+  rails (= 3.0.10)
   ruby-oci8
   spreadsheet
   tiny_mce

@@ -176,6 +176,7 @@ $(function() {
 		$('#leader_search_project_id').val(id);
 		$('#leader_search_type').val($(this).attr('data-leader'));
 		el.dialog({
+			title: name,
 			resizable: false,
 			height:444,
 			width:400,

@@ -61,9 +61,11 @@ class Admin::ProjectsController < ApplicationController
   
   def show
     applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
+    staffs = @project.sp_staff
     @accepted_participants = applications.accepted_participants.for_year(@year)
     @accepted_student_staff = applications.accepted_student_staff.for_year(@year)
     @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
+    @other = staffs.other_involved.year(@year)
     @submitted = applications.submitted.for_year(@year)
     @not_submitted = applications.not_submitted.for_year(@year)
     @not_going = applications.not_going.for_year(@year)
