@@ -1,0 +1,10 @@
+.autotest
+History.txt
+LICENSE.txt
+Manifest.txt
+README.txt
+Rakefile
+lib/rc_rest.rb
+lib/rc_rest/net_http_persistent_stub.rb
+lib/rc_rest/net_http_stub.rb
+test/test_rc_rest.rb
