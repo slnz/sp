@@ -1,0 +1,49 @@
+/Users/kennethjohnbalgos/.rvm/rubies/ruby-1.9.3-p125/bin/ruby extconf.rb 
+checking for load library path... 
+  DYLD_LIBRARY_PATH... 
+    checking /usr/local/mysql/lib/... no
+   looks like a full client.
+checking for cc... ok
+checking for gcc... yes
+checking for LP64... yes
+checking for ruby header... /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:625: Use RbConfig instead of obsolete and deprecated Config.
+ok
+*** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of
+necessary libraries and/or headers.  Check the mkmf.log file for more
+details.  You may need configuration options.
+
+Provided configuration options:
+	--with-opt-dir
+	--with-opt-include
+	--without-opt-include=${opt-dir}/include
+	--with-opt-lib
+	--without-opt-lib=${opt-dir}/lib
+	--with-make-prog
+	--without-make-prog
+	--srcdir=.
+	--curdir
+	--ruby=/Users/kennethjohnbalgos/.rvm/rubies/ruby-1.9.3-p125/bin/ruby
+	--with-instant-client
+	--without-instant-client
+/Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:924:in `get_home': RuntimeError (RuntimeError)
+	from /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:711:in `initialize'
+	from /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:345:in `new'
+	from /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:345:in `get'
+	from extconf.rb:18:in `<main>'
+---------------------------------------------------
+Error Message:
+  Set the environment variable ORACLE_HOME if Oracle Full Client.
+  Append the path of Oracle client libraries to DYLD_LIBRARY_PATH if Oracle Instant Client.
+  
+Backtrace:
+  /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:924:in `get_home'
+  /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:711:in `initialize'
+  /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:345:in `new'
+  /Users/kennethjohnbalgos/Rails/sp2/development/ruby/1.9.1/gems/ruby-oci8-2.0.6/ext/oci8/oraconf.rb:345:in `get'
+  extconf.rb:18:in `<main>'
+---------------------------------------------------
+See:
+ * http://ruby-oci8.rubyforge.org/en/HowToInstall.html
+ * http://ruby-oci8.rubyforge.org/en/ReportInstallProblem.html
+
