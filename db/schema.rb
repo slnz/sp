@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111215213633) do
+ActiveRecord::Schema.define(:version => 20120314141140) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -136,16 +136,18 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string   "link"
     t.string   "image_url"
     t.string   "redirect_uri"
-    t.string   "scope",        :default => ""
+    t.string   "scope",           :default => ""
     t.string   "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "revoked"
+    t.integer  "organization_id"
   end
 
   add_index "clients", ["code"], :name => "index_clients_on_code", :unique => true
   add_index "clients", ["display_name"], :name => "index_clients_on_display_name", :unique => true
   add_index "clients", ["link"], :name => "index_clients_on_link", :unique => true
+  add_index "clients", ["organization_id"], :name => "index_clients_on_organization_id"
 
   create_table "cms_assoc_filecategory", :id => false, :force => true do |t|
     t.string  "CmsFileID",     :limit => 64,                   :null => false
@@ -567,6 +569,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
   add_index "crs2_registrant", ["registrant_type_id"], :name => "fk_registrant_registrant_type_id"
   add_index "crs2_registrant", ["registration_before_cancellation_id"], :name => "fk_registrant_registration_before_cancellation_id"
   add_index "crs2_registrant", ["registration_id"], :name => "fk_registrant_registration_id"
+  add_index "crs2_registrant", ["status"], :name => "index_crs2_registrant_on_status"
 
   create_table "crs2_registrant_type", :force => true do |t|
     t.datetime "created_at"
@@ -950,7 +953,8 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.datetime "updated_at"
   end
 
-  add_index "email_addresses", ["person_id", "email"], :name => "index_email_addresses_on_person_id_and_email", :unique => true
+  add_index "email_addresses", ["email"], :name => "email", :unique => true
+  add_index "email_addresses", ["person_id"], :name => "person_id"
 
   create_table "engine_schema_info", :id => false, :force => true do |t|
     t.string  "engine_name"
@@ -1660,15 +1664,12 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
   add_index "merge_audits", ["mergeable_id", "mergeable_type"], :name => "mergeable"
 
   create_table "mh_answer_sheets", :force => true do |t|
-    t.integer  "question_sheet_id"
-    t.datetime "created_at",        :null => false
+    t.datetime "created_at",   :null => false
     t.datetime "completed_at"
     t.integer  "person_id"
     t.datetime "updated_at"
     t.integer  "survey_id"
   end
-
-  add_index "mh_answer_sheets", ["question_sheet_id"], :name => "index_mh_answer_sheets_on_question_sheet_id"
 
   create_table "mh_answers", :force => true do |t|
     t.integer  "answer_sheet_id",         :null => false
@@ -1744,6 +1745,8 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.boolean  "hide_option_labels",                      :default => false
     t.integer  "max_length"
     t.boolean  "web_only",                                :default => false
+    t.string   "trigger_words"
+    t.string   "notify_via"
   end
 
   add_index "mh_elements", ["conditional_id"], :name => "index_ma_elements_on_conditional_id"
@@ -1877,12 +1880,15 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
   end
 
   create_table "mh_surveys", :force => true do |t|
-    t.integer  "question_sheet_id"
-    t.string   "title",               :limit => 100, :default => "", :null => false
+    t.string   "title",               :limit => 100, :default => "",       :null => false
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "post_survey_message"
+    t.string   "terminology",                        :default => "Survey"
+    t.integer  "login_option",                       :default => 0
+    t.boolean  "frozen"
+    t.text     "login_paragraph"
   end
 
   add_index "mh_surveys", ["organization_id"], :name => "index_mh_surveys_on_organization_id"
@@ -2160,6 +2166,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string   "ministry"
     t.string   "strategy",                      :limit => 20
     t.integer  "fb_uid",                        :limit => 8
+    t.datetime "date_attributes_updated"
   end
 
   add_index "ministry_person", ["accountNo"], :name => "accountNo_ministry_Person"
@@ -2214,7 +2221,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
   end
 
   create_table "ministry_staff", :force => true do |t|
-    t.string  "accountNo",                :limit => 11,                                                  :null => false
+    t.string  "accountNo",                :limit => 15,                                                  :null => false
     t.string  "firstName",                :limit => 30
     t.string  "middleInitial",            :limit => 1
     t.string  "lastName",                 :limit => 30
@@ -2384,7 +2391,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string   "fice",                   :limit => 32
     t.string   "mainCampusFice",         :limit => 32
     t.string   "isNoFiceOK",             :limit => 1
-    t.string   "note"
+    t.text     "note"
     t.string   "altName",                :limit => 100
     t.string   "isSecure",               :limit => 1
     t.string   "isClosed",               :limit => 1
@@ -2432,7 +2439,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
   add_index "ministry_targetarea", ["state"], :name => "index3"
 
   create_table "ministry_viewdependentsstaff", :id => false, :force => true do |t|
-    t.string  "accountNo",                :limit => 11,                    :null => false
+    t.string  "accountNo",                :limit => 15,                    :null => false
     t.string  "firstName",                :limit => 30
     t.string  "middleInitial",            :limit => 1
     t.string  "lastName",                 :limit => 30
@@ -2531,7 +2538,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string  "url"
     t.string  "abbrv",             :limit => 32
     t.string  "fice",              :limit => 32
-    t.string  "note"
+    t.text    "note"
     t.string  "altName",           :limit => 100
     t.string  "isSecure",          :limit => 1
     t.string  "isClosed",          :limit => 1
@@ -3057,6 +3064,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.datetime "updated_at"
     t.integer  "organization_id"
     t.string   "followup_status"
+    t.integer  "added_by_id"
   end
 
   add_index "organizational_roles", ["organization_id", "role_id", "followup_status"], :name => "role_org_status"
@@ -3072,8 +3080,8 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string   "terminology"
     t.integer  "importable_id"
     t.string   "importable_type"
-    t.boolean  "show_sub_orgs",       :default => false, :null => false
-    t.string   "status"
+    t.boolean  "show_sub_orgs",       :default => false,    :null => false
+    t.string   "status",              :default => "active", :null => false
   end
 
   add_index "organizations", ["ancestry"], :name => "index_organizations_on_ancestry"
@@ -3092,6 +3100,16 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.datetime "updated_at"
   end
 
+  create_table "person_photos", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "phone_numbers", :force => true do |t|
     t.string   "number"
     t.string   "extension"
@@ -3106,7 +3124,7 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
   end
 
   add_index "phone_numbers", ["carrier_id"], :name => "index_phone_numbers_on_carrier_id"
-  add_index "phone_numbers", ["person_id", "number"], :name => "index_phone_numbers_on_person_id_and_number", :unique => true
+  add_index "phone_numbers", ["person_id", "number"], :name => "index_phone_numbers_on_person_id_and_number"
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
     t.string  "plugin_name"
@@ -3323,6 +3341,13 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
 
   add_index "profile_pictures", ["person_id"], :name => "index_profile_pictures_on_person_id"
 
+  create_table "question_leaders", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "element_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "questionnaires", :force => true do |t|
     t.string   "title",      :limit => 200
     t.string   "type",       :limit => 50
@@ -3426,6 +3451,16 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.datetime "updated_at"
   end
 
+  create_table "saved_contact_searches", :force => true do |t|
+    t.string   "name"
+    t.string   "full_path",  :limit => 4000
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "saved_contact_searches", ["user_id"], :name => "index_saved_contact_searches_on_user_id"
+
   create_table "school_years", :force => true do |t|
     t.string   "name"
     t.string   "level"
@@ -3445,9 +3480,20 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.datetime "updated_at"
     t.string   "twilio_sid"
     t.string   "twilio_uri"
+    t.string   "separator"
   end
 
   add_index "sent_sms", ["twilio_sid"], :name => "index_sent_sms_on_twilio_sid", :unique => true
+
+  create_table "si_answer_sheet_question_sheets", :force => true do |t|
+    t.integer  "answer_sheet_id"
+    t.integer  "question_sheet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "si_answer_sheet_question_sheets", ["answer_sheet_id"], :name => "index_si_answer_sheet_question_sheets_on_answer_sheet_id"
+  add_index "si_answer_sheet_question_sheets", ["question_sheet_id"], :name => "index_si_answer_sheet_question_sheets_on_question_sheet_id"
 
   create_table "si_answer_sheets", :force => true do |t|
     t.integer  "question_sheet_id", :null => false
@@ -3554,6 +3600,14 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string  "subject"
   end
 
+  create_table "si_page_elements", :force => true do |t|
+    t.integer  "page_id"
+    t.integer  "element_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "si_pages", :force => true do |t|
     t.integer "question_sheet_id",                                   :null => false
     t.string  "label",             :limit => 100,                    :null => false
@@ -3581,10 +3635,32 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string "label", :limit => 60, :null => false
   end
 
+  create_table "si_references", :force => true do |t|
+    t.integer  "question_id"
+    t.integer  "applicant_answer_sheet_id"
+    t.datetime "email_sent_at"
+    t.string   "relationship"
+    t.string   "title"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone"
+    t.string   "email"
+    t.string   "status"
+    t.datetime "submitted_at"
+    t.string   "access_key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "si_roles", :force => true do |t|
     t.string "role",       :null => false
     t.string "user_class", :null => false
   end
+
+  create_table "si_schema_migrations", :primary_key => "version", :force => true do |t|
+  end
+
+  add_index "si_schema_migrations", ["version"], :name => "si_unique_schema_migrations", :unique => true
 
   create_table "si_sleeve_sheets", :force => true do |t|
     t.integer "sleeve_id",                       :null => false
@@ -4506,6 +4582,14 @@ ActiveRecord::Schema.define(:version => 20111215213633) do
     t.string  "expression",        :null => false
     t.integer "toggle_page_id",    :null => false
     t.integer "toggle_id"
+  end
+
+  create_table "sp_designation_numbers", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "project_id"
+    t.string   "designation_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sp_donations", :force => true do |t|

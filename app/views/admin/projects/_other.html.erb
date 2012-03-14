@@ -1,10 +1,10 @@
-<% person = app.person %>
+<% person = staff.person %>
+<% designations = person.sp_designation_numbers.where(:project_id => @project.id) %>
+<% designation = designations.count != 0 ? designations.first.designation_number : "Not Assigned" %>
 <tr>
   <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
-  <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+  <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'project-id' => @project.id) %></td>
   <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
   <td class="campus"><%= person.campus %></td>
-  <% if sp_user.can_evaluate_applicant?(app) %>
-    <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
-  <% end %>
+  <td class="designation"><%= designation == "" ? "Not Assigned" : designation %></td>
 </tr>

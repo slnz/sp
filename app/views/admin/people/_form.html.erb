@@ -13,12 +13,13 @@
     <td class="left">Preferred:</td>
     <td><%= f.text_field :preferredName %></td>
   </tr>
-  <%= f.fields_for :current_application do |af| %>
-    <tr>
-      <td class="left">Designation: </td>
-      <td><%= af.text_field :designation_number %></td>
-    </tr>
-  <% end %>
+	<%- if @projectID && @projectID != 0 %>
+	  <tr>
+	    <td class="left">Designation: </td>
+	    <td><%= text_field_tag :designation_number, @designation ? @designation.designation_number : "" %>
+					<%= hidden_field_tag :projID, @projectID %></td>
+	  </tr>
+	<%- end %>
   <%= f.fields_for :current_address do |af| %>
     <tr>
       <td class="left">Phone:</td>

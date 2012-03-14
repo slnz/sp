@@ -95,6 +95,9 @@ $(function() {
 	// Person Info
 	$("a.person").live('click', function() {
 		id = $(this).attr('data-id');
+		proj = $(this).attr('project-id');
+		if(proj == null || proj == '')
+			proj = 0;
 		if (id != null) {
 			name = $(this).html();
 			dom = 'leader_details' + id;
@@ -102,7 +105,7 @@ $(function() {
 				$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
 				$.ajax({dataType: 'script',
 								type:'GET', 
-								url: '/admin/people/' + id
+								url: '/admin/people/' + id + '?projID=' + proj
 				 });
 			}
 			$('#person_' + id + '_form').hide();

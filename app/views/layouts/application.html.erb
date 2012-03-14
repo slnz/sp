@@ -4,8 +4,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
   <title>Summer Project Application</title>
-  <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' ,
+  <%- if Rails.env.development? %>
+  	<%= javascript_include_tag 'jquery.min.1.4.2.js', 'jquery-ui.min.1.8.2.js' %>
+	<%- else %>
+		<%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' ,
                              'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
+	<%- end %>
   <%= javascript_include_tag 'qe/jquery.metadata', 'qe/jquery.tooltips.min' %>
   <%= include_stylesheets :base, :media => 'all' %>
   <%= include_javascripts :base %>
