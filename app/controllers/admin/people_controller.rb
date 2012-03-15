@@ -3,23 +3,19 @@ class Admin::PeopleController < ApplicationController
   before_filter :get_person, :only => [:edit, :destroy, :update, :show]
   respond_to :html, :js
   def show
-    @projectID = params[:projID].to_i
-    if @person.sp_designation_numbers.where(:project_id => @projectID).count != 0
-      @designation = @person.sp_designation_numbers.where(:project_id => @projectID).first
-    end
+    @project_id = params[:project_id].to_i
+    @designation = @person.sp_designation_numbers.where(:project_id => @project_id).first
     respond_with(@person)
   end
   
   def update
     @person.update_attributes(params[:person])
-    @projectID = params[:projID].to_i
-    if @projectID != 0
-      if @person.sp_designation_numbers.where(:project_id => @projectID).count != 0
-        @designation = @person.sp_designation_numbers.where(:project_id => @projectID).first
-        @designation.designation_number = params[:designation_number]
-        @designation.save
+    @project_id = params[:project_id].to_i
+    if @project_id != 0
+      if @designation = @person.sp_designation_numbers.where(:project_id => @project_id).first
+        @designation.update_attributes(:designation_number => params[:designation_number])
       else
-        @designation = @person.sp_designation_numbers.create(:project_id => @projectID, :designation_number => params[:designation_number])
+        @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number])
       end
     end
     respond_with(@person)

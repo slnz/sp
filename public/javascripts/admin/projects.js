@@ -105,7 +105,7 @@ $(function() {
 				$('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
 				$.ajax({dataType: 'script',
 								type:'GET', 
-								url: '/admin/people/' + id + '?projID=' + proj
+								url: '/admin/people/' + id + '?project_id=' + proj
 				 });
 			}
 			$('#person_' + id + '_form').hide();
