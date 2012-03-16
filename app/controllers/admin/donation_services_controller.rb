@@ -19,6 +19,25 @@ class Admin::DonationServicesController < ApplicationController
     endl = "\n"
     out = ""
     CSV.generate(out, {:col_sep => t, :row_sep => endl}) do |writer|
+   
+#     rows = ActiveRecord::Base.connection.select_all("select app.id as appId, person.firstName, person.lastName, person.gender, person.title, person.accountNo,
+#                                                person.donor_number, spouse.personID as spouseID, spouse.firstName as spouseFirstName,
+#                                                spouse.lastName as spouseLastName, spouse.title as spouseTitle, spouse.gender as spouseGender,
+#                                                person.accountNo, currentAddress.address1 as currentAddress, currentAddress.city as currentCity, 
+#                                                currentAddress.state as currentState, currentAddress.zip as currentZip, currentAddress.homePhone as currentTelephone,
+#                                                currentAddress.email as currentEmail, permanentAddress.address1 as permanentAddress, project.name as projectName,
+#                                                project.scholarship_designation, project.scholarship_business_unit, project.scholarship_operating_unit,
+#                                                project.scholarship_department, project.scholarship_project, project.ds_project_code from ministry_person person 
+#                                                join sp_applications app on (app.person_id = person.personID) join sp_projects project on (app.project_id = project.id)
+#                                                left join ministry_newaddress currentAddress on (currentAddress.addressType = 'current' and
+#                                                currentAddress.fk_personId = person.personID) left join ministry_newaddress permanentAddress on
+#                                                (permanentAddress.addressType = 'permanent' and permanentAddress.fk_personId = person.personID) 
+#                                                left join ministry_person spouse on (person.fk_spouseID = spouse.personID) where app.year = '#{SpApplication::YEAR}'
+#                                                and app.status IN ('accepted_as_student_staff','accepted_as_participant') and app.designation_number is null and 
+#                                                project.scholarship_designation > '1000000' and project.scholarship_designation < '3000000' and
+#                                                project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
+#                                                by person.lastName, person.firstName;");
+
       rows = ActiveRecord::Base.connection.select_all("
         SELECT 
           app.id AS appId, 
