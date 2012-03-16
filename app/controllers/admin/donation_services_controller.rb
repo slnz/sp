@@ -191,7 +191,8 @@ class Admin::DonationServicesController < ApplicationController
         if (project.nil?)
           @warning_messages << "applicant #{app_id} is not assigned to a project; skipping"
         else
-          if (application.designation_number == designation_number && person.donor_number == donor_number)
+          # if (application.designation_number == designation_number && person.donor_number == donor_number)
+          if (person.sp_designation_numbers.where(:project_id => project.id, :designation_number => designation_number).present? && person.donor_number == donor_number)
             @warning_messages << "applicant #{app_id} has already been assigned this designation number (#{designation_number})" +
               "and has already been assigned this donor id (#{donor_number}); no update necessary"
           else
@@ -201,7 +202,12 @@ class Admin::DonationServicesController < ApplicationController
             if (!person.donor_number.blank? && person.donor_number != donor_number)
               @warning_messages << "applicant #{app_id} was previously assigned a different donor id (#{person.donor_number}); reassigning to #{donor_number}"
             end
-            application.designation_number = designation_number
+            # application.designation_number = designation_number
+            if designation = person.sp_designation_numbers.where(:project_id => project.id).first
+              designation.update_attributes(:designation_number => designation_number)
+            else
+              designation = person.sp_designation_numbers.create(:project_id => project.id, :designation_number => designation_number)
+            end
             person.donor_number = donor_number
             if !application.valid? || !person.valid?
               @warning_messages << "Application #{app_id} or subsequent Person record is corrupted and cannot be updated;" +
