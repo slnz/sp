@@ -19,23 +19,61 @@ class Admin::DonationServicesController < ApplicationController
     endl = "\n"
     out = ""
     CSV.generate(out, {:col_sep => t, :row_sep => endl}) do |writer|
-      rows = ActiveRecord::Base.connection.select_all("select app.id as appId, person.firstName, person.lastName, person.gender, person.title, person.accountNo,
-                                                      person.donor_number, spouse.personID as spouseID, spouse.firstName as spouseFirstName,
-                                                      spouse.lastName as spouseLastName, spouse.title as spouseTitle, spouse.gender as spouseGender,
-                                                      person.accountNo, currentAddress.address1 as currentAddress, currentAddress.city as currentCity, 
-                                                      currentAddress.state as currentState, currentAddress.zip as currentZip, currentAddress.homePhone as currentTelephone,
-                                                      currentAddress.email as currentEmail, permanentAddress.address1 as permanentAddress, project.name as projectName,
-                                                      project.scholarship_designation, project.scholarship_business_unit, project.scholarship_operating_unit,
-                                                      project.scholarship_department, project.scholarship_project, project.ds_project_code from ministry_person person 
-                                                      join sp_applications app on (app.person_id = person.personID) join sp_projects project on (app.project_id = project.id)
-                                                      left join ministry_newaddress currentAddress on (currentAddress.addressType = 'current' and
-                                                      currentAddress.fk_personId = person.personID) left join ministry_newaddress permanentAddress on
-                                                      (permanentAddress.addressType = 'permanent' and permanentAddress.fk_personId = person.personID) 
-                                                      left join ministry_person spouse on (person.fk_spouseID = spouse.personID) where app.year = '#{SpApplication::YEAR}'
-                                                      and app.status IN ('accepted_as_student_staff','accepted_as_participant') and app.designation_number is null and 
-                                                      project.scholarship_designation > '1000000' and project.scholarship_designation < '3000000' and
-                                                      project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
-                                                      by person.lastName, person.firstName;");
+      rows = ActiveRecord::Base.connection.select_all("
+        SELECT 
+          app.id AS appId, 
+          person.firstName, 
+          person.lastName, 
+          person.gender, 
+          person.title, 
+          person.accountNo,
+          person.donor_number, 
+          spouse.personID AS spouseID, 
+          spouse.firstName AS spouseFirstName,
+          spouse.lastName AS spouseLastName,
+          spouse.title AS spouseTitle,
+          spouse.gender AS spouseGender,
+          person.accountNo, 
+          currentAddress.address1 AS currentAddress,
+          currentAddress.city AS currentCity, 
+          currentAddress.state AS currentState,
+          currentAddress.zip AS currentZip,
+          currentAddress.homePhone AS currentTelephone,
+          currentAddress.email AS currentEmail,
+          permanentAddress.address1 AS permanentAddress,
+          project.name AS projectName,
+          project.scholarship_designation,
+          project.scholarship_business_unit,
+          project.scholarship_operating_unit,
+          project.scholarship_department,
+          project.scholarship_project,
+          project.ds_project_code
+        FROM ministry_person person 
+        JOIN sp_applications app 
+          ON (app.person_id = person.personID) 
+        JOIN sp_projects project
+          ON (app.project_id = project.id)
+        LEFT JOIN ministry_newaddress currentAddress
+          ON (currentAddress.addressType = 'current'
+            AND currentAddress.fk_personId = person.personID)
+        LEFT JOIN ministry_newaddress permanentAddress
+          ON (permanentAddress.addressType = 'permanent'
+            AND permanentAddress.fk_personId = person.personID) 
+        LEFT JOIN ministry_person spouse
+          ON (person.fk_spouseID = spouse.personID)
+        LEFT JOIN sp_designation_numbers designation
+          ON (person.personID = designation.person_id
+            AND project.id = designation.project_id)
+        WHERE app.year = '#{SpApplication::YEAR}'
+          AND app.status IN ('accepted_as_student_staff','accepted_as_participant')
+          AND designation.designation_number IS NULL
+          AND project.scholarship_designation > '1000000'
+          AND project.scholarship_designation < '3000000'
+          AND project.scholarship_operating_unit IS NOT NULL
+          AND project.scholarship_operating_unit != '' 
+        ORDER BY
+          person.lastName,
+          person.firstName;");
 
       column_headers = ["OPER_NAME", "KEYED_DATE", "PEOPLE_ID", "DONOR_ID", "STATUS", "ORG_ID",
   			"PERSON_TYPE", "TITLE", "FIRST_NAME", "MIDDLE_NAME", "LAST_NAME_ORG", "SUFFIX",
