@@ -13,11 +13,13 @@
     <td class="left">Preferred:</td>
     <td><%= f.text_field :preferredName %></td>
   </tr>
-	<%- if @project_id && @project_id != 0 %>
+	<%= @person.isStaff ? "staff" : "non-staff" %>
+	<%- if @project_id && @project_id != 0 && !@person.isStaff %>
 	  <tr>
 	    <td class="left">Designation: </td>
+			<%= @designation.to_json %>
 	    <td><%= text_field_tag :designation_number, @designation ? @designation.designation_number : "" %>
-					<%= hidden_field_tag :project_id, @project_id %></td>
+					<%= text_field_tag :project_id, @project_id %></td>
 	  </tr>
 	<%- end %>
   <%= f.fields_for :current_address do |af| %>

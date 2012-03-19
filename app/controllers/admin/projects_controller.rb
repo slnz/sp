@@ -65,7 +65,10 @@ class Admin::ProjectsController < ApplicationController
     @accepted_participants = applications.accepted_participants.for_year(@year)
     @accepted_student_staff = applications.accepted_student_staff.for_year(@year)
     @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
-    @other = staffs.other_involved.year(@year)
+    @other = Array.new
+    staffs.other_involved.year(@year).each do |staff|
+      @other << staff if !staff.person.isStaff
+    end
     @submitted = applications.submitted.for_year(@year)
     @not_submitted = applications.not_submitted.for_year(@year)
     @not_going = applications.not_going.for_year(@year)

@@ -38,7 +38,7 @@ class Admin::DonationServicesController < ApplicationController
 #                                                project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
 #                                                by person.lastName, person.firstName;");
 
-      rows = ActiveRecord::Base.connection.select_all("
+      selects = "
         SELECT 
           app.id AS appId, 
           person.firstName, 
@@ -66,7 +66,10 @@ class Admin::DonationServicesController < ApplicationController
           project.scholarship_operating_unit,
           project.scholarship_department,
           project.scholarship_project,
-          project.ds_project_code
+          project.ds_project_code"
+          
+      rows = ActiveRecord::Base.connection.select_all("
+        #{selects}
         FROM ministry_person person 
         JOIN sp_applications app 
           ON (app.person_id = person.personID) 
@@ -83,8 +86,8 @@ class Admin::DonationServicesController < ApplicationController
         LEFT JOIN sp_designation_numbers designation
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
-        WHERE app.year = '#{SpApplication::YEAR}'
-          AND app.status IN ('accepted_as_student_staff','accepted_as_participant')
+        WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
+          AND app.year = '#{SpApplication::YEAR}'
           AND designation.designation_number IS NULL
           AND project.scholarship_designation > '1000000'
           AND project.scholarship_designation < '3000000'
@@ -93,6 +96,36 @@ class Admin::DonationServicesController < ApplicationController
         ORDER BY
           person.lastName,
           person.firstName;");
+          
+      rows2 = ActiveRecord::Base.connection.select_all("
+        #{selects}
+        FROM ministry_person person 
+        JOIN sp_staff staff
+          ON (person.personID = staff.person_id)
+        JOIN sp_projects project
+          ON (staff.project_id = project.id)
+        LEFT JOIN ministry_newaddress currentAddress
+          ON (currentAddress.addressType = 'current'
+            AND currentAddress.fk_personId = person.personID)
+        LEFT JOIN ministry_newaddress permanentAddress
+          ON (permanentAddress.addressType = 'permanent'
+            AND permanentAddress.fk_personId = person.personID) 
+        LEFT JOIN ministry_person spouse
+          ON (person.fk_spouseID = spouse.personID)
+        LEFT JOIN sp_designation_numbers designation
+          ON (person.personID = designation.person_id
+            AND project.id = designation.project_id)
+        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator')
+          AND staff.year = '#{SpApplication::YEAR}'
+          AND designation.designation_number IS NULL
+          AND project.scholarship_designation > '1000000'
+          AND project.scholarship_designation < '3000000'
+          AND project.scholarship_operating_unit IS NOT NULL
+          AND project.scholarship_operating_unit != '' 
+        ORDER BY
+          person.lastName,
+          person.firstName
+        LIMIT 10;");
 
       column_headers = ["OPER_NAME", "KEYED_DATE", "PEOPLE_ID", "DONOR_ID", "STATUS", "ORG_ID",
   			"PERSON_TYPE", "TITLE", "FIRST_NAME", "MIDDLE_NAME", "LAST_NAME_ORG", "SUFFIX",
@@ -108,6 +141,9 @@ class Admin::DonationServicesController < ApplicationController
       writer << column_headers
 
       today = Time.now.strftime('%Y%m%d')
+      rows2.each do |row2|
+        rows << row2
+      end
       rows.each do |row|
         values = Hash.new
 
@@ -128,7 +164,6 @@ class Admin::DonationServicesController < ApplicationController
         values["SPOUSE_MIDDLE"] = ""
         values["SPOUSE_LAST"] = row["spouseLastName"]
         values["SPOUSE_SUFFIX"] = ""
-
         values["ADDRESS1"] = row["currentAddress"]
         values["ADDRESS2"] = ""
         values["ADDRESS3"] = ""
