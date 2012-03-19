@@ -37,10 +37,11 @@ class Admin::DonationServicesController < ApplicationController
 #                                                project.scholarship_designation > '1000000' and project.scholarship_designation < '3000000' and
 #                                                project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
 #                                                by person.lastName, person.firstName;");
-
-      selects = "
+          
+      rows = ActiveRecord::Base.connection.select_all("
         SELECT 
           app.id AS appId, 
+          person.personID, 
           person.firstName, 
           person.lastName, 
           person.gender, 
@@ -66,10 +67,7 @@ class Admin::DonationServicesController < ApplicationController
           project.scholarship_operating_unit,
           project.scholarship_department,
           project.scholarship_project,
-          project.ds_project_code"
-          
-      rows = ActiveRecord::Base.connection.select_all("
-        #{selects}
+          project.ds_project_code
         FROM ministry_person person 
         JOIN sp_applications app 
           ON (app.person_id = person.personID) 
@@ -88,6 +86,7 @@ class Admin::DonationServicesController < ApplicationController
             AND project.id = designation.project_id)
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
           AND app.year = '#{SpApplication::YEAR}'
+          AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND designation.designation_number IS NULL
           AND project.scholarship_designation > '1000000'
           AND project.scholarship_designation < '3000000'
@@ -98,7 +97,34 @@ class Admin::DonationServicesController < ApplicationController
           person.firstName;");
           
       rows2 = ActiveRecord::Base.connection.select_all("
-        #{selects}
+        SELECT 
+          person.personID, 
+          person.firstName, 
+          person.lastName, 
+          person.gender, 
+          person.title, 
+          person.accountNo,
+          person.donor_number, 
+          spouse.personID AS spouseID, 
+          spouse.firstName AS spouseFirstName,
+          spouse.lastName AS spouseLastName,
+          spouse.title AS spouseTitle,
+          spouse.gender AS spouseGender,
+          person.accountNo, 
+          currentAddress.address1 AS currentAddress,
+          currentAddress.city AS currentCity, 
+          currentAddress.state AS currentState,
+          currentAddress.zip AS currentZip,
+          currentAddress.homePhone AS currentTelephone,
+          currentAddress.email AS currentEmail,
+          permanentAddress.address1 AS permanentAddress,
+          project.name AS projectName,
+          project.scholarship_designation,
+          project.scholarship_business_unit,
+          project.scholarship_operating_unit,
+          project.scholarship_department,
+          project.scholarship_project,
+          project.ds_project_code
         FROM ministry_person person 
         JOIN sp_staff staff
           ON (person.personID = staff.person_id)
@@ -117,11 +143,13 @@ class Admin::DonationServicesController < ApplicationController
             AND project.id = designation.project_id)
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator')
           AND staff.year = '#{SpApplication::YEAR}'
+          AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND designation.designation_number IS NULL
           AND project.scholarship_designation > '1000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
           AND project.scholarship_operating_unit != '' 
+          AND (person.isStaff = 0 OR person.isStaff is null)
         ORDER BY
           person.lastName,
           person.firstName
@@ -194,7 +222,7 @@ class Admin::DonationServicesController < ApplicationController
         values["MIN_SVC_DESC"] = ""
         values["AMT_PAID"] = ""
         values["LIST_ID"] = ""
-        values["WSN_APPLICATION_ID"] = row["appId"]
+        values["WSN_APPLICATION_ID"] = row["personID"]
         values["ASSIGNMENT_NAME"] = row["projectName"]
         values["SCHOLARSHIP_BUSINESS_UNIT"] = row["scholarship_business_unit"].upcase
         values["SCHOLARSHIP_OPERATING_UNIT"] = row["scholarship_operating_unit"].upcase
