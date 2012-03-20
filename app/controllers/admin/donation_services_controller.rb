@@ -38,9 +38,8 @@ class Admin::DonationServicesController < ApplicationController
 #                                                project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
 #                                                by person.lastName, person.firstName;");
           
-      rows = ActiveRecord::Base.connection.select_all("
+      selects = "
         SELECT 
-          app.id AS appId, 
           person.personID, 
           person.firstName, 
           person.lastName, 
@@ -67,7 +66,10 @@ class Admin::DonationServicesController < ApplicationController
           project.scholarship_operating_unit,
           project.scholarship_department,
           project.scholarship_project,
-          project.ds_project_code
+          project.ds_project_code"
+          
+      rows = ActiveRecord::Base.connection.select_all("
+        #{selects}
         FROM ministry_person person 
         JOIN sp_applications app 
           ON (app.person_id = person.personID) 
@@ -97,34 +99,7 @@ class Admin::DonationServicesController < ApplicationController
           person.firstName;");
           
       rows2 = ActiveRecord::Base.connection.select_all("
-        SELECT 
-          person.personID, 
-          person.firstName, 
-          person.lastName, 
-          person.gender, 
-          person.title, 
-          person.accountNo,
-          person.donor_number, 
-          spouse.personID AS spouseID, 
-          spouse.firstName AS spouseFirstName,
-          spouse.lastName AS spouseLastName,
-          spouse.title AS spouseTitle,
-          spouse.gender AS spouseGender,
-          person.accountNo, 
-          currentAddress.address1 AS currentAddress,
-          currentAddress.city AS currentCity, 
-          currentAddress.state AS currentState,
-          currentAddress.zip AS currentZip,
-          currentAddress.homePhone AS currentTelephone,
-          currentAddress.email AS currentEmail,
-          permanentAddress.address1 AS permanentAddress,
-          project.name AS projectName,
-          project.scholarship_designation,
-          project.scholarship_business_unit,
-          project.scholarship_operating_unit,
-          project.scholarship_department,
-          project.scholarship_project,
-          project.ds_project_code
+        #{selects}
         FROM ministry_person person 
         JOIN sp_staff staff
           ON (person.personID = staff.person_id)
@@ -149,11 +124,9 @@ class Admin::DonationServicesController < ApplicationController
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
           AND project.scholarship_operating_unit != '' 
-          AND (person.isStaff = 0 OR person.isStaff is null)
         ORDER BY
           person.lastName,
-          person.firstName
-        LIMIT 10;");
+          person.firstName;");
 
       column_headers = ["OPER_NAME", "KEYED_DATE", "PEOPLE_ID", "DONOR_ID", "STATUS", "ORG_ID",
   			"PERSON_TYPE", "TITLE", "FIRST_NAME", "MIDDLE_NAME", "LAST_NAME_ORG", "SUFFIX",
@@ -169,6 +142,7 @@ class Admin::DonationServicesController < ApplicationController
       writer << column_headers
 
       today = Time.now.strftime('%Y%m%d')
+      
       rows2.each do |row2|
         rows << row2
       end
