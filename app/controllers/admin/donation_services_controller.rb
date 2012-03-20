@@ -222,13 +222,13 @@ class Admin::DonationServicesController < ApplicationController
   end
 
   def upload
+    @error_messages = Array.new
     unless params[:upload].present? && params[:upload][:upload].present?
-      @error_messages = "Please upload a .csv file"
+      @error_messages << "Please upload a .csv file"
       return
     end
     upload = params[:upload][:upload]
       
-    @error_messages = Array.new
     begin
       @filename = upload.original_filename
     rescue NoMethodError
@@ -241,7 +241,8 @@ class Admin::DonationServicesController < ApplicationController
     # end
     begin
       @warning_messages = Array.new
-      applications_to_update = Hash.new
+      designation_numbers_to_update = Hash.new
+      project_for_update = Hash.new
       persons_to_update = Hash.new
       row_num = 0
       Excelsior::Reader.rows(upload) do |row|
@@ -249,20 +250,29 @@ class Admin::DonationServicesController < ApplicationController
         if row.length < 3
           @error_messages << "Row #{row_num} is invalid: too short"
         else
-          app_id = row[2]
+          person_id = row[2]
           donor_number = row[1]
           designation_number = row[0]
-          if (!app_id || app_id == "" || !designation_number || designation_number == "" || designation_number.to_i == 0 || !donor_number || donor_number == "")
+          unless person_id.present? && designation_number.present? && designation_number != 0 && donor_number.present?
             @error_messages << "Row #{row_num} is invalid: missing required data"
           else
             application = nil
             begin
-              application = SpApplication.find(app_id)
-              person = Person.find(application.person_id)
-              applications_to_update[application] = designation_number.to_i
-              persons_to_update[application] = donor_number
+              # application = SpApplication.find(app_id)
+              record = SpApplication.where(:person_id => person_id, :year => SpApplication::YEAR).first
+              record ||= SpStaff.where(:person_id => person_id, :year => SpApplication::YEAR).first
+              if !record.present?
+                @error_messages << "Person #{person_id} or subsequent does not exist"
+              else
+                person_id = record.person_id
+                project_id = record.project_id
+              
+                designation_numbers_to_update[person_id] = designation_number.to_i
+                project_for_update[person_id] = project_id
+                persons_to_update[person_id] = donor_number
+              end
             rescue ActiveRecord::RecordNotFound
-              @error_messages << "Application #{app_id} or subsequent Person does not exist"
+              @error_messages << "Person #{person_id} or subsequent does not exist"
             end
           end
         end
@@ -276,36 +286,39 @@ class Admin::DonationServicesController < ApplicationController
     end
 
     @num_emails_sent = 0
-    applications_to_update.each do |application, designation_number|
-      person = Person.find(application.person_id)
-      donor_number = persons_to_update[application]
-      app_id = application.id
-      if application && person
-        project = application.project
-        if (project.nil?)
-          @warning_messages << "applicant #{app_id} is not assigned to a project; skipping"
+    designation_numbers_to_update.each do |person_id, designation_number|
+      person = Person.find(person_id)
+      donor_number = persons_to_update[person_id]
+      project_id = project_for_update[person_id]
+      record = SpApplication.where(:person_id => person_id, :year => SpApplication::YEAR).first
+      record ||= SpStaff.where(:person_id => person_id, :year => SpApplication::YEAR).first
+      
+      if record && project_id
+        project = SpProject.where(:id => project_id).first
+        unless project.present?
+          @warning_messages << "Person #{person_id} is not assigned to a project; skipping"
         else
           # if (application.designation_number == designation_number && person.donor_number == donor_number)
-          if (person.sp_designation_numbers.where(:project_id => project.id, :designation_number => designation_number).present? && person.donor_number == donor_number)
-            @warning_messages << "applicant #{app_id} has already been assigned this designation number (#{designation_number})" +
+          if record.designation_number == designation_number && person.donor_number == donor_number
+            @warning_messages << "Person #{person_id} has already been assigned " + 
+              "this designation number (#{designation_number}) " +
               "and has already been assigned this donor id (#{donor_number}); no update necessary"
           else
-            if (!application.designation_number.blank? && application.designation_number != designation_number)
-              @warning_messages << "applicant #{app_id} was previously assigned a different designation number (#{application.designation_number}); reassigning to #{designation_number}"
+            if record.designation_number.present? && record.designation_number != designation_number
+              @warning_messages << "Person #{person_id} was previously assigned a different " + 
+                "designation number (#{record.designation_number}); reassigning to #{designation_number}"
             end
-            if (!person.donor_number.blank? && person.donor_number != donor_number)
-              @warning_messages << "applicant #{app_id} was previously assigned a different donor id (#{person.donor_number}); reassigning to #{donor_number}"
+            if !person.donor_number.blank? && person.donor_number != donor_number
+              @warning_messages << "Person #{person_id} was previously assigned a different donor id (#{person.donor_number}); reassigning to #{donor_number}"
             end
-            # application.designation_number = designation_number
-            if designation = person.sp_designation_numbers.where(:project_id => project.id).first
-              designation.update_attributes(:designation_number => designation_number)
-            else
-              designation = person.sp_designation_numbers.create(:project_id => project.id, :designation_number => designation_number)
-            end
+            
+            # Update Records
+            record.designation_number = designation_number
             person.donor_number = donor_number
-            if !application.valid? || !person.valid?
-              @warning_messages << "Application #{app_id} or subsequent Person record is corrupted and cannot be updated;" +
-               " please contact help@campuscrusadeforchrist.com"
+            
+            if !record.valid?
+              @warning_messages << "Person #{person_id} or subsequent record is corrupted and cannot be updated; " +
+               "please contact help@campuscrusadeforchrist.com"
             else
               leaders = Hash.new
               leaders["Project Director"] = project.pd
@@ -322,25 +335,27 @@ class Admin::DonationServicesController < ApplicationController
                 end
               end
               if recipients.empty?
-                application.save!
+                record.save!
                 person.save!
-                @warning_messages << "No leaders have been notified of applicant #{app_id}'s designation number assignment"
+                @warning_messages << "No leaders have been notified of person #{serson_id}'s designation number assignment"
               else
                 Notifier.notification(recipients, # RECIPIENTS
                                       "gosummerproject@uscm.org", # FROM
                                       "Designation Number Assigned", # LIQUID TEMPLATE NAME
-                                      {'name' => application.name,
+                                      {'name' => person.try(:informal_full_name),
                                        'project_name' => project.name,
-                                       'email' => application.email,
+                                       'email' => person && person.current_address ? person.current_address.email : nil,
                                        'designation_number' => designation_number,
                                        'donor_number' => donor_number}).deliver
                 @num_emails_sent += 1
-                application.save!
+                record.save!
                 person.save!
               end
             end
           end
         end
+      else
+        @warning_messages << "Person #{person_id} is not assigned to a project; skipping"
       end
     end
   end
