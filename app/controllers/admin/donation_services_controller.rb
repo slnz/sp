@@ -242,7 +242,6 @@ class Admin::DonationServicesController < ApplicationController
     begin
       @warning_messages = Array.new
       designation_numbers_to_update = Hash.new
-      project_for_update = Hash.new
       persons_to_update = Hash.new
       row_num = 0
       Excelsior::Reader.rows(upload) do |row|
@@ -258,19 +257,8 @@ class Admin::DonationServicesController < ApplicationController
           else
             application = nil
             begin
-              # application = SpApplication.find(app_id)
-              record = SpApplication.where(:person_id => person_id, :year => SpApplication::YEAR).first
-              record ||= SpStaff.where(:person_id => person_id, :year => SpApplication::YEAR).first
-              if !record.present?
-                @error_messages << "Person #{person_id} or subsequent does not exist"
-              else
-                person_id = record.person_id
-                project_id = record.project_id
-              
-                designation_numbers_to_update[person_id] = designation_number.to_i
-                project_for_update[person_id] = project_id
-                persons_to_update[person_id] = donor_number
-              end
+              designation_numbers_to_update[person_id] = designation_number.to_i
+              persons_to_update[person_id] = donor_number
             rescue ActiveRecord::RecordNotFound
               @error_messages << "Person #{person_id} or subsequent does not exist"
             end
@@ -289,15 +277,16 @@ class Admin::DonationServicesController < ApplicationController
     designation_numbers_to_update.each do |person_id, designation_number|
       person = Person.find(person_id)
       donor_number = persons_to_update[person_id]
-      project_id = project_for_update[person_id]
+      
       record = SpApplication.where(:person_id => person_id, :year => SpApplication::YEAR).first
       record ||= SpStaff.where(:person_id => person_id, :year => SpApplication::YEAR).first
       
-      if record && project_id
-        project = SpProject.where(:id => project_id).first
-        unless project.present?
+      if record.present?
+        project_id = record.project_id
+        unless project_id.present?
           @warning_messages << "Person #{person_id} is not assigned to a project; skipping"
         else
+          project = SpProject.find(project_id)
           # if (application.designation_number == designation_number && person.donor_number == donor_number)
           if record.designation_number == designation_number && person.donor_number == donor_number
             @warning_messages << "Person #{person_id} has already been assigned " + 
