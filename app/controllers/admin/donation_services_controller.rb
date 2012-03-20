@@ -286,7 +286,6 @@ class Admin::DonationServicesController < ApplicationController
         unless project_id.present?
           @warning_messages << "Person #{person_id} is not assigned to a project; skipping"
         else
-          project = SpProject.find(project_id)
           # if (application.designation_number == designation_number && person.donor_number == donor_number)
           if record.designation_number == designation_number && person.donor_number == donor_number
             @warning_messages << "Person #{person_id} has already been assigned " + 
@@ -309,6 +308,7 @@ class Admin::DonationServicesController < ApplicationController
               @warning_messages << "Person #{person_id} or subsequent record is corrupted and cannot be updated; " +
                "please contact help@campuscrusadeforchrist.com"
             else
+              project = SpProject.find(project_id)
               leaders = Hash.new
               leaders["Project Director"] = project.pd
               leaders["Operations Project Director"] = project.opd
