@@ -18,7 +18,7 @@ class MigrateDesignationNumberAndAccountBalance < ActiveRecord::Migration
         end
         # puts "PROJ:#{row['project_id']} PREF1:#{row['preference1_id']} PREF2:#{row['preference2_id']} PREF3:#{row['preference3_id']} PREF4:#{row['preference4_id']} PREF5:#{row['preference5_id']} = #{project_id}"
         
-        SpDesignationNumber.connection.insert("INSERT INTO sp_designation_numbers (person_id, project_id, designation_number, account_balance, created_at, updated_at) VALUES ( #{row['person_id']}, #{project_id}, #{row['designation_number']}, #{row['account_balance'] || 0}, '#{Time.now}', '#{Time.now}')")
+        SpDesignationNumber.connection.insert("INSERT INTO sp_designation_numbers (person_id, project_id, designation_number, account_balance, created_at, updated_at) VALUES ( #{row['person_id']}, #{project_id}, #{row['designation_number']}, #{row['account_balance'] || 0}, 'NOW()', 'NOW()')")
       end
     end
   end
