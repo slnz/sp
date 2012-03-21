@@ -265,7 +265,7 @@ input[type=text].search { width: 100px; }
 input.small, input.date { width: 50px; }
 input.hasDatepicker[type=text] {
   background: url(/images/icons/calendar.png) no-repeat 98% 50%;
-  width: 100px;
+  width: 150px;
 }
 div.field { margin-bottom: 0.75em; }
 div.field select {
@@ -1157,3 +1157,7 @@ a.AddNewPerson {
 .deadline1 { color: blue; }
 .deadline2 { color: green; }
 .deadline3 { color: black; }
+
+.float-left {
+	float: left;
+}

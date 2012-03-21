@@ -236,24 +236,71 @@ class Admin::ProjectsController < ApplicationController
       CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
         projects.each do |project|
           contact = project.contact || Person.new
-          row_start = [project.id, project.name, project.city, project.state, project.country, l((project.international? ? project.date_of_departure || project.start_date : project.start_date), :format => :ps), l((project.international? ? project.date_of_return || project.end_date : project.end_date), :format => :ps),
-                 contact.full_name, contact.sp_staff.most_recent.first.try(:type).to_s[0..14], contact.phone, contact.email,
-                 project.operating_business_unit, project.operating_operating_unit, project.operating_department, project.operating_project]
+          row_start = [
+            project.id, 
+            project.name, 
+            project.city, 
+            project.state, 
+            project.country
+          ]
+          row_more = [
+            contact.full_name,
+            contact.sp_staff.most_recent.first.try(:type).to_s[0..14],
+            contact.phone,
+            contact.email,
+            project.operating_business_unit, 
+            project.operating_operating_unit,
+            project.operating_department,
+            project.operating_project
+          ]
+          
+          date_start = project.international? == "Yes" ? l((project.date_of_departure || project.start_date), :format => :ps) : nil
+          date_end = project.international? == "Yes" ? l((project.date_of_return || project.end_date), :format => :ps) : nil
+          
           project.sp_staff.year(SpApplication::YEAR).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
             row = []
-            p = staff.person
+            p = staff.person          
+            # Getting Dates
+            unless project.international? == "Yes"
+              if staff.type == "PD"
+                date_start = l((project.pd_start_date || (project.staff_start_date || project.start_date)), :format => :ps)
+                date_end = l((project.pd_end_date || (project.staff_end_date || project.end_date)), :format => :ps)
+              else
+                date_start = l((project.staff_start_date || project.start_date), :format => :ps)
+                date_end = l((project.staff_end_date || project.end_date), :format => :ps)
+              end
+            end
             if p
-              (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
-              writer << row
+              # Store Another Record for Closing
+              if project.pd_close_start_date.present? && staff.type == "PD"
+                row = []
+                date_start = l((project.pd_close_start_date || project.staff_start_date || project.start_date), :format => :ps)
+                date_end = l((project.pd_close_end_date || project.staff_end_date || project.end_date), :format => :ps)
+                (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+                  row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+                end
+                writer << row
+              end
             end
           end
           project.sp_applications.for_year(SpApplication::YEAR).accepted.includes(:person).each do |applicant|
             row = []
             p = applicant.person
             if p
-              (row_start + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+              # Getting Dates
+              unless project.international? == "Yes"
+                if applicant.status == 'accepted_as_student_staff'
+                  date_start = l((project.student_staff_start_date || project.start_date), :format => :ps)
+                  date_end = l((project.student_staff_end_date || project.end_date), :format => :ps)
+                else
+                  date_start = l(project.start_date, :format => :ps)
+                  date_end = l(project.end_date, :format => :ps)
+                end
+              end
+              (row_start + row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
             end

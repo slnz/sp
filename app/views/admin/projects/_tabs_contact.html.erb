@@ -54,6 +54,27 @@
       <h3 class="critical">In case of an emergency on a summer project  call 888-899-9292 or 407-380-8665. <%= tip('It is advisable that you program these numbers in your cell phone before your project begins. If you are going overseas, use the 407 number. This is a secure number, answered by \'LH Communications\', safe for calling from secure countries.') %></h3>
 
       <div class="multifield">
+      	<h3>Project Dates</h3>
+				<div class="field">
+					These dates have financial implications for SOS/project information. The second Project Director date boxes are for US directors who return to close up their project later in the summer.
+				</div>
+        <div class="field">
+          <%= f.label :staff_start_date, 'PD Start Date' %>
+          <%= calendar_date_select_tag 'sp_project[pd_start_date]', @project.pd_start_date%>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date, 'PD End Date' %>
+          <%= calendar_date_select_tag 'sp_project[pd_end_date]', @project.pd_end_date %>
+        </div>
+				<div class="field">
+          <%= f.label :staff_start_date, 'PD Start Date (for closing)' %>
+          <%= calendar_date_select_tag 'sp_project[pd_close_start_date]', @project.pd_close_start_date %>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date, 'PD End Date (for closing)' %>
+          <%= calendar_date_select_tag 'sp_project[pd_close_end_date]', @project.pd_close_end_date %>
+        </div>
+        <div class="clear"></div>
         <div class="field">
           <%= f.label :staff_start_date, 'Staff Start Date' %>
           <%= calendar_date_select_tag 'sp_project[staff_start_date]', @project.staff_start_date %>
@@ -61,6 +82,37 @@
         <div class="field">
           <%= f.label :staff_end_date, 'Staff End Date' %>
           <%= calendar_date_select_tag 'sp_project[staff_end_date]', @project.staff_end_date %>
+        </div>
+        <div class="clear"></div>
+        <div class="field">
+          <%= f.label :staff_start_date, 'Student Staff Start Date' %>
+          <%= calendar_date_select_tag 'sp_project[student_staff_start_date]', @project.student_staff_start_date %>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date, 'Student Staff End Date' %>
+          <%= calendar_date_select_tag 'sp_project[student_staff_end_date]', @project.student_staff_end_date %>
+        </div>
+        <div class="clear"></div>
+        <div class="field">
+          <%= f.label :staff_start_date, 'Student Start Date' %>
+          <%= calendar_date_select_tag 'sp_project[start_date]', @project.start_date %>
+        </div>
+        <div class="field">
+          <%= f.label :staff_end_date, 'Student End Date' %>
+          <%= calendar_date_select_tag 'sp_project[end_date]', @project.end_date %>
+        </div>
+        <div class="clear"></div>
+				<div class="field">
+					For International Only:
+				</div>
+        <div class="clear"></div>
+        <div class="field">
+          <%= f.label :date_of_departure, 'Departure from the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_departure]', @project.date_of_departure %>
+        </div>
+        <div class="field">
+          <%= f.label :date_of_return, 'Arrival in the US' %>
+          <%= calendar_date_select_tag 'sp_project[date_of_return]', @project.date_of_return %>
         </div>
         <div class="clear"></div>
       </div>
@@ -78,17 +130,6 @@
             raw "Int'l City you are Flying To<br>(include Airport Code)" + tip('<br>For example: Brisbane, Australia (BNE)')   
             end %>
           <%= f.text_field :destination_city %>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :date_of_departure, 'Date of Departure from the US' %>
-          <%= calendar_date_select_tag 'sp_project[date_of_departure]', @project.date_of_departure %>
-        </div>
-        <div class="field">
-          <%= f.label :date_of_return, 'Date of Arrival in the US' %>
-          <%= calendar_date_select_tag 'sp_project[date_of_return]', @project.date_of_return %>
         </div>
         <div class="clear"></div>
       </div>
