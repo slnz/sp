@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321065252) do
+ActiveRecord::Schema.define(:version => 20120321134520) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -4925,6 +4925,7 @@ ActiveRecord::Schema.define(:version => 20120321065252) do
     t.date     "pd_close_end_date"
     t.date     "student_staff_start_date"
     t.date     "student_staff_end_date"
+    t.boolean  "background_checks_required",                         :default => false
   end
 
   add_index "sp_projects", ["name"], :name => "sp_projects_name_index", :unique => true
