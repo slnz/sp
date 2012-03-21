@@ -30,17 +30,9 @@
       </div>
       <% if sp_user.can_waive_fee? %>
         <div class="field">
-          <div class="float-left"><%= f.check_box :high_school %></div>
-					<div class="float-left"><%= f.label :high_school, 'High Schoolers go on this project' %></div>
+          <%= f.check_box :high_school %> High Schoolers go on this project
         </div>
-				<div class="clear"></div>
       <% end %>
-      <div class="field required">
-        <div class="float-left"><%= f.check_box :high_school, {:checked => true} %></div>
-				<div class="float-left">
-					<%= f.label :high_school, 'Students will be ministering/interacting with children/minors at some point on this project' %>
-				</div>
-      </div>
       
       <hr />
       
