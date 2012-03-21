@@ -30,9 +30,15 @@
       </div>
       <% if sp_user.can_waive_fee? %>
         <div class="field">
-          <%= f.check_box :high_school %> High Schoolers go on this project
+					<%= f.check_box :high_school %> High Schoolers go on this project
         </div>
       <% end %>
+      <div class="field required">
+				<%= f.label :background_checks_required, 'Students will be ministering/interacting with children/minors at some point on this project' %>
+				<%= f.radio_button :background_checks_required, true %> Yes
+				<div class="clear"></div>
+				<%= f.radio_button :background_checks_required, false %> No
+      </div>
       
       <hr />
       
