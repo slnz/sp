@@ -275,7 +275,7 @@ class Admin::ProjectsController < ApplicationController
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
               # Store Another Record for Closing
-              if project.pd_close_start_date.present? && staff.type == "PD" && project.international? != "Yes"
+              if project.pd_close_start_date.present? && staff.type == "PD"
                 row = []
                 date_start = l((project.pd_close_start_date || project.staff_start_date || project.start_date), :format => :ps)
                 date_end = l((project.pd_close_end_date || project.staff_end_date || project.end_date), :format => :ps)
