@@ -57,12 +57,12 @@
       
       <div class="multifield">
         <div class="field required">
-          <%= f.label :start_date, 'Project Start Date' %>
+          <%= f.label :start_date, 'Student Start Date' %>
           <%= calendar_date_select_tag 'sp_project[start_date]', @project.start_date %>
         </div>
         
         <div class="field required">
-          <%= f.label :end_date, 'Project End Date' %>
+          <%= f.label :end_date, 'Student End Date' %>
           <%= calendar_date_select_tag 'sp_project[end_date]', @project.end_date %>
         </div>
         <div class="field">
