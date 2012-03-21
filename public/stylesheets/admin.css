@@ -1157,3 +1157,7 @@ a.AddNewPerson {
 .deadline1 { color: blue; }
 .deadline2 { color: green; }
 .deadline3 { color: black; }
+
+.float-left {
+	float: left;
+}
