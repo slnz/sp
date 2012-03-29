@@ -38,7 +38,7 @@
       </table>
     </div>
     
-    <% %w{staff volunteers kids evaluators}.each do |level| %>  <%# non_app_participants %>
+    <% %w{staff volunteers kids evaluators non_app_participants}.each do |level| %>
       <div class="module <%= level %>">
         <h3>
           <span><%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) <%= tip("Add students here who, for some reason, will not be applying through the on-line application, but needs a designation number and enrollment into project insurance/SOS.") if level == "non_app_participants" %></span>
