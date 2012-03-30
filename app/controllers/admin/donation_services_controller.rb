@@ -326,7 +326,7 @@ class Admin::DonationServicesController < ApplicationController
               if recipients.empty?
                 record.save!
                 person.save!
-                @warning_messages << "No leaders have been notified of person #{serson_id}'s designation number assignment"
+                @warning_messages << "No leaders have been notified of person #{person_id}'s designation number assignment"
               else
                 Notifier.notification(recipients, # RECIPIENTS
                                       "gosummerproject@uscm.org", # FROM
