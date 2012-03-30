@@ -86,7 +86,7 @@
               <% person = app.person %>
               <tr>
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
-                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
                 <td class="accdate deadline<%= app.deadline_met %>"><%= l app.completed_at.to_date if app.completed_at %></td>
@@ -116,7 +116,7 @@
               <% person = app.person %>
               <tr>
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
-                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
                 <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
@@ -146,7 +146,7 @@
               <% person = app.person %>
               <tr>
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
-                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
                 <td class="intern"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
@@ -176,7 +176,7 @@
               <% person = app.person %>
               <tr>
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
-                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id) %></td>
+                <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.id) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
                 <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
