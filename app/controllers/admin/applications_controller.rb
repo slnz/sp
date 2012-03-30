@@ -105,7 +105,7 @@ class Admin::ApplicationsController < ApplicationController
     end
 
     def get_application
-       @application = SpApplication.includes(:person, :donations).find(params[:id])
+       @application = SpApplication.includes(:person).find(params[:id])
     end
 
     def can_waive_fee

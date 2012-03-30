@@ -95,9 +95,10 @@ $(function() {
 	// Person Info
 	$("a.person").live('click', function() {
 		id = $(this).attr('data-id');
-		proj = $(this).attr('project-id');
-		if(proj == null || proj == '')
+		proj = $(this).attr('data-project-id');
+		if(proj == null || proj == ''){
 			proj = 0;
+		}
 		if (id != null) {
 			name = $(this).html();
 			dom = 'leader_details' + id;

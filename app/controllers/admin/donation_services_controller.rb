@@ -116,7 +116,7 @@ class Admin::DonationServicesController < ApplicationController
         LEFT JOIN sp_designation_numbers designation
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
-        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator')
+        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
           AND staff.year = '#{SpApplication::YEAR}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND designation.designation_number IS NULL
