@@ -89,7 +89,7 @@ class Admin::DonationServicesController < ApplicationController
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
           AND app.year = '#{SpApplication::YEAR}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
-          AND designation.designation_number IS NULL
+          AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '1000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
@@ -119,7 +119,7 @@ class Admin::DonationServicesController < ApplicationController
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
           AND staff.year = '#{SpApplication::YEAR}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
-          AND designation.designation_number IS NULL
+          AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '1000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
