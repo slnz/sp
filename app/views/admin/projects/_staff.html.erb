@@ -1,5 +1,5 @@
 <tr id="<%= level %>_<%= dom_id(person) %>">
-  <td class="name"><%= link_to(person, '', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.id) %></td</td>
+  <td class="name"><%= link_to(person, '', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? : @project.id : '') %></td>
   <td class="icon"><%= mail_to(person.email, image_tag('icons/mail.png')) if person.email %></td>
   <% if sp_user.can_edit_project?(project) %>
     <td class="icon"><%= link_to(image_tag('icons/slash.png'), admin_leader_path(project, :leader => level, :person_id => person.id), :class => 'inline delete delete-leader', :remote => true, :method => :delete, :confirm => "Are you sure you want to remove #{person} from #{level.titleize}?") %></td>

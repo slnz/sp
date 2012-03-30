@@ -2,7 +2,7 @@
 <div class="<%= leader.to_s %> leader_cell" id="<%= leader %>_for_<%= project.id %>">
   <% person = project.send(leader, year) 
   	if person -%>
-			<%= link_to(person, '', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.id) %>
+			<%= link_to(person, '', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? : @project.id : '') %>
   		<% if sp_user.can_edit_project?(project) %>
     		<div class="buttons">
       		<%= link_to('Edit', '', :class => 'inline edit edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader, :id => "edit_leader_#{project.id}#{leader}") %>
