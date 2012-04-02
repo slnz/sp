@@ -15,7 +15,7 @@ class Admin::PeopleController < ApplicationController
       if @designation = @person.sp_designation_numbers.where(:project_id => @project_id).first
         @designation.update_attributes(:designation_number => params[:designation_number])
       else
-        @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number])
+        @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number], :year => SpApplication::YEAR)
       end
     end
     respond_with(@person)
