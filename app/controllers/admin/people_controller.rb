@@ -4,7 +4,7 @@ class Admin::PeopleController < ApplicationController
   respond_to :html, :js
   def show
     @project_id = params[:project_id].to_i
-    @year = params[:year].to_i || SpApplication::YEAR
+    @year = params[:year].to_i
     @designation = @person.sp_designation_numbers.where(:project_id => @project_id, :year => @year).first
     respond_with(@person)
   end
@@ -12,7 +12,7 @@ class Admin::PeopleController < ApplicationController
   def update
     @person.update_attributes(params[:person])
     @project_id = params[:project_id].to_i
-    @year = params[:year].to_i || SpApplication::YEAR
+    @year = params[:year].to_i
     if @project_id != 0
       if @designation = @person.sp_designation_numbers.where(:project_id => @project_id, :year => @year).first
         @designation.update_attributes(:designation_number => params[:designation_number])

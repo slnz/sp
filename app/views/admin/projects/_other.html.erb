@@ -2,7 +2,7 @@
 <% designation = person.sp_designation_numbers.where(:project_id => @project.id).first %>
 <tr>
   <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
-  <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year]) %></td>
+  <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication::YEAR) %></td>
   <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
   <td class="campus"><%= person.campus %></td>
   <td class="balance"><%= number_to_currency(designation ? designation.account_balance.to_i : 0, :precision => 0) %></td>
