@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321165124) do
+ActiveRecord::Schema.define(:version => 20120402145111) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -480,17 +480,6 @@ ActiveRecord::Schema.define(:version => 20120321165124) do
     t.string   "university_state"
     t.string   "year_in_school"
   end
-
-  create_table "crs2_phone_numbers", :force => true do |t|
-    t.string   "number"
-    t.integer  "person_id"
-    t.string   "location"
-    t.boolean  "primary",    :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "crs2_phone_numbers", ["person_id"], :name => "index_crs2_phone_numbers_on_person_id"
 
   create_table "crs2_profile", :force => true do |t|
     t.string   "type",               :limit => 31, :default => "", :null => false
@@ -3496,6 +3485,16 @@ ActiveRecord::Schema.define(:version => 20120321165124) do
 
   add_index "sent_sms", ["twilio_sid"], :name => "index_sent_sms_on_twilio_sid", :unique => true
 
+  create_table "si_answer_sheet_question_sheets", :force => true do |t|
+    t.integer  "answer_sheet_id"
+    t.integer  "question_sheet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "si_answer_sheet_question_sheets", ["answer_sheet_id"], :name => "index_si_answer_sheet_question_sheets_on_answer_sheet_id"
+  add_index "si_answer_sheet_question_sheets", ["question_sheet_id"], :name => "index_si_answer_sheet_question_sheets_on_question_sheet_id"
+
   create_table "si_answer_sheets", :force => true do |t|
     t.integer  "question_sheet_id", :null => false
     t.datetime "created_at",        :null => false
@@ -3601,6 +3600,14 @@ ActiveRecord::Schema.define(:version => 20120321165124) do
     t.string  "subject"
   end
 
+  create_table "si_page_elements", :force => true do |t|
+    t.integer  "page_id"
+    t.integer  "element_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "si_pages", :force => true do |t|
     t.integer "question_sheet_id",                                   :null => false
     t.string  "label",             :limit => 100,                    :null => false
@@ -3628,10 +3635,32 @@ ActiveRecord::Schema.define(:version => 20120321165124) do
     t.string "label", :limit => 60, :null => false
   end
 
+  create_table "si_references", :force => true do |t|
+    t.integer  "question_id"
+    t.integer  "applicant_answer_sheet_id"
+    t.datetime "email_sent_at"
+    t.string   "relationship"
+    t.string   "title"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone"
+    t.string   "email"
+    t.string   "status"
+    t.datetime "submitted_at"
+    t.string   "access_key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "si_roles", :force => true do |t|
     t.string "role",       :null => false
     t.string "user_class", :null => false
   end
+
+  create_table "si_schema_migrations", :primary_key => "version", :force => true do |t|
+  end
+
+  add_index "si_schema_migrations", ["version"], :name => "si_unique_schema_migrations", :unique => true
 
   create_table "si_sleeve_sheets", :force => true do |t|
     t.integer "sleeve_id",                       :null => false
@@ -4562,6 +4591,7 @@ ActiveRecord::Schema.define(:version => 20120321165124) do
     t.integer  "account_balance",    :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
   end
 
   create_table "sp_donations", :force => true do |t|
