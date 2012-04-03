@@ -18,12 +18,14 @@ class AddYearToSpDesignationNumbers < ActiveRecord::Migration
             project_id = row['preference1_id']
           end
         end
-        ActiveRecord::Base.connection.update("UPDATE sp_designation_numbers SET year = #{row['year']} WHERE designation_number = #{row['designation_number']} AND person_id = #{row['person_id']} AND project_id = #{project_id}")
+        if ActiveRecord::Base.connection.select_values("select 1 from sp_designation_numbers WHERE designation_number = #{row['designation_number']} AND person_id = #{row['person_id']} AND project_id = #{project_id} AND `year` = #{row['year']}").length == 0
+          ActiveRecord::Base.connection.update("UPDATE sp_designation_numbers SET year = #{row['year']} WHERE designation_number = #{row['designation_number']} AND person_id = #{row['person_id']} AND project_id = #{project_id} AND `year` is null limit 1")
+        end
       end
     end
     
     # Assign YEAR = 2012 for nil years
-    ActiveRecord::Base.connection.update("UPDATE sp_designation_numbers SET year = '2012' WHERE year <=> NULL OR year <=> ''")
+    ActiveRecord::Base.connection.update("UPDATE sp_designation_numbers SET year = '2012' WHERE year is NULL OR year = ''")
   end
 
   def self.down
