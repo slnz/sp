@@ -218,13 +218,35 @@ class Admin::ProjectsController < ApplicationController
       redirect_to :back
     else
       to = params[:to].split(/,|;/)
+      recipients = Array.new
+      invalid_emails = Array.new
       to.each do |t|
-        t.strip!
+        if t.strip =~ /\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,4}\z/
+          recipients << t.strip
+        else
+          invalid_emails << t.strip
+        end
       end
+      
       cc = params[:from]
       files = (params[:file] || {}).values
-      email = ProjectMailer.team_email(to, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
-      redirect_to admin_project_path(@project), :notice => "Your email has been sent"
+      
+      if recipients.count > 0
+        email = ProjectMailer.team_email(recipients, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
+        notice = "Your email has been sent"
+      end
+      
+      if invalid_emails.count > 0
+        if notice.present?
+          notice += " except to the following invalid email address#{'es' if invalid_emails.count > 1}: "
+        else
+          notice = "Your email cannot be sent to the following invalid email address#{'es' if invalid_emails.count > 1}: "
+        end
+        invalid_emails_notice = invalid_emails.join(", ")
+        notice += invalid_emails_notice
+      end
+      
+      redirect_to admin_project_path(@project), :notice => notice
     end
   end
  
