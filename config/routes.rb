@@ -1,5 +1,7 @@
 Sp2::Application.routes.draw do
 
+  get "welcome/privacy"
+
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/failure' => 'authentications#failed'
   match '/sos' => 'admin/projects#sos'
