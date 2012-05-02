@@ -6,6 +6,7 @@ class Admin::PeopleController < ApplicationController
     @project_id = params[:project_id].to_i
     @year = params[:year].to_i
     @designation = @person.sp_designation_numbers.where(:project_id => @project_id, :year => @year).first
+    @person.current_address = @person.create_current_address unless @person.current_address
     respond_with(@person)
   end
   
