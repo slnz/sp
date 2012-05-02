@@ -53,6 +53,7 @@ group :development do
   # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
   gem 'unicorn'
+  gem 'debugger'
 end
 
 group :production do
