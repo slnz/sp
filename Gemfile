@@ -64,3 +64,4 @@ end
 gem 'omniauth',  "0.2.6"  # ~2s
 gem 'message_block' # ~100ms
 gem 'rack-contrib' # 100ms
+gem 'aasm'
