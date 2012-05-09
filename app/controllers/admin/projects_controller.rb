@@ -300,6 +300,7 @@ class Admin::ProjectsController < ApplicationController
               (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
+              writer << row
               # Store Another Record for Closing
               if project.pd_close_start_date.present? && staff.type == "PD"
                 row = []
@@ -326,7 +327,7 @@ class Admin::ProjectsController < ApplicationController
                   date_end = l(project.end_date, :format => :ps)
                 end
               end
-              (row_start + row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
             end
