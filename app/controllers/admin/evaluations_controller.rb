@@ -18,8 +18,7 @@ class Admin::EvaluationsController < ApplicationController
     projects_base = SpProject.current.uses_application.order(:name)
     @projects = @person.is_male? ? projects_base.not_full_men : projects_base.not_full_women
     @projects = [@application.project] + @projects if @application.project && !@projects.include?(@application.project)
-    @valid_events = @application.valid_events
-    @valid_events -= [:accept_as_participant, :accept_as_student_staff, :complete] unless @application.has_paid?
+    @valid_events = @application.next_states_for_events
   end
   
   def page
