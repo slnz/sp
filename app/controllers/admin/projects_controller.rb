@@ -18,6 +18,7 @@ class Admin::ProjectsController < ApplicationController
     set_up_pagination
     set_up_filters
     set_order
+
     @projects = @base.paginate(:page => params[:page], :per_page => @per_page)
     respond_with(@products)
   end
@@ -360,11 +361,11 @@ class Admin::ProjectsController < ApplicationController
     when params[:search].present?
       @base = @base.where("name like ?", "%#{params[:search]}%")
     when params[:search_pd].present?
-      @base = @base.pd_like(params[:search_pd])
+      @base = @base.includes(:sp_staff => :person).pd_like(params[:search_pd])
     when params[:search_apd].present?
-      @base = @base.apd_like(params[:search_apd])
+      @base = @base.includes(:sp_staff => :person).apd_like(params[:search_apd])
     when params[:search_opd].present?
-      @base = @base.opd_like(params[:search_opd])
+      @base = @base.includes(:sp_staff => :person).opd_like(params[:search_opd])
     end
     
     # Filter based on the user type
