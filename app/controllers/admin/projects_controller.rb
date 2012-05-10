@@ -12,23 +12,23 @@ class Admin::ProjectsController < ApplicationController
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
   cache_sweeper :project_sweeper 
   respond_to :html, :js
-  
+
   layout 'admin'
   def index
     set_up_pagination
     set_up_filters
     set_order
-    @projects = @base.includes(:sp_staff => :person).paginate(:page => params[:page], :per_page => @per_page)
+    @projects = @base.paginate(:page => params[:page], :per_page => @per_page)
     respond_with(@products)
   end
-  
+
   def edit
     initialize_questions
     (3 - @project.student_quotes.length).times do 
       @project.student_quotes.build
     end
   end
-  
+
   def update
     update_questions
     @project.update_attributes(params[:sp_project])
@@ -36,7 +36,7 @@ class Admin::ProjectsController < ApplicationController
       format.html {@project.errors.empty? ? redirect_to(dashboard_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
     end
   end
-  
+
   def create
     @project = SpProject.create(params[:sp_project].merge({:year => SpApplication::YEAR}))
     respond_with(@project) do |format|
