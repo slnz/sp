@@ -5,7 +5,6 @@ class AnswerPagesController < ApplicationController
   def get_answer_sheet
     @application = @answer_sheet = answer_sheet_type.find(params[:answer_sheet_id])
     @presenter = AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
-    initialize_addresses
   end
     
 end

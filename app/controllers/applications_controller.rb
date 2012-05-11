@@ -102,7 +102,6 @@ class ApplicationsController < AnswerSheetsController
     
     def get_answer_sheet
       @answer_sheet = get_application
-      initialize_addresses
     end
     
     def project_base
