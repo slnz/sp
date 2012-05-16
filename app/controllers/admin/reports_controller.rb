@@ -140,13 +140,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def partner
-    if params[:partner].present?
-      projects = SpProject.current.with_partner(params[:partner]).select("id, year")
-      year = projects.maximum(:year)
-      @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
-    else
-      @partners = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?)
-    end
+    set_up_partners
 
     respond_to do |format|
       format.html
@@ -383,7 +377,7 @@ class Admin::ReportsController < ApplicationController
     if sp_user.is_a?(SpNationalCoordinator)
       @projects = SpProject.current.order("name ASC")
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
-      partner
+      set_up_partners
       @partners = @partners & sp_user.partnerships
       @projects = SpProject.current.with_partner(@partners).order("name ASC")
     elsif sp_user.is_a?(SpRegionalCoordinator) || sp_user.is_a?(SpDirector)
@@ -1395,5 +1389,15 @@ class Admin::ReportsController < ApplicationController
 
     def set_years
       @years = (SpApplication.select("distinct year").order("year DESC").collect(&:year).compact + [ year ]).uniq.sort{ |a,b| b <=> a }
+    end
+
+    def set_up_partners
+      if params[:partner].present?
+        projects = SpProject.current.with_partner(params[:partner]).select("id, year")
+        year = projects.maximum(:year)
+        @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+      else
+        @partners = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?)
+      end
     end
 end
