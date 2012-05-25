@@ -230,22 +230,40 @@ class Admin::ProjectsController < ApplicationController
         end
       end
       
-      cc = params[:from]
       files = (params[:file] || {}).values
+      recipients << params[:from]
+      email_success = Array.new
+      email_failed = Array.new
+      
       if to.size > 0
         if recipients.count > 0
-          email = ProjectMailer.team_email(recipients, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
-          notice = "Your email has been sent"
-        end
-      
-        if invalid_emails.count > 0
-          if notice.present?
-            notice += " except to the following invalid email address#{'es' if invalid_emails.count > 1}: "
-          else
-            notice = "Your email cannot be sent to the following invalid email address#{'es' if invalid_emails.count > 1}: "
+          recipients.each do |recipient|
+            begin
+              ProjectMailer.team_email(recipient, params[:from], '', files.compact, params[:subject], params[:body]).deliver
+              email_success << recipient
+            rescue => e
+              raise e.inspect
+              email_failed << recipient
+            end
           end
-          invalid_emails_notice = invalid_emails.join(", ")
-          notice += invalid_emails_notice
+          if recipients.size == email_success.size
+            notice = "Your email has been sent"
+            if invalid_emails.count > 0
+              notice += " except to the following invalid email address#{'es' if invalid_emails.count > 1}: "
+              invalid_emails_notice = invalid_emails.join(", ")
+              notice += invalid_emails_notice
+            end
+          else
+            notice = "Your email has been sent except to the following invalid email address#{'es' if email_failed.size > 1}: "
+            if invalid_emails.count > 0
+              invalid_emails.each do |invemail|
+                email_failed << invemail
+              end
+            end
+            invalid_emails_notice = email_failed.join(", ")
+            notice += invalid_emails_notice
+          end
+          Rails.logger.info ">>>>>>>> #{notice}"
         end
         redirect_to admin_project_path(@project), :notice => notice
       else

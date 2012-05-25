@@ -24,6 +24,7 @@ gem 'dalli'
 gem 'liquid'
 gem 'excelsior'
 gem 'newrelic_rpm'
+gem 'mailcatcher'
 # gem 'RedCloth'
 
 gem 'aws-s3', :require => 'aws/s3'
