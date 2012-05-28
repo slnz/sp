@@ -49,11 +49,16 @@ gem 'less'
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
-group :development do
+group :development, :test do
   # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
   gem 'unicorn'
   gem 'debugger'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem "guard-rspec"
+  gem 'simplecov', :require => false
+  gem 'database_cleaner'
 end
 
 group :production do
