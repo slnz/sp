@@ -46,7 +46,7 @@ Spork.prefork do
     config.treat_symbols_as_metadata_keys_with_true_values = true
     config.filter_run :focus => true
     config.run_all_when_everything_filtered = true
-    config.include Devise::TestHelpers, :type => :controller
+    #config.include Devise::TestHelpers, :type => :controller
     config.include FactoryGirl::Syntax::Methods
 
     config.before(:suite) do
