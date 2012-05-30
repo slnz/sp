@@ -12,23 +12,24 @@ class Admin::ProjectsController < ApplicationController
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
   cache_sweeper :project_sweeper 
   respond_to :html, :js
-  
+
   layout 'admin'
   def index
     set_up_pagination
     set_up_filters
     set_order
-    @projects = @base.includes(:sp_staff => :person).paginate(:page => params[:page], :per_page => @per_page)
+
+    @projects = @base.paginate(:page => params[:page], :per_page => @per_page)
     respond_with(@products)
   end
-  
+
   def edit
     initialize_questions
     (3 - @project.student_quotes.length).times do 
       @project.student_quotes.build
     end
   end
-  
+
   def update
     update_questions
     @project.update_attributes(params[:sp_project])
@@ -36,7 +37,7 @@ class Admin::ProjectsController < ApplicationController
       format.html {@project.errors.empty? ? redirect_to(dashboard_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
     end
   end
-  
+
   def create
     @project = SpProject.create(params[:sp_project].merge({:year => SpApplication::YEAR}))
     respond_with(@project) do |format|
@@ -218,13 +219,57 @@ class Admin::ProjectsController < ApplicationController
       redirect_to :back
     else
       to = params[:to].split(/,|;/)
+      recipients = Array.new
+      invalid_emails = Array.new
       to.each do |t|
-        t.strip!
+        email = get_email(t.strip)
+        if email =~ /\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,4}\z/
+          recipients << email
+        else
+          invalid_emails << email
+        end
       end
-      cc = params[:from]
+      
       files = (params[:file] || {}).values
-      email = ProjectMailer.team_email(to, cc, params[:from], files.compact, params[:subject], params[:body]).deliver
-      redirect_to admin_project_path(@project), :notice => "Your email has been sent"
+      recipients << params[:from]
+      email_success = Array.new
+      email_failed = Array.new
+      
+      if to.size > 0
+        if recipients.count > 0
+          recipients.each do |recipient|
+            begin
+              ProjectMailer.team_email(recipient, params[:from], '', files.compact, params[:subject], params[:body]).deliver
+              email_success << recipient
+            rescue => e
+              raise e.inspect
+              email_failed << recipient
+            end
+          end
+          if recipients.size == email_success.size
+            notice = "Your email has been sent"
+            if invalid_emails.count > 0
+              notice += " except to the following invalid email address#{'es' if invalid_emails.count > 1}: "
+              invalid_emails_notice = invalid_emails.join(", ")
+              notice += invalid_emails_notice
+            end
+          else
+            notice = "Your email has been sent except to the following invalid email address#{'es' if email_failed.size > 1}: "
+            if invalid_emails.count > 0
+              invalid_emails.each do |invemail|
+                email_failed << invemail
+              end
+            end
+            invalid_emails_notice = email_failed.join(", ")
+            notice += invalid_emails_notice
+          end
+          Rails.logger.info ">>>>>>>> #{notice}"
+        end
+        redirect_to admin_project_path(@project), :notice => notice
+      else
+        flash[:notice] = 'You must specify a "To" address'
+        redirect_to :back
+      end
     end
   end
  
@@ -274,6 +319,7 @@ class Admin::ProjectsController < ApplicationController
               (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
+              writer << row
               # Store Another Record for Closing
               if project.pd_close_start_date.present? && staff.type == "PD"
                 row = []
@@ -300,7 +346,7 @@ class Admin::ProjectsController < ApplicationController
                   date_end = l(project.end_date, :format => :ps)
                 end
               end
-              (row_start + row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
             end
@@ -333,11 +379,11 @@ class Admin::ProjectsController < ApplicationController
     when params[:search].present?
       @base = @base.where("name like ?", "%#{params[:search]}%")
     when params[:search_pd].present?
-      @base = @base.pd_like(params[:search_pd])
+      @base = @base.includes(:sp_staff => :person).pd_like(params[:search_pd])
     when params[:search_apd].present?
-      @base = @base.apd_like(params[:search_apd])
+      @base = @base.includes(:sp_staff => :person).apd_like(params[:search_apd])
     when params[:search_opd].present?
-      @base = @base.opd_like(params[:search_opd])
+      @base = @base.includes(:sp_staff => :person).opd_like(params[:search_opd])
     end
     
     # Filter based on the user type
@@ -497,6 +543,17 @@ class Admin::ProjectsController < ApplicationController
   end
 
   protected
+  
+    def get_email(str)
+      if str.index("<")
+        first = str.index("<") + 1
+        last = str.index(">") ? str.index(">") - 1 : str.size - 1
+        str[first..last]
+      else
+        str
+      end
+    end
+    
     def initialize_questions
       @custom_page = @project.initialize_project_specific_question_sheet.pages.first
       @questions = @custom_page.elements.to_a

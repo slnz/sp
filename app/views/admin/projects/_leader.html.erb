@@ -1,16 +1,17 @@
 <% edit_name = project.to_s + ' - ' + leader.to_s.upcase  %>
+<% can_edit = sp_user.can_edit_project?(project) %>
 <div class="<%= leader.to_s %> leader_cell" id="<%= leader %>_for_<%= project.id %>">
   <% person = project.send(leader, year) 
   	if person -%>
-			<%= link_to(person, '', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '') %>
-  		<% if sp_user.can_edit_project?(project) %>
+			<%= link_to(person, '', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication::YEAR) %>
+  		<% if can_edit %>
     		<div class="buttons">
       		<%= link_to('Edit', '', :class => 'inline edit edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader, :id => "edit_leader_#{project.id}#{leader}") %>
       		<%= link_to('Delete', admin_leader_path(project, :leader => leader, :person_id => person.id), :class => 'inline delete delete-leader', :remote => true, :method => :delete, :confirm => "Are you sure you want to remove #{person} as a director?") %>
       	</div>
     	<% end %>
   <% else %>
-  	<% if sp_user.can_edit_project?(project) %>
+  	<% if can_edit %>
       <%= link_to('', :class => 'edit-leader', 'data-name' => edit_name, 'data-id' => project.id, 'data-leader' => leader) do %>
         <span class="fillit">(Fill this position)</span>
       <% end %>

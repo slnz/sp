@@ -17,3 +17,5 @@ config/initializers/email.rb
 *.swp
 vendor/ruby
 development/
+log/*
+coverage

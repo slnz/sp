@@ -17,7 +17,7 @@
 	  <tr>
 	    <td class="left">Designation: </td>
 	    <td><%= text_field_tag :designation_number, @designation ? @designation.designation_number : "" %>
-					<%= hidden_field_tag :project_id, @project_id %></td>
+					<%= hidden_field_tag :project_id, @project_id %><%= hidden_field_tag :year, @year %></td>
 	  </tr>
 	<%- end %>
   <%= f.fields_for :current_address do |af| %>
