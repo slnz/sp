@@ -18,7 +18,7 @@ gem 'tiny_mce'
 gem 'carmen', '~> 0.2.12'
 gem 'dynamic_form'
 gem 'activemerchant'
-gem 'spork'
+gem 'spork-rails', '~> 3.2.0'
 gem 'paperclip', '~> 2.3.8'
 
 gem 'dalli'
