@@ -9,14 +9,14 @@ class PaymentQuestion < Question
   end
   
   def display_response(app=nil)
-    return response(app).to_s
+    response(app).to_s
   end
   
   def has_response?(answer_sheet = nil)
     if answer_sheet
       answer_sheet.payments.length > 0
     else
-      SpPayment.count > 0
+      false
     end
   end
   
