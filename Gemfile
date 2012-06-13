@@ -18,6 +18,7 @@ gem 'tiny_mce'
 gem 'carmen', '~> 0.2.12'
 gem 'dynamic_form'
 gem 'activemerchant'
+gem 'spork-rails', '~> 3.2.0'
 gem 'paperclip', '~> 2.3.8'
 
 gem 'dalli'
@@ -50,11 +51,16 @@ gem 'less'
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
-group :development do
+group :development, :test do
   # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
   gem 'unicorn'
   gem 'debugger'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem "guard-rspec"
+  gem 'simplecov', :require => false
+  gem 'database_cleaner'
 end
 
 group :production do
