@@ -63,10 +63,10 @@ group :development, :test do
   gem 'database_cleaner'
 end
 
-group :production do
-  gem 'ruby-oci8'
-  gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
-end
+#group :production do
+  #gem 'ruby-oci8'
+  #gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
+#end
 
 gem 'omniauth',  "0.2.6"  # ~2s
 gem 'message_block' # ~100ms
