@@ -61,6 +61,7 @@ GEM
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
     carmen (0.2.12)
+    chronic (0.6.7)
     cocaine (0.2.0)
     columnize (0.3.6)
     commonjs (0.2.5)
@@ -278,6 +279,9 @@ GEM
       kgio (~> 2.4)
       rack
       raindrops (~> 0.6)
+    whenever (0.7.3)
+      activesupport (>= 2.3.4)
+      chronic (~> 0.6.3)
     will_paginate (3.0.pre2)
     xml-simple (1.1.0)
     yui-compressor (0.9.6)
@@ -321,4 +325,5 @@ DEPENDENCIES
   spreadsheet
   tiny_mce
   unicorn
+  whenever
   will_paginate (= 3.0.pre2)

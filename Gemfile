@@ -35,6 +35,7 @@ gem 'spreadsheet'
 gem 'airbrake'
 gem 'jammit'
 gem 'less' 
+gem 'whenever'
 # gem 'unicode_utils'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
