@@ -46,6 +46,14 @@ class Run
       new_project.date_of_departure = new_project.date_of_departure + 1.year if new_project.date_of_departure
       new_project.date_of_return = new_project.date_of_return + 1.year if new_project.date_of_return
       new_project.apply_by_date = new_project.apply_by_date + 1.year if new_project.apply_by_date
+      new_project.pd_start_date = new_project.pd_start_date + 1.year if new_project.pd_start_date
+      new_project.pd_end_date = new_project.pd_end_date + 1.year if new_project.pd_end_date
+      new_project.pd_close_start_date = new_project.pd_close_start_date + 1.year if new_project.pd_close_start_date
+      new_project.pd_close_end_date = new_project.pd_close_end_date + 1.year if new_project.pd_close_end_date
+      new_project.student_staff_start_date = new_project.student_staff_start_date + 1.year if new_project.student_staff_start_date
+      new_project.student_staff_end_date = new_project.student_staff_end_date + 1.year if new_project.student_staff_end_date
+      new_project.staff_start_date = new_project.staff_start_date + 1.year if new_project.staff_start_date
+      new_project.staff_end_date = new_project.staff_end_date + 1.year if new_project.staff_end_date
       new_project.current_students_men = 0
       new_project.current_students_women = 0
       new_project.current_applicants_men = 0
