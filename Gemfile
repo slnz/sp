@@ -57,6 +57,7 @@ group :development, :test do
   gem 'mail_safe' #.5
   gem 'unicorn'
   gem 'debugger'
+  gem 'ruby-debug-ide', '0.4.17.beta14' # if you're going to use this in Aptana or something, comment out debugger temporarily
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem "guard-rspec"
