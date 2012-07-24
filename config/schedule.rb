@@ -27,6 +27,7 @@ every 1.week do
 end
 every 1.day do
   rails "runner Run.daily_tasks"
+  rails "runner Run.change_sp_year"
 end
 
 # Learn more: http://github.com/javan/whenever

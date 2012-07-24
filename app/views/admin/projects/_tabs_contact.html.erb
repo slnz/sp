@@ -93,18 +93,18 @@
           <%= calendar_date_select_tag 'sp_project[student_staff_end_date]', @project.student_staff_end_date %>
         </div>
 				<div class="clear"></div>
+        <% if sp_user.can_see_nc_reports? %>
+          <div class="field">
+            <%= f.label :archive_project_date, 'Archive project and prepare for following year on' %>
+            <%= calendar_date_select_tag 'sp_project[archive_project_date]', @project.archive_project_date %>
+          </div>
+        <% end %>
         <% if sp_user.can_change_project_status? %>
           <div class="field">
             <%= f.label :open_application_date, 'Allow students to apply on' %>
             <%= calendar_date_select_tag 'sp_project[open_application_date]', @project.open_application_date %>
           </div>
         <% end %>
-        <% if sp_user.can_see_nc_reports? %>
-          <div class="field">
-            <%= f.label :archive_project_date, 'Archive project and prepare for following year on' %>
-            <%= calendar_date_select_tag 'sp_project[archive_project_date]', @project.archive_project_date %>
-          </div>
-      <% end %>
 
         <div class="clear"></div>
 				<!--
