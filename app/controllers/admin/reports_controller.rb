@@ -175,18 +175,21 @@ class Admin::ReportsController < ApplicationController
       end
     end
 
+    @applications = @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(year)
+
     respond_to do |format|
       format.html
       format.csv { 
         csv = ""
         CSV.generate(csv) do |csv|
           csv << [ "Student Name", "Designation #", "Date", "Amount", "Donor Name", "Medium" ]
-          @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(year).each do |application|
-              person = application.person
-              application.donations.for_year(application.year).each do |donation|
-                csv << [ person, application.designation_number, l(donation.donation_date),
-                  number_to_currency(donation.amount), donation.donor_name, donation.medium ]
-              end
+
+          @applications.each do |application|
+            person = application.person
+            application.donations.for_year(application.year).each do |donation|
+              csv << [ person, application.designation_number, l(donation.donation_date),
+                number_to_currency(donation.amount), donation.donor_name, donation.medium ]
+            end
           end
         end
         render :text => csv
