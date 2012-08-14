@@ -174,7 +174,7 @@ class Admin::ReportsController < ApplicationController
       end
     end
 
-    @applications = @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year)
+    @applications = @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year) if @project
 
     respond_to do |format|
       format.html
