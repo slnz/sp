@@ -145,7 +145,6 @@ class Admin::ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { 
-        @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
         csv = ""
         CSV.generate(csv) do |csv|
           csv << [ "Project Name", "Status", "Name", "Gender", "Region", 
@@ -1396,9 +1395,9 @@ class Admin::ReportsController < ApplicationController
 
     def set_up_partners
       if params[:partner].present?
-        projects = SpProject.current.with_partner(params[:partner]).select("id, year")
-        year = projects.maximum(:year)
-        @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+        @projects = SpProject.current.with_partner(params[:partner]).select("id, year")
+        year = @projects.maximum(:year)
+        @applications = SpApplication.where(:project_id => @projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
       else
         @partners = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?)
       end
