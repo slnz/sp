@@ -1320,6 +1320,20 @@ class Admin::ReportsController < ApplicationController
       who = case p.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
       [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.for_year(SpApplication::YEAR).count, p.staff.count, number_to_currency(p.student_cost.to_i, :precision => 0), number_to_currency(p.staff_cost.to_i, :precision => 0), p.primary_partner, p.secondary_partner, p.tertiary_partner, who, p.use_provided_application? ? 'Yes' : 'No']
     end
+    
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << @headers
+          @rows.each do |row|
+            csv << row
+          end
+        end
+        render :text => csv
+      }
+    end
   end
   
   protected
