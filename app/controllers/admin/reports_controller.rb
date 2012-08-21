@@ -718,13 +718,13 @@ class Admin::ReportsController < ApplicationController
     Region.standard_regions.each do |region|
       @totals[region.region] = {}
       @years.each do |year|
-        scope = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where('sp_projects.primary_partner' => region.region)
+        scope = SpApplication.not_staff.accepted.joins(:project).where('sp_applications.year' => year).where('sp_projects.primary_partner' => region.region)
         @totals[region.region][year] = {'WSN' => scope.where("country <> 'United States' AND country <> ''").count,
-                                        'USSP' => scope.where("country = 'United States'").count}
+                                        'USSP' => scope.where("country = 'United States' OR country = ''").count}
       end
     end
     @years.each do |year|
-      @other_totals[year] = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_region_codes).count
+      @other_totals[year] = SpApplication.not_staff.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_region_codes).count
     end
 
     respond_to do |format|
