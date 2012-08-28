@@ -5,6 +5,7 @@ class ApplicationsController < AnswerSheetsController
   
   def closed
     #redirect_to '/'
+    @project = SpProject.find(params[:id]) if params[:id]
     render :layout => false
   end
   
@@ -14,7 +15,10 @@ class ApplicationsController < AnswerSheetsController
   
   def apply
     session[:attempted_submit] = nil
-    @project = project_base.find(params[:p]) if params[:p]
+    @project = SpProject.uses_application.find(params[:p]) if params[:p]
+    unless @project.current?
+      redirect_to action: :closed, id: @project.id and return
+    end
     # If the current user has already started an application, pick it up from there
     @application = current_person.sp_applications.last 
     
