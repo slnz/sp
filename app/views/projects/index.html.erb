@@ -1,4 +1,4 @@
-<% if @searched %>
+<% if @searched && @projects.blank? %>
   <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
 <% end %>
 <h2>Please pick which project you'd like to apply for:</h2>
