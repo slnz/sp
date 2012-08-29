@@ -1,12 +1,13 @@
-<% cache(@key, :expires_in => 1.hour) do %>
-  <h2>Please pick which project you'd like to apply for:</h2>
-  <% if @projects.blank? %>
-    <%= render :partial => 'all' %>
-  <% else %>
-    <ul>
-      <% @projects.each do |project| %>
-        <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
-      <% end %>
-    </ul>
-  <% end %>
+<% if @searched %>
+  <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
+<% end %>
+<h2>Please pick which project you'd like to apply for:</h2>
+<% if @projects.blank? %>
+  <%= render :partial => 'all' %>
+<% else %>
+  <ul>
+    <% @projects.each do |project| %>
+      <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
+    <% end %>
+  </ul>
 <% end %>

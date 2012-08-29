@@ -130,6 +130,7 @@ class ProjectsController < ApplicationController
       end
       respond_to do |format|
         format.html do
+          @searched = true
           @projects.reject! {|p| !p.use_provided_application?} if @projects
         end
         format.xml 
