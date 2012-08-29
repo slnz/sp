@@ -369,7 +369,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def set_up_filters
-    @base = params[:closed] ? SpProject : SpProject.current
+    @base = params[:closed] ? SpProject : SpProject.open
     @filter_title = 'All'
     if params[:partners]
       @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", params[:partners], params[:partners], params[:partners])
