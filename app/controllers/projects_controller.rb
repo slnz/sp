@@ -126,6 +126,7 @@ class ProjectsController < ApplicationController
                                       :include => [:primary_ministry_focus, :ministry_focuses],
                                       :conditions => conditions,
                                       :order => 'sp_projects.name, sp_projects.year')
+          @searched = true
         end
       end
       respond_to do |format|
