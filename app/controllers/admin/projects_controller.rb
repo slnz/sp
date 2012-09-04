@@ -39,7 +39,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def create
-    @project = SpProject.create(params[:sp_project].merge({:year => SpApplication::YEAR}))
+    @project = SpProject.create(params[:sp_project].merge({:year => SpApplication.year}))
     respond_with(@project) do |format|
       format.html do
         if @project.new_record?
@@ -76,7 +76,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def download
-    year = params[:year] || SpApplication::YEAR
+    year = params[:year] || SpApplication.year
     
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet(:name => @project.name)
@@ -302,7 +302,7 @@ class Admin::ProjectsController < ApplicationController
           date_start = project.international? == "Yes" ? l((project.date_of_departure || project.start_date), :format => :ps) : nil
           date_end = project.international? == "Yes" ? l((project.date_of_return || project.end_date), :format => :ps) : nil
           
-          project.sp_staff.year(SpApplication::YEAR).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
+          project.sp_staff.year(SpApplication.year).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
             row = []
             p = staff.person          
             # Getting Dates
@@ -332,7 +332,7 @@ class Admin::ProjectsController < ApplicationController
               end
             end
           end
-          project.sp_applications.for_year(SpApplication::YEAR).accepted.includes(:person).each do |applicant|
+          project.sp_applications.for_year(SpApplication.year).accepted.includes(:person).each do |applicant|
             row = []
             p = applicant.person
             if p
@@ -408,7 +408,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def get_year
-    @year = params[:year].present? ? params[:year] : SpApplication::YEAR
+    @year = params[:year].present? ? params[:year] : SpApplication.year
   end
 
   def set_values_from_person(person)
