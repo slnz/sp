@@ -54,8 +54,8 @@ class Run
       new_project.student_staff_end_date = new_project.student_staff_end_date + 1.year if new_project.student_staff_end_date
       new_project.staff_start_date = new_project.staff_start_date + 1.year if new_project.staff_start_date
       new_project.staff_end_date = new_project.staff_end_date + 1.year if new_project.staff_end_date
-      new_project.staff_end_date = new_project.archive_project_date + 1.year if new_project.archive_project_date
-      new_project.staff_end_date = new_project.open_application_date + 1.year if new_project.open_application_date
+      new_project.archive_project_date = new_project.archive_project_date + 1.year if new_project.archive_project_date
+      new_project.open_application_date = new_project.open_application_date + 1.year if new_project.open_application_date
       new_project.current_students_men = 0
       new_project.current_students_women = 0
       new_project.current_applicants_men = 0
