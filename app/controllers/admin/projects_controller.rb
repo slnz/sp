@@ -76,7 +76,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def download
-    year = params[:year] || SpApplication.year
+    year = get_year
     
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet(:name => @project.name)
@@ -408,7 +408,7 @@ class Admin::ProjectsController < ApplicationController
   end
   
   def get_year
-    @year = params[:year].present? ? params[:year] : SpApplication.year
+    @year = params[:year] || @project.try(:year) || SpApplication.year
   end
 
   def set_values_from_person(person)
