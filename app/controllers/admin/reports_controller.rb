@@ -644,7 +644,7 @@ class Admin::ReportsController < ApplicationController
                 "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One', 
                 'Decisions Group', 'Holy Spirit Convo', 'Involved New Blvrs', 'Involved Students', 'Student Leaders', 'Dollars Raised' ]
     @rows = []
-    SpProject.where(year: @year).order('name').each do |project| 
+    SpProject.order('name').each do |project| 
       if stat = project.statistics.detect {|s| s.sp_year.to_i == @year.to_i}
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner, 
                   case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end, 
