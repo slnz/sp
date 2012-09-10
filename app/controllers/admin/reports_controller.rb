@@ -225,7 +225,7 @@ class Admin::ReportsController < ApplicationController
             "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised" ]
           @project.statistics.each do |stat|
             csv << [ 
-              stat.stat_year,
+              stat.sp_year,
               number_with_delimiter(stat.exposuresViaMedia.to_i),
               number_with_delimiter(stat.evangelisticOneOnOne.to_i),
               number_with_delimiter(stat.evangelisticGroup.to_i),
@@ -252,12 +252,12 @@ class Admin::ReportsController < ApplicationController
       columns_we_care_about = %w[exposuresViaMedia evangelisticOneOnOne evangelisticGroup decisions decisionsHelpedByMedia decisionsHelpedByOneOnOne 
                                  decisionsHelpedByGroup decisionsHelpedByOngoingReln holySpiritConversations invldNewBlvrs invldStudents
                                  dollars_raised]
-      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `stat_year`, #{columns_we_care_about.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
+      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `sp_year`, #{columns_we_care_about.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
         "left join ministry_targetarea on sp_projects.id = ministry_targetarea.eventKeyID and eventType = 'SP' " +
         "left join ministry_activity on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` " +
         "left join ministry_statistic on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` " +
-        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by stat_year desc")
-      @statistics.select! {|s| s.stat_year.present?}
+        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by sp_year desc")
+      @statistics.select! {|s| s.sp_year.present?}
     elsif sp_user.is_a?(SpNationalCoordinator)
       partner
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
@@ -276,7 +276,7 @@ class Admin::ReportsController < ApplicationController
               "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised" ]
             @statistics.each do |stat|
               csv << [ 
-                stat.stat_year,
+                stat.sp_year,
                 number_with_delimiter(stat.exposuresViaMedia.to_i),
                 number_with_delimiter(stat.evangelisticOneOnOne.to_i),
                 number_with_delimiter(stat.evangelisticGroup.to_i),
@@ -645,7 +645,7 @@ class Admin::ReportsController < ApplicationController
                 'Decisions Group', 'Holy Spirit Convo', 'Involved New Blvrs', 'Involved Students', 'Student Leaders', 'Dollars Raised' ]
     @rows = []
     SpProject.where(year: @year).order('name').each do |project| 
-      if stat = project.statistics.detect {|s| s.stat_year.to_i == @year.to_i}
+      if stat = project.statistics.detect {|s| s.sp_year.to_i == @year.to_i}
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner, 
                   case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end, 
                   project.contact.try(:email), number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i), 
@@ -654,7 +654,7 @@ class Admin::ReportsController < ApplicationController
                   number_with_delimiter(stat.decisionsHelpedByGroup.to_i), number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i), 
                   number_with_delimiter(stat.holySpiritConversations.to_i), number_with_delimiter(stat.invldNewBlvrs.to_i), 
                   number_with_delimiter(stat.invldStudents.to_i), number_to_currency(stat.dollars_raised.to_i, precision: 0)]
-      else
+        else #if project.open?
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner, 
                   case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end, 
                   project.contact.try(:email), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '$0']
