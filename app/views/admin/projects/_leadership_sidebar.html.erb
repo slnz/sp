@@ -41,7 +41,7 @@
     <% %w{staff volunteers kids evaluators non_app_participants}.each do |level| %>
       <div class="module <%= level %>">
         <h3>
-          <span><%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) <%= tip("Add students here who, for some reason, will not be applying through the on-line application, but needs a designation number and enrollment into project insurance/SOS.") if level == "non_app_participants" %></span>
+          <span><%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) <%= tip("Add students here who, for some reason, will not be applying through the on-line application, but need a designation number and enrollment into project insurance/SOS. In the box that appears, click the blue cross and add the student information. Their names and information will then appear in the \"Other\" tab. Be sure to click on the student's name after it has been created and complete all the extra fields, except designation number (leave it blank).") if level == "non_app_participants" %></span>
           <% if sp_user.can_edit_project?(project) %>
             <span class="controls"><%= link_to('Add', '#', :class => 'add edit-leader', 'data-name' => "Add a #{level.singularize.titleize}", 'data-id' => project.id, 'data-leader' => level.singularize) %></span>
           <% end %>
