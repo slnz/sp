@@ -32,7 +32,7 @@ class Admin::DonationServicesController < ApplicationController
 #                                                left join ministry_newaddress currentAddress on (currentAddress.addressType = 'current' and
 #                                                currentAddress.fk_personId = person.personID) left join ministry_newaddress permanentAddress on
 #                                                (permanentAddress.addressType = 'permanent' and permanentAddress.fk_personId = person.personID) 
-#                                                left join ministry_person spouse on (person.fk_spouseID = spouse.personID) where app.year = '#{SpApplication::YEAR}'
+#                                                left join ministry_person spouse on (person.fk_spouseID = spouse.personID) where app.year = '#{SpApplication.year}'
 #                                                and app.status IN ('accepted_as_student_staff','accepted_as_participant') and app.designation_number is null and 
 #                                                project.scholarship_designation > '1000000' and project.scholarship_designation < '3000000' and
 #                                                project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
@@ -87,7 +87,7 @@ class Admin::DonationServicesController < ApplicationController
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
-          AND app.year = '#{SpApplication::YEAR}'
+          AND app.year = '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '1000000'
@@ -117,7 +117,7 @@ class Admin::DonationServicesController < ApplicationController
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
-          AND staff.year = '#{SpApplication::YEAR}'
+          AND staff.year = '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '1000000'
@@ -278,8 +278,8 @@ class Admin::DonationServicesController < ApplicationController
       person = Person.find(person_id)
       donor_number = persons_to_update[person_id]
       
-      record = SpApplication.where(:person_id => person_id, :year => SpApplication::YEAR).first
-      record ||= SpStaff.where(:person_id => person_id, :year => SpApplication::YEAR).first
+      record = SpApplication.where(:person_id => person_id, :year => SpApplication.year).first
+      record ||= SpStaff.where(:person_id => person_id, :year => SpApplication.year).first
       
       if record.present?
         project_id = record.project_id

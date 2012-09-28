@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(2011).each do |application| %>
+        <% @applications.each do |application| %>
           <% person = application.person %>
           <% application.donations.for_year(application.year).each do |donation| %>
             <tr>

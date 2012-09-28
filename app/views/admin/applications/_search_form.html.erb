@@ -58,7 +58,7 @@
         <div class="clear"></div>
         <div class="fieldinline">
           <label for="year">Year</label>
-          <%= select_tag "year", options_for_select((2001..SpProject.maximum(:year).to_i).to_a.reverse.insert(0,''), (params[:year] || SpApplication::YEAR).to_i)%>
+          <%= select_tag "year", options_for_select((2001..SpProject.maximum(:year).to_i).to_a.reverse.insert(0,''), (params[:year] || SpApplication.year).to_i)%>
         </div>
         <div class="fieldinline">
           <label for="preference">Project Preference</label>

@@ -34,18 +34,28 @@ class Run
       app.complete
     end
   end
-  
+
   #In addition to running this method, change the constant in SpApplication.rb
   def self.change_sp_year
-    last_years = SpProject.find_all_by_year_and_project_status("2011", "open")
+    last_years = SpProject.where(archive_project_date: Date.today)
     last_years.each do |new_project|
       new_project.save(:validate => false)
-      new_project.year = "2012"
+      new_project.year = Date.today.year + 1
       new_project.start_date = new_project.start_date + 1.year if new_project.start_date
       new_project.end_date = new_project.end_date + 1.year if new_project.end_date
       new_project.date_of_departure = new_project.date_of_departure + 1.year if new_project.date_of_departure
       new_project.date_of_return = new_project.date_of_return + 1.year if new_project.date_of_return
       new_project.apply_by_date = new_project.apply_by_date + 1.year if new_project.apply_by_date
+      new_project.pd_start_date = new_project.pd_start_date + 1.year if new_project.pd_start_date
+      new_project.pd_end_date = new_project.pd_end_date + 1.year if new_project.pd_end_date
+      new_project.pd_close_start_date = new_project.pd_close_start_date + 1.year if new_project.pd_close_start_date
+      new_project.pd_close_end_date = new_project.pd_close_end_date + 1.year if new_project.pd_close_end_date
+      new_project.student_staff_start_date = new_project.student_staff_start_date + 1.year if new_project.student_staff_start_date
+      new_project.student_staff_end_date = new_project.student_staff_end_date + 1.year if new_project.student_staff_end_date
+      new_project.staff_start_date = new_project.staff_start_date + 1.year if new_project.staff_start_date
+      new_project.staff_end_date = new_project.staff_end_date + 1.year if new_project.staff_end_date
+      new_project.archive_project_date = new_project.archive_project_date + 1.year if new_project.archive_project_date
+      new_project.open_application_date = new_project.open_application_date + 1.year if new_project.open_application_date
       new_project.current_students_men = 0
       new_project.current_students_women = 0
       new_project.current_applicants_men = 0

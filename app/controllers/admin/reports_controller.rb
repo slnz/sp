@@ -145,7 +145,6 @@ class Admin::ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { 
-        @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
         csv = ""
         CSV.generate(csv) do |csv|
           csv << [ "Project Name", "Status", "Name", "Gender", "Region", 
@@ -175,18 +174,21 @@ class Admin::ReportsController < ApplicationController
       end
     end
 
+    @applications = @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year) if @project
+
     respond_to do |format|
       format.html
       format.csv { 
         csv = ""
         CSV.generate(csv) do |csv|
           csv << [ "Student Name", "Designation #", "Date", "Amount", "Donor Name", "Medium" ]
-          @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted_participants.for_year(year).each do |application|
-              person = application.person
-              application.donations.for_year(application.year).each do |donation|
-                csv << [ person, application.designation_number, l(donation.donation_date),
-                  number_to_currency(donation.amount), donation.donor_name, donation.medium ]
-              end
+
+          @applications.each do |application|
+            person = application.person
+            application.donations.for_year(application.year).each do |donation|
+              csv << [ person, application.designation_number, l(donation.donation_date),
+                number_to_currency(donation.amount), donation.donor_name, donation.medium ]
+            end
           end
         end
         render :text => csv
@@ -223,7 +225,7 @@ class Admin::ReportsController < ApplicationController
             "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised" ]
           @project.statistics.each do |stat|
             csv << [ 
-              stat.stat_year,
+              stat.sp_year,
               number_with_delimiter(stat.exposuresViaMedia.to_i),
               number_with_delimiter(stat.evangelisticOneOnOne.to_i),
               number_with_delimiter(stat.evangelisticGroup.to_i),
@@ -250,12 +252,12 @@ class Admin::ReportsController < ApplicationController
       columns_we_care_about = %w[exposuresViaMedia evangelisticOneOnOne evangelisticGroup decisions decisionsHelpedByMedia decisionsHelpedByOneOnOne 
                                  decisionsHelpedByGroup decisionsHelpedByOngoingReln holySpiritConversations invldNewBlvrs invldStudents
                                  dollars_raised]
-      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `stat_year`, #{columns_we_care_about.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
+      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `sp_year`, #{columns_we_care_about.collect{ |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
         "left join ministry_targetarea on sp_projects.id = ministry_targetarea.eventKeyID and eventType = 'SP' " +
         "left join ministry_activity on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` " +
         "left join ministry_statistic on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` " +
-        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by stat_year desc")
-      @statistics.select! {|s| s.stat_year.present?}
+        "where sp_projects.primary_partner IN (#{@partners.collect{ |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by sp_year desc")
+      @statistics.select! {|s| s.sp_year.present?}
     elsif sp_user.is_a?(SpNationalCoordinator)
       partner
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
@@ -274,7 +276,7 @@ class Admin::ReportsController < ApplicationController
               "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised" ]
             @statistics.each do |stat|
               csv << [ 
-                stat.stat_year,
+                stat.sp_year,
                 number_with_delimiter(stat.exposuresViaMedia.to_i),
                 number_with_delimiter(stat.evangelisticOneOnOne.to_i),
                 number_with_delimiter(stat.evangelisticGroup.to_i),
@@ -342,16 +344,16 @@ class Admin::ReportsController < ApplicationController
     # Apply by Dec. 10 and hear back by Jan. 28
     # Apply by Jan. 24 and hear back by Feb. 28
     # Apply by Feb. 24 and hear back by Mar. 28
-    d1 = Date.parse("Dec 10, #{SpApplication::YEAR - 1}")
-    @d1_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at <= ?", SpApplication::YEAR, d1]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
-    d2 = Date.parse("Jan 24, #{SpApplication::YEAR}")
-    @d2_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication::YEAR, d1, d2]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
-    d3 = Date.parse("Feb 24, #{SpApplication::YEAR}")
-    @d3_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication::YEAR, d2, d3]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d1 = Date.parse("Dec 10, #{SpApplication.year - 1}")
+    @d1_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at <= ?", SpApplication.year, d1]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d2 = Date.parse("Jan 24, #{SpApplication.year}")
+    @d2_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication.year, d1, d2]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
+    d3 = Date.parse("Feb 24, #{SpApplication.year}")
+    @d3_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication.year, d2, d3]).joins(:sp_applications).group(:project_id).select("name, count(*) as app_count").where("sp_applications.status" => "ready").group_by{ |p| p.name }
 
-    @c1_cutoff = Date.parse("Jan 28, #{SpApplication::YEAR}")
-    @c2_cutoff = Date.parse("Feb 28, #{SpApplication::YEAR}")
-    @c3_cutoff = Date.parse("Mar 28, #{SpApplication::YEAR}")
+    @c1_cutoff = Date.parse("Jan 28, #{SpApplication.year}")
+    @c2_cutoff = Date.parse("Feb 28, #{SpApplication.year}")
+    @c3_cutoff = Date.parse("Mar 28, #{SpApplication.year}")
 
     respond_to do |format|
       format.html
@@ -597,10 +599,10 @@ class Admin::ReportsController < ApplicationController
   def fee_by_staff
     respond_to do |format|
       format.html {
-        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
       }
       format.csv { 
-        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
         csv = ""
         CSV.generate(csv) do |csv|
           csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
@@ -642,8 +644,8 @@ class Admin::ReportsController < ApplicationController
                 "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One', 
                 'Decisions Group', 'Holy Spirit Convo', 'Involved New Blvrs', 'Involved Students', 'Student Leaders', 'Dollars Raised' ]
     @rows = []
-    SpProject.current.order('name').each do |project| 
-      if stat = project.statistics.detect {|s| s.stat_year.to_i == @year.to_i}
+    SpProject.order('name').each do |project| 
+      if stat = project.statistics.detect {|s| s.sp_year.to_i == @year.to_i}
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner, 
                   case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end, 
                   project.contact.try(:email), number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i), 
@@ -652,6 +654,10 @@ class Admin::ReportsController < ApplicationController
                   number_with_delimiter(stat.decisionsHelpedByGroup.to_i), number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i), 
                   number_with_delimiter(stat.holySpiritConversations.to_i), number_with_delimiter(stat.invldNewBlvrs.to_i), 
                   number_with_delimiter(stat.invldStudents.to_i), number_to_currency(stat.dollars_raised.to_i, precision: 0)]
+        else #if project.open?
+        @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner, 
+                  case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end, 
+                  project.contact.try(:email), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '$0']
       end
     end
     respond_to do |format|
@@ -685,10 +691,10 @@ class Admin::ReportsController < ApplicationController
     if @emails.present?
       respond_to do |format|
         format.html {
-          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
         }
         format.csv { 
-          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication::YEAR}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
           csv = ""
           CSV.generate(csv) do |csv|
             csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
@@ -712,13 +718,13 @@ class Admin::ReportsController < ApplicationController
     Region.standard_regions.each do |region|
       @totals[region.region] = {}
       @years.each do |year|
-        scope = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where('sp_projects.primary_partner' => region.region)
+        scope = SpApplication.not_staff.accepted.joins(:project).where('sp_applications.year' => year).where('sp_projects.primary_partner' => region.region)
         @totals[region.region][year] = {'WSN' => scope.where("country <> 'United States' AND country <> ''").count,
-                                        'USSP' => scope.where("country = 'United States'").count}
+                                        'USSP' => scope.where("country = 'United States' OR country = ''").count}
       end
     end
     @years.each do |year|
-      @other_totals[year] = SpApplication.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_region_codes).count
+      @other_totals[year] = SpApplication.not_staff.accepted.joins(:project).where('sp_applications.year' => year).where("sp_projects.primary_partner NOT IN(?)", Region.standard_region_codes).count
     end
 
     respond_to do |format|
@@ -1316,7 +1322,21 @@ class Admin::ReportsController < ApplicationController
     @headers = ['Name', '# Weeks', 'Max Participants','Accepted Participants','Accepted Student Staff', '# Staff', 'Student Cost', 'Staff Cost','Primary Partner','Secondary Partner','Tertiary Partner','Project Type','Uses USCM App']
     @rows = @projects.collect do |p| 
       who = case p.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
-      [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.for_year(SpApplication::YEAR).count, p.staff.count, number_to_currency(p.student_cost.to_i, :precision => 0), number_to_currency(p.staff_cost.to_i, :precision => 0), p.primary_partner, p.secondary_partner, p.tertiary_partner, who, p.use_provided_application? ? 'Yes' : 'No']
+      [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.for_year(SpApplication.year).count, p.staff.count, number_to_currency(p.student_cost.to_i, :precision => 0), number_to_currency(p.staff_cost.to_i, :precision => 0), p.primary_partner, p.secondary_partner, p.tertiary_partner, who, p.use_provided_application? ? 'Yes' : 'No']
+    end
+    
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv = ""
+        CSV.generate(csv) do |csv|
+          csv << @headers
+          @rows.each do |row|
+            csv << row
+          end
+        end
+        render :text => csv
+      }
     end
   end
   
@@ -1379,7 +1399,7 @@ class Admin::ReportsController < ApplicationController
 
     def year
       #return 2011
-      SpApplication::YEAR
+      SpApplication.year
       # year = SpProject.maximum(:year)
     end
 
@@ -1393,9 +1413,9 @@ class Admin::ReportsController < ApplicationController
 
     def set_up_partners
       if params[:partner].present?
-        projects = SpProject.current.with_partner(params[:partner]).select("id, year")
-        year = projects.maximum(:year)
-        @applications = SpApplication.where(:project_id => projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+        @projects = SpProject.current.with_partner(params[:partner]).select("id, year")
+        year = @projects.maximum(:year)
+        @applications = SpApplication.where(:project_id => @projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
       else
         @partners = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?)
       end

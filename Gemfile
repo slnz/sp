@@ -35,6 +35,7 @@ gem 'spreadsheet'
 gem 'airbrake'
 gem 'jammit'
 gem 'less' 
+gem 'whenever'
 # gem 'unicode_utils'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
@@ -55,7 +56,8 @@ group :development, :test do
   # gem 'bullet', "2.0.0.beta.2"
   gem 'mail_safe' #.5
   gem 'unicorn'
-  gem 'debugger'
+  #gem 'debugger'
+  #gem 'ruby-debug-ide', '0.4.17.beta14' # if you're going to use this in Aptana or something, comment out debugger temporarily
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem "guard-rspec"
@@ -63,10 +65,10 @@ group :development, :test do
   gem 'database_cleaner'
 end
 
-group :production do
-  gem 'ruby-oci8'
-  gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
-end
+#group :production do
+  #gem 'ruby-oci8'
+  #gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
+#end
 
 gem 'omniauth',  "0.2.6"  # ~2s
 gem 'message_block' # ~100ms
