@@ -5,7 +5,7 @@
 .defaultSimpleSkin {position:relative}
 .defaultSimpleSkin table.mceLayout {background:#F0F0EE; border:1px solid #CCC;}
 .defaultSimpleSkin iframe {display:block; background:#FFF; border-bottom:1px solid #CCC;}
-.defaultSimpleSkin .mceToolbar {height:24px; width: auto; padding: 0;}
+.defaultSimpleSkin .mceToolbar {height:24px;}
 
 /* Layout */
 .defaultSimpleSkin span.mceIcon, .defaultSimpleSkin img.mceIcon {display:block; width:20px; height:20px}

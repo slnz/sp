@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '= 3.0.10'
+gem 'rails', '~> 3.0.10'
 
 gem 'mysql2', '~> 0.2.7'
 # gem 'mysql'
@@ -10,7 +10,6 @@ gem 'mysql2', '~> 0.2.7'
 gem 'capistrano'
 
 gem 'will_paginate', '3.0.pre2'
-gem 'google-geocode'
 gem 'acts_as_versioned'
 # gem 'acts_as_state_machine'
 gem 'acts_as_list'
@@ -63,6 +62,7 @@ group :development, :test do
   gem "guard-rspec"
   gem 'simplecov', :require => false
   gem 'database_cleaner'
+  gem 'therubyracer'
 end
 
 #group :production do
@@ -70,7 +70,10 @@ end
   #gem 'activerecord-oracle_enhanced-adapter', '1.3.2'
 #end
 
-gem 'omniauth',  "0.2.6"  # ~2s
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-cas'
+gem 'oa-openid'
 gem 'message_block' # ~100ms
 gem 'rack-contrib' # 100ms
 gem 'aasm'
