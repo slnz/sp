@@ -15,7 +15,7 @@ class ApplicationsController < AnswerSheetsController
   
   def apply
     session[:attempted_submit] = nil
-    @project = SpProject.uses_application.find(params[:p]) if params[:p]
+    @project = SpProject.uses_application.find_by_id(params[:p]) if params[:p]
     if @project && !@project.current?
       redirect_to action: :closed, id: @project.id and return
     end
