@@ -123,7 +123,10 @@ class ApplicationController < ActionController::Base
       @people = Person.where(conditions).includes(:user)
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
       @total = Person.where(conditions).count
-      respond_with(@people)
+      respond_with(@people) do |format|
+        format.html { render layout: false }
+        format.js
+      end
     else
       render :nothing => true
     end

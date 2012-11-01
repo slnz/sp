@@ -3,9 +3,9 @@ $(function() {
 		$('#spinner_leader_search').show();
 		$('#show_all').val('true')
 		var form = $('#leader_search_form')
-		$.ajax({url: form.attr('action'), 
-			data: form.serialize(), 
-			dataType: 'script', 
+		$.ajax({url: form.attr('action'),
+			data: form.serialize(),
+			dataType: 'html',
 			type: 'POST',
 			success: function(data) {
 				$('#leader_search_results').html(data);
