@@ -25,7 +25,10 @@ class ProjectsController < ApplicationController
         conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
         conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_student_men_applicants + #{SpProject.table_name}.max_student_women_applicants)"
         unless params[:all] == 'true'
-          
+          if params[:id] && params[:id].present?
+            conditions[0] << "#{SpProject.table_name}.id IN(?)"
+            conditions[1] << params[:id].split(',')
+          end
           if params[:name] && !params[:name].empty?
             conditions[0] << "#{SpProject.table_name}.name like ?"
             conditions[1] << "%#{params[:name]}%"
