@@ -183,7 +183,7 @@ $(function() {
 		el.dialog({
 			title: name,
 			resizable: false,
-			height:444,
+			height:525,
 			width:400,
 			modal: true,
 			buttons: {
