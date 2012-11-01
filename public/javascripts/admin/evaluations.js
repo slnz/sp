@@ -19,9 +19,10 @@ $(function() {
 		$('#total_score span').html(total);
 	});
 	
-	$('.evaluation_page_link').bind('ajax:before', function() {
+	$(document).on('click', '.evaluation_page_link', function() {
 		$('#evalcontent').html('<img src="/images/spinner.gif" class="spinner" />');
 	});
+
 	$('.print_button').click(function() {
 		$("#print_options").dialog({
 			resizable: false,
