@@ -207,7 +207,7 @@ class Admin::ProjectsController < ApplicationController
   def email
     @group_options = [['',''],['Staff/S. Staff + Accepted Students (Team)','team'],['All Applicants (except withdrawn/denied)','all_applicants'],
                   ['All Accepted Students','all_accepted'],['Accepted Men','accepted_men'],['Accepted Women','accepted_women'],
-                  ['Pending Students','pending_students'],['All Staff and S. Staff','staff_and_interns'],
+                  ['Pending Applicants: Started and Submitted','pending_students'],['All Staff and S. Staff','staff_and_interns'],
                   ['Men Staff and S. Staff','men_staff_and_interns'],['Women Staff and S. Staff','women_staff_and_interns']]
     @group_options << ['Parent References','parent_refs'] if @project.primary_partner == 'MK2MK'
     build_email_hash
