@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
         unless params[:all] == 'true'
           if params[:id] && params[:id].present?
             conditions[0] << "#{SpProject.table_name}.id IN(?)"
-            conditions[1] << params[:id].split(',')
+            conditions[1] << params[:id]
           end
           if params[:name] && !params[:name].empty?
             conditions[0] << "#{SpProject.table_name}.name like ?"
