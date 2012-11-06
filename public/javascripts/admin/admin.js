@@ -33,7 +33,8 @@ $(function() {
 		ajaxOptions: {
 			error: function(xhr, status, index, anchor) {
 				$(anchor.hash).html("Couldn't load this tab. We'll try to fix this as soon as possible.");
-			}
+			},
+      dataType: 'html'
 		},
 		cache: true,
 		spinner: '<img src="/images/spinner_dark.gif" />',
