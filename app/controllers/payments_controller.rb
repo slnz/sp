@@ -49,7 +49,7 @@ class PaymentsController < ApplicationController
                 @payment.approve!
                 # TODO: Send notification email
               else
-                @payment.errors.add_to_base("Credit card transaction failed: #{response.message}")
+                @payment.errors.add(:base, "Credit card transaction failed: #{response.message}")
                 #Send email this way instead of raising error in order to still give an error message to user.
                 # Notifier.deliver_notification('programmers@cojourners.com', # RECIPIENTS
                 #                     "sp_error@uscm.org", # FROM
