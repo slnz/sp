@@ -4,3 +4,8 @@
     <%= render :partial => 'answer_sheets/element', :collection => page.elements, :locals => {:elements => page.elements, :answer_sheet => @answer_sheet} %>
   </ul>
 </div>
+<% if params[:next_page_id] %>
+  <div class="actionwrap">
+    <%= link_to 'Next', page_admin_evaluation_path(application_id: @application.id, id: @evaluation, :page_id => params[:next_page_id], next_page_id: @presenter.pages[@presenter.pages.index(@page) + 1].try(:id)), remote: true, class: 'evaluation_page_link' %>
+  </div>
+<% end %>

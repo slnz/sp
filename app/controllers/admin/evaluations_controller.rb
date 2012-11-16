@@ -1,6 +1,7 @@
 class Admin::EvaluationsController < ApplicationController
   before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
   before_filter :get_evaluation, :only => [:update, :page, :references, :print, :payments]
+  before_filter :get_presenter, :only => [:evaluate, :page]
   before_filter :check_access
   layout 'admin'
 
@@ -10,11 +11,6 @@ class Admin::EvaluationsController < ApplicationController
   end
 
   def evaluate
-    @application = SpApplication.includes(:person).find(params[:application_id])
-    @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
-    @person = @application.person
-    @answer_sheet = @application 
-    @presenter = AnswerPagesPresenter.new(self, @application)
     projects_base = SpProject.current.uses_application.order(:name)
     @projects = @person.is_male? ? projects_base.not_full_men : projects_base.not_full_women
     @projects = [@application.project] + @projects if @application.project && !@projects.include?(@application.project)
@@ -68,6 +64,14 @@ class Admin::EvaluationsController < ApplicationController
   def get_evaluation
     @evaluation = SpEvaluation.includes(:sp_application).find(params[:id])
     @application = @evaluation.sp_application
+  end
+
+  def get_presenter
+    @application = SpApplication.includes(:person).find(params[:application_id])
+    @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
+    @person = @application.person
+    @answer_sheet = @application
+    @presenter = AnswerPagesPresenter.new(self, @application)
   end
 
   def set_up_reference_elements

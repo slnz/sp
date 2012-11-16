@@ -183,7 +183,7 @@ $(function() {
 		el.dialog({
 			title: name,
 			resizable: false,
-			height:444,
+			height:525,
 			width:400,
 			modal: true,
 			buttons: {
@@ -199,15 +199,19 @@ $(function() {
 	  source: function(request, response) {
 			// var term = request.term;
 			$('#spinner_leader_search').show();
+      console.log(form.serialize())
+      console.log($('#leader_search_results'))
 			$.ajax({url: form.attr('action'), 
 				data: form.serialize(), 
-				dataType: 'script', 
+				dataType: 'html', 
 				type: 'POST',
 				success: function(data) {
 					$('#leader_search_results').html(data);
 				  $("#leader_search_results").show();
 				},
-				complete: function() {$('#spinner_leader_search').hide();}
+				complete: function(jqXHR, textStatus) {
+          $('#spinner_leader_search').hide();
+        }
 			});
 			response([]);
 		}

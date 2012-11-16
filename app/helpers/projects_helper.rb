@@ -89,7 +89,7 @@ module ProjectsHelper
     end
     if !options || options.include?(:ministries)
       ministry = PartnershipType.new('Ministry')
-      @ministries ||= Ministry.find(:all, :order => "name")
+      @ministries ||= Ministry.where("name <> 'Campus Ministry'").order("name")
       @ministries.each {|m| ministry << PartnershipOption.new(m.name, m.name)}
       collections << ministry
     end

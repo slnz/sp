@@ -24,9 +24,7 @@
       </tr>
     </thead>
     <tbody id="<%= params[:type] %>_rows">
-    	<% users.each do |user| %>
-        <%= render 'user', :user => user %>
-    	<% end %>
+      <%= render partial: 'user', collection: users %>
   	</tbody>
   </table>
 </div>
