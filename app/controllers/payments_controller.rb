@@ -154,7 +154,7 @@ class PaymentsController < ApplicationController
                               {'applicant_full_name' => @application.name}).deliver
         # Send notice to Tool Owner
         Notifier.notification("gosummerproject@uscm.org", # RECIPIENTS - HARD CODED!
-                              "help@campuscrusadeforchrist.com", # FROM
+                              "help@cru.org", # FROM
                               "Tool Owner Payment Confirmation", # LIQUID TEMPLATE NAME
                               {'payment_amount' => "$" + @payment.amount.to_s,
                                'payment_account_no' => @payment.payment_account_no,
