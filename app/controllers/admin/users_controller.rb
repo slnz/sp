@@ -24,7 +24,9 @@ class Admin::UsersController < ApplicationController
     @addresses = {}
     Address.where(:addressType => 'current', :fk_PersonID => @users.collect(&:person_id)).map {|a| @addresses[a.fk_PersonID] = a}
     respond_with(@users) do |format|
-      format.js {render :partial => 'users', :locals => {:users => @users}}
+      if params[:type] != 'national'
+        format.html {render :partial => 'users', :locals => {:users => @users}}
+      end
     end
   end
   

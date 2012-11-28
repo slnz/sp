@@ -14,7 +14,7 @@ class AnswerSheetsController < ApplicationController
       end
       render 'applications/submitted'
     when 'ReferenceSheet'
-      @answer_sheet.submit!
+      @answer_sheet.submit! unless @answer_sheet.completed?
       render 'reference_sheets/submitted'
     else
       super

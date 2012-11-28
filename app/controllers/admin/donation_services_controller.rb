@@ -306,7 +306,7 @@ class Admin::DonationServicesController < ApplicationController
             
             if !record.valid?
               @warning_messages << "Person #{person_id} or subsequent record is corrupted and cannot be updated; " +
-               "please contact help@campuscrusadeforchrist.com"
+               "please contact help@cru.org"
             else
               project = SpProject.find(project_id)
               leaders = Hash.new
