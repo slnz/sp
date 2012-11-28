@@ -18,6 +18,10 @@ class SpPayment < ActiveRecord::Base
       errors.add(:card_number, "is invalid.") if get_card_type.nil?
     end
   end
+
+  def to_s
+    "#{payment_type}: #{amount} on #{created_at}"
+  end
   
   def check_app_complete
     if self.approved?

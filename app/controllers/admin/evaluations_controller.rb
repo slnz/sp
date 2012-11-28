@@ -20,6 +20,8 @@ class Admin::EvaluationsController < ApplicationController
   def page
     @page = Page.find(params[:page_id])
     @answer_sheet = @application
+    @pages = @presenter.pages[0..-2]
+    @next_page = @pages[@pages.index(@page) + 1]
   end
 
   def references

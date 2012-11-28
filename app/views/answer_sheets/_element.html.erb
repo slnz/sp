@@ -4,36 +4,32 @@
   	<table class="grid">
   	<tr>
       <% element.elements.each do |grid_element| -%>
-        <% if grid_element.display_response(answer_sheet).to_s.strip.present? %>
-          <% unless %w(Paragraph).include?(grid_element.kind) -%>
-            <td id="element_<%= element.id %>">
-              <%= grid_element.label + ': ' if grid_element.label.present? %>
-            </td>
-          <% end -%>
-        <% end %>
+        <% unless %w(Paragraph).include?(grid_element.kind) -%>
+          <td id="element_<%= element.id %>">
+            <%= grid_element.label + ': ' if grid_element.label.present? %>
+          </td>
+        <% end -%>
       <% end %>
     </tr>
     <tr>
       <% element.elements.each do |grid_element| -%>
-        <% if grid_element.display_response(answer_sheet).to_s.strip.present? %>
-          <% unless %w(Paragraph).include?(grid_element.kind) -%>
-            <td id="element_<%= grid_element.id %>">
-              <span class="answer">
-                <% case grid_element.attribute_name %>
-                <% when 'gender' %>
-                  <%= @answer_sheet.person.human_gender %>
-                <% when 'maritalStatus' %>
-                  <%= @answer_sheet.person.marital_status %>
-                <% when 'preference2_id' %>
-                  <%= @answer_sheet.preference2.try(:name) %>
-                <% when 'preference3_id' %>
-                  <%= @answer_sheet.preference3.try(:name) %>
-                <% else %>
-                  <%= grid_element.display_response(answer_sheet) %>
-                <% end %>
-              </span>
-            </td>
-          <% end -%>
+        <% if grid_element.question? && grid_element.display_response(answer_sheet).to_s.strip.present? %>
+          <td id="element_<%= grid_element.id %>">
+            <span class="answer">
+              <% case grid_element.attribute_name %>
+              <% when 'gender' %>
+                <%= @answer_sheet.person.human_gender %>
+              <% when 'maritalStatus' %>
+                <%= @answer_sheet.person.marital_status %>
+              <% when 'preference2_id' %>
+                <%= @answer_sheet.preference2.try(:name) %>
+              <% when 'preference3_id' %>
+                <%= @answer_sheet.preference3.try(:name) %>
+              <% else %>
+                <%= grid_element.display_response(answer_sheet) %>
+              <% end %>
+            </span>
+          </td>
           <% if grid_element.kind == 'ChoiceField' && grid_element.elements.present? %>
             <%= render :partial => 'answer_sheets/element', :collection => grid_element.elements, :locals => {:elements => grid_element.elements, :answer_sheet => @answer_sheet} %>
           <% end %>
