@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121005032221) do
+ActiveRecord::Schema.define(:version => 20121207165837) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -3318,37 +3318,6 @@ ActiveRecord::Schema.define(:version => 20121005032221) do
   add_index "old_wsn_sp_wsnapplication", ["status"], :name => "index8"
   add_index "old_wsn_sp_wsnapplication", ["wsnYear"], :name => "index9"
 
-  create_table "organization_memberships", :force => true do |t|
-    t.integer  "organization_id"
-    t.integer  "person_id"
-    t.boolean  "primary",         :default => false
-    t.boolean  "validated",       :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.date     "start_date"
-    t.date     "end_date"
-  end
-
-  add_index "organization_memberships", ["organization_id", "person_id"], :name => "index_organization_memberships_on_organization_id_and_person_id", :unique => true
-  add_index "organization_memberships", ["person_id"], :name => "person_id"
-
-  create_table "organizational_roles", :force => true do |t|
-    t.integer  "person_id"
-    t.integer  "role_id"
-    t.date     "start_date"
-    t.date     "end_date"
-    t.boolean  "deleted",         :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "organization_id"
-    t.string   "followup_status"
-    t.integer  "added_by_id"
-    t.datetime "archive_date"
-  end
-
-  add_index "organizational_roles", ["organization_id", "role_id", "followup_status"], :name => "role_org_status"
-  add_index "organizational_roles", ["person_id", "organization_id", "role_id"], :name => "person_role_org", :unique => true
-
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.boolean  "requires_validation", :default => false
@@ -4880,21 +4849,23 @@ ActiveRecord::Schema.define(:version => 20121005032221) do
   add_index "sp_designation_numbers", ["person_id", "project_id", "designation_number"], :name => "person_id"
 
   create_table "sp_donations", :force => true do |t|
-    t.integer "designation_number",                                :null => false
-    t.decimal "amount",             :precision => 10, :scale => 2, :null => false
-    t.string  "people_id"
-    t.string  "donor_name"
-    t.date    "donation_date"
-    t.string  "address1"
-    t.string  "address2"
-    t.string  "address3"
-    t.string  "city"
-    t.string  "state"
-    t.string  "zip"
-    t.string  "phone"
-    t.string  "email_address"
-    t.string  "medium_type"
-    t.string  "donation_id"
+    t.integer  "designation_number",                                :null => false
+    t.decimal  "amount",             :precision => 10, :scale => 2, :null => false
+    t.string   "people_id"
+    t.string   "donor_name"
+    t.date     "donation_date"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "phone"
+    t.string   "email_address"
+    t.string   "medium_type"
+    t.string   "donation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sp_donations", ["designation_number"], :name => "index_sp_donations_on_designation_number"

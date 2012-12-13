@@ -2,16 +2,16 @@ class Run
 
   def self.weekly_tasks
     #send_leader_reminder_emails
-#    send_stats_reminder_emails -- This is now in the infobase 
+#    send_stats_reminder_emails -- This is now in the infobase
     #send_reference_reminder_emails
     #send_app_status_emails
   end
-  
+
   def self.daily_tasks
     # check_apps_for_completion
-    SpDonation.update_from_peoplesoft
+    SpDonation.update_from_siebel
   end
-  
+
   def self.send_reference_reminder_emails
     SpReference.send_reminders
   end
@@ -19,15 +19,15 @@ class Run
   def self.send_leader_reminder_emails
     SpProject.send_leader_reminder_emails
   end
-  
+
   def self.send_stats_reminder_emails
     SpProject.send_stats_reminder_emails
   end
-  
+
   def self.send_app_status_emails
     SpApplication.send_status_emails
   end
-  
+
   def self.check_apps_for_completion
     apps_to_check = SpApplication.find_all_by_status("submitted")
     apps_to_check.each do |app|
@@ -64,7 +64,7 @@ class Run
     end
     nil
   end
-  
+
   def self.set_version
     projects = SpProject.find_all_by_report_stats_to(nil)
     projects.each do |project|
@@ -79,7 +79,7 @@ class Run
       project.save!
     end
   end
-  
+
   def self.zero_projects
     projects = SpProject.find_all_by_year_and_project_status("2010", "open")
     projects.each do |project|
@@ -94,7 +94,7 @@ class Run
       project.save!
     end
   end
-  
+
   # Need to fix parent_id's after this
   # def self.create_parent_reference
   #   ref_element = Element.new
@@ -105,35 +105,35 @@ class Run
   #   ref_element.position = 4
   #   ref_element.max_length = 0
   #   ref_element.save!
-  #   
+  #
   #   ref_pe = PageElement.new
   #   ref_pe.page_id = 16
   #   ref_pe.element_id = ref_element.id
   #   ref_pe.position = 4
   #   ref_pe.save!
-  #   
+  #
   #   parent_questionnaire = Questionnaire.new
   #   parent_questionnaire.title = "Parent Reference Questionnaire"
   #   parent_questionnaire.type = "SpQuestionnaire"
   #   parent_questionnaire.save!
-  #   
+  #
   #   ques_pages = QuestionnairePage.find_all_by_questionnaire_id(3, :order => "position")
   #   ques_pages.each do |old_qp|
   #     new_qp = QuestionnairePage.new
   #     new_qp.questionnaire_id = parent_questionnaire.id
-  #     
+  #
   #       old_page = Page.find(old_qp.page_id)
   #       new_page = Page.new
   #       new_page.title = old_page.title
   #       new_page.url_name = old_page.url_name
   #       new_page.hidden = old_page.hidden
   #       new_page.save!
-  #       
+  #
   #       old_page_elements = PageElement.find_all_by_page_id(old_page.id, :order => "position")
   #       old_page_elements.each do |old_pe|
   #         new_pe = PageElement.new
   #         new_pe.page_id = new_page.id
-  #         
+  #
   #           if(old_pe.page_id != 22 && old_pe.page_id != 25)
   #             old_element = Element.find(old_pe.element_id)
   #             new_element = Element.new
@@ -147,7 +147,7 @@ class Run
   #             new_element.max_length = old_element.max_length
   #             new_element.is_confidential = old_element.is_confidential
   #             new_element.save!
-  #             
+  #
   #             old_question_options = QuestionOption.find_all_by_question_id(old_element.id, :order => "position")
   #             old_question_options.each do |old_qo|
   #               new_qo = QuestionOption.new
@@ -160,25 +160,25 @@ class Run
   #           else
   #             new_element = Element.find(old_pe.element_id)
   #           end
-  #                   
+  #
   #         new_pe.element_id = new_element.id
   #         new_pe.position = old_pe.position
   #         new_pe.save!
   #       end
-  #     
+  #
   #     new_qp.page_id = new_page.id
   #     new_qp.position = old_qp.position
   #     new_qp.save!
   #   end
   # end
-  
+
   def self.add_sp_users_to_mpd_tool
     users = SpUser.find(:all, :conditions => "type IN ('SpNationalCoordinator', 'SpRegionalCoordinator', 'SpDirector')")
     users.each do |user|
       # MpdUser.create(:ssm_id => user.ssm_id)
     end
   end
-  
+
   def self.move_birthdates
     answers = SpAnswer.find_all_by_question_id(404)
     answers.each do |answer|
