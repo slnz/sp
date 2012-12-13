@@ -23,7 +23,7 @@ gem 'paperclip', '~> 2.3.8'
 gem 'dalli'
 gem 'liquid'
 gem 'excelsior'
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', '>= 3.5.3.25'
 gem 'mailcatcher'
 # gem 'RedCloth'
 
