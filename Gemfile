@@ -33,8 +33,11 @@ gem 'spreadsheet'
 # gem 'exception_notification', :git => "git://github.com/rails/exception_notification", :require => 'exception_notifier', :branch => 'master'
 gem 'airbrake'
 gem 'jammit'
-gem 'less' 
+gem 'less'
 gem 'whenever'
+gem 'siebel_donations', '~> 1.0.2'
+gem 'retryable-rb'
+
 # gem 'unicode_utils'
 
 #gem 'rmagick',  '2.12.0',  :require => 'RMagick'
