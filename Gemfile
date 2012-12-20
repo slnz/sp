@@ -35,7 +35,7 @@ gem 'airbrake'
 gem 'jammit'
 gem 'less'
 gem 'whenever'
-gem 'siebel_donations', '~> 1.0.2'
+gem 'siebel_donations', '~> 1.0.3'
 gem 'retryable-rb'
 
 # gem 'unicode_utils'

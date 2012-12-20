@@ -162,7 +162,7 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
-    oj (1.4.6)
+    oj (1.4.7)
     omniauth (1.1.1)
       hashie (~> 1.2)
       rack
@@ -233,7 +233,7 @@ GEM
     ruby-openid (2.2.1)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
-    siebel_donations (1.0.2)
+    siebel_donations (1.0.3)
       activesupport
       oj (~> 1.4.5)
       rest-client (~> 1.6.7)
@@ -317,7 +317,7 @@ DEPENDENCIES
   rails (~> 3.0.10)
   retryable-rb
   rspec-rails
-  siebel_donations (~> 1.0.2)
+  siebel_donations (~> 1.0.3)
   simplecov
   spork-rails (~> 3.2.0)
   spreadsheet
