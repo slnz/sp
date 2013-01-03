@@ -25,7 +25,6 @@ gem 'liquid', '~> 2.4.1'
 gem 'mailcatcher', '~> 0.2.4'
 gem 'message_block', '~> 1.1.0' # ~100ms
 gem 'newrelic_rpm', '>= 3.5.3.25'
-gem 'oa-openid', '~> 0.3.2'
 gem 'omniauth', '~> 1.1.1'
 gem 'omniauth-cas', '~> 0.0.7'
 gem 'omniauth-facebook', '~> 1.4.1'
