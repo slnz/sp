@@ -4,6 +4,6 @@
 
 require File.join(Rails.root, 'lib', 'google_bot_aware')
 
-Sp::Application.configure do
+Sp2::Application.configure do
   config.middleware.use("GoogleBotAware")
 end
