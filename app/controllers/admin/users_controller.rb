@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter, :check_access
-  respond_to :js, :html
+  respond_to :html, :js
   
   layout 'admin'
   
@@ -26,6 +26,8 @@ class Admin::UsersController < ApplicationController
     respond_with(@users) do |format|
       if params[:type] != 'national'
         format.html {render :partial => 'users', :locals => {:users => @users}}
+      else
+        format.html {render layout: 'admin'}
       end
     end
   end
