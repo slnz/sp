@@ -25,7 +25,7 @@
   </div>
   
   <ul id="pagename">
-    <li><%= link_to("Evaluator's Summary", evaluate_admin_evaluations_path(:application_id => @application.id), :remote => true, :class => 'evaluation_page_link') %></li>
+    <li><%= link_to("Evaluator's Summary", evaluate_admin_evaluations_path(:application_id => @application.id, :format => :js), :remote => true, :class => 'evaluation_page_link') %></li>
     <% @presenter.pages[0..-2].each_with_index do |page, i| %>
       <% if page.has_questions? %>
         <li><%= link_to(page.label, page_admin_evaluation_path(application_id: @application.id, id: @evaluation, page_id: page.id, next_page_id: @presenter.pages[i + 1].try(:id)), :remote => true, :class => 'evaluation_page_link') %></li>
