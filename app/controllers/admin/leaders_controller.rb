@@ -1,24 +1,24 @@
 class Admin::LeadersController < ApplicationController
   before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
   before_filter :load_project, :only => [:destroy, :edit, :update, :create, :add_person]
-  
+
   def new
     names = params[:name].to_s.split(' ')
     @person = Person.new(:firstName => names[0], :lastName => names[1..-1].join(' '))
     @person.current_address = CurrentAddress.new
   end
-  
+
   def destroy
     @person = Person.find(params[:person_id])
     @year = params[:year].present? ? params[:year] : @project.year
     staff = @project.sp_staff.where(:type => params[:leader], :year => @year, :person_id => params[:person_id]).first
-    staff.destroy
+    staff.destroy if staff.present?
     respond_to do |wants|
       wants.html { redirect_to project_path(@project) }
       wants.js
     end
   end
-  
+
   def create
     @year = params[:year].present? ? params[:year] : @project.year
     @person ||= Person.find(params[:person_id]) if params[:person_id]
@@ -30,11 +30,11 @@ class Admin::LeadersController < ApplicationController
     end
     render :create
   end
-  
+
   def search
     super
   end
-  
+
   def add_person
     params[:person] ||= {}
     params[:person][:current_address] ||= {}
