@@ -243,10 +243,29 @@
       if (!message) { return true; }
 
       if (rails.fire(element, 'confirm')) {
-        answer = rails.confirm(message);
-        callback = rails.fire(element, 'confirm:complete', [answer]);
+        if ($('#dialog-confirm')[0] == null) {
+          $('body').append('<div id="dialog-confirm" style="display:none" title="Are you sure?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-confirm-message"></span></p></div>');
+        }
+  			$('#dialog-confirm').attr('title', 'Are you sure?');
+  			$('#dialog-confirm-message').html(message);
+  			$("#dialog-confirm").dialog({
+  				resizable: false,
+  				height:240,
+  				modal: true,
+  				buttons: {
+  					Cancel: function() {
+  						$(this).dialog('close');
+  					},
+  					Yes: function() {
+  						$(this).dialog('close');
+  						element.removeAttr('data-confirm');
+              element.removeData('confirm');
+  						element.click();
+  					}
+  				}
+  			});
+  			return false;
       }
-      return answer && callback;
     },
 
     // Helper function which checks for blank inputs in a form that match the specified CSS selector
