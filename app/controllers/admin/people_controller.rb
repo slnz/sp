@@ -21,7 +21,10 @@ class Admin::PeopleController < ApplicationController
         @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number], :year => SpApplication.year)
       end
     end
-    respond_with(@person)
+    respond_to do |wants|
+      wants.html { redirect_to admin_person_path(@person) }
+      wants.js
+    end
   end
   
   protected
