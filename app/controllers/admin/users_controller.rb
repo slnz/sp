@@ -34,8 +34,11 @@ class Admin::UsersController < ApplicationController
   
   def destroy
     @user = SpUser.find(params[:id])
-    @user.destroy
-    respond_with(@user)
+    @user.destroy if @user.present?
+    respond_to do |wants|
+      wants.html { redirect_to admin_user_path(@user) }
+      wants.js
+    end
   end
   
   def search
