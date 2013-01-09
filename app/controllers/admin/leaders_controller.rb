@@ -1,6 +1,5 @@
 class Admin::LeadersController < ApplicationController
   before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
-  respond_to :html, :js
   before_filter :load_project, :only => [:destroy, :edit, :update, :create, :add_person]
   
   def new
@@ -14,7 +13,10 @@ class Admin::LeadersController < ApplicationController
     @year = params[:year].present? ? params[:year] : @project.year
     staff = @project.sp_staff.where(:type => params[:leader], :year => @year, :person_id => params[:person_id]).first
     staff.destroy
-    respond_with(@project) 
+    respond_to do |wants|
+      wants.html { redirect_to project_path(@project) }
+      wants.js
+    end
   end
   
   def create
@@ -50,9 +52,9 @@ class Admin::LeadersController < ApplicationController
     @person.save!
     create and return
   end
-  
+
   protected
-  
+
   def load_project
     @project = SpProject.find(params[:id] || params[:project_id])
   end
