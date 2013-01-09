@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
         # developer method to override user in session for testing
         if params[:user_id] && params[:su] && (@current_user.developer? || (session[:old_user_id] && old_user = User.find(session[:old_user_id]).developer?))
           session[:old_user_id] = @current_user.id if @current_user.developer?
-          session[:user_id] = params[:user_id] 
+          session[:user_id] = params[:user_id]
           @current_user = User.find_by_id(session[:user_id])
         end
       end
@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
       @people = Person.where(conditions).includes(:user)
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
       @total = Person.where(conditions).count
-      respond_with(@people) do |format|
+      respond_to do |format|
         format.html { render layout: false }
         format.js
       end
