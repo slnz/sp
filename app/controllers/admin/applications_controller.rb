@@ -5,13 +5,13 @@ class Admin::ApplicationsController < ApplicationController
   before_filter :can_search, :only => [:search]
 
   respond_to :html, :js
-  
+
   layout 'admin'
-  
+
   def search
     set_up_search_form
   end
-  
+
   def search_results
     set_up_search_form
     conditions = [[],[]]
@@ -78,7 +78,7 @@ class Admin::ApplicationsController < ApplicationController
       @applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName").paginate(:page => params[:page])
     end
   end
-  
+
   def donations
     @project = @application.project
   end
@@ -87,7 +87,7 @@ class Admin::ApplicationsController < ApplicationController
     @application.waive_fee!
     redirect_to :back
   end
-  
+
   protected
     def set_up_search_form
       @region_options = Region.order('region')
@@ -95,7 +95,7 @@ class Admin::ApplicationsController < ApplicationController
       @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
       @project_options = SpProject.current.order(:name)
     end
-    
+
     def get_project_type_condition
       if params[:project_type] == 'US'
         return ".country = 'United States'"
@@ -109,14 +109,14 @@ class Admin::ApplicationsController < ApplicationController
     end
 
     def can_waive_fee
-      unless sp_user.can_waive_fee?
+      unless sp_user.nil? || sp_user.can_waive_fee?
         flash[:error] = 'You don\'t have permission to waive fees.'
         redirect_to :back and return false
       end
     end
 
     def can_search
-      unless sp_user.can_search?
+      unless sp_user.nil? || sp_user.can_search?
         redirect_to no_admin_projects_path and return false
       end
     end
