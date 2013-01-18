@@ -7,7 +7,7 @@
     </ul>
   </div>
   <% end %>
-  
+
   <%= render :partial => 'project_year' %>
   <div id="contextmenu">
     <ul class="left">
@@ -16,36 +16,36 @@
       <li><%= link_to('Send Email', email_admin_project_path(@project, :year => @year), :class => 'email withicon', :id => 'sendemailopen') %></li>
       <li><%= stat_link(@project, @project, 'Enter Stats', :class => 'stats withicon') %></li>
       <!-- <li><%= link_to('Add an Applicant', new_admin_application_path, :class => 'person withicon') %></li> -->
-    </ul>  
+    </ul>
     <div class="clear"></div>
   </div>
 
-  
+
   <div class="projectedit">
-  
+
     <div class="left">
       <div id="tabs">
         <ul class="tabs">
           <li><%= link_to("Particip. (#{@accepted_participants.length})", '#participants') %></li>
           <li><%= link_to("S. Staff (#{@accepted_student_staff.length})", '#interns') %></li>
           <li><%= link_to("Other (#{@other.length})", '#other') %></li>
-          <li><%= link_to("Ready (#{@ready_to_evaluate.length})", '#ready') %></li> 
-          <li><%= link_to("Submitted (#{@submitted.length})", '#submitted') %></li> 
-          <li><%= link_to("Started (#{@not_submitted.length})", '#not_submitted') %></li> 
-          <li><%= link_to("Not Going (#{@not_going.length})", '#not_going') %></li> 
+          <li><%= link_to("Ready (#{@ready_to_evaluate.length})", '#ready') %></li>
+          <li><%= link_to("Submitted (#{@submitted.length})", '#submitted') %></li>
+          <li><%= link_to("Started (#{@not_submitted.length})", '#not_submitted') %></li>
+          <li><%= link_to("Not Going (#{@not_going.length})", '#not_going') %></li>
         </ul>
-    
+
         <div class="tabcontent" id="participants">
           <table class="people">
             <%= render :partial => 'accepted_header' %>
-        
+
             <% @accepted_participants.each do |app| %>
               <%= render 'accepted_student', :app => app %>
             <% end %>
-            
+
           </table>
         </div>
-        
+
         <div class="tabcontent" id="interns">
           <table class="people">
             <%= render :partial => 'accepted_header' %>
@@ -54,7 +54,7 @@
               <%= render 'accepted_student', :app => app %>
             <% end %>
           </table>
-      
+
         </div>
         <div class="tabcontent" id="other">
           <p>
@@ -62,15 +62,15 @@
           </p>
           <table class="people">
             <%= render :partial => 'other_header' %>
-        
+
             <% @other.each do |staff| %>
               <%= render 'other', :staff => staff %>
             <% end %>
-            
+
           </table>
         </div>
-    
-    
+
+
         <div class="tabcontent" id="ready">
           (Application submitted, paid, and all references submitted)
           <table class="people">
@@ -99,7 +99,7 @@
             <% end %>
           </table>
         </div>
-    
+
         <div class="tabcontent" id="submitted">
           (Application submitted, still waiting for references)
           <table class="people">
@@ -128,8 +128,8 @@
               </tr>
             <% end %>
           </table>
-        </div> 
-    
+        </div>
+
         <div class="tabcontent" id="not_submitted">
           (Application that haven't been submitted, but have chosen this project as their first preference)
           <table class="people">
@@ -138,6 +138,7 @@
               <th class="name">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
+              <th class="accdate">Started</th>
               <th class="intern">S. Staff</th>
               <th class="status">Status</th>
               <th class="evaluate">Eval</th>
@@ -150,6 +151,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
+                <td class="accdate"><%= l app.created_at.to_date if app.created_at %></td>
                 <td class="intern"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <td class="status"><%= app.status.titleize %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
@@ -158,8 +160,8 @@
               </tr>
             <% end %>
           </table>
-        </div> 
-    
+        </div>
+
         <div class="tabcontent" id="not_going">
           (Application that have been Declined or Withdrawn their application)
           <table class="people">
@@ -188,18 +190,18 @@
               </tr>
             <% end %>
           </table>
-        </div> 
+        </div>
       </div>
 
 
-    </div><!-- left -->  
-  
-  
+    </div><!-- left -->
+
+
     <%= render 'leadership_sidebar', :project => @project %>
-  
-  
+
+
   </div>
-  
+
   <div class="projectfooter">
     <div class="clear"></div>
   </div>
