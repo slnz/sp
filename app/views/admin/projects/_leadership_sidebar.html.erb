@@ -1,5 +1,5 @@
   <div class="right sidebar">
-  
+
    <div class="module applicantdata">
       <h3><span>Applicant Data</span></h3>
       <table>
@@ -23,21 +23,21 @@
         </tr>
       </table>
     </div>
-  
-  
+
+
     <div class="module">
       <h3><span>Project Leadership Team <%= tip('The first PD listed generally evaluates male applications and the second PD listed generally evaluates female applications. OPD stands for Operations Project Director.') %></span></h3>
       <table>
-        <% [:pd,:pd,:opd, :coordinator].each do |leader| -%>
+        <% [:pd, :apd, :opd, :coordinator].each do |leader| -%>
           <tr>
             <!-- APD is now displayed as PD -->
-            <td><%= [:pd,:apd,:opd].include?(leader) ? [:apd].include?(leader) ? 'PD' : leader.upcase : leader.to_s.titleize %></td>
+            <td><%= [:pd, :apd, :opd].include?(leader) ? [:apd].include?(leader) ? 'PD' : leader.upcase : leader.to_s.titleize %></td>
             <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader, :year => @year %></td>
           </tr>
         <% end %>
       </table>
     </div>
-    
+
     <% %w{staff volunteers kids evaluators non_app_participants}.each do |level| %>
       <div class="module <%= level %>">
         <h3>
@@ -58,7 +58,7 @@
     <% if sp_user.can_delete_project? %>
       <%= link_to('Delete this project - PERMANENT', admin_project_path, :method => :delete, :confirm => "Are you sure you want to delete this project? This is different than closing a project. It'll be GONE FOR GOOD!") %>
     <% end %>
-    
-  
+
+
   </div>
   <%= render :partial => 'leader_form' %>
