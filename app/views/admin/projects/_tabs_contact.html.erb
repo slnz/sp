@@ -4,14 +4,14 @@
       	Fields with the <%= image_tag('required.png') %> are required. <br/><br/>
       	The fields on this page are for risk management purposes, to help connect with you in case of an emergency.
      	</p>
-    
+
       <hr />
 
       <div class="field">
         <h3>Two contact people during project <%= tip('These people must be available in the United States to field calls during the project duration. Preferably, for US projects include a project director and a regional/ministry project coordinator that is not at the project location. For international projects, include a regional/ministry project coordinator and a secondary, non-family related, other regional/ministry staff. The second contact person would be important if the main person could not always be available. This is especially important for projects into secure areas.') %></h3>
-        
+
       </div>
-     	<div class="col_left"> 
+     	<div class="col_left">
         <div class="field required">
           <%= f.label :project_contact_name, "Name" %>
           <%= f.text_field :project_contact_name %>
@@ -29,8 +29,8 @@
           <%= f.text_field :project_contact_email %>
         </div>
       </div>
-      
-      <div class="col_right"> 
+
+      <div class="col_right">
         <div class="field">
           <%= f.label :project_contact2_name, "Name" %>
           <%= f.text_field :project_contact2_name %>
@@ -48,9 +48,9 @@
           <%= f.text_field :project_contact2_email %>
         </div>
       </div>
-      
+
       <div style="height: 1px; clear: both;"></div>
-      
+
       <h3 class="critical">In case of an emergency on a summer project  call 888-899-9292 or 407-380-8665. <%= tip('It is advisable that you program these numbers in your cell phone before your project begins. If you are going overseas, use the 407 number. This is a secure number, answered by \'LH Communications\', safe for calling from secure countries.') %></h3>
 
       <div class="multifield">
@@ -95,7 +95,7 @@
 				<div class="clear"></div>
         <div class="field">
           <%= f.label :open_application_date do
-            raw 'Allow students to start applying on ' + tip('The majority of summer project mission trips should open their applications on November 1 since this is what all of our brochures and websites indicate to students. If you need an exception to this, please contact your Regional or Ministry SP coordinator to change this date for you. It may not be a date before September 1 since all projects are re-set on that day.')  
+            raw 'Allow students to start applying on ' + tip('The majority of summer project mission trips should open their applications on November 1 since this is what all of our brochures and websites indicate to students. If you need an exception to this, please contact your Regional or Ministry SP coordinator to change this date for you. It may not be a date before September 1 since all projects are re-set on that day.')
             end %>
           <% if sp_user.can_change_project_status? %>
             <%= calendar_date_select_tag 'sp_project[open_application_date]', @project.open_application_date %>
@@ -105,7 +105,7 @@
         </div>
         <div class="field">
           <%= f.label :archive_project_date do
-            raw 'Archive project and re-set for following year on ' + tip('This date is automatically set for September 1 for all summer project mission trips. If you are coordinating a spring semester trip, contact us at gosummerproject@cru.org to change this date for you so students can continue to apply after September 1.') 
+            raw 'Archive project and re-set for following year on ' + tip('This date is automatically set for September 1 for all summer project mission trips. If you are coordinating a spring semester trip, contact us at gosummerproject@cru.org to change this date for you so students can continue to apply after September 1.')
             end %>
           <% if sp_user.can_see_rc_reports? %>
             <%= calendar_date_select_tag 'sp_project[archive_project_date]', @project.archive_project_date %>
@@ -141,28 +141,48 @@
         <div class="clear"></div>
       </div>
       <hr />
+      <h3>
+        Nearby Medical Facility
+        <%= tip('A wise idea is to research the medical options near your project before you depart. For international projects, call SOS for their recommendations and suggestions of how to travel to the facilities. Please review and update this information yearly.') %>
+      </h3>
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :medical_clinic do
+            raw 'Convenience Clinic (Minute Clinic)'
+            end %>
+          <%= f.text_field :medical_clinic %>
+        </div>
+        <div class="field">
+          <%= f.label :medical_clinic_location do
+            raw "Hospital, Emergency Room, or Urgent Care"
+            end %>
+          <%= f.text_field :medical_clinic_location %>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <hr />
       <h3>Travel Information (International Only)</h3>
       <div class="multifield">
         <div class="field">
           <%= f.label :departure_city do
-            raw 'US City you are Departing From<br>(include Airport Code)' + tip('<br>For example: Minneapolis, MN (MSP)')  
+            raw 'US City you are Departing From<br>(include Airport Code)' + tip('<br>For example: Minneapolis, MN (MSP)')
             end %>
           <%= f.text_field :departure_city %>
         </div>
         <div class="field">
           <%= f.label :destination_city do
-            raw "Int'l City you are Flying To<br>(include Airport Code)" + tip('<br>For example: Brisbane, Australia (BNE)')   
+            raw "Int'l City you are Flying To<br>(include Airport Code)" + tip('<br>For example: Brisbane, Australia (BNE)')
             end %>
           <%= f.text_field :destination_city %>
         </div>
         <div class="clear"></div>
       </div>
       <div class="field">
-        <%= f.label :in_country_contact do 
+        <%= f.label :in_country_contact do
           raw 'In Country Contact' + tip('Name, relationship to project, phone number(s), email, address of one or, preferably multiple in-country contacts.')
         end %>
         <%= f.text_area :in_country_contact, :cols => 90, :rows => 10 %>
       </div>
-      
+
       <button type="submit" class="save"><span>Save</span></button>
       <button type="button" class="save" onclick="$('#tabs').tabs('select', 3);window.scrollTo(0,0)"><span>Next >></span></button>

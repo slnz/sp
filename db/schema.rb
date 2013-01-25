@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121207165837) do
+ActiveRecord::Schema.define(:version => 20130125075516) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -1281,6 +1281,8 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
     t.string   "status",                                  :limit => 22
     t.string   "appType",                                 :limit => 64
     t.integer  "apply_id"
+    t.text     "mpd_summer_plans"
+    t.string   "app_type"
   end
 
   add_index "hr_si_applications", ["apply_id"], :name => "apply_id"
@@ -3583,17 +3585,19 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
 
   add_index "sent_sms", ["twilio_sid"], :name => "index_sent_sms_on_twilio_sid", :unique => true
 
-  create_table "si_answer_sheets", :force => true do |t|
+  create_table "si_answer_sheet_question_sheets", :force => true do |t|
     t.integer  "question_sheet_id", :null => false
     t.datetime "created_at",        :null => false
     t.datetime "completed_at"
+    t.integer  "answer_sheet_id"
   end
 
-  add_index "si_answer_sheets", ["question_sheet_id"], :name => "question_sheet_id"
+  add_index "si_answer_sheet_question_sheets", ["answer_sheet_id"], :name => "index_si_answer_sheet_question_sheets_on_answer_sheet_id"
+  add_index "si_answer_sheet_question_sheets", ["question_sheet_id"], :name => "question_sheet_id"
 
   create_table "si_answers", :force => true do |t|
-    t.integer "answer_sheet_id", :null => false
-    t.integer "question_id",     :null => false
+    t.integer "answer_sheet_question_sheet_id"
+    t.integer "question_id",                    :null => false
     t.text    "value"
     t.string  "short_value"
     t.integer "size"
@@ -3603,18 +3607,22 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
     t.integer "width"
     t.integer "parent_id"
     t.string  "thumbnail"
+    t.integer "answer_sheet_id",                :null => false
   end
 
-  add_index "si_answers", ["answer_sheet_id"], :name => "answer_sheet_id"
+  add_index "si_answers", ["answer_sheet_id"], :name => "index_si_answers_on_answer_sheet_id"
+  add_index "si_answers", ["answer_sheet_question_sheet_id"], :name => "answer_sheet_id"
+  add_index "si_answers", ["answer_sheet_question_sheet_id"], :name => "index_si_answers_on_answer_sheet_question_sheet_id"
   add_index "si_answers", ["question_id"], :name => "question_id"
   add_index "si_answers", ["short_value"], :name => "index_si_answers_on_short_value"
 
   create_table "si_applies", :force => true do |t|
-    t.integer  "sleeve_id",                  :null => false
+    t.integer  "sleeve_id"
     t.integer  "applicant_id",               :null => false
     t.string   "status",       :limit => 36, :null => false
     t.datetime "created_at",                 :null => false
     t.datetime "submitted_at"
+    t.datetime "updated_at"
   end
 
   add_index "si_applies", ["applicant_id"], :name => "applicant_id"
@@ -3630,24 +3638,6 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
 
   add_index "si_apply_sheets", ["apply_id"], :name => "apply_id"
 
-  create_table "si_character_references", :force => true do |t|
-    t.integer  "apply_id",                                      :null => false
-    t.integer  "sleeve_sheet_id",                               :null => false
-    t.string   "name",                          :default => "", :null => false
-    t.string   "email"
-    t.string   "phone"
-    t.integer  "months_known"
-    t.string   "status",          :limit => 36,                 :null => false
-    t.string   "token",                                         :null => false
-    t.datetime "submitted_at"
-    t.datetime "created_at"
-    t.datetime "started_at"
-    t.datetime "email_sent_at"
-  end
-
-  add_index "si_character_references", ["apply_id"], :name => "apply_id"
-  add_index "si_character_references", ["token"], :name => "index_si_character_references_on_token"
-
   create_table "si_conditions", :force => true do |t|
     t.integer "question_sheet_id", :null => false
     t.integer "trigger_id",        :null => false
@@ -3659,25 +3649,37 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
   add_index "si_conditions", ["trigger_id"], :name => "trigger_id"
 
   create_table "si_elements", :force => true do |t|
-    t.integer "question_sheet_id",                                  :null => false
-    t.integer "page_id",                                            :null => false
-    t.string  "kind",              :limit => 40,                    :null => false
-    t.string  "style",             :limit => 40
-    t.string  "label"
-    t.text    "content"
-    t.boolean "required"
-    t.string  "slug",              :limit => 36
-    t.integer "position",                                           :null => false
-    t.boolean "is_confidential",                 :default => false
-    t.string  "source"
-    t.string  "value_xpath"
-    t.string  "text_xpath"
-    t.string  "object_name"
-    t.string  "attribute_name"
-    t.integer "question_grid_id"
-    t.string  "cols"
+    t.integer  "question_sheet_id",                                          :null => false
+    t.integer  "page_id"
+    t.string   "kind",                      :limit => 40,                    :null => false
+    t.string   "style",                     :limit => 40
+    t.string   "label"
+    t.text     "content"
+    t.boolean  "required"
+    t.string   "slug",                      :limit => 36
+    t.integer  "position",                                                   :null => false
+    t.boolean  "is_confidential",                         :default => false
+    t.string   "source"
+    t.string   "value_xpath"
+    t.string   "text_xpath"
+    t.string   "object_name"
+    t.string   "attribute_name"
+    t.integer  "question_grid_id"
+    t.string   "cols"
+    t.string   "total_cols"
+    t.string   "css_id"
+    t.string   "css_class"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "related_question_sheet_id"
+    t.integer  "conditional_id"
+    t.text     "tooltip"
+    t.boolean  "hide_label",                              :default => false
+    t.boolean  "hide_option_labels",                      :default => false
+    t.integer  "max_length"
   end
 
+  add_index "si_elements", ["position"], :name => "index_si_elements_on_position"
   add_index "si_elements", ["question_sheet_id", "position", "page_id"], :name => "index_si_elements_on_question_sheet_id_and_position_and_page_id"
   add_index "si_elements", ["slug"], :name => "index_si_elements_on_slug"
 
@@ -3687,6 +3689,17 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
     t.boolean "enabled"
     t.string  "subject"
   end
+
+  create_table "si_page_elements", :force => true do |t|
+    t.integer  "page_id"
+    t.integer  "element_id"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "si_page_elements", ["element_id"], :name => "index_si_page_elements_on_element_id"
+  add_index "si_page_elements", ["page_id"], :name => "index_si_page_elements_on_page_id"
 
   create_table "si_pages", :force => true do |t|
     t.integer "question_sheet_id",                                   :null => false
@@ -3711,9 +3724,44 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
 
   add_index "si_payments", ["apply_id"], :name => "apply_id"
 
-  create_table "si_question_sheets", :force => true do |t|
-    t.string "label", :limit => 60, :null => false
+  create_table "si_question_options", :force => true do |t|
+    t.integer  "question_id"
+    t.string   "option",      :limit => 50
+    t.string   "value",       :limit => 50
+    t.integer  "position"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
+
+  add_index "si_question_options", ["question_id"], :name => "index_si_question_options_on_question_id"
+
+  create_table "si_question_sheets", :force => true do |t|
+    t.string  "label",    :limit => 60,                    :null => false
+    t.boolean "archived",               :default => false
+  end
+
+  create_table "si_references", :force => true do |t|
+    t.integer  "applicant_answer_sheet_id",                               :null => false
+    t.integer  "question_id",                                             :null => false
+    t.string   "last_name",                               :default => "", :null => false
+    t.string   "email"
+    t.string   "phone"
+    t.integer  "months_known"
+    t.string   "status",                    :limit => 36,                 :null => false
+    t.string   "access_key"
+    t.datetime "submitted_at"
+    t.datetime "created_at"
+    t.datetime "started_at"
+    t.datetime "email_sent_at"
+    t.string   "relationship"
+    t.string   "title"
+    t.string   "first_name"
+    t.datetime "updated_at"
+    t.boolean  "is_staff"
+  end
+
+  add_index "si_references", ["access_key"], :name => "index_si_character_references_on_token"
+  add_index "si_references", ["applicant_answer_sheet_id"], :name => "apply_id"
 
   create_table "si_roles", :force => true do |t|
     t.string "role",       :null => false
@@ -4649,9 +4697,10 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
     t.integer  "person_id"
     t.integer  "project_id"
     t.string   "designation_number"
-    t.integer  "account_balance",    :default => 0
+    t.integer  "account_balance",                 :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "year",               :limit => 4, :default => "0"
   end
 
   create_table "sp_donations", :force => true do |t|
@@ -4838,6 +4887,8 @@ ActiveRecord::Schema.define(:version => 20121207165837) do
     t.string   "destination_city",                   :limit => 60
     t.date     "date_of_return"
     t.text     "in_country_contact"
+    t.string   "medical_clinic"
+    t.string   "medical_clinic_location"
     t.string   "project_contact_name",               :limit => 50
     t.string   "project_contact_role",               :limit => 40
     t.string   "project_contact_phone",              :limit => 20
