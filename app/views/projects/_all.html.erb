@@ -1,3 +1,4 @@
+<h3><%= link_to("Click here to see all projects currently accepting applications.", projects_path(:all => true)) %></h3>
 <h3>US project locations</h3>
 <ul class="locations">
 	<li><a href="/projects?from_weeks=1&amp;to_weeks=2&amp;country=United+States">1 to 2 week projects</a></li>
@@ -6,7 +7,7 @@
 	<li><a href="/projects?from_weeks=6&amp;to_weeks=12&amp;country=United+States">Traditional 6 to 12 week projects</a></li>
 	<li><a href="/projects?job=true&amp;country=United+States">Need to work? Projects that you find a job on</a></li>
 </ul>
-  
+
 <h3>International locations</h3>
 <ul class="locations">
 	<li><a href="/projects?world_region=Eastern+Europe,Western+Europe">Europe</a></li>
@@ -16,7 +17,7 @@
 	<li><a href="/projects?country=Australia,New+Zealand,Fiji">Australia/Oceania</a></li>
 	<li><a href="/projects?from_weeks=1&amp;to_weeks=3&amp;project_type=international">1-3 week projects</a></li>
 </ul>
-            
+
 <h3><a id="focus"></a>Explore by ministry focus</h3>
 <ul class="locations">
   <li><a href="/projects?focus=4">African American community</a></li>
@@ -46,5 +47,3 @@
   <li><a href="/projects?focus=18">Taking the Jesus film to un-reached places</a></li>
   <li><a href="/projects?focus=12">Use your Technical / Design / Administrative skills for ministry</a></li>
 </ul>
-
-<h3><%= link_to("Click here to see the full list of all projects.", projects_path(:all => true)) %></h3>
