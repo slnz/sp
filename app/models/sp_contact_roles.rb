@@ -1,7 +1,7 @@
 class SpContactRoles
   def self.all
     ['Project Director',
-     'Associate Project Director',
+     # 'Associate Project Director',
      'Operations Project Director',
      'Project Staff',
      'Regional/Ministry Project Coordinator',

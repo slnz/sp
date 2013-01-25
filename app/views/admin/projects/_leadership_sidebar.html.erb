@@ -28,7 +28,7 @@
     <div class="module">
       <h3><span>Project Leadership Team <%= tip('The first PD listed generally evaluates male applications and the second PD listed generally evaluates female applications. OPD stands for Operations Project Director.') %></span></h3>
       <table>
-        <% [:pd,:apd,:opd, :coordinator].each do |leader| -%>
+        <% [:pd,:pd,:opd, :coordinator].each do |leader| -%>
           <tr>
             <!-- APD is now displayed as PD -->
             <td><%= [:pd,:apd,:opd].include?(leader) ? [:apd].include?(leader) ? 'PD' : leader.upcase : leader.to_s.titleize %></td>
