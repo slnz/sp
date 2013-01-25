@@ -10,7 +10,7 @@ class Admin::ProjectsController < ApplicationController
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email, :edit]
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
-  cache_sweeper :project_sweeper 
+  cache_sweeper :project_sweeper
   respond_to :html, :js
 
   layout 'admin'
@@ -25,7 +25,7 @@ class Admin::ProjectsController < ApplicationController
 
   def edit
     initialize_questions
-    (3 - @project.student_quotes.length).times do 
+    (3 - @project.student_quotes.length).times do
       @project.student_quotes.build
     end
   end
@@ -50,7 +50,7 @@ class Admin::ProjectsController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @project.destroy if sp_user.can_delete_project?
     respond_with(@project) do |format|
@@ -59,7 +59,7 @@ class Admin::ProjectsController < ApplicationController
       end
     end
   end
-  
+
   def show
     applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
     staffs = @project.sp_staff
@@ -74,13 +74,13 @@ class Admin::ProjectsController < ApplicationController
     @not_submitted = applications.not_submitted.for_year(@year)
     @not_going = applications.not_going.for_year(@year)
   end
-  
+
   def download
     year = get_year
-    
+
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet(:name => @project.name)
-    
+
     r = -1
 
     sheet1.row(r += 1).concat([@project.name])
@@ -99,11 +99,11 @@ class Admin::ProjectsController < ApplicationController
      "Zip", "Phone", "Cell", "Campus", "AccountNo", "Marital Status",
      "Emergency Contact", "Emergency Relationship",  "Emergency Address", "Emergency City", "Emergency State",
      "Emergency Zip", "Emergency Phone", "Emergency WorkPhone", "Emergency Email"];
-     
+
     sheet1.row(r += 1).concat([])
     sheet1.row(r += 1).concat(["Directors:"])
     sheet1.row(r += 1).concat(staff_column_headers)
-    
+
     [@project.pd(year), @project.apd(year), @project.opd(year), @project.coordinator(year)].each do |person|
       unless person.nil?
         row = []
@@ -118,17 +118,17 @@ class Admin::ProjectsController < ApplicationController
         sheet1.row(r += 1).concat(row)
       end
     end
-    
+
     sheet1.row(r += 1).concat([])
     sheet1.row(r += 1).concat(["Staff and Volunteers:"])
-    
-    
+
+
     sheet1.row(r += 1).concat(staff_column_headers)
-    
+
     @project.staff_and_volunteers(year).each do |person|
-    
+
       values = set_values_from_person(person)
-    
+
       row = []
       staff_column_headers.each do |header|
         if (values[header] && values[header] != "")
@@ -139,10 +139,10 @@ class Admin::ProjectsController < ApplicationController
       end
       sheet1.row(r += 1).concat(row)
     end
-    
+
     sheet1.row(r += 1).concat([])
     sheet1.row(r += 1).concat([ "Accepted Applicants:"])
-    
+
     applicant_column_headers = ["First Name", "Last Name", "Preferred Name", "Gender",
      "Birthday", 'Age', "Accepted On", "Email", "Address", "Address2", "City", "State",
      "Zip", "Phone", "Cell", "Campus", "Designation No", "Marital Status",
@@ -150,10 +150,10 @@ class Admin::ProjectsController < ApplicationController
      "Emergency Zip", "Emergency Phone", "Emergency Work Phone", "Emergency Email",
      "Participant's Campus Region", "Date Became A Christian", "Major", "Class",
      "GraduationDate", "Applied for leadership"]
-    
+
     sheet1.row(r += 1).concat(applicant_column_headers)
     applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
-    
+
     applications.each do |app|
       values = set_values_from_person(app.person)
       values["Applied for leadership"] = app.apply_for_leadership.to_s
@@ -174,13 +174,13 @@ class Admin::ProjectsController < ApplicationController
     headers['Cache-Control'] = ''
     send_data(sio.string, :type =>  "application/vnd.ms-excel", :filename => "#{@project.name} - Roster - #{year}.xls")
   end
-  
+
   def dashboard
     redirect_to dashboard_path # defined in application_controller
   end
-  
+
   def no
-    
+
   end
 
   def close
@@ -196,19 +196,28 @@ class Admin::ProjectsController < ApplicationController
       redirect_to edit_admin_project_path(@project), :notice => 'Please update all necessary fields for this project, then try Re-Opening it again.'
     end
   end
-  
+
   def new
     @project = SpProject.new
-    5.times do 
+    5.times do
       @project.student_quotes.build
     end
   end
-  
+
   def email
-    @group_options = [['',''],['Staff/S. Staff + Accepted Students (Team)','team'],['All Applicants (except withdrawn/denied)','all_applicants'],
-                  ['All Accepted Students','all_accepted'],['Accepted Men','accepted_men'],['Accepted Women','accepted_women'],
-                  ['Pending Applicants: Started and Submitted','pending_students'],['All Staff and S. Staff','staff_and_interns'],
-                  ['Men Staff and S. Staff','men_staff_and_interns'],['Women Staff and S. Staff','women_staff_and_interns']]
+    @group_options = [
+      ['',''],
+      ['Staff/S. Staff + Accepted Students (Team)','team'],
+      ['All Applicants (except withdrawn/denied)','all_applicants'],
+      ['All Accepted Students','all_accepted'],
+      ['Accepted Men','accepted_men'],
+      ['Accepted Women','accepted_women'],
+      ['All Staff and S. Staff','staff_and_interns'],
+      ['Men Staff and S. Staff','men_staff_and_interns'],
+      ['Submitted Applicants','all_submitted'],
+      ['Started Applicants','all_started'],
+      ['Women Staff and S. Staff','women_staff_and_interns']
+    ]
     @group_options << ['Parent References','parent_refs'] if @project.primary_partner == 'MK2MK'
     build_email_hash
   end
@@ -229,12 +238,12 @@ class Admin::ProjectsController < ApplicationController
           invalid_emails << email
         end
       end
-      
+
       files = (params[:file] || {}).values
       recipients << params[:from]
       email_success = Array.new
       email_failed = Array.new
-      
+
       if to.size > 0
         if recipients.count > 0
           recipients.each do |recipient|
@@ -272,7 +281,7 @@ class Admin::ProjectsController < ApplicationController
       end
     end
   end
- 
+
   def sos
     if request.post?
       # find all projects with starting dates in the given range
@@ -282,10 +291,10 @@ class Admin::ProjectsController < ApplicationController
         projects.each do |project|
           contact = project.contact || Person.new
           row_start = [
-            project.id, 
-            project.name, 
-            project.city, 
-            project.state, 
+            project.id,
+            project.name,
+            project.city,
+            project.state,
             project.country
           ]
           row_more = [
@@ -293,18 +302,18 @@ class Admin::ProjectsController < ApplicationController
             contact.sp_staff.most_recent.first.try(:type).to_s[0..14],
             contact.phone,
             contact.email,
-            project.operating_business_unit, 
+            project.operating_business_unit,
             project.operating_operating_unit,
             project.operating_department,
             project.operating_project
           ]
-          
+
           date_start = project.international? == "Yes" ? l((project.date_of_departure || project.start_date), :format => :ps) : nil
           date_end = project.international? == "Yes" ? l((project.date_of_return || project.end_date), :format => :ps) : nil
-          
+
           project.sp_staff.year(SpApplication.year).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
             row = []
-            p = staff.person          
+            p = staff.person
             # Getting Dates
             unless project.international? == "Yes"
               if staff.type == "PD"
@@ -357,17 +366,17 @@ class Admin::ProjectsController < ApplicationController
       send_data(out, :filename => "sos.txt", :type => 'text/tab' )
     end
   end
-  
-  protected 
+
+  protected
   def get_project
     @project = SpProject.find(params[:id])
   end
-  
+
   def set_up_pagination
     cookies.permanent[:projects_per_page] = params[:projects_per_page] if params[:projects_per_page]
     @per_page = cookies[:projects_per_page] || 20
   end
-  
+
   def set_up_filters
     @base = params[:closed] ? SpProject : SpProject.open
     @filter_title = 'All'
@@ -385,7 +394,7 @@ class Admin::ProjectsController < ApplicationController
     when params[:search_opd].present?
       @base = @base.includes(:sp_staff => :person).opd_like(params[:search_opd])
     end
-    
+
     # Filter based on the user type
     case sp_user.class.to_s
     when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
@@ -397,16 +406,16 @@ class Admin::ProjectsController < ApplicationController
       @base = @base.where('1 <> 1')
     end
   end
-  
+
   def set_order
     params[:order] = 'name' and params[:direction] = 'ascend' unless params[:order] && params[:direction]
-    @base = @base.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym) 
+    @base = @base.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
   end
 
   def get_countries
     @countries = Country.find(:all, :order => :country)
   end
-  
+
   def get_year
     @year = params[:year] || @project.try(:year) || SpApplication.year
   end
@@ -452,13 +461,19 @@ class Admin::ProjectsController < ApplicationController
     values["GraduationDate"] = person.graduation_date.present? ? l(person.graduation_date) : ''
     values
   end
-  
+
   def build_email_hash
     @emails = {}
     @group_options.each do |group|
       next if group[1].blank?
       addresses = []
       case group[1]
+      when 'all_submitted'
+        applicant_conditions = "status IN ('submitted')"
+        include_applicants = true
+      when 'all_started'
+        applicant_conditions = "status IN ('started')"
+        include_applicants = true
       when 'all_applicants'
         applicant_conditions = "status NOT IN ('declined', 'withdrawn')"
         include_applicants = true
@@ -470,9 +485,6 @@ class Admin::ProjectsController < ApplicationController
         include_applicants = true
       when 'accepted_women'
         applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 0"
-        include_applicants = true
-      when 'pending_students'
-        applicant_conditions = "status IN ('started', 'submitted')"
         include_applicants = true
       when 'staff_and_interns'
         applicant_conditions = "status IN ('accepted_as_student_staff')"
@@ -509,7 +521,7 @@ class Admin::ProjectsController < ApplicationController
           people += [@project.pd(@year)] if @project.pd(@year).is_male?
           people += [@project.apd(@year)] if @project.apd(@year).is_male?
           people += [@project.opd(@year)] if @project.opd(@year).is_male?
-          people += @project.staff(@year).where(:gender => 1) 
+          people += @project.staff(@year).where(:gender => 1)
           people += @project.volunteers(@year).where(:gender => 1)
         when 'women_staff_and_interns'
           people += [@project.pd(@year)] if !@project.pd(@year).is_male?
@@ -518,10 +530,10 @@ class Admin::ProjectsController < ApplicationController
           people += @project.staff(@year).where(:gender => 0)
           people += @project.volunteers(@year).where(:gender => 0)
         else
-          people += [@project.pd(@year)] + [@project.apd(@year)] + [@project.opd(@year)] + @project.staff(@year) + @project.volunteers(@year) 
+          people += [@project.pd(@year)] + [@project.apd(@year)] + [@project.opd(@year)] + @project.staff(@year) + @project.volunteers(@year)
         end
       end
-    
+
       if parent_refs
         addresses = ReferenceSheet.where('sp_applications.project_id' => @project.id, 'sp_elements.style' => 'parent').includes(:applicant_answer_sheet, :question).collect(&:email)
         addresses.reject!(&:blank?)
@@ -543,7 +555,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   protected
-  
+
     def get_email(str)
       if str.index("<")
         first = str.index("<") + 1
@@ -553,15 +565,15 @@ class Admin::ProjectsController < ApplicationController
         str
       end
     end
-    
+
     def initialize_questions
       @custom_page = @project.initialize_project_specific_question_sheet.pages.first
       @questions = @custom_page.elements.to_a
-      (5 - @questions.length).times do 
+      (5 - @questions.length).times do
         @questions << TextField.new
       end
     end
-    
+
     def update_questions
       if params[:questions].present?
         initialize_questions
@@ -580,7 +592,7 @@ class Admin::ProjectsController < ApplicationController
           end
         end
         # Set up the questions again after updating them.
-        initialize_questions 
+        initialize_questions
       end
     end
 end
