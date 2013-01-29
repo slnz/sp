@@ -31,7 +31,7 @@
   	<td><%= application.status.titleize%></td>
   	<td><%= l(application.completed_at) if application.completed_at %></td>
   	<td><%= person.campus if person.campus%></td>
-  	<td><%= project.id && (sp_user.person.staffed_projects.include?(project) || sp_user.is_a?(SpNationalCoordinator)) ? link_to(project.name, admin_project_path(project)) : project.name %></td>
+  	<td><%= project.id && (sp_user.person.staffed_projects.include?(project) || sp_user.is_a?(SpNationalCoordinator) || sp_user.is_a?(SpDonationServices)) ? link_to(project.name, admin_project_path(project)) : project.name %></td>
   </tr>
 <% end -%>
 </table>
