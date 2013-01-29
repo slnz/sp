@@ -8,9 +8,9 @@ Sp2::Application.routes.draw do
   match '/admin/sos' => 'admin/projects#sos'
 
   resources :authentications
-  
+
   resources :campuses do
-    collection do 
+    collection do
       post :search
     end
   end
@@ -35,7 +35,7 @@ Sp2::Application.routes.draw do
         get :evaluate
       end
     end
-    
+
     resource :reports do
       get :director
       get :preference
@@ -59,6 +59,7 @@ Sp2::Application.routes.draw do
       get :student_emails
       get :project_start_end
       get :fee_by_staff
+      get :cc_payments
       get :sending_stats
       get :stats_by_project
       get :projects_summary
@@ -90,11 +91,11 @@ Sp2::Application.routes.draw do
         post :close, :open, :send_email
         get :email, :download
       end
-      collection do 
+      collection do
         get :threads, :no
       end
     end
-    resources :applications do 
+    resources :applications do
       member do
         get :donations
         get :waive_fee
@@ -105,14 +106,14 @@ Sp2::Application.routes.draw do
         get :search_results
       end
     end
-    
+
     resources :leaders do
       collection do
         post :search, :add_person
       end
     end
   end
-  
+
   resources :projects
   resources :applications do
     member do
@@ -135,9 +136,9 @@ Sp2::Application.routes.draw do
   resources :ministry_focuses
   match '/admin' => "admin/projects#dashboard"
   match '/apply' => "applications#apply", :as => :apply
-  
+
   match '/references/done' => "reference_sheets#done"
-  
+
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 
 
@@ -148,6 +149,6 @@ Sp2::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
-  
-  
+
+
 end
