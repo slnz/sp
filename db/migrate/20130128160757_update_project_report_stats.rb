@@ -1,3 +1,6 @@
+class SpProject < ActiveRecord::Base
+end
+
 class UpdateProjectReportStats < ActiveRecord::Migration
   def self.up
     change1 = SpProject.where(report_stats_to: 'Other CCC ministry')

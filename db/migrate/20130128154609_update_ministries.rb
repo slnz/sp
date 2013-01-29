@@ -1,3 +1,6 @@
+class Ministry < ActiveRecord::Base
+end
+
 class UpdateMinistries < ActiveRecord::Migration
   def self.up
     change1 = Ministry.find_by_name('WSN')
