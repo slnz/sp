@@ -112,6 +112,7 @@ class SpUser < ActiveRecord::Base
         "MIL"                => "Valor",
         "SV"                 => "Student Venture",
         "SVNO"               => "Student Venture",
+        "CHS"                => "Student Venture",
         "JF"                 => "Jesus Film",
         "JESUS Film Project" => 'Jesus Film',
         "EPI"                => "Epic",
