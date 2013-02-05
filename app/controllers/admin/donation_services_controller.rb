@@ -19,42 +19,42 @@ class Admin::DonationServicesController < ApplicationController
     endl = "\n"
     out = ""
     CSV.generate(out, {:col_sep => t, :row_sep => endl}) do |writer|
-   
+
 #     rows = ActiveRecord::Base.connection.select_all("select app.id as appId, person.firstName, person.lastName, person.gender, person.title, person.accountNo,
 #                                                person.donor_number, spouse.personID as spouseID, spouse.firstName as spouseFirstName,
 #                                                spouse.lastName as spouseLastName, spouse.title as spouseTitle, spouse.gender as spouseGender,
-#                                                person.accountNo, currentAddress.address1 as currentAddress, currentAddress.city as currentCity, 
+#                                                person.accountNo, currentAddress.address1 as currentAddress, currentAddress.city as currentCity,
 #                                                currentAddress.state as currentState, currentAddress.zip as currentZip, currentAddress.homePhone as currentTelephone,
 #                                                currentAddress.email as currentEmail, permanentAddress.address1 as permanentAddress, project.name as projectName,
 #                                                project.scholarship_designation, project.scholarship_business_unit, project.scholarship_operating_unit,
-#                                                project.scholarship_department, project.scholarship_project, project.ds_project_code from ministry_person person 
+#                                                project.scholarship_department, project.scholarship_project, project.ds_project_code from ministry_person person
 #                                                join sp_applications app on (app.person_id = person.personID) join sp_projects project on (app.project_id = project.id)
 #                                                left join ministry_newaddress currentAddress on (currentAddress.addressType = 'current' and
 #                                                currentAddress.fk_personId = person.personID) left join ministry_newaddress permanentAddress on
-#                                                (permanentAddress.addressType = 'permanent' and permanentAddress.fk_personId = person.personID) 
+#                                                (permanentAddress.addressType = 'permanent' and permanentAddress.fk_personId = person.personID)
 #                                                left join ministry_person spouse on (person.fk_spouseID = spouse.personID) where app.year = '#{SpApplication.year}'
-#                                                and app.status IN ('accepted_as_student_staff','accepted_as_participant') and app.designation_number is null and 
+#                                                and app.status IN ('accepted_as_student_staff','accepted_as_participant') and app.designation_number is null and
 #                                                project.scholarship_designation > '1000000' and project.scholarship_designation < '3000000' and
 #                                                project.scholarship_operating_unit is not null and project.scholarship_operating_unit != '' order
 #                                                by person.lastName, person.firstName;");
-          
+
       selects = "
-        SELECT 
-          person.personID, 
-          person.firstName, 
-          person.lastName, 
-          person.gender, 
-          person.title, 
+        SELECT
+          person.personID,
+          person.firstName,
+          person.lastName,
+          person.gender,
+          person.title,
           person.accountNo,
-          person.donor_number, 
-          spouse.personID AS spouseID, 
+          person.donor_number,
+          spouse.personID AS spouseID,
           spouse.firstName AS spouseFirstName,
           spouse.lastName AS spouseLastName,
           spouse.title AS spouseTitle,
           spouse.gender AS spouseGender,
-          person.accountNo, 
+          person.accountNo,
           currentAddress.address1 AS currentAddress,
-          currentAddress.city AS currentCity, 
+          currentAddress.city AS currentCity,
           currentAddress.state AS currentState,
           currentAddress.zip AS currentZip,
           currentAddress.homePhone AS currentTelephone,
@@ -67,12 +67,12 @@ class Admin::DonationServicesController < ApplicationController
           project.scholarship_department,
           project.scholarship_project,
           project.ds_project_code"
-          
+
       rows = ActiveRecord::Base.connection.select_all("
         #{selects}
-        FROM ministry_person person 
-        JOIN sp_applications app 
-          ON (app.person_id = person.personID) 
+        FROM ministry_person person
+        JOIN sp_applications app
+          ON (app.person_id = person.personID)
         JOIN sp_projects project
           ON (app.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
@@ -80,27 +80,28 @@ class Admin::DonationServicesController < ApplicationController
             AND currentAddress.fk_personId = person.personID)
         LEFT JOIN ministry_newaddress permanentAddress
           ON (permanentAddress.addressType = 'permanent'
-            AND permanentAddress.fk_personId = person.personID) 
+            AND permanentAddress.fk_personId = person.personID)
         LEFT JOIN ministry_person spouse
           ON (person.fk_spouseID = spouse.personID)
         LEFT JOIN sp_designation_numbers designation
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
+            AND designation.year = app.year
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
           AND app.year = '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
-          AND project.scholarship_designation > '1000000'
+          AND project.scholarship_designation > '0000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
-          AND project.scholarship_operating_unit != '' 
+          AND project.scholarship_operating_unit != ''
         ORDER BY
           person.lastName,
           person.firstName;");
-          
+
       rows2 = ActiveRecord::Base.connection.select_all("
         #{selects}
-        FROM ministry_person person 
+        FROM ministry_person person
         JOIN sp_staff staff
           ON (person.personID = staff.person_id)
         JOIN sp_projects project
@@ -110,20 +111,21 @@ class Admin::DonationServicesController < ApplicationController
             AND currentAddress.fk_personId = person.personID)
         LEFT JOIN ministry_newaddress permanentAddress
           ON (permanentAddress.addressType = 'permanent'
-            AND permanentAddress.fk_personId = person.personID) 
+            AND permanentAddress.fk_personId = person.personID)
         LEFT JOIN ministry_person spouse
           ON (person.fk_spouseID = spouse.personID)
         LEFT JOIN sp_designation_numbers designation
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
+            AND designation.year = app.year
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
           AND staff.year = '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
-          AND project.scholarship_designation > '1000000'
+          AND project.scholarship_designation > '0000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
-          AND project.scholarship_operating_unit != '' 
+          AND project.scholarship_operating_unit != ''
         ORDER BY
           person.lastName,
           person.firstName;");
@@ -142,7 +144,7 @@ class Admin::DonationServicesController < ApplicationController
       writer << column_headers
 
       today = Time.now.strftime('%Y%m%d')
-      
+
       rows2.each do |row2|
         rows << row2
       end
@@ -228,7 +230,7 @@ class Admin::DonationServicesController < ApplicationController
       return
     end
     upload = params[:upload][:upload]
-      
+
     begin
       @filename = upload.original_filename
     rescue NoMethodError
@@ -277,10 +279,10 @@ class Admin::DonationServicesController < ApplicationController
     designation_numbers_to_update.each do |person_id, designation_number|
       person = Person.find(person_id)
       donor_number = persons_to_update[person_id]
-      
+
       record = SpApplication.where(:person_id => person_id, :year => SpApplication.year).first
       record ||= SpStaff.where(:person_id => person_id, :year => SpApplication.year).first
-      
+
       if record.present?
         project_id = record.project_id
         unless project_id.present?
@@ -288,22 +290,22 @@ class Admin::DonationServicesController < ApplicationController
         else
           # if (application.designation_number == designation_number && person.donor_number == donor_number)
           if record.designation_number == designation_number && person.donor_number == donor_number
-            @warning_messages << "Person #{person_id} has already been assigned " + 
+            @warning_messages << "Person #{person_id} has already been assigned " +
               "this designation number (#{designation_number}) " +
               "and has already been assigned this donor id (#{donor_number}); no update necessary"
           else
             if record.designation_number.present? && record.designation_number != designation_number
-              @warning_messages << "Person #{person_id} was previously assigned a different " + 
+              @warning_messages << "Person #{person_id} was previously assigned a different " +
                 "designation number (#{record.designation_number}); reassigning to #{designation_number}"
             end
             if !person.donor_number.blank? && person.donor_number != donor_number
               @warning_messages << "Person #{person_id} was previously assigned a different donor id (#{person.donor_number}); reassigning to #{donor_number}"
             end
-            
+
             # Update Records
             record.designation_number = designation_number
             person.donor_number = donor_number
-            
+
             if !record.valid?
               @warning_messages << "Person #{person_id} or subsequent record is corrupted and cannot be updated; " +
                "please contact help@cru.org"
