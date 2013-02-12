@@ -535,7 +535,7 @@ class Admin::ReportsController < ApplicationController
     @us_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
     @us_all = (@us_pds + @us_apds + @us_opds).uniq.sort
 
-    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - WSN summer project'").year(year)
+    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - Global Missions summer project'").year(year)
     @wsn_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
     @wsn_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
     @wsn_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
@@ -665,7 +665,7 @@ class Admin::ReportsController < ApplicationController
     SpProject.order('name').each do |project|
       if stat = project.statistics.detect {|s| s.sp_year.to_i == @year.to_i}
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
-                  case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
+                  case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
                   project.contact.try(:email), number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i),
                   number_with_delimiter(stat.evangelisticGroup.to_i),
                   number_with_delimiter(stat.decisionsHelpedByMedia.to_i), number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
@@ -674,7 +674,7 @@ class Admin::ReportsController < ApplicationController
                   number_with_delimiter(stat.invldStudents.to_i), number_to_currency(stat.dollars_raised.to_i, precision: 0)]
         else #if project.open?
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
-                  case project.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
+                  case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
                   project.contact.try(:email), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '$0']
       end
     end
@@ -966,7 +966,7 @@ class Admin::ReportsController < ApplicationController
         @counts[i]["Withdrawn (No status set)"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Declined"]["US"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
 
-        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Campus Ministry - WSN summer project'"
+        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Campus Ministry - Global Missions summer project'"
         @counts[i]["Accepted as Participant"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Accepted as Student Staff"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Ready"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
@@ -982,7 +982,7 @@ class Admin::ReportsController < ApplicationController
         @counts[i]["Withdrawn (No status set)"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'withdrawn' AND (previous_status = '' OR previous_status IS NULL) AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Declined"]["WSN"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'declined' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
 
-        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Other CCC ministry'"
+        @extra_query_parts = @gender_query_parts + " AND sp_projects.report_stats_to = 'Other Cru ministry'"
         @counts[i]["Accepted as Participant"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_participant' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Accepted as Student Staff"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'accepted_as_student_staff' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
         @counts[i]["Ready"]["Other Ministries"] = SpApplication.joins(:person).where(:year => @year).joins(:project).where("status = 'ready' AND (isStaff <> 1 OR isStaff Is NULL)#{@extra_query_parts}").count
@@ -1162,7 +1162,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_applicants_to_other_ministry_sps
-    @headers = SpProject.connection.select_values("Select distinct(primary_partner) from sp_projects where report_stats_to = 'Other CCC ministry'").reject(&:blank?) - Region.standard_region_codes
+    @headers = SpProject.connection.select_values("Select distinct(primary_partner) from sp_projects where report_stats_to = 'Other Cru ministry'").reject(&:blank?) - Region.standard_region_codes
 
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
@@ -1308,7 +1308,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_participants_to_other_ministry_sps
-    @headers = SpProject.connection.select_values("Select distinct(primary_partner) from sp_projects where report_stats_to = 'Other CCC ministry'").reject(&:blank?) - Region.standard_region_codes
+    @headers = SpProject.connection.select_values("Select distinct(primary_partner) from sp_projects where report_stats_to = 'Other Cru ministry'").reject(&:blank?) - Region.standard_region_codes
 
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
@@ -1339,7 +1339,7 @@ class Admin::ReportsController < ApplicationController
     @projects = SpProject.current.order('name')
     @headers = ['Name', '# Weeks', 'Max Participants','Accepted Participants','Accepted Student Staff', '# Staff', 'Student Cost', 'Staff Cost','Primary Partner','Secondary Partner','Tertiary Partner','Project Type','Uses USCM App']
     @rows = @projects.collect do |p|
-      who = case p.report_stats_to when 'Campus Ministry - WSN summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
+      who = case p.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
       [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.for_year(SpApplication.year).count, p.staff.count, number_to_currency(p.student_cost.to_i, :precision => 0), number_to_currency(p.staff_cost.to_i, :precision => 0), p.primary_partner, p.secondary_partner, p.tertiary_partner, who, p.use_provided_application? ? 'Yes' : 'No']
     end
 
