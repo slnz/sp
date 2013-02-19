@@ -90,7 +90,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
-                <td class="accdate deadline<%= app.deadline_met %>"><%= l app.completed_at.to_date if app.completed_at %></td>
+                <td class="accdate deadline<%= app.deadline_met %>"><%= l app.completed_at.to_time if app.completed_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
                   <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
@@ -120,7 +120,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
-                <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
+                <td class="accdate"><%= l app.submitted_at.to_time if app.submitted_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
                   <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
@@ -151,7 +151,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
-                <td class="accdate"><%= l app.created_at.to_date if app.created_at %></td>
+                <td class="accdate"><%= l app.created_at.to_time if app.created_at %></td>
                 <td class="intern"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <td class="status"><%= app.status.titleize %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
@@ -182,7 +182,7 @@
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
                 <td class="campus"><%= person.campus %></td>
-                <td class="accdate"><%= l app.submitted_at.to_date if app.submitted_at %></td>
+                <td class="accdate"><%= l app.submitted_at.to_time if app.submitted_at %></td>
                 <td class="status"><%= app.status.titleize %> <%= "(#{app.previous_status})" if app.previous_status.present? %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
                   <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>

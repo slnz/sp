@@ -13,7 +13,15 @@ module ApplicationHelper
     END
     ret.html_safe
   end
-  
+
+  def l(val)
+    if val.is_a?(Time)
+      val.to_time.in_time_zone('EST').to_date
+    else
+      val
+    end
+  end
+
   # Creates a link that alternates between acending and descending. It basically
   # alternates between calling 2 named scopes: "ascend_by_*" and "descend_by_*"
   #
@@ -63,10 +71,10 @@ module ApplicationHelper
 
     link_to options[:as], url_for(url_options), html_options
   end
-  
+
   def sort_by(column, title = column.titleize, options = {})
     if title.is_a?(Hash)
-      options = title 
+      options = title
       title = column.titleize
     end
     if params[:order] == column
@@ -79,15 +87,15 @@ module ApplicationHelper
     ordered = params.dup
     ordered[:direction] = (ordered[:order] == column && ordered[:direction] == 'ascend') ? 'descend' : 'ascend'
     ordered[:order] = column
-    
+
     link_to(title.html_safe, ordered)
   end
-  
+
   def spinner(extra = nil)
     e = extra ? "spinner_#{extra}" : 'spinner'
     image_tag('spinner.gif', :id => e, :style => 'display:none', :class => 'spinner')
   end
-  
+
   def calendar_date_select_tag(name, value = nil, options = {})
     options.merge!({'data-calendar' => true})
     value = case
