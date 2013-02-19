@@ -14,7 +14,7 @@ module ApplicationHelper
     ret.html_safe
   end
 
-  def l(val)
+  def est_time(val)
     if val.is_a?(Time)
       val.to_time.in_time_zone('EST').to_date
     else
