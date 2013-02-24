@@ -1,3 +1,4 @@
+/* Reports */
 .reportpage table {
   padding: 0;
   margin: 0;
@@ -7,21 +8,35 @@
 .reportpage table th {
   background: #c0e2f6;
   text-align: left;
-  border: 1px solid #999999;
+  border: 1px solid #999;
   padding: 3px;
 }
 .reportpage table td {
-  border: 1px solid #999999;
+  border: 1px solid #999;
   padding: 2px 6px;
 }
-.reportpage table tr { background: #efefef; }
-.reportpage table tr.odd { background: #ffffff; }
-.reportpage h1 { margin-bottom: 0.5em; }
+.reportpage table tr {
+  background: #efefef;
+}
+.reportpage table tr.odd {
+  background: #fff;
+}
+.reportpage h1 {
+  margin-bottom: .5em;
+}
 .reportpage h3 {
   font-size: 20px;
-  margin-bottom: 0.5em;
+  margin-bottom: .5em;
 }
-.reportpage h3.color_100 { color: #d60000; }
-.reportpage h3.color_0-50 { color: #52ae15; }
-.reportpage h3.color_51-99 { color: #ffba00; }
-.focus_name, .pd_type {cursor: pointer; color: #0B486B}
+.reportpage h3.color_100 {
+  color: #d60000;
+}
+.reportpage h3.color_0-50 {
+  color: #52ae15;
+}
+.reportpage h3.color_51-99 {
+  color: #ffba00;
+}
+.ui-helper-hidden-accessible {
+  display: none;
+}
