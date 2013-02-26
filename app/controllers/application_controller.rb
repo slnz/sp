@@ -62,7 +62,11 @@ class ApplicationController < ActionController::Base
     unless @current_person
       raise "no user" unless current_user
       # Get their user, or create a new one if theirs doesn't exist
-      @current_person = current_user.person || current_user.create_person_and_address
+      @current_person = current_user.person
+      if @current_person.nil? && session[:cas_extra_attributes]
+        @current_person = current_user.create_person_and_address(firstName: session[:cas_extra_attributes]['firstName'],
+                                                                 lastName: session[:cas_extra_attributes]['lastName'])
+      end
     end
     @current_person
   end
