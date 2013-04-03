@@ -11,10 +11,9 @@ class Admin::LeadersController < ApplicationController
   def destroy
     @person = Person.find(params[:person_id])
     @year = params[:year].present? ? params[:year] : @project.year
-    staff = @project.sp_staff.where(:type => params[:leader], :year => @year, :person_id => params[:person_id]).first
+    staff = @project.sp_staff.where(:type => params[:leader].titleize, :year => @year, :person_id => params[:person_id]).first
     staff.destroy if staff.present?
     respond_to do |wants|
-      wants.html { redirect_to project_path(@project) }
       wants.js
     end
   end

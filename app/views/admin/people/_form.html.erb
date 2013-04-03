@@ -13,7 +13,7 @@
     <td class="left">Preferred:</td>
     <td><%= f.text_field :preferredName %></td>
   </tr>
-	<% if @project_id && @project_id != 0 && !@person.isStaff? %>
+	<% if @project_id && @project_id != 0 %>
 	  <tr>
 	    <td class="left">Designation: </td>
 	    <td><%= text_field_tag :designation_number, @designation ? @designation.designation_number : "" %>
