@@ -210,6 +210,7 @@ GEM
       thor (~> 0.14.4)
     raindrops (0.10.0)
     rake (10.0.3)
+    rb-fsevent (0.9.3)
     rc-rest (4.0)
       net-http-persistent (~> 1.0)
       nokogiri (>= 1.3.1)
@@ -320,6 +321,7 @@ DEPENDENCIES
   paperclip (~> 2.3.8)
   rack-contrib (~> 1.1.0)
   rails (~> 3.0.18)
+  rb-fsevent (~> 0.9)
   retryable-rb (~> 1.1.0)
   rspec-rails
   siebel_donations (~> 1.0.3)

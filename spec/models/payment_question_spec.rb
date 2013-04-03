@@ -44,24 +44,24 @@ describe PaymentQuestion do
     end
   end
   
-  describe "when calling 'has_response' function" do
-    before(:each) do
-      question_sheet = create(:question_sheet)
-      answer_sheet = create(:answer_sheet)
-      answer_sheet_question_sheet = create(:answer_sheet_question_sheet, answer_sheet: answer_sheet, question_sheet: question_sheet)
-    end
-    it "should return a boolean 'false' if no application specified" do
-      response = @payment_question.send(:has_response?)
-      response.should be false
-    end
-    it "should return a boolean 'true' if the application already have payments" do
-      payment = create(:sp_payment, application: @application)
-      response = @payment_question.send(:has_response?, @application)
-      response.should be true
-    end
-    it "should return a boolean 'false' if the application do not have payments yet" do
-      response = @payment_question.send(:has_response?, @application)
-      response.should be false
-    end
-  end
+  #describe "when calling 'has_response' function" do
+    #before(:each) do
+      #question_sheet = create(:question_sheet)
+      #answer_sheet = create(:answer_sheet)
+      #answer_sheet_question_sheet = create(:answer_sheet_question_sheet, answer_sheet: answer_sheet, question_sheet: question_sheet)
+    #end
+    #it "should return a boolean 'false' if no application specified" do
+      #response = @payment_question.send(:has_response?)
+      #response.should be false
+    #end
+    #it "should return a boolean 'true' if the application already have payments" do
+      #payment = create(:sp_payment, application: @application)
+      #response = @payment_question.send(:has_response?, @application)
+      #response.should be true
+    #end
+    #it "should return a boolean 'false' if the application do not have payments yet" do
+      #response = @payment_question.send(:has_response?, @application)
+      #response.should be false
+    #end
+  #end
 end

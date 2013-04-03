@@ -30,6 +30,7 @@ gem 'omniauth-cas', '~> 0.0.7'
 gem 'omniauth-facebook', '~> 1.4.1'
 gem 'paperclip', '~> 2.3.8'
 gem 'rack-contrib', '~> 1.1.0' # 100ms
+gem 'rb-fsevent', '~> 0.9'
 gem 'retryable-rb', '~> 1.1.0'
 gem 'siebel_donations', '~> 1.0.3'
 gem 'spork-rails', '~> 3.2.0'
