@@ -33,9 +33,10 @@ class ApplicationController < ActionController::Base
 
   def partners
     @partners ||= begin
-                    @partners = Region.where("region <> ''").collect(&:region)
-                    @partners += Ministry.all.collect(&:name)
-                  end
+      @partners = Region.where("region <> ''").collect(&:region)
+      @partners += Ministry.all.collect(&:name)
+      @partners += ["US Campus","Non-USCM SPs"]
+    end
   end
   helper_method :partners
 
