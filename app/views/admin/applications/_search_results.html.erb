@@ -14,7 +14,8 @@
   	<th>Assignment</th>
   </tr>
 
-<% @applications.each_with_index do |application, i| %>
+<% @results = params[:page] == "all" ? @all_applications : @applications %>
+<% @results.each_with_index do |application, i| %>
   <% person = application.person || Person.new %>
   <% address = person.current_address || Address.new  %>
   <% project = application.project || SpProject.new %>
@@ -35,5 +36,6 @@
   </tr>
 <% end -%>
 </table>
-<%= will_paginate(@applications, :params => params.slice(:first_name, :last_name, :school, :team, :project_type, :region, :city, :state, 
-                                                         :designation, :status, :year, :preference)) %>
+<%= will_paginate(@applications, :params => params.slice(:first_name, :last_name, :school, :team, :project_type, :region, :city, :state, :designation, :status, :year, :preference)) %>
+<% params[:page] = "all" %>
+<%= link_to "Show All", params.slice(:first_name, :last_name, :school, :team, :project_type, :region, :city, :state, :designation, :status, :year, :preference, :page) %>
