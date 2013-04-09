@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130320141540) do
+ActiveRecord::Schema.define(:version => 20130408164138) do
 
   create_table "academic_departments", :force => true do |t|
     t.string "name"
@@ -1832,6 +1832,7 @@ ActiveRecord::Schema.define(:version => 20130320141540) do
     t.datetime "date_attributes_updated"
     t.decimal  "balance_daily",                                       :precision => 10, :scale => 2
     t.string   "siebel_contact_id"
+    t.string   "sp_gcx_site"
   end
 
   add_index "ministry_person", ["accountNo"], :name => "accountNo_ministry_Person"
