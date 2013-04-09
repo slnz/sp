@@ -380,8 +380,28 @@ class Admin::ProjectsController < ApplicationController
   def set_up_filters
     @base = params[:closed] ? SpProject : SpProject.open
     @filter_title = 'All'
-    if params[:partners]
-      @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", params[:partners], params[:partners], params[:partners])
+    selected_filters = params[:partners]
+
+    if selected_filters.present?
+      report_stats_to_query = Array.new
+      if selected_filters.include?("US Campus")
+        selected_filters = selected_filters.select{|x| x != "US Campus"}
+        report_stats_to_query << "report_stats_to = 'Campus Ministry - US summer project'"
+      end
+
+      if selected_filters.include?("Non-USCM SPs")
+        selected_filters = selected_filters.select{|x| x != "Non-USCM SPs"}
+        report_stats_to_query << "report_stats_to = 'Other Cru ministry'"
+      end
+
+      if report_stats_to_query.present?
+        @base = @base.where(report_stats_to_query.join(' OR '))
+      end
+
+      if selected_filters.present?
+        @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", selected_filters, selected_filters, selected_filters)
+      end
+
       @filter_title = params[:partners].sort.join(', ')
     end
     case
