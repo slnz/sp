@@ -38,7 +38,8 @@ gem 'spreadsheet', '~> 0.7.4'
 gem 'tiny_mce', '~> 0.1.8'
 gem 'whenever', '~> 0.7.3'
 gem 'will_paginate', '~> 3.0.0'
-gem 'gcx_api', path: '/Users/josh/htdocs/gcx_api'
+gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
+gem 'relay_api_client'
 
 group :development, :test do
   gem 'mail_safe' #.5
