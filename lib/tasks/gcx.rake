@@ -15,6 +15,14 @@ namespace :gcx do
         puts "Relay account created: #{person.user.globallyUniqueID}"
       end
 
+      # make sure we have the right username
+      l = IdentityLinker::Linker.find_linked_identity('ssoguid',person.user.globallyUniqueID,'username')
+      username = l[:identity][:id_value]
+      if username != person.user.username
+        person.user.username = username
+        person.user.save
+      end
+
       # Try to create a unique gcx community
       unless person.sp_gcx_site.present?
         name = person.informal_full_name.downcase.gsub(/\s+/,'-').gsub(/[^a-z0-9_\-]/,'')
@@ -35,10 +43,9 @@ namespace :gcx do
 
         puts "Created #{site_attributes[:name]}"
 
+        GcxApi::User.create(person.sp_gcx_site, [{relayGuid: person.user.globallyUniqueID, role: 'administrator'}])
       end
 
-      GcxApi::User.create(person.sp_gcx_site, [{relayGuid: person.user.globallyUniqueID, role: 'administrator'}])
-      raise
     end
   end
 end
