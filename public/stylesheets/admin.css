@@ -1297,3 +1297,11 @@ a.AddNewPerson {
 .ui-helper-hidden-accessible {
   display: none;
 }
+
+.campus_trim {
+	width: 170px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+  cursor:default;
+}
