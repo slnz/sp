@@ -61,18 +61,26 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def show
-    applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
+    params[:order] = 'name' and params[:direction] = 'ascend' unless params[:order] && params[:direction]
+    applications = @project.sp_applications.joins(:person).includes({:person => :current_address})
     staffs = @project.sp_staff
+
     @accepted_participants = applications.accepted_participants.for_year(@year)
+    @accepted_participants = @accepted_participants.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @accepted_student_staff = applications.accepted_student_staff.for_year(@year)
+    @accepted_student_staff = @accepted_student_staff.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
+    @ready_to_evaluate = @ready_to_evaluate.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @other = Array.new
     staffs.other_involved.year(@year).each do |staff|
       @other << staff if !staff.person.isStaff
     end
     @submitted = applications.submitted.for_year(@year)
+    @submitted = @submitted.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @not_submitted = applications.not_submitted.for_year(@year)
+    @not_submitted = @not_submitted.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @not_going = applications.not_going.for_year(@year)
+    @not_going = @not_going.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
   end
 
   def download
