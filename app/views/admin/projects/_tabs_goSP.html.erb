@@ -1,38 +1,40 @@
 <%# encoding: utf-8 %>
       <p>
-        The fields on this page are directly linked to the gosummerproject.com website. 
+        The fields on this page are directly linked to the gosummerproject.com website.
         <br/>
         Changes made on this page will immediately show up on the website once you click the Save button.
       </p>
-      
+
       <p class="legend">
         Fill out the fields in all four tabs. <br/>
       	Fields with the <%= image_tag('required.png') %> are required.
      	</p>
-    
+
       <hr />
       <div class="field required">
         <%= f.label :name, 'Project Name' %>
         <%= f.text_field :name %>
       </div>
-      
+
       <div class="field required">
         <%= f.label :show_on_website, 'Show On Public Website' %>
         <%= f.select :show_on_website, [['No',false],['Yes',true]] %>
       </div>
-      
+
       <div class="field required">
         <%= f.label :job, 'Can students get a job?' %>
         <%= f.select :job, [['No',false],['Yes',true]] %>
       </div>
-      
+
       <div class="field required">
-        <%= f.label(:display_location) do 
+        <%= f.label(:display_location) do
           raw 'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
           end %>
         <%= f.text_field :display_location %>
+        <br/>
+        <%= f.check_box :secured_location %> Check here if this is a secure location
       </div>
-      
+
       <h3>Google Map</h3>
       <div class="field required">
         <%= f.label :city do
@@ -54,13 +56,13 @@
         <%= f.label :world_region, 'Region of the World' %>
         <%= f.select :world_region, SpWorldRegion.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
-      
+
       <div class="multifield">
         <div class="field required">
           <%= f.label :start_date, 'Student Start Date' %>
           <%= calendar_date_select_tag 'sp_project[start_date]', @project.start_date %>
         </div>
-        
+
         <div class="field required">
           <%= f.label :end_date, 'Student End Date' %>
           <%= calendar_date_select_tag 'sp_project[end_date]', @project.end_date %>
@@ -72,12 +74,12 @@
       </div>
 
       <div class="field select">
-        <%= f.label(:primary_ministry_focus_id) do 
+        <%= f.label(:primary_ministry_focus_id) do
           raw 'Primary Ministry Focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
           end %>
         <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
       </div>
-      
+
       <div class="field checkvertical">
         <label>Other Ministry Foci:</label>
         <div class="checkboxes">
@@ -89,7 +91,7 @@
           <% end %>
         </div>
       </div>
-      
+
       <div class="field checkvertical">
         <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
         <div class="checkboxes">
@@ -101,27 +103,27 @@
         <% end %>
         </div>
       </div>
-      
+
       <hr />
-      
+
       <div class="field">
-        <%= f.label(:url) do 
+        <%= f.label(:url) do
           raw 'Website Address ' + tip('Such as http://www.gomets.org/summerproject/or http://www.myproject.com/')
           end %>
         <%= f.text_field :url %>
       </div>
       <div class="field">
-        <%= f.label(:url_title) do 
+        <%= f.label(:url_title) do
           raw 'Website Title ' + tip('The actual words of the link they will click on to go to the website enter above  such as \'WDW Summer Project website.\' Default is "Project specific website."')
           end %>
         <%= f.text_field :url_title %>
       </div>
-      
+
       <div class="field">
         <%= f.label :facebook_url, 'Facebook Group link' %>
         <%= f.text_field :facebook_url %>
       </div>
-      
+
       <div class="multifield">
         <div class="field">
           <%= f.label :blog_url, 'Blog Address' %>
@@ -133,27 +135,27 @@
         </div>
         <div class="clear"></div>
       </div>
-      
+
       <div class="field required">
         <%= f.label :student_cost, 'Student Cost' %>
         <%= f.text_field :student_cost %>
       </div>
-      
+
       <div class="field multitext required">
-        <%= f.label(:max_accepted_men) do 
+        <%= f.label(:max_accepted_men) do
           raw 'Maximum Number of Participants ' + tip('These numbers won&rsquo;t show up on the goSP.com website, but as you accept more participants, the icons on the Google map on the \'Explore Projects\' page will change color to show students how much space is remaining on your project. 0-49%  = green icon, 50-99% full = yellow icon, 100% full = red icon. Once you have reached 100%, the maximum number of participants, your project name will no longer show up in the list of options when a student applies.')
           end %>
         <%= f.text_field :max_accepted_men, :class => 'small' %> men &nbsp;&nbsp;
         <%= f.text_field :max_accepted_women, :class => 'small' %> women
       </div>
-      
+
       <hr />
-      
+
       <div class="field required">
         <%= f.label :description, 'Project Description' %>
         <div class="inlinetip">
           <div id="explain1" class="explanation">
-            
+
             <b>Remember students will want to know what it is like to be on your
       			project help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description. Do not use the "%" symbol in your description or it will not display your text.</b><br /><br />
       			<b><u>Things to include in your description:</u></b><br>
@@ -177,12 +179,12 @@
         </div>
         <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
       </div>
-      
+
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
             <label>Quotes/Testimonials from Students or Other Participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email gosummerproject@uscm.org.') %></label>
-            
+
             <div class="field quote">
               <div>
                 <%#= sqf.check_box :_destroy  %>
@@ -198,10 +200,10 @@
           </div>
         <% end %>
       <% end %>
-    
-    
+
+
       <div class="multifield" style="margin-top: 20px;">
-    
+
         <div class="field">
           <label for="sp_project_picture">Project Picture</label>
           <div class="picture">
@@ -211,9 +213,9 @@
           </div>
           <input type="file" size="1" name="sp_project[picture]" id="sp_project_picture" class="smallinputfile">
           <%#= f.file_field(:picture, :size => 2) %>
-  
+
         </div>
-      
+
         <div class="field">
           <label for="sp_project_picture">Project Logo <%= tip('This logo will show up in the application. Recommended dimensions are 270px x 100px') %></label>
           <div class="picture">
@@ -226,6 +228,6 @@
         </div>
         <div class="clear"></div>
       </div>
-      
+
       <button type="submit" class="save"><span>Save</span></button>
       <button type="button" class="save" onclick="$('#tabs').tabs('select', 1);window.scrollTo(0,0)"><span>Next >></span></button>
