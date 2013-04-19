@@ -39,7 +39,7 @@ gem 'tiny_mce', '~> 0.1.8'
 gem 'whenever', '~> 0.7.3'
 gem 'will_paginate', '~> 3.0.0'
 gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
-gem 'relay_api_client'
+gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 
 group :development, :test do
   gem 'mail_safe' #.5
