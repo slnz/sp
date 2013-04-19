@@ -4955,7 +4955,7 @@ ActiveRecord::Schema.define(:version => 20130419132700) do
     t.boolean  "background_checks_required",                         :default => false
     t.date     "open_application_date",                              :default => '2012-11-01'
     t.date     "archive_project_date",                               :default => '2012-08-31'
-    t.boolean  "secured_location"
+    t.boolean  "secure"
   end
 
   add_index "sp_projects", ["name"], :name => "sp_projects_name_index", :unique => true
