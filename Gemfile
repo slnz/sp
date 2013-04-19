@@ -42,6 +42,7 @@ gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 
 group :development, :test do
+  gem 'awesome_print'
   gem 'mail_safe' #.5
   gem 'unicorn'
   gem 'rspec-rails'

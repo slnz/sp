@@ -52,6 +52,7 @@ GEM
       gyoku (>= 0.4.0)
       nokogiri (>= 1.4.0)
     arel (2.0.10)
+    awesome_print (1.1.0)
     aws-s3 (0.6.3)
       builder
       mime-types
@@ -322,6 +323,7 @@ DEPENDENCIES
   acts_as_list (~> 0.1.8)
   acts_as_versioned (~> 0.6.0)
   airbrake (~> 3.1.5)
+  awesome_print
   aws-s3 (~> 0.6.3)
   capistrano
   carmen (~> 0.2.12)
