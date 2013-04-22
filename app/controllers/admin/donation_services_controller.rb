@@ -88,7 +88,7 @@ class Admin::DonationServicesController < ApplicationController
             AND project.id = designation.project_id)
             AND designation.year = app.year
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
-          AND app.year = '#{SpApplication.year}'
+          AND app.year >= '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '0000000'
@@ -119,7 +119,7 @@ class Admin::DonationServicesController < ApplicationController
             AND project.id = designation.project_id)
             AND designation.year = staff.year
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
-          AND staff.year = '#{SpApplication.year}'
+          AND staff.year >= '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '0000000'
@@ -280,8 +280,8 @@ class Admin::DonationServicesController < ApplicationController
       person = Person.find(person_id)
       donor_number = persons_to_update[person_id]
 
-      record = SpApplication.where(:person_id => person_id, :year => SpApplication.year).first
-      record ||= SpStaff.where(:person_id => person_id, :year => SpApplication.year).first
+      record = SpApplication.where(:person_id => person_id).where("year >= ?", SpApplication.year).first
+      record ||= SpStaff.where(:person_id => person_id).where("year >= ?", SpApplication.year).first
 
       if record.present?
         project_id = record.project_id
