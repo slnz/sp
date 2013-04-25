@@ -110,9 +110,10 @@ class SpUser < ActiveRecord::Base
       mappings = {
         "KEY"                => "Keynote",
         "MIL"                => "Valor",
-        "SV"                 => "Student Venture",
-        "SVNO"               => "Student Venture",
-        "CHS"                => "Student Venture",
+        "SV"                 => "Cru High School",
+        "SVNO"               => "Cru High School",
+        "Student Venture"    => "Cru High School",
+        "CHS"                => "Cru High School",
         "JF"                 => "Jesus Film",
         "JESUS Film Project" => 'Jesus Film',
         "EPI"                => "Epic",
