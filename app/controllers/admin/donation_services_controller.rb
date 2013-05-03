@@ -52,7 +52,6 @@ class Admin::DonationServicesController < ApplicationController
           spouse.lastName AS spouseLastName,
           spouse.title AS spouseTitle,
           spouse.gender AS spouseGender,
-          person.accountNo,
           currentAddress.address1 AS currentAddress,
           currentAddress.city AS currentCity,
           currentAddress.state AS currentState,
@@ -118,7 +117,7 @@ class Admin::DonationServicesController < ApplicationController
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
             AND designation.year = staff.year
-        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
+        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator')
           AND staff.year = '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
