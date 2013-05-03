@@ -75,7 +75,12 @@ class Admin::ApplicationsController < ApplicationController
       flash[:notice] = "You must use at least one search criteria."
       redirect_to search_admin_applications_path
     else
-      @applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName").paginate(:page => params[:page])
+      if params[:page] == "all"
+        @applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName").paginate(:page => 1)
+        @all_applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName")
+      else
+        @applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName").paginate(:page => params[:page])
+      end
     end
   end
 

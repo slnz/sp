@@ -1,7 +1,7 @@
 <div class="pagepad">
   <h1>Projects</h1>
   <div id="contextmenu">
-  
+
     <% if sp_user.is_a?(SpNationalCoordinator) || (sp_user.is_a?(SpRegionalCoordinator) && current_person.region.blank?) %>
     <ul class="left">
       <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
@@ -12,7 +12,7 @@
           <li><%= link_to_function('All', '', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
           <% partners.each_with_index do |partner, i| %>
           <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
-            <% if (i + 1) % 6 == 0 %>
+            <% if (i + 1) % 7 == 0 %>
               </ul><ul><li>&nbsp;</li>
             <% end %>
           <% end %>
@@ -21,9 +21,9 @@
         <%= check_box_tag :closed, 1, params[:closed] == 'true' %> Include closed projects
         <button type="submit" id="filter_button" rel="<%= admin_projects_path %>">Filter</button>
       </div>
-    </ul>  
+    </ul>
     <% end %>
-  
+
     <% if sp_user.can_create_project? %>
     <ul class="right">
       <li><%= link_to('Add New Project', new_admin_project_path, :class => 'add withicon') %></li>
@@ -45,7 +45,7 @@
         <th></th>
         <th></th>
       </tr>
-    
+
       <% if @projects.total_entries > 20 %>
         <tr>
           <th></th>
@@ -69,7 +69,7 @@
       <div class="show_select">
         Show
         <%= select_tag :projects_per_page, options_for_select([[20, 20], [40, 40], [100, 100], ['All', 10000]], @per_page.to_i), :rel => admin_projects_path %>
-        of 
+        of
         <%= @projects.total_entries %>
       </div>
     <% end %>

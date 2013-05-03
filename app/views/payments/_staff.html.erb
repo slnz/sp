@@ -1,12 +1,12 @@
 <h3>Transfer from a Staff/Project/Scholarship Fund</h3>
 
-<p>Please enter the First and Last name of the Cru staff member who will provide the funds for your application, 
-	then press "Search for Staff".  From the list of matching staff, 
-	select the correct person.  An email will then be sent to them with 
+<p>Please enter the First and Last name of the Cru staff member who will submit their staff account number or designate the ministry chartfield to provide the funds,
+	then press "Search for Staff".  From the list of matching staff,
+	select the correct person.  An email will then be sent to them with
 	your payment request.</p>
-		
-<p>Please note that your application <strong>can not be processed</strong> 
-	until they initiate the funds transfer.  Once the staff member responds, 
+
+<p>Please note that your application <strong>can not be processed</strong>
+	until they initiate the funds transfer.  Once the staff member responds,
 	an email will be sent to you.</p>
 
 <h4>Search for Staff</h4>
@@ -16,5 +16,5 @@
 	<%= text_field :payment, :staff_last, { :size => 10 }%>
 	<%= submit_tag "Search", :id => 'staff_search', :class => 'submit_payment', 'data-url' => staff_search_application_payments_path(@application) %>
 </p>
-		
+
 <div id="staff_results"></div>

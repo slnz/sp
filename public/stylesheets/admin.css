@@ -736,7 +736,7 @@ a.close {
   z-index: 100;
 }
 #contextmenu .poptions {
-  width: 560px;
+  width: 630px;
   min-height: 200px;
   background: #efefef;
   position: absolute;
@@ -1296,4 +1296,12 @@ a.AddNewPerson {
 }
 .ui-helper-hidden-accessible {
   display: none;
+}
+
+.campus_trim {
+	width: 170px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+  cursor:default;
 }

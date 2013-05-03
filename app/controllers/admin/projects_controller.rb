@@ -61,18 +61,26 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def show
-    applications = @project.sp_applications.joins(:person).includes({:person => :current_address}).order('lastName, firstName')
+    params[:order] = 'name' and params[:direction] = 'ascend' unless params[:order] && params[:direction]
+    applications = @project.sp_applications.joins(:person).includes({:person => :current_address})
     staffs = @project.sp_staff
+
     @accepted_participants = applications.accepted_participants.for_year(@year)
+    @accepted_participants = @accepted_participants.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @accepted_student_staff = applications.accepted_student_staff.for_year(@year)
+    @accepted_student_staff = @accepted_student_staff.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
+    @ready_to_evaluate = @ready_to_evaluate.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @other = Array.new
     staffs.other_involved.year(@year).each do |staff|
       @other << staff if !staff.person.isStaff
     end
     @submitted = applications.submitted.for_year(@year)
+    @submitted = @submitted.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @not_submitted = applications.not_submitted.for_year(@year)
+    @not_submitted = @not_submitted.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @not_going = applications.not_going.for_year(@year)
+    @not_going = @not_going.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
   end
 
   def download
@@ -380,8 +388,28 @@ class Admin::ProjectsController < ApplicationController
   def set_up_filters
     @base = params[:closed] ? SpProject : SpProject.open
     @filter_title = 'All'
-    if params[:partners]
-      @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", params[:partners], params[:partners], params[:partners])
+    selected_filters = params[:partners]
+
+    if selected_filters.present?
+      report_stats_to_query = Array.new
+      if selected_filters.include?("US Campus")
+        selected_filters = selected_filters.select{|x| x != "US Campus"}
+        report_stats_to_query << "report_stats_to = 'Campus Ministry - US summer project'"
+      end
+
+      if selected_filters.include?("Non-USCM SPs")
+        selected_filters = selected_filters.select{|x| x != "Non-USCM SPs"}
+        report_stats_to_query << "report_stats_to = 'Other Cru ministry'"
+      end
+
+      if report_stats_to_query.present?
+        @base = @base.where(report_stats_to_query.join(' OR '))
+      end
+
+      if selected_filters.present?
+        @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", selected_filters, selected_filters, selected_filters)
+      end
+
       @filter_title = params[:partners].sort.join(', ')
     end
     case

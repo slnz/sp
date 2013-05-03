@@ -79,9 +79,9 @@
               <th class="name">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
-              <th class="accdate">Ready</th>
+              <th class="accdate"><%= sort_by('ready')%></th>
               <th class="balance">S. Staff</th>
-              <th class="evaluate">Eval</th>
+              <th class="evaluate">Rev</th>
             </tr>
             <% @ready_to_evaluate.each do |app| %>
               <% person = app.person %>
@@ -89,11 +89,11 @@
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
-                <td class="campus"><%= person.campus %></td>
+                <td class="campus"><div class='campus_trim'><%= person.campus %></div></td>
                 <td class="accdate deadline<%= app.deadline_met %>"><%= est_time app.completed_at.to_time if app.completed_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Review ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Review ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>
@@ -108,9 +108,9 @@
               <th class="name sort_up">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
-              <th class="accdate">Submitted</th>
+              <th class="accdate"><%= sort_by('submitted')%></th>
               <th class="balance">S. Staff</th>
-              <th class="evaluate">Eval</th>
+              <th class="evaluate">Rev</th>
             </tr>
 
             <% @submitted.each do |app| %>
@@ -119,11 +119,11 @@
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
-                <td class="campus"><%= person.campus %></td>
+                <td class="campus"><div class='campus_trim'><%= person.campus %></div></td>
                 <td class="accdate"><%= est_time app.submitted_at.to_time if app.submitted_at %></td>
                 <td class="balance"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Review ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Review ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>
@@ -138,10 +138,10 @@
               <th class="name">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
-              <th class="accdate">Started</th>
+              <th class="accdate"><%= sort_by('started')%></th>
               <th class="intern">S. Staff</th>
               <th class="status">Status</th>
-              <th class="evaluate">Eval</th>
+              <th class="evaluate">Rev</th>
             </tr>
 
             <% @not_submitted.each do |app| %>
@@ -150,12 +150,12 @@
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
-                <td class="campus"><%= person.campus %></td>
+                <td class="campus"><div class='campus_trim'><%= person.campus %></div></td>
                 <td class="accdate"><%= est_time app.created_at.to_time if app.created_at %></td>
                 <td class="intern"><%= app.apply_for_leadership? ? 'Yes' : 'No' %></td>
                 <td class="status"><%= app.status.titleize %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Review ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Review ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>
@@ -170,9 +170,9 @@
               <th class="name sort_up">Name</th>
               <th class="email"></th>
               <th class="campus">Campus</th>
-              <th class="accdate">Submitted</th>
+              <th class="accdate"><%= sort_by('submitted')%></th>
               <th class="status">Status</th>
-              <th class="evaluate">Eval</th>
+              <th class="evaluate">Rev</th>
             </tr>
 
             <% @not_going.each do |app| %>
@@ -181,11 +181,11 @@
                 <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
                 <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
                 <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
-                <td class="campus"><%= person.campus %></td>
+                <td class="campus"><div class='campus_trim'><%= person.campus %></div></td>
                 <td class="accdate"><%= est_time app.submitted_at.to_time if app.submitted_at %></td>
                 <td class="status"><%= app.status.titleize %> <%= "(#{app.previous_status})" if app.previous_status.present? %></td>
                 <% if sp_user.can_evaluate_applicant?(app) %>
-                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Evaluate ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Evaluate ' + person.to_s) %></td>
+                  <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Review ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Review ' + person.to_s) %></td>
                 <% end %>
               </tr>
             <% end %>

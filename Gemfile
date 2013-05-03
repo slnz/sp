@@ -30,6 +30,7 @@ gem 'omniauth-cas', '~> 0.0.7'
 gem 'omniauth-facebook', '~> 1.4.1'
 gem 'paperclip', '~> 2.3.8'
 gem 'rack-contrib', '~> 1.1.0' # 100ms
+gem 'rb-fsevent', '~> 0.9'
 gem 'retryable-rb', '~> 1.1.0'
 gem 'siebel_donations', '~> 1.0.3'
 gem 'spork-rails', '~> 3.2.0'
@@ -37,8 +38,11 @@ gem 'spreadsheet', '~> 0.7.4'
 gem 'tiny_mce', '~> 0.1.8'
 gem 'whenever', '~> 0.7.3'
 gem 'will_paginate', '~> 3.0.0'
+gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
+gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 
 group :development, :test do
+  gem 'awesome_print'
   gem 'mail_safe' #.5
   gem 'unicorn'
   gem 'rspec-rails'
