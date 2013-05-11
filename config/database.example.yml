@@ -1,0 +1,20 @@
+development: &common
+  adapter: mysql2
+  host: 127.0.0.1
+  username: root
+  password:
+  database: cru_prod
+
+test:
+  <<: *common
+  database: cru_test
+
+production:
+  <<: *common
+  database: cru_prod
+
+peoplesoft:
+  <<: *common
+
+donor:
+  <<: *common
