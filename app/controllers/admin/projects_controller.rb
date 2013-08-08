@@ -303,7 +303,7 @@ class Admin::ProjectsController < ApplicationController
             project.name,
             project.city,
             project.state,
-            project.country
+            Country.where(country: project.country).first.try(:code)
           ]
           row_more = [
             contact.full_name,
