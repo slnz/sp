@@ -55,7 +55,7 @@ class Admin::ProjectsController < ApplicationController
     @project.destroy if sp_user.can_delete_project?
     respond_with(@project) do |format|
       format.html do
-        redirect_to admin_projects_path, :notice => "#{@project} project was created deleted."
+        redirect_to admin_projects_path, :notice => "#{@project} project was deleted."
       end
     end
   end
