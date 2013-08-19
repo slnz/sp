@@ -662,7 +662,7 @@ class Admin::ReportsController < ApplicationController
                 "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One',
                 'Decisions Group', 'Holy Spirit Convo', 'Involved New Blvrs', 'Involved Students', 'Student Leaders', 'Dollars Raised' ]
     @rows = []
-    SpProject.order('name').each do |project|
+    SpProject.open.order('name').each do |project|
       if stat = project.statistics.detect {|s| s.sp_year.to_i == @year.to_i}
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
                   case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
@@ -1336,7 +1336,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def projects_summary
-    @projects = SpProject.current.order('name')
+    @projects = SpProject.open.order('name')
     @headers = ['Name', '# Weeks', 'Max Participants','Accepted Participants','Accepted Student Staff', '# Staff', 'Student Cost', 'Staff Cost','Primary Partner','Secondary Partner','Tertiary Partner','Project Type','Uses USCM App']
     @rows = @projects.collect do |p|
       who = case p.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
