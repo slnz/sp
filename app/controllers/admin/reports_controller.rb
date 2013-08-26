@@ -659,13 +659,14 @@ class Admin::ReportsController < ApplicationController
     set_years
     set_year
     @headers = [ "Project", "# Weeks", "# Student Participants", "Primary Partner", "Project Type",
-                "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One',
+                "Spiritual Convo", "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One',
                 'Decisions Group', 'Holy Spirit Convo', 'Student Attendees' ]
     @rows = []
     SpProject.open.order('name').each do |project|
       if stat = project.statistics.detect {|s| s.sp_year.to_i == @year.to_i}
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
                   case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'Global Missions'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
+                  number_with_delimiter(stat.spiritual_conversations.to_i),
                   number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i),
                   number_with_delimiter(stat.evangelisticGroup.to_i),
                   number_with_delimiter(stat.decisionsHelpedByMedia.to_i), number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
@@ -1339,7 +1340,7 @@ class Admin::ReportsController < ApplicationController
     @projects = SpProject.open.order('name')
     @headers = ['Name', '# Weeks', 'Max Participants','Accepted Participants','Accepted Student Staff', '# Staff', 'Student Cost', 'Staff Cost','Primary Partner','Secondary Partner','Tertiary Partner','Project Type','Uses USCM App']
     @rows = @projects.collect do |p|
-      who = case p.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'WSN'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
+      who = case p.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'Global Missions'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end
       [p.name, p.weeks, p.capacity, p.current_students_men.to_i + p.current_students_women.to_i, p.sp_applications.accepted_student_staff.for_year(SpApplication.year).count, p.staff.count, number_to_currency(p.student_cost.to_i, :precision => 0), number_to_currency(p.staff_cost.to_i, :precision => 0), p.primary_partner, p.secondary_partner, p.tertiary_partner, who, p.use_provided_application? ? 'Yes' : 'No']
     end
 
