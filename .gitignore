@@ -20,3 +20,4 @@ development/
 log/*
 coverage
 config/config.yml
+.idea
