@@ -40,7 +40,9 @@ gem 'whenever', '~> 0.7.3'
 gem 'will_paginate', '~> 3.0.0'
 gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
-gem 'global_registry', git: 'git://github.com/CruGlobal/global_registry_client.git'
+gem 'global_registry', path: '/Users/josh/htdocs/global_registry_client'
+#gem 'global_registry', git: 'git://github.com/CruGlobal/global_registry_client.git'
+gem 'sidekiq'
 
 group :development, :test do
   gem 'awesome_print'

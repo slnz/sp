@@ -1,3 +1,4 @@
+require 'sidekiq/web'
 Sp2::Application.routes.draw do
 
   get "welcome/privacy"
@@ -141,6 +142,11 @@ Sp2::Application.routes.draw do
 
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 
+  constraint = lambda { |request| request.session['user_id'] and
+                                  User.find(request.session['user_id']).developer? }
+  constraints constraint do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   root :to => "applications#apply"
 
