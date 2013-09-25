@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/CruGlobal/global_registry_client.git
+  revision: 0584e808ef8213a9d990d2e3553646b6f2e98ec0
+  specs:
+    global_registry (1.0.0)
+      activesupport
+      oj (~> 2.1.0)
+      rest-client (~> 1.6.7)
+      retryable-rb (~> 1.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -178,7 +188,7 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
-    oj (1.4.7)
+    oj (2.1.4)
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
@@ -262,10 +272,11 @@ GEM
       nokogiri (>= 1.4.0)
       nori (~> 2.0.3)
       wasabi (~> 3.0.0)
-    siebel_donations (1.0.3)
+    siebel_donations (1.0.4)
       activesupport
-      oj (~> 1.4.5)
+      oj (~> 2.1.0)
       rest-client (~> 1.6.7)
+      retryable-rb (~> 1.1.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -333,6 +344,7 @@ DEPENDENCIES
   excelsior (~> 0.1.0)
   factory_girl_rails
   gcx_api
+  global_registry!
   google-geocode (~> 1.2.1)
   guard-rspec
   jammit (~> 0.6.5)
@@ -354,7 +366,7 @@ DEPENDENCIES
   relay_api_client
   retryable-rb (~> 1.1.0)
   rspec-rails
-  siebel_donations (~> 1.0.3)
+  siebel_donations (~> 1.0.4)
   simplecov
   spork-rails (~> 3.2.0)
   spreadsheet (~> 0.7.4)
