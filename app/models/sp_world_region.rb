@@ -4,8 +4,6 @@ class SpWorldRegion < ActiveRecord::Base
   include GlobalRegistryMethods
   include Sidekiq::Worker
 
-  after_save :push_to_global_registry
-
   def self.skip_fields_for_gr
     %w[id created_at updated_at global_registry_id]
   end
