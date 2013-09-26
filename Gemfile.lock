@@ -1,5 +1,6 @@
-PATH
-  remote: /Users/josh/htdocs/common_engine_plugin
+GIT
+  remote: git@github.com:CruGlobal/common_engine.git
+  revision: 392cbde0ca6e8dca3cb4587d567505f62bec2933
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
