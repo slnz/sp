@@ -19,7 +19,7 @@ a {outline: none;}
 }
 
 #preview {
-  border-color: #421f07;
+  border-color: #FFE155;
   min-height: 500px;
   background: #fff;
 }
@@ -31,7 +31,7 @@ a {outline: none;}
 #projecttitle {
   background:none repeat scroll 0 0 transparent;
   border-bottom:1px solid silver;
-  color:#421F07;
+  color:#FFE155;
   font-size:14px;
   font-weight:bold;
   margin-bottom:1em;
@@ -39,7 +39,7 @@ a {outline: none;}
 }
 
 #list-pages li.active a {
-  border-color: #421f07;
+  border-color: #FFE155;
 }
 
 h1 {
@@ -47,7 +47,7 @@ h1 {
 }
 
 a {
-  color: #421F07;
+  color: #FFE155;
 }
 
 a.successreturn {
@@ -465,7 +465,7 @@ li.questiongrid div.row {
 
 #submit_message {
   margin: 2px 0 1em 0;
-  color: #421F07;
+  color: #FFE155;
   font-weight: strong;
   font-size: 14px;
 }
