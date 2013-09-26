@@ -39,6 +39,7 @@ gem 'will_paginate', '~> 3.0.0'
 gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'common_engine', git: 'git@github.com:CruGlobal/common_engine.git'
+gem 'image_science', '~> 1.2.5'
 
 group :development, :test do
   gem 'awesome_print'

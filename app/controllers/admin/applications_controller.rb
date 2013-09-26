@@ -1,5 +1,5 @@
 class Admin::ApplicationsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
   before_filter :get_application, :only => [:waive_fee, :donations]
   before_filter :can_waive_fee, :only => [:waive_fee]
   before_filter :can_search, :only => [:search]

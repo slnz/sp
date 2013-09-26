@@ -1,5 +1,5 @@
 class Admin::PeopleController < ApplicationController
-  before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
   before_filter :get_person, :only => [:edit, :destroy, :update, :show]
   respond_to :html, :js
   def show
@@ -9,7 +9,7 @@ class Admin::PeopleController < ApplicationController
     @person.current_address = @person.create_current_address unless @person.current_address
     respond_with(@person)
   end
-  
+
   def update
     @person.update_attributes(params[:person])
     @project_id = params[:project_id].to_i
@@ -26,7 +26,7 @@ class Admin::PeopleController < ApplicationController
       wants.js
     end
   end
-  
+
   protected
     def get_person
       @person = Person.find(params[:id])

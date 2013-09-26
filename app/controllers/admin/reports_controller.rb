@@ -2,14 +2,14 @@ require 'csv'
 
 class Admin::ReportsController < ApplicationController
   include ActionView::Helpers::NumberHelper
-  before_filter CASClient::Frameworks::Rails3::Filter, AuthenticationFilter, :check_access
+  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_access
   @@total_applicant_actions = [ :total_num_applicants_by_partner_of_project,
     :total_num_applicants_by_region, :total_num_applicants_to_all_sps, :total_num_applicants_to_wsn_sps_by_area,
     :total_num_applicants_by_efm, :total_num_applicants_to_hs_sps, :total_num_applicants_to_other_ministry_sps ]
   @@total_participant_actions = [ :total_num_participants_by_partner_of_project,
     :total_num_participants_by_region, :total_num_participants_to_all_sps, :total_num_participants_to_wsn_sps_by_area,
     :total_num_participants_by_efm, :total_num_participants_to_hs_sps, :total_num_participants_to_other_ministry_sps ]
-  before_filter :set_total_applicant_statuses, :only => @@total_applicant_actions
+  before_filter :set_total_applicant_statuses, :only => @@total_applica<D-W>nt_actions
   before_filter :set_total_participants_statuses, :only => @@total_participant_actions
   before_filter :set_year, :only => @@total_applicant_actions + @@total_participant_actions + [:projects_summary]
   before_filter :set_years, :only => @@total_applicant_actions + @@total_participant_actions + [:projects_summary]

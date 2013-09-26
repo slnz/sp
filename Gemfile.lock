@@ -1,6 +1,5 @@
-GIT
-  remote: git@github.com:CruGlobal/common_engine.git
-  revision: 392cbde0ca6e8dca3cb4587d567505f62bec2933
+PATH
+  remote: /Users/josh/htdocs/common_engine_plugin
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -13,6 +12,9 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    RubyInline (3.12.2)
+      ZenTest (~> 4.3)
+    ZenTest (4.9.4)
     aasm (3.0.22)
     abstract (1.0.0)
     actionmailer (3.0.20)
@@ -140,6 +142,8 @@ GEM
     i18n (0.5.0)
     identity_linker (1.0.0)
       savon (~> 2.1.0)
+    image_science (1.2.5)
+      RubyInline (~> 3.9)
     jammit (0.6.6)
       cssmin (>= 1.0.3)
       jsmin (>= 1.0.1)
@@ -376,6 +380,7 @@ DEPENDENCIES
   gcx_api
   google-geocode (~> 1.2.1)
   guard-rspec
+  image_science (~> 1.2.5)
   jammit (~> 0.6.5)
   less (~> 2.2.2)
   libv8 (~> 3.11.8)
