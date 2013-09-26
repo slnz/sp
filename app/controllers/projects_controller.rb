@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   # caches_page :index
-  
+
   def show
     @project = SpProject.find(params[:id])
     respond_to do |format|
@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
        format.json { render json: @project.to_json(serialization_attributes.merge(:root => 'project')) }
      end
   end
-  
+
   def index
     @key = Digest::SHA1.hexdigest(params.collect {|k,v| [k,v]}.flatten.join('/') + '/' + request.format)
     unless fragment_exist?(@key)
@@ -46,13 +46,13 @@ class ProjectsController < ApplicationController
             end
             conditions[0] << '(' + condition.join(' OR ') + ')'
           end
-          # this option has two modes of access to accomodate the form post and 
+          # this option has two modes of access to accomodate the form post and
           # the xml feed. params[:project][:partner] is for the form post.
           # params[:partner] is for the xml feed.
-          if (params[:partner] || (params[:project] && params[:project][:partner])) && 
+          if (params[:partner] || (params[:project] && params[:project][:partner])) &&
                 !(partner = params[:partner] || params[:project][:partner]).empty?
-            conditions[0] << "(#{SpProject.table_name}.primary_partner = ? OR 
-                               #{SpProject.table_name}.secondary_partner = ? OR 
+            conditions[0] << "(#{SpProject.table_name}.primary_partner = ? OR
+                               #{SpProject.table_name}.secondary_partner = ? OR
                                #{SpProject.table_name}.tertiary_partner = ?)"
             conditions[1] << partner
             conditions[1] << partner
@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
           if params[:world_region] && !params[:world_region].empty?
             world_regions = params[:world_region].split(',')
             condition = []
-            world_regions.each do |world_region| 
+            world_regions.each do |world_region|
               condition << "#{SpProject.table_name}.world_region LIKE ?"
               conditions[1] << '%'+world_region+'%'
             end
@@ -113,7 +113,7 @@ class ProjectsController < ApplicationController
         if conditions[0].empty?
           @projects = []
         else
-          @projects = SpProject.current.find(:all, 
+          @projects = SpProject.current.find(:all,
                                       :include => [:primary_ministry_focus, :ministry_focuses],
                                       :conditions => conditions,
                                       :order => 'sp_projects.name, sp_projects.year')
@@ -129,13 +129,13 @@ class ProjectsController < ApplicationController
       end
     end
   end
-  
+
   protected
     def build_focus_conditions(focus, conditions)
       if focus
         condition = "(#{SpProject.table_name}.primary_ministry_focus_id = ? "
-        unless focus.sp_projects.empty?
-          condition += "OR #{SpProject.table_name}.id IN (#{focus.sp_projects.collect(&:id).join(',')}))"
+        unless focus.projects.empty?
+          condition += "OR #{SpProject.table_name}.id IN (#{focus.projects.collect(&:id).join(',')}))"
         else
           condition += ")"
         end
@@ -143,11 +143,11 @@ class ProjectsController < ApplicationController
         conditions[1] << focus.id
       end
     end
-    
+
     def get_regions
       @region_options = Region.find(:all, :order => 'region').map(&:region)
     end
-    
+
     def get_project_type_condition
       if params[:project_type] == 'US'
         return ".country = 'United States'"
