@@ -7,9 +7,7 @@ gem 'mysql2', '~> 0.2.7'
 
 gem 'capistrano'
 
-gem 'aasm', '~> 3.0.9'
 gem 'activemerchant', '~> 1.28.0'
-gem 'acts_as_list', '~> 0.1.8'
 gem 'acts_as_versioned', '~> 0.6.0'
 gem 'airbrake', '~> 3.1.5'
 gem 'aws-s3', '~> 0.6.3', :require => 'aws/s3'
@@ -40,8 +38,7 @@ gem 'whenever', '~> 0.7.3'
 gem 'will_paginate', '~> 3.0.0'
 gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
-gem 'global_registry', '~> 1.0.1'
-gem 'sidekiq'
+gem 'common_engine', git: 'git@github.com:CruGlobal/common_engine.git'
 
 group :development, :test do
   gem 'awesome_print'

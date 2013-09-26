@@ -1,3 +1,14 @@
+PATH
+  remote: /Users/josh/htdocs/common_engine_plugin
+  specs:
+    common_engine (0.0.1)
+      aasm (~> 3.0.9)
+      acts_as_list (~> 0.1.8)
+      global_registry
+      rails (>= 3.0.0)
+      rubycas-client
+      sidekiq
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -274,6 +285,8 @@ GEM
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
     ruby-ole (1.2.11.7)
+    rubycas-client (2.3.9)
+      activesupport
     savon (2.1.0)
       akami (~> 1.2.0)
       builder (>= 2.1.2)
@@ -346,22 +359,20 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aasm (~> 3.0.9)
   activemerchant (~> 1.28.0)
-  acts_as_list (~> 0.1.8)
   acts_as_versioned (~> 0.6.0)
   airbrake (~> 3.1.5)
   awesome_print
   aws-s3 (~> 0.6.3)
   capistrano
   carmen (~> 0.2.12)
+  common_engine!
   dalli (~> 2.2.1)
   database_cleaner
   dynamic_form (~> 1.1.4)
   excelsior (~> 0.1.0)
   factory_girl_rails
   gcx_api
-  global_registry (~> 1.0.1)
   google-geocode (~> 1.2.1)
   guard-rspec
   jammit (~> 0.6.5)
@@ -383,7 +394,6 @@ DEPENDENCIES
   relay_api_client
   retryable-rb (~> 1.1.0)
   rspec-rails
-  sidekiq
   siebel_donations (~> 1.0.4)
   simplecov
   spork-rails (~> 3.2.0)

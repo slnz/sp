@@ -1,4 +1,5 @@
 require 'authenticated_system'
+require 'authentication_filter'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
