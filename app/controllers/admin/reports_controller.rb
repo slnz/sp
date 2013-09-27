@@ -676,7 +676,7 @@ class Admin::ReportsController < ApplicationController
         else #if project.open?
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
                   case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then 'Global Missions'; when 'Campus Ministry - US summer project' then 'US'; else 'Other'; end,
-                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '$0']
+                  0, 0, 0, 0, 0, 0, 0, 0, 0]
       end
     end
     respond_to do |format|
