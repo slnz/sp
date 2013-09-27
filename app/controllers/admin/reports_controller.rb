@@ -130,7 +130,7 @@ class Admin::ReportsController < ApplicationController
         CSV.generate(csv) do |csv|
           csv << [ "Project Name", "PD Email Address" ]
           @focus = SpMinistryFocus.find params[:focus_id]
-          @focus.sp_projects.current.each do |project|
+          @focus.projects.current.each do |project|
             csv << [ project.name, ([project.pd.try(:email), project.apd.try(:email)].compact.join(' or ')) ]
           end
         end

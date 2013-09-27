@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <% focus.sp_projects.current.each do |project| %>
+        <% focus.projects.current.each do |project| %>
           <tr>
             <td><%= project.name %></td>
             <td><%= raw [project.pd.try(:email), project.apd.try(:email)].compact.collect {|e| mail_to(e)}.join(' or ') %></td>
