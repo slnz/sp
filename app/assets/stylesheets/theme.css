@@ -161,7 +161,7 @@ input.radio {
 }
 
 label.choice {
-  margin-left: 25px
+  margin-left: 25px;
   min-height: 25px;
   border: 1px solid #fff8e0;
 }

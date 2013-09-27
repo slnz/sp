@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git@github.com:CruGlobal/qe.git
-  revision: 72d0573b9e42a32d1f046ab6f1bb47bac00f7c1f
+  revision: 8e237aecb9a5e76738c02fd2f526518231507257
   specs:
     qe (0.0.1)
       rails (>= 3.1.0)
