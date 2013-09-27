@@ -1,5 +1,7 @@
+require 'common_engine'
 require_dependency 'authenticated_system'
 require_dependency 'authentication_filter'
+
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 

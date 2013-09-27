@@ -179,7 +179,7 @@
           </div>
           <span id="readmoreless" rel="explain1">Read More</span>
         </div>
-        <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'mceEditor') %>
+        <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'tinymce') %>
       </div>
 
       <% @project.student_quotes.each_with_index do |quote, i| %>
@@ -190,14 +190,14 @@
             <div class="field quote">
               <div>
                 <%#= sqf.check_box :_destroy  %>
-                <!-- <%= link_to(image_tag('/images/icons/slash.png') + "Delete this quote", '', :class => 'deletequote') %> -->
+                <!-- <%= link_to(image_tag('icons/slash.png') + "Delete this quote", '', :class => 'deletequote') %> -->
                 <%= sqf.text_field :name %>
               </div>
               <%= sqf.text_area(:quote, :cols => 60, :rows => 5) %>
             </div>
             <div class="clear"></div>
             <% unless i == 2 || @project.student_quotes[i+1].try(:quote).present?%>
-              <%= link_to_function(image_tag('/images/icons/plus-small.png') + 'Add another quote', "$(this).hide();$('#quote_#{i+1}').show()", :class => 'addanother') %>
+              <%= link_to_function(image_tag('icons/plus-small.png') + 'Add another quote', "$(this).hide();$('#quote_#{i+1}').show()", :class => 'addanother') %>
             <% end %>
           </div>
         <% end %>

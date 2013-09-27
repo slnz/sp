@@ -2,20 +2,14 @@
 <html>
 <head>
   <title>Sp2</title>
-  <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js' ,
-                             'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
-  <%= javascript_include_tag 'qe/jquery.tooltips.min' %>
-  <%= include_javascripts :admin %>
-  
-  <%= stylesheet_link_tag 'jquery-ui-1.8.2.custom' %>
-  <%#= questionnaire_engine_includes %>
-  <%= stylesheet_link_tag 'admin', 'eval', 'reports' %>
+  <%= javascript_include_tag 'admin' %>
+
+  <%= stylesheet_link_tag 'admin_manifest' %>
   <!--[if IE 7]>
     <%= stylesheet_link_tag 'ie7-admin' %>
   <![endif]--> 
   <%= csrf_meta_tag %>
   <%= embed_params %>
-  <%= include_tiny_mce_if_needed %>
   <%#= tiny_mce_init %>
   <!-- <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> -->
   
@@ -29,12 +23,12 @@
 	<meta name="msapplication-tooltip" content="Go to Summer Project Admin"/>
 	<meta name="msapplication-starturl" content="/admin"/>
 	<meta name="msapplication-window" content="width=800;height=600"/>
-	<meta name="msapplication-task" content="name=Projects;action-uri=/admin/projects;icon-uri=/images/projects.ico"/>
-	<meta name="msapplication-task" content="name=Reports;action-uri=/admin/reports;icon-uri=/images/report.ico"/>
-	<meta name="msapplication-task" content="name=Users;action-uri=/admin/users;icon-uri=/images/users.ico"/>
-	<meta name="msapplication-task" content="name=Forms;action-uri=/admin/question_sheets;icon-uri=/images/form.ico"/>
-	<meta name="msapplication-task" content="name=Emails;action-uri=/admin/email_templates;icon-uri=/images/email.ico"/>
-	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+	<meta name="msapplication-task" content="name=Projects;action-uri=/admin/projects;icon-uri=/assets/projects.ico"/>
+	<meta name="msapplication-task" content="name=Reports;action-uri=/admin/reports;icon-uri=/assets/report.ico"/>
+	<meta name="msapplication-task" content="name=Users;action-uri=/admin/users;icon-uri=/assets/users.ico"/>
+	<meta name="msapplication-task" content="name=Forms;action-uri=/admin/question_sheets;icon-uri=/assets/form.ico"/>
+	<meta name="msapplication-task" content="name=Emails;action-uri=/admin/email_templates;icon-uri=/assets/email.ico"/>
+	<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
 </head>
 <body id="<%= params[:controller].gsub('/','_')%>" class="<%= params[:action] %>">
@@ -53,5 +47,6 @@
 <div id="status" style="display: none;"><%= image_tag('qe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
 
 <div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('gosummerproject@uscm.org') %></div>
+<%= tinymce %>
 </body>
 </html>

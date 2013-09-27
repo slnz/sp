@@ -29,10 +29,10 @@
 
 <p class="field"><label for="payment_card_number" class="required">Credit Card Number</label>
 	<%= text_field :payment, :card_number, {:size => "18", :maxlength => "16"} %> <!-- , :onblur => "checkCard(this.value);" -->
-	<%= image_tag "/images/cc_visa_on.gif", :class => "cc_type", :id => "cc_visa" %>
-	<%= image_tag "/images/cc_master_on.gif", :class => "cc_type", :id => "cc_master" %>
-	<%= image_tag "/images/cc_american_express_on.gif", :class => "cc_type", :id => "cc_american_express" %>
-	<%= image_tag "/images/cc_discover_on.gif", :class => "cc_type", :id => "cc_discover" %>
+	<%= image_tag "cc_visa_on.gif", :class => "cc_type", :id => "cc_visa" %>
+	<%= image_tag "cc_master_on.gif", :class => "cc_type", :id => "cc_master" %>
+	<%= image_tag "cc_american_express_on.gif", :class => "cc_type", :id => "cc_american_express" %>
+	<%= image_tag "cc_discover_on.gif", :class => "cc_type", :id => "cc_discover" %>
 	<span id="cc_invalid" style="display: none; color: red;">Invalid card number</span>
 	<%= hidden_field :payment, :card_type %></p>
 

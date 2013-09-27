@@ -87,13 +87,13 @@
               <div class="field quote">
                 <div>
                   <%= text_field_tag "questions[#{i}][label]", question.label, :size => 40 %>
-                  <%= link_to(image_tag('/images/icons/slash.png') + "Delete this question", '', :class => 'delete_question') %>
+                  <%= link_to(image_tag('icons/slash.png') + "Delete this question", '', :class => 'delete_question') %>
                   <%= hidden_field_tag "questions[#{i}][id]", question.id %>
                 </div>
               </div>
               <div class="clear"></div>
               <% unless i == 4 || @questions[i+1].try(:label).present?%>
-                <%= link_to_function(image_tag('/images/icons/plus-small.png') + 'Add another question', "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
+                <%= link_to_function(image_tag('icons/plus-small.png') + 'Add another question', "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
               <% end %>
             </div>
           <% end %>

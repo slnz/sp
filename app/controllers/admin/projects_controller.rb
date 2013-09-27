@@ -1,12 +1,7 @@
 require 'csv'
 class Admin::ProjectsController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_sp_user, :except => :no
-  uses_tiny_mce :options => {:theme => 'advanced',
-                             :theme_advanced_buttons1 => "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink",
-                             :theme_advanced_buttons2 => "",
-                             :theme_advanced_buttons3 => "",
-                             :theme_advanced_toolbar_location => "top",
-                             :theme_advanced_toolbar_align => "left"}
+
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email, :edit]
   before_filter :get_countries, :only => [:new, :edit, :update, :create]
@@ -582,45 +577,43 @@ class Admin::ProjectsController < ApplicationController
     @from = current_user.person.current_address.try(:email).to_s
   end
 
-  protected
-
-    def get_email(str)
-      if str.index("<")
-        first = str.index("<") + 1
-        last = str.index(">") ? str.index(">") - 1 : str.size - 1
-        str[first..last]
-      else
-        str
-      end
+  def get_email(str)
+    if str.index("<")
+      first = str.index("<") + 1
+      last = str.index(">") ? str.index(">") - 1 : str.size - 1
+      str[first..last]
+    else
+      str
     end
+  end
 
-    def initialize_questions
-      @custom_page = @project.initialize_project_specific_question_sheet.pages.first
-      @questions = @custom_page.elements.to_a
-      (5 - @questions.length).times do
-        @questions << TextField.new
-      end
+  def initialize_questions
+    @custom_page = @project.initialize_project_specific_question_sheet.pages.first
+    @questions = @custom_page.elements.to_a
+    (5 - @questions.length).times do
+      @questions << TextField.new
     end
+  end
 
-    def update_questions
-      if params[:questions].present?
-        initialize_questions
-        params[:questions].each do |i, attribs|
-          if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
-            if attribs[:label].present?
-              question.update_attribute(:label, attribs[:label])
-            else
-              question.destroy
-            end
+  def update_questions
+    if params[:questions].present?
+      initialize_questions
+      params[:questions].each do |i, attribs|
+        if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
+          if attribs[:label].present?
+            question.update_attribute(:label, attribs[:label])
           else
-            if attribs[:label].present?
-              e = TextField.create!(:label => attribs[:label])
-              PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
-            end
+            question.destroy
+          end
+        else
+          if attribs[:label].present?
+            e = TextField.create!(:label => attribs[:label])
+            PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
           end
         end
-        # Set up the questions again after updating them.
-        initialize_questions
       end
+      # Set up the questions again after updating them.
+      initialize_questions
     end
+  end
 end

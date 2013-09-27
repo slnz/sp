@@ -4,17 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
   <title>Summer Project Application</title>
-  <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js' ,
-                             'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js' %>
 
-  <%= javascript_include_tag 'qe/jquery.metadata', 'qe/jquery.tooltips.min' %>
-  <%= include_stylesheets :base, :media => 'all' %>
-  <%= include_javascripts :base %>
+  <%= javascript_include_tag "application" %>
+
+  <%= stylesheet_link_tag "application", :media => "all" %>
   <script type="text/javascript" charset="utf-8">
     var answer_sheet_type = '<%= @answer_sheet.class %>'
   </script>
   <%= csrf_meta_tag %>
-  <%= stylesheet_link_tag 'message_block' %>
+
   <script type="text/javascript" charset="utf-8">
     <%= raw Rack::TimeZone::Javascript %>
     setTimezoneCookie()
@@ -35,7 +33,7 @@
     <% end %>
     <!-- anything in here my be custom branded -->
     <br/>
-    <%= image_tag("/images/frontend/header.png") %>
+    <%= image_tag("frontend/header.png") %>
     <!-- END -->
   </div>
 </div>
@@ -44,7 +42,6 @@
 
 <div id="wrapper">
   <div id="main">
-    <%= message_block :on => :all %>
     <%= yield %>
     <div class="clear"></div>
   </div>
@@ -55,7 +52,10 @@
     <table>
       <tr>
         <td>
-          <img src="/images/icons/lifebuoy.png" style="vertical-align: top; margin-right: 5px;"> If you're having any issues, or have a question about something, please <a href="http://gosummerproject.com/contact/" class="issueslink" target="_blank">send us an email. (Link opens in a new window) <img src="/images/icons/mail.png" style="vertical-align: top; border: 0px;"></a>
+          <%= image_tag('icons/lifebuoy.png', style: 'vertical-align: top; margin-right: 5px;') %>
+          If you're having any issues, or have a question about something, please <a href="http://gosummerproject.com/contact/" class="issueslink" target="_blank">send us an email. (Link opens in a new window)
+          <%= image_tag('icons/mail.png', style: 'vertical-align: top; border: 0px;') %>
+          </a>
         </td>
         <td>
           <%= link_to('Privacy Policy', '/welcome/privacy') %>

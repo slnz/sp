@@ -1,5 +1,6 @@
 module ApplicationHelper
   include AnswerPagesHelper
+  include QeHelper
   def embed_params(include_action = false)
     params_to_js = params.dup
     unless include_action
@@ -99,7 +100,7 @@ module ApplicationHelper
   def calendar_date_select_tag(name, value = nil, options = {})
     options.merge!({'data-calendar' => true})
     value = case
-          when value.is_a?(Time)
+          when value.is_a?(Time) || value.is_a?(DateTime)
             l(value.to_date)
           when value.is_a?(Date)
             l(value)

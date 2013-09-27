@@ -3,7 +3,7 @@
       :class => 'select ' + school_picker.validation_class, :disabled => @application.frozen?&&@reference.nil?, :readonly => @application.frozen?&&@reference.nil?, 
       :onchange => "$('##{dom_id(school_picker)}').val($(this).val())" %>
 <script type="text/javascript" charset="utf-8">
-  $('#college_<%= school_picker.id %>').live('change', function() {
+  $(document).on('change', '#college_<%= school_picker.id %>', function() {
     $('#<%= dom_id(school_picker) %>').val($(this).val());
     $('#high_school_<%= school_picker.id %>').val('')
   })

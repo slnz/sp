@@ -68,7 +68,7 @@ class ApplicationsController < AnswerSheetsController
     @presenter = AnswerPagesPresenter.new(self, @application)
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
-    @presenter.active_page ||= @page
+    @presenter.active_page ||= @presenter.new_page_link(@answer_sheet, @page)
     render 'answer_sheets/edit'
   end
   

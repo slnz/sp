@@ -1,0 +1,10 @@
+/* ...
+*= require_self
+*= require eval
+*= require message_block
+*= require admin
+*= require qe/qe.screen
+*= require spqe.admin
+*= require jquery-ui-1.8.2.custom
+*= require reports
+*/

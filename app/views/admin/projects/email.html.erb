@@ -39,7 +39,7 @@
           <div class="fieldinput"><%= text_field_tag :subject, params[:subject], :id => 'subject' %></div>
         </div>
         
-        <textarea name="body" cols="100" style="width: 100%;" rows="18" wrap="virtual" class="mceEditor"></textarea>
+        <textarea name="body" cols="100" style="width: 100%;" rows="18" wrap="virtual" class="tinymce"></textarea>
 
         <% (0..4).each do |i| %>        
           <div class="field" style="<%= i == 0 ? '' : 'display:none' %>" id="attachment_<%= i %>">

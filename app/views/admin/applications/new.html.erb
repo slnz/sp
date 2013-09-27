@@ -338,7 +338,7 @@
       <option value="WV">West Virginia</option>
       <option value="WI">Wisconsin</option>
       <option value="WY">Wyoming</option></select>
-      <img alt="Spinner" id="spinner_school" src="/images/spinner.gif?1281970396" style="display:none" />
+      <%= image_tag('spinner.gif', style: 'display:none', id: 'spinner_school') %>
       <script type="text/javascript">
       //<![CDATA[
       new Form.Element.EventObserver('person_universityState', function(element, value) {new Ajax.Updater('school', '/applicants/ajax_get_schools', {asynchronous:true, evalScripts:true, onLoaded:function(request){Element.hide('spinner_school');}, onLoading:function(request){Element.show('spinner_school')}, parameters:'state=' + escape(value)})})

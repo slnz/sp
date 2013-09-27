@@ -32,7 +32,7 @@
 <script type="text/javascript">
   $(function() {
     page_handler = $.qe.pageHandler;
-    page_handler.initialize('<%= @presenter.active_page.dom_id %>');
+    page_handler.initialize('<%= @presenter.active_page_link.dom_id %>');
     // Event.observe(window, 'unload', page_handler.savePage);
         
     // Validation.add('validate-phone', 'Please enter a valid phone number +1-800-555-1234 x102', {

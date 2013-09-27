@@ -9,7 +9,6 @@ config/amazon_s3.yml
 .DS_Store
 .rvmrc
 cache
-vendor/plugins/query_trace
 config/facebook.yml
 public/packages/
 config/initializers/active_merchant.rb

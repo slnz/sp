@@ -173,7 +173,7 @@ class Run
   # end
 
   def self.add_sp_users_to_mpd_tool
-    users = SpUser.find(:all, :conditions => "type IN ('SpNationalCoordinator', 'SpRegionalCoordinator', 'SpDirector')")
+    users = SpUser.where("type IN ('SpNationalCoordinator', 'SpRegionalCoordinator', 'SpDirector')")
     users.each do |user|
       # MpdUser.create(:ssm_id => user.ssm_id)
     end

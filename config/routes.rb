@@ -93,7 +93,7 @@ Sp2::Application.routes.draw do
         get :email, :download
       end
       collection do
-        get :threads, :no
+        get :threads, :no, :dashboard
       end
     end
     resources :applications do

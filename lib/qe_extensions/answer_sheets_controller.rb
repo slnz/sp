@@ -1,6 +1,5 @@
-class AnswerSheetsController < ApplicationController
-  include AnswerSheetsControllerConcern
-
+require 'answer_sheets_controller'
+AnswerSheetsController.class_eval do
   prepend_before_filter :login
   
   def submit

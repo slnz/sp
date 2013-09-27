@@ -13,8 +13,12 @@ module Sp2
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-    config.autoload_paths += %W(#{config.root}/app/presenters)
-
+    config.autoload_paths += %W(#{config.root}/app/controllers/concerns )
+    config.assets.enabled = true
+    config.assets.version = '1.0'
+    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    #config.assets.precompile += [/(?:\/|\\|\A).*\.css/]
+    config.assets.precompile += [/^[a-z0-9]\w+.(css|js)$/]
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -31,7 +35,7 @@ module Sp2
     # config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = %w()
+    #config.action_view.javascript_expansions[:defaults] = %w()
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
