@@ -20,7 +20,7 @@ p {
 
 body {
   margin: 0;
-  background: #fff;
+  background: #00626D;
   padding: 0;
   height: 100%;
   font-family: Arial, Helvetica;
@@ -28,6 +28,7 @@ body {
   font-weight: normal;
   border: none;
   line-height: 1.25em;
+  color: #fff;
 }
 
 a {
