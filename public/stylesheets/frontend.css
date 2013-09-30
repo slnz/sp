@@ -4,7 +4,7 @@ body {
   padding: 0;
   font-size: 13px;
   font-family: Arial, Helvetica, Verdana;
-  background: #ffffff;
+  background: #00626D;
   color: #412d17;
 }
 a {
@@ -20,22 +20,21 @@ h3 {
   margin: 0;
 }
 #outer {
-  background: #ffffff;
+  background: #00626D;
 }
 #header {
   background: url('/images/frontend/header.png') no-repeat 50% 50%;
-  width: 688px;
-  height: 91px;
+  width: 1000px;
+  height: 147px;
 }
 #body {
-  background: url('/images/frontend/busbg.jpg') no-repeat 50% 50%;
-  width: 688px;
+  width: 1000px;
   height: auto;
   border-top: 1px solid #ffffff;
   padding-bottom: 100px;
 }
 .content {
-  width: 75%;
+  width: 85%;
   margin: 0 auto;
   margin-top: 100px;
   background: url('/images/frontend/bg.png');
@@ -50,7 +49,7 @@ h3 {
   padding-right: 20px;
 }
 div#outer {
-  width: 688px;
+  width: 1000px;
   margin: 50px auto;
 }
 ul.contacts {
@@ -72,6 +71,9 @@ ul.contacts li.phone {
 #footer {
   font-size: 11px;
   padding: 10px 10px;
+  color: #eeeeee;
+  width: 85%;
+  margin: 0 auto;
 }
 .ui-helper-hidden-accessible {
   display: none;
