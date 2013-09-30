@@ -14,7 +14,7 @@ describe SchoolPicker do
       response.should == ""
     end
     it "should return the universityState if the person of application has a universityState record" do
-      @person.universityState = 'University State'
+      @person.universityState = 'FL'
       @person.save
       response = @school_picker.send(:state, @application)
       response.should == @person.universityState

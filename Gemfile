@@ -26,7 +26,6 @@ gem 'excelsior', '~> 0.1.0'
 gem 'google-geocode', '~> 1.2.1', :require => 'google_geocode'
 gem 'libv8', '~> 3.11.8'
 gem 'liquid', '~> 2.4.1'
-gem 'mailcatcher', '~> 0.2.4'
 gem 'newrelic_rpm', '>= 3.5.3.25'
 gem 'omniauth', '~> 1.1.1'
 gem 'omniauth-cas', '~> 0.0.7'
@@ -45,18 +44,22 @@ gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'common_engine', git: 'git@github.com:CruGlobal/common_engine.git'
 gem 'image_science', '~> 1.2.5'
-gem 'qe', git: 'git@github.com:CruGlobal/qe.git'
+gem 'qe', path: '/Users/josh/htdocs/qe'#, git: 'git@github.com:CruGlobal/qe.git'
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'mail_safe' #.5
+  gem 'mailcatcher'
+  gem 'guard-rspec'
   gem 'unicorn'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'fuubar'
   gem "guard-rspec"
   gem 'simplecov', :require => false
   gem 'database_cleaner'
   gem 'therubyracer'
+  gem 'spork-rails', '~> 3.2.0'
+  gem 'guard-spork'
 end
 
 
