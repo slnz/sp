@@ -113,7 +113,7 @@ class ProjectsController < ApplicationController
         if conditions[0].empty?
           @projects = []
         else
-          @projects = SpProject.current.find(:all,
+          @projects = SpProject.open.find(:all,
                                       :include => [:primary_ministry_focus, :ministry_focuses],
                                       :conditions => conditions,
                                       :order => 'sp_projects.name, sp_projects.year')
