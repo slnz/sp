@@ -5,7 +5,7 @@ class SpPayment < ActiveRecord::Base
 
   belongs_to :application, :class_name => 'SpApplication', :foreign_key => 'application_id'
   
-  scope :non_denied, where("status <> 'Denied' OR status is null")
+  scope :non_denied, -> { where("status <> 'Denied' OR status is null") }
   
   after_save :check_app_complete
   

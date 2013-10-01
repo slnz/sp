@@ -83,7 +83,7 @@ module ProjectsHelper
     collections = [none]
     if !options || options.include?(:regions)
       region = PartnershipType.new('Region')
-      @regions ||= Region.find(:all, :order => "region")
+      @regions ||= Region.order("region")
       @regions.each {|r| region << PartnershipOption.new(r.region, r.name) unless r.region.empty?}
       collections << region
     end
@@ -95,7 +95,7 @@ module ProjectsHelper
     end
     if !options || options.include?(:teams)
       team = PartnershipType.new('Team')
-      @teams ||= Team.find(:all, :order => "name", :conditions => "lane IN('SC','CA') AND country = 'USA'")
+      @teams ||= Team.order('name').where("lane IN('SC','CA') AND country = 'USA'")
       @teams.each {|t| team << PartnershipOption.new(t.name, t.name) unless t.name.empty?}
       collections << team
     end

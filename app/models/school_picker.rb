@@ -19,16 +19,16 @@ class SchoolPicker < Question
   end  
   
   def colleges(app=nil)
-    unless self.state(app) == ""
-      return Campus.where("state = ?", self.state(app)).where("type = 'College'")
-        .where("isClosed is null or isClosed <> 'T'").order(:name).all.collect {|c| c.name} 
+    unless state(app) == ''
+      return Campus.where("type = 'College' AND (isClosed is null or isClosed <> 'T') AND state = ?", state(app))
+                   .order(:name).pluck(:name)
     end
     []
   end
   
   def high_schools(app=nil)
-    unless self.state(app) == ""
-      return Campus.find_all_by_type('HighSchool', :order => :name).to_a.collect {|c| c.name} 
+    unless self.state(app) == ''
+      return Campus.where(type: 'HighSchool').order(:name).pluck(:name)
     end
     []
   end

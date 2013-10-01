@@ -1,6 +1,6 @@
 require 'csv'
 class Admin::ProjectsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter, :check_sp_user, :except => :no
+  before_filter :cas_filter, :authentication_filter, :check_sp_user, :except => :no
 
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email, :edit]
@@ -27,14 +27,14 @@ class Admin::ProjectsController < ApplicationController
 
   def update
     update_questions
-    @project.update_attributes(params[:sp_project])
+    @project.update_attributes(project_params)
     respond_with(@project) do |format|
       format.html {@project.errors.empty? ? redirect_to(dashboard_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
     end
   end
 
   def create
-    @project = SpProject.create(params[:sp_project].merge({:year => SpApplication.year}))
+    @project = SpProject.create(project_params.merge({:year => SpApplication.year}))
     respond_with(@project) do |format|
       format.html do
         if @project.new_record?
@@ -57,7 +57,7 @@ class Admin::ProjectsController < ApplicationController
 
   def show
     params[:order] = 'name' and params[:direction] = 'ascend' unless params[:order] && params[:direction]
-    applications = @project.sp_applications.joins(:person).includes({:person => :current_address})
+    applications = @project.sp_applications.includes({:person => :current_address})
     staffs = @project.sp_staff
 
     @accepted_participants = applications.accepted_participants.for_year(@year)
@@ -436,7 +436,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def get_countries
-    @countries = Country.find(:all, :order => :country)
+    @countries = Country.order(:country)
   end
 
   def get_year
@@ -616,4 +616,9 @@ class Admin::ProjectsController < ApplicationController
       initialize_questions
     end
   end
+
+  def project_params
+    params.fetch(:sp_project).permit(:name, :show_on_website, :job, :display_location, :secure, :city, :state, :country, :world_region, :start_date, :end_date, :primary_ministry_focus_id, :ministry_focus_ids, :url, :url_title, :facebook_url, :blog_url, :blog_title, :student_cost, :max_accepted_men, :max_accepted_women, :description, :student_quotes_attributes, :use_provided_application, :partner_region_only, :apply_by_date, :basic_info_question_sheet_id, :template_question_sheet_id, :project_contact_name, :project_contact_role, :project_contact_phone, :project_contact_email, :project_contact2_name, :project_contact2_role, :project_contact2_phone, :project_contact2_email, :pd_start_date, :pd_end_date, :pd_close_start_date, :pd_close_end_date, :staff_start_date, :staff_end_date, :student_staff_start_date, :student_staff_end_date, :open_application_date, :archive_project_date, :date_of_departure, :date_of_return, :medical_clinic, :medical_clinic_location, :departure_city, :destination_city, :in_country_contact, :primary_partner, :secondary_partner, :tertiary_partner, :report_stats_to, :staff_cost, :intern_cost, :high_school, :background_checks_required, :operating_business_unit, :operating_operating_unit, :operating_department, :operating_project, :operating_designation, :scholarship_business_unit, :scholarship_operating_unit, :scholarship_department, :scholarship_project, :scholarship_designation)
+  end
+
 end

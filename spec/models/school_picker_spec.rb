@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe SchoolPicker do
-  before(:each) do
+  let(:project) { create(:sp_project) }
+
+  before(:all) do
     @person = create(:person)
-    @project = create(:sp_project)
     @application = create(:sp_application, person: @person, project: @project)
     @school_picker = SchoolPicker.new
   end
@@ -14,13 +15,13 @@ describe SchoolPicker do
       response.should == ""
     end
     it "should return the universityState if the person of application has a universityState record" do
-      @person.universityState = 'FL'
-      @person.save
+      @person.update_column(:universityState, 'FL')
       response = @school_picker.send(:state, @application)
       response.should == @person.universityState
     end
     it "should return the campus state if the person of application do not have a universtyState record" do
-      campus = create(:campus, name: 'Campus Name', state: 'Campus State')
+      @person.update_column(:universityState, nil)
+      campus = create(:campus, name: 'Campus Name', state: 'CA')
       @school_picker.should_receive(:response).with(@application).and_return(campus.name)
       response = @school_picker.send(:state, @application)
       response.should == campus.state

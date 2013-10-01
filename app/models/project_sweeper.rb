@@ -12,7 +12,9 @@ class ProjectSweeper < ActionController::Caching::Sweeper
   
   private
   def expire_cache_for(project)
-    expire_page('/projects/index.xml')
-    expire_page('/projects/index.html')
+    unless Rails.env.test?
+      expire_page('/projects/index.xml')
+      expire_page('/projects/index.html')
+    end
   end
 end

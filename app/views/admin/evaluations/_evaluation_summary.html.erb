@@ -18,7 +18,7 @@
         <td>
           <font color="#<% if @application.has_paid? %>008000<%else%>FF0000<%end%>"><%= @application.has_paid? ? "Yes" : "No" %></font>
           <% if sp_user.can_waive_fee? && !@application.has_paid? %>
-            <%= link_to('waive fee', waive_fee_admin_application_path(@application), :confirm => "Are you sure you want to waive #{@person.to_s}'s application fee?") %>
+            <%= link_to('waive fee', waive_fee_admin_application_path(@application), data: {confirm:"Are you sure you want to waive #{@person.to_s}'s application fee?"}) %>
           <% end %> 
         </td>
       </tr>

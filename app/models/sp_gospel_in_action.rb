@@ -5,7 +5,7 @@ class SpGospelInAction < ActiveRecord::Base
   include GlobalRegistryMethods
 
   has_many :project_gospel_in_actions, :class_name => "SpProjectGospelInAction", :foreign_key => "sp_gospel_in_action_id"
-  default_scope order(:name)
+  default_scope -> { order(:name) }
 
   def self.skip_fields_for_gr
     %w[id created_at updated_at global_registry_id]

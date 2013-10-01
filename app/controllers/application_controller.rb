@@ -148,4 +148,12 @@ class ApplicationController < ActionController::Base
       Thread.current[:user] = nil
     end
   end
+
+  def cas_filter
+    CASClient::Frameworks::Rails::Filter.filter(self) unless session[:cas_user]
+  end
+
+  def authentication_filter
+    AuthenticationFilter.filter(self)
+  end
 end

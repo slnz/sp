@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :sp_national_coordinator do
-    person nil
+    association :user
   end
 end

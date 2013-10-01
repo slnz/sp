@@ -1,3 +1,4 @@
+require_dependency 'page'
 class AnswerPagesPresenter < Presenter
   include AnswerPagesPresenterConcern
 
@@ -9,7 +10,7 @@ class AnswerPagesPresenter < Presenter
       end
     end
     # put the instructions page first
-    index = @pages.index {|p| p.label == 'Instructions'} 
+    index = @pages.index {|p| p.label == 'Instructions'}
     if index
       instructions = @pages.delete_at(index)
       @pages.insert(0, instructions) if instructions

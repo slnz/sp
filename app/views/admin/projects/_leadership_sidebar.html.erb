@@ -56,7 +56,7 @@
       </div>
     <% end %>
     <% if sp_user.can_delete_project? %>
-      <%= link_to('Delete this project - PERMANENT', admin_project_path, :method => :delete, :confirm => "Are you sure you want to delete this project? This is different than closing a project. It'll be GONE FOR GOOD!") %>
+      <%= link_to('Delete this project - PERMANENT', admin_project_path, :method => :delete, data: {confirm: "Are you sure you want to delete this project? This is different than closing a project. It'll be GONE FOR GOOD!"}) %>
     <% end %>
 
 

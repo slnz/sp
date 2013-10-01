@@ -19,7 +19,7 @@ class PaymentsController < ApplicationController
 
   def create
     SpPayment.transaction do
-      @payment = SpPayment.new(params[:payment])
+      @payment = SpPayment.new(payment_params)
       if @application.payments.non_denied.length > 0
         @payment.errors.add_to_base("You have already submitted a payment for this application.")
         render :action => "error.rjs"
@@ -100,11 +100,12 @@ class PaymentsController < ApplicationController
   end
 
   def staff_search
-    @payment = @application.payments.new(params[:payment])
+    @payment = @application.payments.new(payment_params)
     if @payment.staff_first.strip.empty? || @payment.staff_last.strip.empty?
       render; return
     end
-    @results = Staff.find(:all, :order => 'lastName, firstName', :conditions => ["(firstName like ? OR preferredName like ?) AND lastName like ? and removedFromPeopleSoft <> 'Y'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%'])
+    @results = Staff.order('lastName, firstName')
+                    .where(["(firstName like ? OR preferredName like ?) AND lastName like ? and removedFromPeopleSoft <> 'Y'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%'])
   end
   
   def destroy
@@ -167,5 +168,9 @@ class PaymentsController < ApplicationController
                               "Payment Refusal", # LIQUID TEMPLATE NAME
                               {'applicant_full_name' => @application.name}).deliver
       end
+    end
+
+    def payment_params
+      params.require(:payment).permit(:first_name, :last_name, :address, :city, :state, :zip, :card_number, :card_type, :expiration_month, :expiration_year, :security_code, :payment_type, :staff_first, :staff_last, :payment_account_no)
     end
 end

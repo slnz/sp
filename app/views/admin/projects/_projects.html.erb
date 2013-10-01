@@ -4,9 +4,9 @@
     <div class="rollovershow" style="display:none">
       <% if sp_user.can_change_project_status? %>
         <% if project.closed? %>
-          <%= link_to('Open', open_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to open #{project}") %>
+          <%= link_to('Open', open_admin_project_path(project), :class => 'inline close', :method => :post, data: {confirm: "Are you sure you want to open #{project}"}) %>
         <% else %>
-          <%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, :confirm => "Are you sure you want to close #{project}") %>
+          <%= link_to('Close', close_admin_project_path(project), :class => 'inline close', :method => :post, data: {confirm: "Are you sure you want to close #{project}"}) %>
         <% end %>
       <% end %>
       <%= link_to('Edit', edit_admin_project_path(project), :class => 'inline edit') if sp_user.can_edit_project?(project) %>

@@ -1,12 +1,12 @@
 class Admin::EvaluationsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter :cas_filter, :authentication_filter
   before_filter :get_evaluation, :only => [:update, :page, :references, :print, :payments]
   before_filter :get_presenter, :only => [:evaluate, :page]
   before_filter :check_access
   layout 'admin'
 
   def update
-    @evaluation.update_attributes(params[:evaluation])
+    @evaluation.update_attributes(evaluation_params)
     update_evaluation and return
   end
 
@@ -36,7 +36,7 @@ class Admin::EvaluationsController < ApplicationController
   def print
     @person = @application.person
     @answer_sheet = @application
-    if params[:application] == 'true'
+    if application_params == 'true'
       @presenter = AnswerPagesPresenter.new(self, @application)
     end
     if params[:references] == 'true'
@@ -48,18 +48,18 @@ class Admin::EvaluationsController < ApplicationController
   protected
   def update_evaluation
     @project = @application.project
-    if params[:event] && params[:event] != ''
-      @application.send("#{params[:event]}!".to_sym)
+    if event_param && event_param != ''
+      @application.send("#{event_param}!".to_sym)
     end
-    if params[:application][:project_id].blank?
+    if application_params[:project_id].blank?
       flash[:error] = "This applicant must be assigned to a project to be evaluated"
       redirect_to :back and return
     end
-    if params[:application][:applicant_notified] == 'true' && !SpApplication.accepted_statuses.include?(@application.status)
+    if application_params[:applicant_notified] == 'true' && !SpApplication.accepted_statuses.include?(@application.status)
       flash[:error] = "You said you notified the application of acceptance, but haven't marked them as accepted yet. Please mark this applicant as accepted."
       redirect_to :back and return
     end
-    @application.update_attributes(params[:application])
+    @application.update_attributes(application_params)
     redirect_to @project ? admin_project_path(@project) : dashboard_path
   end
 
@@ -93,6 +93,18 @@ class Admin::EvaluationsController < ApplicationController
       flash[:error] = "You don't have permission to evaluate that applicant"
       redirect_to '/admin' and return false
     end
+  end
+
+  def evaluation_params
+    params.require(:evaluation).permit(:spiritual_maturity, :teachability, :leadership, :stability, :good_evangelism, :reason, :social_maturity, :ccc_involvement, :charismatic, :morals, :drugs, :bad_evangelism, :authority, :eating, :comments)
+  end
+
+  def application_params
+    params.require(:application).permit(:project_id, :designation_number, :year, :status, :preference1_id, :preference2_id, :preference3_id, :preference4_id, :preference5_id, :current_project_queue_id, :apply_for_leadership, :applicant_notified, :previous_status)
+  end
+
+  def event_param
+    params.permit(:event)[:event]
   end
 
 end

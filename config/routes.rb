@@ -3,11 +3,10 @@ Sp2::Application.routes.draw do
 
   get "welcome/privacy"
 
-  match '/auth/:provider/callback' => 'authentications#create'
-  match '/auth/failure' => 'authentications#failed'
-  match '/sos' => 'admin/projects#sos'
-  match '/admin/sos' => 'admin/projects#sos'
-
+  match '/auth/:provider/callback' => 'authentications#create', via: :get
+  match '/auth/failure' => 'authentications#failed', via: :get
+  match '/sos' => 'admin/projects#sos', via: [:get, :post]
+  match '/admin/sos' => 'admin/projects#sos', via: [:get, :post]
   resources :authentications
 
   resources :campuses do
@@ -135,10 +134,10 @@ Sp2::Application.routes.draw do
     end
   end
   resources :ministry_focuses
-  match '/admin' => "admin/projects#dashboard"
-  match '/apply' => "applications#apply", :as => :apply
+  match '/admin' => "admin/projects#dashboard", via: :get
+  match '/apply' => "applications#apply", :as => :apply, via: :get
 
-  match '/references/done' => "reference_sheets#done"
+  match '/references/done' => "reference_sheets#done", via: [:get, :post]
 
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 

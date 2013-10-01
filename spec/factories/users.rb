@@ -4,4 +4,5 @@ FactoryGirl.define do
     plain_password 'String'
     plain_password_confirmation 'String'
   end
+
 end

@@ -1,5 +1,5 @@
 class Admin::LeadersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter :cas_filter, :authentication_filter
   before_filter :load_project, :only => [:destroy, :edit, :update, :create, :add_person]
 
   def new

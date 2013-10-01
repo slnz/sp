@@ -1,5 +1,5 @@
 class Admin::ApplicationsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, AuthenticationFilter
+  before_filter :cas_filter, :authentication_filter
   before_filter :get_application, :only => [:waive_fee, :donations]
   before_filter :can_waive_fee, :only => [:waive_fee]
   before_filter :can_search, :only => [:search]
@@ -75,11 +75,15 @@ class Admin::ApplicationsController < ApplicationController
       flash[:notice] = "You must use at least one search criteria."
       redirect_to search_admin_applications_path
     else
+      search = SpApplication.where(conditions)
+                            .includes([:project, {:person => :current_address}])
+                            .order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName")
+                            .references([:project, {:person => :current_address}])
       if params[:page] == "all"
-        @applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName").paginate(:page => 1)
-        @all_applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName")
+        @applications = search.paginate(:page => 1)
+        @all_applications = search
       else
-        @applications = SpApplication.where(conditions).includes([:project, {:person => :current_address}]).order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName").paginate(:page => params[:page])
+        @applications = search.paginate(:page => params[:page])
       end
     end
   end

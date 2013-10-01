@@ -1,16 +1,16 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '= 3.2.12'
+gem 'rails', '~> 4.0.0'
 
 gem 'mysql2'#, '~> 0.2.7'
 
 # Needed for the new asset pipeline
-gem 'sass-rails',   '~> 3.2.3'
-gem 'coffee-rails', '~> 3.2.1'
-gem 'uglifier', '~> 1.3.0'
+gem 'sass-rails'#,   '~> 3.2.3'
+gem 'coffee-rails'#, '~> 3.2.1'
+gem 'uglifier'#, '~> 1.3.0'
 gem 'therubyracer'
-gem 'jquery-ui-rails', '~> 4.0.1'
+gem 'jquery-ui-rails'#, '~> 4.0.1'
 
 # jQuery is the default JavaScript library in Rails 3.1
 gem 'jquery-rails'
@@ -35,7 +35,6 @@ gem 'rack-contrib', '~> 1.1.0' # 100ms
 gem 'rb-fsevent', '~> 0.9'
 gem 'retryable-rb', '~> 1.1.0'
 gem 'siebel_donations', '~> 1.0.4'
-gem 'spork-rails', '~> 3.2.0'
 gem 'spreadsheet', '~> 0.7.4'
 gem 'tinymce-rails', '~> 4.0.6'
 gem 'whenever', '~> 0.7.3'
@@ -44,7 +43,11 @@ gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'common_engine', git: 'git@github.com:CruGlobal/common_engine.git'
 gem 'image_science', '~> 1.2.5'
-gem 'qe', path: '/Users/josh/htdocs/qe'#, git: 'git@github.com:CruGlobal/qe.git'
+gem 'qe', git: 'git@github.com:CruGlobal/qe.git'
+
+# Gems for removed features
+gem 'actionpack-page_caching'
+gem 'rails-observers'
 
 group :development, :test do
   gem 'awesome_print'
@@ -54,11 +57,11 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'
-  gem "guard-rspec"
+  gem 'guard-rspec'
   gem 'simplecov', :require => false
   gem 'database_cleaner'
   gem 'therubyracer'
-  gem 'spork-rails', '~> 3.2.0'
+  gem 'spork-rails'#, '~> 3.2.0'
   gem 'guard-spork'
 end
 
