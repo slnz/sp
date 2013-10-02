@@ -4,7 +4,6 @@ class ApplicationsController < AnswerSheetsController
   before_filter :get_application, :only => [:multiple_projects, :done, :edit, :show]
   
   def closed
-    #redirect_to '/'
     @project = SpProject.find(params[:id]) if params[:id]
     render :layout => false
   end
@@ -109,6 +108,6 @@ class ApplicationsController < AnswerSheetsController
     end
     
     def project_base
-      project_base = SpProject.uses_application.current
+      SpProject.uses_application.current
     end
 end

@@ -41,7 +41,7 @@
         City: <%= af.text_field :city %><br/>
         State: <%= af.select :state, State::NAMES + ['Ontario'], :include_blank => true %><br/>
         Zip: <%= af.text_field :zip %><br/>
-        Country: <%= af.select :country, Country.find(:all, :order => :country).collect(&:country), :include_blank => true %>
+        Country: <%= af.select :country, Country.order(:country).pluck(:country), :include_blank => true %>
       </td>
     </tr>
   <% end %>

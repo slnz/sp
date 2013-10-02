@@ -12,7 +12,7 @@ class Admin::LeadersController < ApplicationController
     @person = Person.find(params[:person_id])
     @year = params[:year].present? ? params[:year] : @project.year
     staff = @project.sp_staff.where(:type => params[:leader].titleize, :year => @year, :person_id => params[:person_id]).first
-    staff.destroy if staff.present?
+    staff.destroy if staff
     respond_to do |wants|
       wants.js
     end
@@ -35,17 +35,17 @@ class Admin::LeadersController < ApplicationController
   end
 
   def add_person
-    params[:person] ||= {}
-    params[:person][:current_address] ||= {}
-    @current_address = CurrentAddress.new(params[:person].delete(:current_address).merge({:addressType => 'current'}))
-    @person = Person.new(params[:person])
-    @person.current_address = @current_address
+    #@current_address = CurrentAddress.new(params[:person].delete(:current_address).merge({:addressType => 'current'}))
+    @person = Person.new(person_params)
+    @person.current_address ||= CurrentAddress.new(addressType: 'current')
+    @current_address = @person.current_address
+    #@person.current_address = @current_address
     required_fields = [@person.firstName, @person.lastName, @person.gender]
     required_fields += [@current_address.homePhone, @current_address.email] unless params[:leader] == 'kid'
     unless required_fields.all?(&:present?) && @person.valid? && @current_address.valid?
       flash[:error] = "Please fill in all fields"
-      errors = @person.errors.full_messages + @current_address.errors.full_messages
-      flash[:error] = errors.join("<br />") if errors.present?
+      @errors = @person.errors.full_messages + @current_address.errors.full_messages
+      flash[:error] = @errors.join("<br />") if @errors.present?
       render :new and return
     end
     @person.save!
@@ -56,5 +56,9 @@ class Admin::LeadersController < ApplicationController
 
   def load_project
     @project = SpProject.find(params[:id] || params[:project_id])
+  end
+
+  def person_params
+    params.fetch(:person, {}).permit(:firstName, :lastName, :gender, current_address_attributes: [:email, :homePhone, :addressType])
   end
 end

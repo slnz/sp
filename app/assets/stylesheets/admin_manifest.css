@@ -1,7 +1,7 @@
 /* ...
 *= require_self
+*= require jquery.ui.all
 *= require eval
 *= require admin
-*= require jquery-ui-1.8.2.custom
 *= require reports
 */

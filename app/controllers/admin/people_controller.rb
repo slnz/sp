@@ -11,7 +11,7 @@ class Admin::PeopleController < ApplicationController
   end
 
   def update
-    @person.update_attributes(params[:person])
+    @person.update_attributes(person_params)
     @project_id = params[:project_id].to_i
     @year = params[:year].to_i
     if @project_id != 0
@@ -28,7 +28,11 @@ class Admin::PeopleController < ApplicationController
   end
 
   protected
-    def get_person
-      @person = Person.find(params[:id])
-    end
+  def get_person
+    @person = Person.find(params[:id])
+  end
+
+  def person_params
+    params.fetch(:person, {}).permit(:firstName, :lastName, :preferredName, current_address_attributes: [:homePhone, :cellPhone, :workPhone, :email, :address1, :address2, :city, :state, :zip, :country, :id])
+  end
 end
