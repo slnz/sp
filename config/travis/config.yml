@@ -1,0 +1,7 @@
+test: &common
+  merchant_login: 'asdfadsfdasfas'
+  merchant_password: 'fdsagasdfads'
+  session_secret: 'fdsafasdfasdfasdfasgsdhnfgkgfasfkghlk;j;qawehflkjnsd;klvjzlxjhalkfhj;kaldsjkg;lhqalw;ekgfjasdl;kf'
+  siebel_token: 'asdfasdf'
+  global_registry_token: '912ec803b2ce4asdfasfaslk8d495ab570'
+  global_registry_url: 'http://localhost/'

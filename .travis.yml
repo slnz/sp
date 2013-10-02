@@ -1,0 +1,14 @@
+language: ruby
+rvm:
+  - 2.0.0
+services:
+  - redis-server
+script: "bundle exec rake spec"
+before_script:
+  - mysql -e 'create database sp_test;'
+  - cp config/travis/database.yml config/database.yml
+  - cp config/travis/config.yml config/config.yml
+  - cp config/travis/amazon.yml config/amazon.yml
+  - cp config/travis/facebook..yml config/facebook.yml
+  - bundle exec rake db:migrate RAILS_ENV=test
+
