@@ -1,7 +1,7 @@
 /* Variables */
-$page-width: 688px;
+$page-width: 1000px;
 $global-font: Arial, Helvetica, Verdana;
-$global-bg: #fff;
+$global-bg: #00626D;
 $white: #fff;
 $black: #000;
 $text: #412d17;
@@ -19,7 +19,7 @@ h3 {margin: 0;}
 #header {
 	background: url('/images/frontend/header.png') no-repeat 50% 50%;
 	width: $page-width;
-	height: 91px;
+	height: 147px;
 	}
 
 #body {
@@ -31,7 +31,7 @@ h3 {margin: 0;}
 	}
 	
 .content {
-	width: 75%;
+	width: 85%;
 	margin: 0 auto;
 	margin-top: 100px;
 	background: url('/images/frontend/bg.png');
@@ -76,6 +76,9 @@ ul.contacts {
 #footer {
 	font-size: 11px;
 	padding: 10px 10px;
+    color: #eeeeee;
+    width: 85%;
+    margin: 0 auto;
 	}
 
 
