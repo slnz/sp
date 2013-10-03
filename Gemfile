@@ -45,10 +45,6 @@ gem 'common_engine', git: 'git@github.com:CruGlobal/common_engine.git'
 gem 'image_science', '~> 1.2.5'
 gem 'qe', git: 'git@github.com:CruGlobal/qe.git'
 
-# Gems for removed features
-gem 'actionpack-page_caching'
-gem 'rails-observers'
-
 group :development, :test do
   gem 'awesome_print'
   gem 'mailcatcher'
