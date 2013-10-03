@@ -1,6 +1,6 @@
 GIT
-  remote: git@github.com:CruGlobal/common_engine.git
-  revision: 2993083d1bfb4f37043bbf623fed6069f2fa8056
+  remote: https://github.com/CruGlobal/common_engine
+  revision: 04f1988bde89661be0ef6d247ad71b9fae4e153b
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -12,14 +12,14 @@ GIT
       sidekiq
 
 GIT
-  remote: git@github.com:CruGlobal/qe.git
+  remote: https://github.com/CruGlobal/qe
   revision: fe08c99f3cfd35e12604ead0dabc77a847020006
   specs:
     qe (0.0.1)
       rails (>= 3.1.0)
 
 GIT
-  remote: git@github.com:technoweenie/acts_as_versioned.git
+  remote: https://github.com/technoweenie/acts_as_versioned.git
   revision: 63b1fc8529d028fae632fe80ec0cb25df56cd76b
   specs:
     acts_as_versioned (0.6.0)
