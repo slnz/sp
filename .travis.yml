@@ -11,4 +11,4 @@ before_script:
   - cp config/travis/amazon.yml config/amazon.yml
   - cp config/travis/facebook.yml config/facebook.yml
   - bundle exec rake db:migrate RAILS_ENV=test
-
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
