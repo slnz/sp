@@ -1,0 +1,18 @@
+development: &common
+  adapter: mysql2
+  database: prod
+  #username: root
+  #password: root
+  username: josh.starcher
+  password: zdenke
+  host: db1.uscm.org
+
+production:
+  <<: *common
+
+peoplesoft:
+  <<: *common
+
+donor:
+  <<: *common
+

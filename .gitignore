@@ -3,7 +3,7 @@
 db/*.sqlite3
 log/*.log
 tmp/**/*
-database.yml
+config/database.yml
 .livereload
 config/amazon_s3.yml
 .DS_Store
