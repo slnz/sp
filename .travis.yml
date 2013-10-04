@@ -4,8 +4,10 @@ rvm:
 services:
   - redis-server
 script: "bundle exec rake spec"
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libfreeimage-dev
 before_script:
-  - aptitude install libfreeimage-dev
   - mysql -e 'create database sp_test;'
   - cp config/travis/database.yml config/database.yml
   - cp config/travis/config.yml config/config.yml
