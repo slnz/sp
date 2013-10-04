@@ -5,6 +5,7 @@ services:
   - redis-server
 script: "bundle exec rake spec"
 before_script:
+  - aptitude install libfreeimage-dev
   - mysql -e 'create database sp_test;'
   - cp config/travis/database.yml config/database.yml
   - cp config/travis/config.yml config/config.yml
