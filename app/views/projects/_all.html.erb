@@ -1,49 +1,56 @@
 <h3><%= link_to("Click here to see all projects currently accepting applications.", projects_path(:all => true)) %></h3>
-<h3>US project locations</h3>
-<ul class="locations">
-	<li><a href="/projects?from_weeks=1&amp;to_weeks=2&amp;country=United+States">1 to 2 week projects</a></li>
-	<li><a href="/projects?from_weeks=3&amp;to_weeks=5&amp;country=United+States">3 to 5 week projects</a></li>
 
-	<li><a href="/projects?from_weeks=6&amp;to_weeks=12&amp;country=United+States">Traditional 6 to 12 week projects</a></li>
-	<li><a href="/projects?job=true&amp;country=United+States">Need to work? Projects that you find a job on</a></li>
-</ul>
+<div class="project-listings clear">
+  <div class="one-half">
+    <h3><a id="focus"></a>Explore by ministry focus</h3>
+    <ul class="locations">
+      <li><a href="/projects?focus=4">African American community</a></li>
+      <li><a href="/projects?focus=15">Art community</a></li>
+      <li><a href="/projects?focus=13">Art, Music, Film, Media</a></li>
+      <li><a href="/projects?focus=5">Asian American community</a></li>
+      <li><a href="/projects?focus=9">Athletes</a></li>
+      <li><a href="/projects?focus=2">Beach/Resort community (including co-workers)</a></li>
+      <li><a href="/projects?focus=1">College Campus/Launching spiritual movements</a></li>
+      <li><a href="/projects?focus=23">Elementary/Preschool</a></li>
+      <li><a href="/projects?focus=22">Ethnic Ministry</a></li>
+      <li><a href="/projects?focus=27">Fall/Spring Opportunities</a></li>
+      <li><a href="/projects?focus=10">For Health students</a></li>
+      <li><a href="/projects?focus=6">For High School Students</a></li>
+      <li><a href="/projects?focus=7">For International Students</a></li>
+      <li><a href="/projects?focus=8">Greeks</a></li>
+      <li><a href="/projects?focus=3">Hispanic/Latino community</a></li>
+      <li><a href="/projects?focus=11">Inner City community</a></li>
+      <li><a href="/projects?focus=21">International Orphan Care</a></li>
+      <li><a href="/projects?focus=17">Military community</a></li>
+      <li><a href="/projects?focus=26">Ministry to High School Students</a></li>
+      <li><a href="/projects?focus=24">Ministry to International Students</a></li>
+      <li><a href="/projects?focus=25">MK2MK</a></li>
+      <li><a href="/projects?focus=19">Prison Ministry</a></li>
+      <li><a href="/projects?focus=16">Serving a community in words and deeds</a></li>
+      <li><a href="/projects?focus=14">Take Biblical Courses</a></li>
+      <li><a href="/projects?focus=18">Taking the Jesus film to un-reached places</a></li>
+      <li><a href="/projects?focus=12">Use your Technical / Design / Administrative skills for ministry</a></li>
+    </ul>
+  </div>
 
-<h3>International locations</h3>
-<ul class="locations">
-	<li><a href="/projects?world_region=Eastern+Europe,Western+Europe">Europe</a></li>
-	<li><a href="/projects?world_region=East+Asia,South+Asia,Southeast+Asia,PACT">Asia</a></li>
-	<li><a href="/projects?world_region=Francophone+Africa,NAME,PACT,Southern+and+Eastern+Africa,Nigeria+and+West+Africa">Africa/Middle East/Central Asia</a></li>
-	<li><a href="/projects?world_region=Latin+America">Latin America, Caribbean and South America</a></li>
-	<li><a href="/projects?country=Australia,New+Zealand,Fiji">Australia/Oceania</a></li>
-	<li><a href="/projects?from_weeks=1&amp;to_weeks=3&amp;project_type=international">1-3 week projects</a></li>
-</ul>
+  <div class="one-half">
+    <h3>US project locations</h3>
+    <ul class="locations">
+      <li><a href="/projects?from_weeks=1&amp;to_weeks=2&amp;country=United+States">1 to 2 week projects</a></li>
+      <li><a href="/projects?from_weeks=3&amp;to_weeks=5&amp;country=United+States">3 to 5 week projects</a></li>
 
-<h3><a id="focus"></a>Explore by ministry focus</h3>
-<ul class="locations">
-  <li><a href="/projects?focus=4">African American community</a></li>
-  <li><a href="/projects?focus=15">Art community</a></li>
-  <li><a href="/projects?focus=13">Art, Music, Film, Media</a></li>
-  <li><a href="/projects?focus=5">Asian American community</a></li>
-  <li><a href="/projects?focus=9">Athletes</a></li>
-  <li><a href="/projects?focus=2">Beach/Resort community (including co-workers)</a></li>
-  <li><a href="/projects?focus=1">College Campus/Launching spiritual movements</a></li>
-  <li><a href="/projects?focus=23">Elementary/Preschool</a></li>
-  <li><a href="/projects?focus=22">Ethnic Ministry</a></li>
-  <li><a href="/projects?focus=27">Fall/Spring Opportunities</a></li>
-  <li><a href="/projects?focus=10">For Health students</a></li>
-  <li><a href="/projects?focus=6">For High School Students</a></li>
-  <li><a href="/projects?focus=7">For International Students</a></li>
-  <li><a href="/projects?focus=8">Greeks</a></li>
-  <li><a href="/projects?focus=3">Hispanic/Latino community</a></li>
-  <li><a href="/projects?focus=11">Inner City community</a></li>
-  <li><a href="/projects?focus=21">International Orphan Care</a></li>
-  <li><a href="/projects?focus=17">Military community</a></li>
-  <li><a href="/projects?focus=26">Ministry to High School Students</a></li>
-  <li><a href="/projects?focus=24">Ministry to International Students</a></li>
-  <li><a href="/projects?focus=25">MK2MK</a></li>
-  <li><a href="/projects?focus=19">Prison Ministry</a></li>
-  <li><a href="/projects?focus=16">Serving a community in words and deeds</a></li>
-  <li><a href="/projects?focus=14">Take Biblical Courses</a></li>
-  <li><a href="/projects?focus=18">Taking the Jesus film to un-reached places</a></li>
-  <li><a href="/projects?focus=12">Use your Technical / Design / Administrative skills for ministry</a></li>
-</ul>
+      <li><a href="/projects?from_weeks=6&amp;to_weeks=12&amp;country=United+States">Traditional 6 to 12 week projects</a></li>
+      <li><a href="/projects?job=true&amp;country=United+States">Need to work? Projects that you find a job on</a></li>
+    </ul>
+
+    <h3>International locations</h3>
+    <ul class="locations">
+      <li><a href="/projects?world_region=Eastern+Europe,Western+Europe">Europe</a></li>
+      <li><a href="/projects?world_region=East+Asia,South+Asia,Southeast+Asia,PACT">Asia</a></li>
+      <li><a href="/projects?world_region=Francophone+Africa,NAME,PACT,Southern+and+Eastern+Africa,Nigeria+and+West+Africa">Africa/Middle East/Central Asia</a></li>
+      <li><a href="/projects?world_region=Latin+America">Latin America, Caribbean and South America</a></li>
+      <li><a href="/projects?country=Australia,New+Zealand,Fiji">Australia/Oceania</a></li>
+      <li><a href="/projects?from_weeks=1&amp;to_weeks=3&amp;project_type=international">1-3 week projects</a></li>
+    </ul>
+  </div>
+</div>

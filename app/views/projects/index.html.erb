@@ -1,13 +1,25 @@
 <% if @searched && @projects.blank? %>
-  <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
+    <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
 <% end %>
 <h2>Please pick which project you'd like to apply for:</h2>
 <% if @projects.blank? %>
-  <%= render :partial => 'all' %>
+    <%= render :partial => 'all' %>
 <% else %>
-  <ul>
-    <% @projects.each do |project| %>
-      <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
-    <% end %>
-  </ul>
+
+
+    <div class="project-listings clear">
+      <%
+         p1 = @projects[0..(@projects.length/2 -1)]
+         p2 = @projects[@projects.length/2..-1]
+
+         [p1, p2].each do |project_block| %>
+          <div class="one-half">
+            <ul>
+                <% project_block.each do |project| %>
+                    <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
+                <% end %>
+            </ul>
+          </div>
+      <% end %>
+    </div>
 <% end %>

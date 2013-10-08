@@ -53,6 +53,10 @@ a {
   color: #FFE155;
 }
 
+.page a {
+    color: #00b057;
+}
+
 a.successreturn {
   -moz-border-radius:7px 7px 7px 7px;
   -webkit-border-radius:7px 7px 7px 7px;
@@ -81,6 +85,19 @@ a.successreturn {
 
 
 /* ********************************************** */
+.project-listings {
+    display: block;
+    width: 1000px;
+}
+.project-listings .one-half {
+    float: left;
+    width: 500px;
+}
+.locations li {
+    padding: 2px 0;
+}
+
+
 textarea.text {
   -moz-box-shadow:0 0 10px #C9C9C9;
   -webkit-box-shadow:0 0 10px #C9C9C9;
@@ -321,7 +338,8 @@ table.grid td.hidecell {
 #legend {
   font-size: 11px;
   margin: 5px 0 0 5px;  
-  line-height: 2em
+  line-height: 2em;
+    color: #ecf0f1;
 }
 
 #legend img {
@@ -532,7 +550,7 @@ button {
 }
 
 #globalactions {
-  border-top: 3px solid #421f09;
+  border-top: 3px solid #000;
 }
 
 #globalactions ul {
@@ -541,7 +559,7 @@ button {
 
 #globalactions ul li a {
   padding: 5px 8px;
-  background: #421F09;
+  background: #000;
   display: block;
 }
 

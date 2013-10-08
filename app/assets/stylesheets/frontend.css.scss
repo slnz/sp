@@ -1,14 +1,16 @@
 /* Variables */
-$page-width: 688px;
+$page-width: 1000px;
 $global-font: Arial, Helvetica, Verdana;
-$global-bg: #fff;
+$global-bg: #0f616c;
 $white: #fff;
 $black: #000;
+$clouds: #ecf0f1;
 $text: #412d17;
+$light-green: #00b057;
 
 
 body {margin: 0; padding: 0; font-size: 13px; font-family: $global-font; background: $global-bg; color: $text;}
-a {text-decoration: none; outline: none; color: #b47732;}
+a {text-decoration: none; outline: none; color: $light-green;}
 img {border: none; vertical-align: middle;}
 h3 {margin: 0;}
 
@@ -17,16 +19,16 @@ h3 {margin: 0;}
 	}
 
 #header {
-	background: url('/images/frontend/header.png') no-repeat 50% 50%;
+	background: transparent asset-url("frontend/header.png") no-repeat 50% 50%;
 	width: $page-width;
-	height: 91px;
+	height: 147px;
 	}
 
 #body {
-	background: url('/images/frontend/busbg.jpg') no-repeat 50% 50%;
+	background-color: $global-bg;
 	width: $page-width;
 	height: auto;	
-	border-top: 1px solid $white;
+	border-top: 1px solid $black;
 	padding-bottom: 100px;
 	}
 	
@@ -34,7 +36,7 @@ h3 {margin: 0;}
 	width: 75%;
 	margin: 0 auto;
 	margin-top: 100px;
-	background: url('/images/frontend/bg.png');
+	background: asset-url('frontend/bg.png');
 	-moz-box-shadow: 0px 0px 3px #000;
 	-webkit-box-shadow: 0px 0px 3px #000;
 	box-shadow: 0px 0px 3px #000;
@@ -49,6 +51,7 @@ h3 {margin: 0;}
 div#outer {
 	width: $page-width;
 	margin: 50px auto;
+    background-color: $global-bg;
 	}
 
 
@@ -64,11 +67,11 @@ ul.contacts {
 		}
 	
 	li.mail {
-		background: url("/images/frontend/mail.png") no-repeat 0 50%;
+		background: asset-url("frontend/mail.png") no-repeat 0 50%;
 		}	
 
 	li.phone {
-		background: url("/images/frontend/phone.png") no-repeat 0 50%;
+		background: asset-url("frontend/phone.png") no-repeat 0 50%;
 		}	
 		
 	}
@@ -76,6 +79,9 @@ ul.contacts {
 #footer {
 	font-size: 11px;
 	padding: 10px 10px;
+    width: 75%;
+    margin: 0 auto;
+  color: $clouds;
 	}
 
 
