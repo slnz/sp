@@ -94,7 +94,7 @@ a.successreturn {
     width: 500px;
 }
 .locations li {
-    padding: 2px 0;
+    padding: 7px 0;
 }
 
 
@@ -460,7 +460,7 @@ li.questiongrid div.row {
   text-align: center;
   float: left;
   width: 620px;
-  font-size: 13px;
+    color: #ecf0f1;
 }
 
 #signinwith a img {

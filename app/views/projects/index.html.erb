@@ -1,7 +1,9 @@
 <% if @searched && @projects.blank? %>
     <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
 <% end %>
-<h2>Please pick which project you'd like to apply for:</h2>
+<h2 style="font-weight: normal">Please pick which project you'd like to apply for:</h2>
+<br>
+
 <% if @projects.blank? %>
     <%= render :partial => 'all' %>
 <% else %>
@@ -14,7 +16,7 @@
 
          [p1, p2].each do |project_block| %>
           <div class="one-half">
-            <ul>
+            <ul class="locations">
                 <% project_block.each do |project| %>
                     <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
                 <% end %>
