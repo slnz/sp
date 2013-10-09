@@ -57,16 +57,36 @@ a {
     color: #00b057;
 }
 
+.pagepad.status-page {
+    font-size: 16px;
+    color: #ecf0f1;
+    line-height: 26px;
+}
+
+.pagepad.status-page h2 {
+    color: #00b057;
+    font-weight: bold;
+}
+
+.pagepad.status-page a {
+    color: #00b057;
+}
+
+.pagepad.status-page #projectsummary, .pagepad.status-page #progressbox {
+    color: #444444;
+}
+
 a.successreturn {
   -moz-border-radius:7px 7px 7px 7px;
   -webkit-border-radius:7px 7px 7px 7px;
   border-radius:7px 7px 7px 7px;
-  background:none repeat scroll 0 0 #EFEFEF;
+  background: #5ACFED;
   border:1px solid #555555;
   font-size:12px;
   font-weight:bold;
   margin:10px 0;
   padding:5px;
+  color: #ffffff;
 }
 
 
@@ -571,7 +591,8 @@ div.pagepad h2 {
 }
 
 div.pagepad p {
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 26px;
 }
 
 #progressbox {

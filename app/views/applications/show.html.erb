@@ -1,4 +1,4 @@
-<div class="pagepad">
+<div class="pagepad status-page">
   <h2>Hello <%= @application.name %>,</h2>
   
   <p>
@@ -39,7 +39,7 @@
 				<% if @application.can_change_references? %>
           <tr>
             <td colspan="2">
-  						<%= link_to('Click here to edit your references\' information', edit_application_path(@application)) %>
+  						<%= link_to('Edit your references\' information', edit_application_path(@application)) %>
   				  </td>
   				</tr>
 				<% end %>
