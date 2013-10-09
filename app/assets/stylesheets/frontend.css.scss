@@ -1,7 +1,11 @@
 /* Variables */
 $page-width: 1000px;
 $global-font: Arial, Helvetica, Verdana;
+<<<<<<< HEAD
 $global-bg: #0f616c;
+=======
+$global-bg: #00626D;
+>>>>>>> 415ba70ffe0bd9271ca78fe57ec29e1ac99be7f4
 $white: #fff;
 $black: #000;
 $clouds: #ecf0f1;
@@ -33,7 +37,7 @@ h3 {margin: 0;}
 	}
 	
 .content {
-	width: 75%;
+	width: 85%;
 	margin: 0 auto;
 	margin-top: 100px;
 	background: asset-url('frontend/bg.png');
@@ -79,9 +83,15 @@ ul.contacts {
 #footer {
 	font-size: 11px;
 	padding: 10px 10px;
+<<<<<<< HEAD
     width: 75%;
     margin: 0 auto;
   color: $clouds;
+=======
+    color: #eeeeee;
+    width: 85%;
+    margin: 0 auto;
+>>>>>>> 415ba70ffe0bd9271ca78fe57ec29e1ac99be7f4
 	}
 
 

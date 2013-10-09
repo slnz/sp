@@ -1,6 +1,6 @@
 GIT
-  remote: git@github.com:CruGlobal/common_engine.git
-  revision: 2993083d1bfb4f37043bbf623fed6069f2fa8056
+  remote: https://github.com/CruGlobal/common_engine
+  revision: 04f1988bde89661be0ef6d247ad71b9fae4e153b
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -12,14 +12,14 @@ GIT
       sidekiq
 
 GIT
-  remote: git@github.com:CruGlobal/qe.git
-  revision: fe08c99f3cfd35e12604ead0dabc77a847020006
+  remote: https://github.com/CruGlobal/qe
+  revision: f5dcfb45185275d5bc2a62570b00947d7a0b9148
   specs:
     qe (0.0.1)
       rails (>= 3.1.0)
 
 GIT
-  remote: git@github.com:technoweenie/acts_as_versioned.git
+  remote: https://github.com/technoweenie/acts_as_versioned.git
   revision: 63b1fc8529d028fae632fe80ec0cb25df56cd76b
   specs:
     acts_as_versioned (0.6.0)
@@ -41,8 +41,6 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
-    actionpack-page_caching (1.0.0)
-      actionpack (>= 4.0.0.beta, < 5.0)
     active_utils (2.0.1)
       activesupport (>= 2.3.11)
       i18n
@@ -255,8 +253,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.0.0)
       sprockets-rails (~> 2.0.0)
-    rails-observers (0.1.2)
-      activemodel (~> 4.0)
     railties (4.0.0)
       actionpack (= 4.0.0)
       activesupport (= 4.0.0)
@@ -394,7 +390,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack-page_caching
   activemerchant (~> 1.28.0)
   acts_as_versioned!
   airbrake (~> 3.1.5)
@@ -428,7 +423,6 @@ DEPENDENCIES
   qe!
   rack-contrib (~> 1.1.0)
   rails (~> 4.0.0)
-  rails-observers
   rb-fsevent (~> 0.9)
   relay_api_client
   retryable-rb (~> 1.1.0)

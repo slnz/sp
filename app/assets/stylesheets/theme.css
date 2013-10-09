@@ -651,3 +651,6 @@ a.applydiff {
 	padding:4px 8px;
     color: #ffffff;
 }
+#ui-datepicker-div {
+    display:none;
+}
