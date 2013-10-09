@@ -36,17 +36,27 @@ h3,h2 {margin: 0; padding: 10px 0 5px}
 	width: 85%;
 	margin: 0 auto;
 	margin-top: 100px;
-	background: asset-url('frontend/bg.png');
+	background: asset-url('frontend/bg.png') #fbf9ed;
 	-moz-box-shadow: 0px 0px 3px #000;
 	-webkit-box-shadow: 0px 0px 3px #000;
 	box-shadow: 0px 0px 3px #000;
 	padding: 20px 0;
-  color: #222222;
+    color: #333333;
 	
 	h3, p {
 		padding-left: 20px;
 		padding-right: 20px;
 		}
+}
+
+.project-box {
+  display: inline-block;
+  width: 960px;
+  padding: 20px;
+  background-color: #fbf9ed;
+  -moz-box-shadow: 0px 0px 3px #000;
+  -webkit-box-shadow: 0px 0px 3px #000;
+  box-shadow: 0px 0px 3px #000;
 }
 
 div#outer {
@@ -81,7 +91,7 @@ ul.contacts {
 	font-size: 11px;
 	padding: 10px 0;
     color: #eeeeee;
-    width: 85%;
+    width: 100%;
     margin: 20px auto 0;
 	}
 

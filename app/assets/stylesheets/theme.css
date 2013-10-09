@@ -49,6 +49,14 @@ h1 {
   font-size: 20px;
 }
 
+.project-box a {
+    color: #00b057;
+}
+
+.project-box h2, .project-box h3 {
+    color: #444;
+}
+
 a {
   color: #FFE155;
 }
@@ -111,7 +119,7 @@ a.successreturn {
 }
 .project-listings .one-half {
     float: left;
-    width: 500px;
+    width: 480px;
 }
 .locations li {
     padding: 7px 0;

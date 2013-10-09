@@ -1,27 +1,29 @@
-<% if @searched && @projects.blank? %>
-    <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
-<% end %>
-<h2 style="font-weight: normal">Please pick which project you'd like to apply for:</h2>
-<br>
+<div class="project-box clear">
+  <% if @searched && @projects.blank? %>
+      <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
+  <% end %>
+  <h2 style="font-weight: normal">Please pick which project you'd like to apply for:</h2>
+  <br>
 
-<% if @projects.blank? %>
-    <%= render :partial => 'all' %>
-<% else %>
+  <% if @projects.blank? %>
+      <%= render :partial => 'all' %>
+  <% else %>
 
 
-    <div class="project-listings clear">
-      <%
-         p1 = @projects[0..(@projects.length/2 -1)]
-         p2 = @projects[@projects.length/2..-1]
+      <div class="project-listings clear">
+        <%
+           p1 = @projects[0..(@projects.length/2 -1)]
+           p2 = @projects[@projects.length/2..-1]
 
-         [p1, p2].each do |project_block| %>
-          <div class="one-half">
-            <ul class="locations">
+           [p1, p2].each do |project_block| %>
+            <div class="one-half">
+              <ul class="locations">
                 <% project_block.each do |project| %>
                     <li><%= link_to(project.to_s, apply_applications_path(:p => project.id)) %></li>
                 <% end %>
-            </ul>
-          </div>
-      <% end %>
-    </div>
-<% end %>
+              </ul>
+            </div>
+        <% end %>
+      </div>
+  <% end %>
+</div>
