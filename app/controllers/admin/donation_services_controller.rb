@@ -122,7 +122,7 @@ class Admin::DonationServicesController < ApplicationController
                 @warning_messages << "No leaders have been notified of person #{person_id}'s designation number assignment"
               else
                 Notifier.notification(recipients, # RECIPIENTS
-                                      "gosummerproject@uscm.org", # FROM
+                                      "gosummerproject@cru.org", # FROM
                                       "Designation Number Assigned", # LIQUID TEMPLATE NAME
                                       {'name' => person.try(:informal_full_name),
                                        'project_name' => project.name,

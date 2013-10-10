@@ -10,7 +10,7 @@
 		<% if @current_project.contact %>
 			contact <%= @current_project.contact.informal_full_name %> at <%= @current_project.contact.email %>
 		<% else %>
-			send an email to gosummerproject@uscm.org
+			send an email to gosummerproject@cru.org
 		<% end %>
 	</p>
 	<p><%= link_to('Click here to go to your application status page.', application_path(@application), :class => 'successreturn') %></p>

@@ -13,13 +13,15 @@
   <div id="header">
   </div>
   <div id="body">
+    <a href="/">Go back home</a>
+
     <div class="content">
       <% open_date = @project && @project.open_application_date ? l(@project.open_application_date, format: :long) : 'November 1st' %>
       <h3>The application system is set to open <%= open_date %>. Check back!</h3>
       <p>We will begin accepting applications for Summer Projects on <%= open_date %>.
      If you have questions, we are happy to answer them. You can reach us at:</p>
      <ul class="contacts">
-       <li class="mail"><%= mail_to("gosummerproject@uscm.org") %></li>
+       <li class="mail"><%= mail_to("gosummerproject@cru.org") %></li>
        <li class="phone">1.800.690.0911</li>
      </p>
      

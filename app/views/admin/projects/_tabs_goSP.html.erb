@@ -185,7 +185,7 @@
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
-            <label>Quotes/Testimonials from Students or Other Participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email gosummerproject@uscm.org.') %></label>
+            <label>Quotes/Testimonials from Students or Other Participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email gosummerproject@cru.org.') %></label>
 
             <div class="field quote">
               <div>

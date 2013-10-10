@@ -65,22 +65,27 @@ a {
     color: #00b057;
 }
 
-.pagepad.status-page {
+.status-page {
     font-size: 14px;
     color: #ecf0f1;
     line-height: 24px;
 }
 
-.pagepad.status-page h2 {
-    color: #00b057;
+h2.green {
+    font-weight: normal !important;
+    color: #c5d974 !important;
+}
+
+.status-page h2 {
+    color: #222222;
     font-weight: bold;
 }
 
-.pagepad.status-page a {
+.status-page a {
     color: #00b057;
 }
 
-.pagepad.status-page #projectsummary, .pagepad.status-page #progressbox {
+.status-page #projectsummary, .status-page #progressbox {
     color: #444444;
 }
 
@@ -598,7 +603,7 @@ div.pagepad h2 {
   font-size: 22px;
 }
 
-div.pagepad p {
+.status-page p {
   font-size: 14px;
   line-height: 24px;
 }
@@ -612,7 +617,7 @@ div.pagepad p {
 }
 
 #progressbox h2 {
-  color: #a2b400;
+  color: #222222;
   margin-top: .4em;
   font-size: 18px;
   font-weight: bold;
@@ -626,7 +631,7 @@ div.pagepad p {
 }
 
 #projectsummary h2 {
-  color: #411E08;
+  color: #444444;
   margin-top: .4em;
   font-size: 18px;
   font-weight: bold;
