@@ -9,7 +9,7 @@ $text: #ecf0f1;
 $light-green: #00b057;
 
 
-body {margin: 0; padding: 0; font-size: 16px; font-family: $global-font; background: $global-bg; color: $text;}
+body {margin: 0; padding: 0; font-size: 14px; font-family: $global-font; background: $global-bg; color: $text;}
 a {text-decoration: none; outline: none; color: $light-green;}
 img {border: none; vertical-align: middle;}
 h3,h2 {margin: 0; padding: 10px 0 5px}
@@ -23,6 +23,16 @@ h3,h2 {margin: 0; padding: 10px 0 5px}
 	width: $page-width;
 	height: 166px;
 	}
+
+#application-closed #header {
+  background: transparent asset-url("frontend/header.png") no-repeat 50% 50%;
+  width: $page-width;
+  height: 125px;
+}
+
+#application-closed #body {
+  border-top: 3px solid $black;
+}
 
 #body {
 	background-color: $global-bg;
@@ -86,7 +96,11 @@ ul.contacts {
 		}	
 		
 	}
-	
+
+#application-closed #footer {
+  width: 85%;
+}
+
 #footer {
 	font-size: 11px;
 	padding: 10px 0;
