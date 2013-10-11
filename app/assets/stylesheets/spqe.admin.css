@@ -106,7 +106,7 @@ body {
 }
 
 .unarchive {
-  background:url("/assets/icons/briefcase--arrow.png") no-repeat scroll 0 50% transparent;
+  background:url("<%= asset_path('icons/briefcase--arrow.png') %>") no-repeat scroll 0 50% transparent;
 }
 
 label.choice {

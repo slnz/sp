@@ -227,11 +227,11 @@ label.choice {
 }
 
 li.incomplete {
-  background: url(/assets/icons/flag.png) no-repeat 95% 50%;
+  background: url("<%= asset_path('icons/flag.png') %>") no-repeat 95% 50%;
 }
 
 li.complete {
-  /* background: url(/assets/icons/flag-green.png) no-repeat 95% 50%; */
+  /* background: url("<%= asset_path('/assets/icons/flag-green.png') %>") no-repeat 95% 50%; */
 }
 
 /* ***************************** */
@@ -303,7 +303,7 @@ table.grid tr.error label.error {
   -moz-border-radius:5px 5px 5px 5px;
   -webkit-border-radius:5px 5px 5px 5px;
   border-radius:5px 5px 5px 5px;
-  background:url("/assets/buttonbg.png") repeat-x scroll 0 0 transparent;
+  background:url("<%= asset_path('buttonbg.png') %>") repeat-x scroll 0 0 transparent;
   border:1px solid #999999;
   font-size:14px;
   font-weight:bold;
@@ -575,7 +575,7 @@ button span{
 
 button {
   padding: 0;
-  background:url("/assets/buttonbg.png") repeat-x scroll 0 0 transparent;
+  background:url("<%= asset_path('buttonbg.png') %>") repeat-x scroll 0 0 transparent;
   border: 1px solid gray;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -663,7 +663,7 @@ table.statuswait td.fieldbold {
 }
 
 table.statuswait td.divide{
-  background: 0 50% url("/assets/line.png") repeat-x;
+  background: 0 50% url("<%= asset_path('line.png') %>") repeat-x;
   padding: 10px 0;
 }
 
