@@ -16,8 +16,8 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    @key = Digest::SHA1.hexdigest(params.collect {|k,v| [k,v]}.flatten.join('/') + '/' + request.format)
-    unless fragment_exist?(@key)
+    #@key = Digest::SHA1.hexdigest(params.collect {|k,v| [k,v]}.flatten.join('/') + '/' + request.format)
+    #unless fragment_exist?(@key)
       unless params.size == 2
         year = params[:year].present? ? params[:year].to_i : SpApplication.year
         conditions = [[],[]]
@@ -109,23 +109,21 @@ class ProjectsController < ApplicationController
         end
         conditions[0] = conditions[0].join(' AND ')
         conditions.flatten!
+
         if conditions[0].empty?
           @projects = []
         else
           @searched = true
-          if request.format == 'html'
-            @projects = SpProject.current.find(:all,
-                                        :include => [:primary_ministry_focus, :ministry_focuses],
-                                        :conditions => conditions,
-                                        :order => 'sp_projects.name, sp_projects.year')
+          if params[:all] == 'true'
+            @projects = SpProject.current
           else
-            @projects = SpProject.open.find(:all,
-                                        :include => [:primary_ministry_focus, :ministry_focuses],
-                                        :conditions => conditions,
-                                        :order => 'sp_projects.name, sp_projects.year')
+            @projects = SpProject.open
           end
+          @projects = @projects.where(conditions)
+                               .includes(:primary_ministry_focus, :ministry_focuses)
+                               .order('sp_projects.name, sp_projects.year')
         end
-      end
+      #end
       respond_to do |format|
         format.html do
           @projects.reject! {|p| !p.use_provided_application?} if @projects

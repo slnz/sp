@@ -1,4 +1,3 @@
-<% cache(@key, :expires_in => 1.hour) do %>
 <%= raw @projects.to_xml(:only => [:id, :name, :start_date,
                                                                      :end_date, :weeks,
                                                                      :job, :description,
@@ -11,4 +10,3 @@
                                                                       :regional_info, :percent_full,
                                                                       :color, :international],
                                                          :include => {:ministry_focuses => {:only => :name, :methods => []}}) %>
-<% end %>
