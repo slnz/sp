@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/qe
-  revision: feca7dd1e2a35f732cb83f2667ee60222d241102
+  revision: 702cc4e157686c1d1d860a34c6e76e5e5a26fcb2
   specs:
     qe (0.0.2)
       aasm
@@ -178,7 +178,7 @@ GEM
     kgio (2.8.1)
     libv8 (3.11.8.17)
     liquid (2.4.1)
-    listen (2.0.4)
+    listen (2.1.0)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
