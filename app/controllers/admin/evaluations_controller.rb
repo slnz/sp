@@ -36,7 +36,7 @@ class Admin::EvaluationsController < ApplicationController
   def print
     @person = @application.person
     @answer_sheet = @application
-    if application_params == 'true'
+    if params[:application] == 'true'
       @presenter = AnswerPagesPresenter.new(self, @application)
     end
     if params[:references] == 'true'
