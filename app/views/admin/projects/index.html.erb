@@ -4,14 +4,16 @@
 
     <% if sp_user.is_a?(SpNationalCoordinator) || (sp_user.is_a?(SpRegionalCoordinator) && current_person.region.blank?) %>
     <ul class="left">
-      <li><%= link_to_function("Filter: #{@filter_title}", '', :class => 'down withicon', :id => 'mvmtselector') %></li>
-      <div class="poptions" id="mvmtfilter" style="display: none;">
+      <li><%= link_to("Filter: #{@filter_title}", '#', :class => 'down withicon', :id => 'mvmtselector') %></li>
+      <div class="poptions" id="mvmtfilter" style="display:none">
         <p>Select which partners&rsquo; projects you would like to see:</p>
         <hr />
         <ul>
-          <li><%= link_to_function('All', '', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
+          <li><%= link_to('All', '#', :id => 'filter_all', :class => params[:partners].blank? ? 'selected' : '') %></li>
           <% partners.each_with_index do |partner, i| %>
-          <li><%= link_to_function(partner, '', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %></li>
+            <li>
+              <%= link_to(partner, '#', 'data-partner' => partner, :class => params[:partners] && params[:partners].include?(partner) ? 'selected' : '') %>
+            </li>
             <% if (i + 1) % 7 == 0 %>
               </ul><ul><li>&nbsp;</li>
             <% end %>
