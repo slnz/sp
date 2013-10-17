@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/qe
-  revision: 723c89426a10adb41782ccf9ce08201a2e329679
+  revision: 4421d63824f2f07fa9050c1971a3bae97844cfd3
   specs:
     qe (0.0.2)
       aasm
