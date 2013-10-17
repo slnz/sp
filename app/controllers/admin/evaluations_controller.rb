@@ -49,7 +49,7 @@ class Admin::EvaluationsController < ApplicationController
   def update_evaluation
     @project = @application.project
     if event_param && event_param != ''
-      @application.send("#{event_param}!".to_sym)
+      @application.send("#{event_param}!".to_sym) if @application.send("may_#{event_param}?".to_sym)
     end
     if application_params[:project_id].blank?
       flash[:error] = "This applicant must be assigned to a project to be evaluated"
