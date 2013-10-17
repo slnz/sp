@@ -40,10 +40,16 @@ describe Admin::ProjectsController do
   end
 
   context '#update' do
+    let(:project) { create(:sp_project) }
+
     it 'updates a project' do
-      project = create(:sp_project)
       put :update, id: project.id, sp_project: {name: 'Foobar10'}
       expect(project.reload.name).to eq('Foobar10')
+    end
+
+    it "doesn't throw an exception if you add spaces to the project name" do
+      put :update, id: project.id, sp_project: {name: project.name + ' '}
+      expect(assigns(:project).name).to eq(project.name)
     end
   end
 

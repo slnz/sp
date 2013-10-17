@@ -67,7 +67,7 @@ class Admin::ProjectsController < ApplicationController
     @ready_to_evaluate = @ready_to_evaluate.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @other = Array.new
     staffs.other_involved.year(@year).each do |staff|
-      @other << staff if !staff.person.isStaff
+      @other << staff if !staff.person.isStaff?
     end
     @submitted = applications.submitted.for_year(@year)
     @submitted = @submitted.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)

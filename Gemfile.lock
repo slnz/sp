@@ -1,12 +1,12 @@
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: d05fe6b20da8d687a2dab302e0350c81bddb67ed
+  revision: 8a739bd2e210da5a01c22878d78cc908243f7d69
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
       acts_as_list (~> 0.3.0)
+      auto_strip_attributes (~> 2.0)
       global_registry
-      qe
       rails (>= 3.0.0)
       rubycas-client
       sidekiq
@@ -80,6 +80,8 @@ GEM
       nokogiri (>= 1.4.0)
     arel (4.0.0)
     atomic (1.1.14)
+    auto_strip_attributes (2.0.4)
+      activerecord (>= 3.0)
     awesome_print (1.2.0)
     aws-sdk (1.11.1)
       json (~> 1.4)
