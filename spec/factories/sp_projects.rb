@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :sp_project do
-    name 'Project1'
+    sequence(:name) {|n| "Project1#{n}" }
     description 'String'
     year '2012'
     display_location 'String'
