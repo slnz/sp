@@ -4,7 +4,7 @@ class SpUser < ActiveRecord::Base
   # before_save :set_role
   after_destroy :create_max_role
   after_initialize :set_acl
-  
+
   def can_delete_project?() false; end
   def can_edit_roles?() false; end
   def can_change_project_status?() false; end
@@ -19,7 +19,7 @@ class SpUser < ActiveRecord::Base
   def creatable_user_types_array(types = nil)
     types.nil? ? [] : SpRole.find(:all, :conditions => "user_class IN (#{types})", :order => 'role').map { |role| [role.role, role.user_class] }
   end
-  def can_edit_project?(project) 
+  def can_edit_project?(project)
     person.directed_projects.include?(project)
   end
   def can_merge_projects?() false; end
@@ -35,14 +35,14 @@ class SpUser < ActiveRecord::Base
   def can_see_pd_reports?() false; end
   def can_see_rc_reports?() false; end
   def can_see_nc_reports?() false; end
-  def can_see_reports?() 
+  def can_see_reports?()
     can_see_pd_reports? || can_see_rc_reports? || can_see_nc_reports?
   end
-  
+
   def set_acl(attributes = nil)
     @acl = {:projects => [:no_access]}
   end
-  
+
   def region
     @region ||= person.region
   end
@@ -52,28 +52,28 @@ class SpUser < ActiveRecord::Base
     partnerships.reject! {|p| p.blank?}
     partnerships
   end
-  
+
   def acl(*url)
     controller, action = url
     @acl[controller].nil? ? false : @acl[:controller].include?(action)
   end
-  
+
   def heading(partner = nil) ''; end;
-  
+
   # def set_role
   #   sp_role = SpRole.find_by_user_class(self[:type])
   #   self[:role] = sp_role.role if sp_role
   # end
-  
+
   def role
     ''
   end
-  
+
   # Give this person a role based on their involvement
   def create_max_role
     SpUser.create_max_role(person_id)
   end
-  
+
   def self.create_max_role(person_id)
     p = Person.find(person_id)
     if p && p.user
@@ -86,7 +86,7 @@ class SpUser < ActiveRecord::Base
       end
     end
   end
-  
+
   def self.get_max_role(person_id)
     p = Person.find(person_id)
     staffing = SpStaff.where(:person_id => person_id)
@@ -119,10 +119,11 @@ class SpUser < ActiveRecord::Base
         "EPI"                => "Epic",
         'BRD'                => 'Bridges',
         'DES'                => 'Destino',
-        'Impact Movement'    => 'Impact'}
+        'Impact Movement'    => 'Impact',
+        'Athletes In Action' => 'AIA'}
       mappings[ministry] || ministry
     end
-    
+
     # For people who just can't get their PS data right
     def ministry_exceptions(user_id)
       exceptions = {45460 => 'MK2MK'}
