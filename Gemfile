@@ -44,6 +44,7 @@ gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'common_engine', git: 'https://github.com/CruGlobal/common_engine'
 gem 'image_science', '~> 1.2.5'
 gem 'qe', git: 'https://github.com/CruGlobal/qe'
+gem 'sidekiq'
 
 group :development, :test do
   gem 'awesome_print'

@@ -430,6 +430,7 @@ DEPENDENCIES
   retryable-rb (~> 1.1.0)
   rspec-rails
   sass-rails
+  sidekiq
   siebel_donations (~> 1.0.4)
   simplecov
   spork-rails
