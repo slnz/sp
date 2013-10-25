@@ -617,7 +617,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def project_params
-    params.fetch(:sp_project).permit(:name, :show_on_website, :job, :display_location, :secure, :city, :state, :country, :world_region, :start_date, :end_date, :primary_ministry_focus_id, :ministry_focus_ids, :url, :url_title, :facebook_url, :blog_url, :blog_title, :student_cost, :max_accepted_men, :max_accepted_women, :description, :student_quotes_attributes, :use_provided_application, :partner_region_only, :apply_by_date, :basic_info_question_sheet_id, :template_question_sheet_id, :project_contact_name, :project_contact_role, :project_contact_phone, :project_contact_email, :project_contact2_name, :project_contact2_role, :project_contact2_phone, :project_contact2_email, :pd_start_date, :pd_end_date, :pd_close_start_date, :pd_close_end_date, :staff_start_date, :staff_end_date, :student_staff_start_date, :student_staff_end_date, :open_application_date, :archive_project_date, :date_of_departure, :date_of_return, :medical_clinic, :medical_clinic_location, :departure_city, :destination_city, :in_country_contact, :primary_partner, :secondary_partner, :tertiary_partner, :report_stats_to, :staff_cost, :intern_cost, :high_school, :background_checks_required, :operating_business_unit, :operating_operating_unit, :operating_department, :operating_project, :operating_designation, :scholarship_business_unit, :scholarship_operating_unit, :scholarship_department, :scholarship_project, :scholarship_designation)
+    params.fetch(:sp_project).permit!
   end
 
 end
