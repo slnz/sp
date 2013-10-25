@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 5e1e9dfb152c73880bba06c951bc86912d51583c
+  revision: b6abc0aca8c2b38c7ab4dc3c6497a1b9f7217dfb
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -33,7 +33,7 @@ GEM
     RubyInline (3.12.2)
       ZenTest (~> 4.3)
     ZenTest (4.9.4)
-    aasm (3.0.22)
+    aasm (3.0.23)
     actionmailer (4.0.0)
       actionpack (= 4.0.0)
       mail (~> 2.5.3)
@@ -78,7 +78,7 @@ GEM
     akami (1.2.0)
       gyoku (>= 0.4.0)
       nokogiri (>= 1.4.0)
-    arel (4.0.0)
+    arel (4.0.1)
     atomic (1.1.14)
     auto_strip_attributes (2.0.4)
       activerecord (>= 3.0)
@@ -140,7 +140,7 @@ GEM
     google-geocode (1.2.1)
       hoe (>= 1.1.4)
       rc-rest (>= 2.0.0)
-    guard (2.2.1)
+    guard (2.2.2)
       formatador (>= 0.2.4)
       listen (~> 2.1)
       lumberjack (~> 1.0)
@@ -200,7 +200,7 @@ GEM
       thin
     method_source (0.8.2)
     mime-types (1.25)
-    mini_portile (0.5.1)
+    mini_portile (0.5.2)
     minitest (4.7.5)
     money (5.1.1)
       i18n (~> 0.6.0)
