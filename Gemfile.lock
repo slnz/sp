@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: b6abc0aca8c2b38c7ab4dc3c6497a1b9f7217dfb
+  revision: 629ce08583773c0ab57b871ca141a75d1b9e06ee
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -172,7 +172,7 @@ GEM
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-ui-rails (4.0.5)
+    jquery-ui-rails (4.1.0)
       railties (>= 3.1.0)
     json (1.8.1)
     jwt (0.1.8)
@@ -372,9 +372,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.38)
-    uglifier (2.2.1)
+    uglifier (2.3.0)
       execjs (>= 0.3.0)
-      multi_json (~> 1.0, >= 1.0.2)
+      json (>= 1.8.0)
     unicorn (4.6.3)
       kgio (~> 2.6)
       rack
