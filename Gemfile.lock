@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 629ce08583773c0ab57b871ca141a75d1b9e06ee
+  revision: fc57de65629ee8b6bcb75fafd826455b2f8843c8
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -180,7 +180,7 @@ GEM
     kgio (2.8.1)
     libv8 (3.11.8.17)
     liquid (2.4.1)
-    listen (2.1.1)
+    listen (2.1.2)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -313,7 +313,7 @@ GEM
       nokogiri (>= 1.4.0)
       nori (~> 2.0.3)
       wasabi (~> 3.0.0)
-    sidekiq (2.15.2)
+    sidekiq (2.16.0)
       celluloid (>= 0.15.2)
       connection_pool (>= 1.0.0)
       json
