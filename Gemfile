@@ -43,7 +43,7 @@ gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'common_engine', git: 'https://github.com/CruGlobal/common_engine'
 gem 'image_science', '~> 1.2.5'
-gem 'qe', git: 'https://github.com/CruGlobal/qe'
+gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '4421d63824f2f07fa9050c1971a3bae97844cfd3'
 gem 'sidekiq'
 
 group :development, :test do
