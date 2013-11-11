@@ -54,7 +54,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'
-  gem 'guard-rspec'
   gem 'simplecov', :require => false
   gem 'database_cleaner'
   gem 'therubyracer'
