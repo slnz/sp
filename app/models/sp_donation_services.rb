@@ -2,7 +2,7 @@ class SpDonationServices < SpUser
   def can_upload_ds?() true; end
   def can_search?() true; end
   def can_see_dashboard?() true; end
-  
+
   def scope(partner = nil)
     if partner
       @scope ||= ['primary_partner like ? OR secondary_partner like ? OR tertiary_partner like ?' , partner, partner, partner]
@@ -79,7 +79,7 @@ class SpDonationServices < SpUser
           AND project.scholarship_operating_unit != ''
         ORDER BY
           person.lastName,
-          person.firstName;");
+          person.firstName;").to_a;
 
       rows2 = ActiveRecord::Base.connection.select_all("
                                                        #{selects}
