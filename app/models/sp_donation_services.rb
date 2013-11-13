@@ -19,6 +19,7 @@ class SpDonationServices < SpUser
     t = "\t"
     endl = "\n"
     out = ""
+    results = []
     CSV.generate(out, {:col_sep => t, :row_sep => endl}) do |writer|
 
       selects = "
@@ -127,10 +128,15 @@ class SpDonationServices < SpUser
 
       today = Time.now.strftime('%Y%m%d')
 
-      rows2.each do |row2|
-        rows << row2
+      rows.each do |row2|
+        results << row2
       end
-      rows.each do |row|
+
+      rows2.each do |row2|
+        results << row2
+      end
+
+      results.each do |row|
         values = Hash.new
 
         values["OPER_NAME"] = current_person.to_s
