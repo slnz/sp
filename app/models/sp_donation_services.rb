@@ -1,11 +1,11 @@
 class SpDonationServices < SpUser
-  def can_upload_ds?() true; end
-  def can_search?() true; end
-  def can_see_dashboard?() true; end
+  def can_upload_ds?() true end
+  def can_search?() true end
+  def can_see_dashboard?() true end
 
   def scope(partner = nil)
     if partner
-      @scope ||= ['primary_partner like ? OR secondary_partner like ? OR tertiary_partner like ?' , partner, partner, partner]
+      @scope ||= ['primary_partner like ? OR secondary_partner like ? OR tertiary_partner like ?', partner, partner, partner]
     else
       @scope ||= ['1=1'] # all projects
     end
@@ -51,6 +51,7 @@ class SpDonationServices < SpUser
           project.scholarship_project,
           project.ds_project_code"
 
+      # Student applications (including Student Staff)
       rows = ActiveRecord::Base.connection.select_all("
                                                       #{selects}
         FROM ministry_person person
@@ -80,8 +81,9 @@ class SpDonationServices < SpUser
           AND project.scholarship_operating_unit != ''
         ORDER BY
           person.lastName,
-          person.firstName;").to_a;
+          person.firstName;").to_a
 
+      # People from "Other" tab (primarily non-staff that are in sp_staff table)
       rows2 = ActiveRecord::Base.connection.select_all("
                                                        #{selects}
         FROM ministry_person person
@@ -101,7 +103,7 @@ class SpDonationServices < SpUser
           ON (person.personID = designation.person_id
             AND project.id = designation.project_id)
             AND designation.year = staff.year
-        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator')
+        WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
           AND staff.year = '#{SpApplication.year}'
           AND (person.isStaff = 0 OR person.isStaff IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
@@ -111,7 +113,7 @@ class SpDonationServices < SpUser
           AND project.scholarship_operating_unit != ''
         ORDER BY
           person.lastName,
-          person.firstName;");
+          person.firstName;")
 
       column_headers = ["OPER_NAME", "KEYED_DATE", "PEOPLE_ID", "DONOR_ID", "STATUS", "ORG_ID",
                         "PERSON_TYPE", "TITLE", "FIRST_NAME", "MIDDLE_NAME", "LAST_NAME_ORG", "SUFFIX",
@@ -122,7 +124,7 @@ class SpDonationServices < SpUser
                         "SOURCE_DATE", "MIN_MAIL_IND", "MIN_TELE_IND", "MIN_SVC_CODE", "MIN_SVC_TYPE",
                         "MIN_SVC_DATE", "MIN_SVC_DESC", "AMT_PAID", "LIST_ID", "WSN_APPLICATION_ID", "ASSIGNMENT_NAME",
                         "SCHOLARSHIP_BUSINESS_UNIT", "SCHOLARSHIP_OPERATING_UNIT",
-                        "SCHOLARSHIP_DEPT_ID", "SCHOLARSHIP_PROJECT_ID", "SCHOLARSHIP_DESIGNATION", "PROJECT_CODE"];
+                        "SCHOLARSHIP_DEPT_ID", "SCHOLARSHIP_PROJECT_ID", "SCHOLARSHIP_DESIGNATION", "PROJECT_CODE"]
 
       writer << column_headers
 
