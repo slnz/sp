@@ -10,7 +10,5 @@
 
 <p><br/><%= link_to('Click here to go to your application status page.', application_path(@application), :class => 'successreturn') %></p>
 
-<a title="Share on Facebook"
-href="http://www.facebook.com/sharer.php?u=http://www.gosummerproject.com/">
-<img src="http://static.ak.fbcdn.net/rsrc.php/yH/r/HyVVl7COqlF.gif"
-alt="Share on Facebook" border="0"></a>
+
+<a href="http://www.facebook.com/sharer.php?u=http://www.gosummerproject.com/"><img src="<%= asset_path('frontend/facebook_share.gif') %>" alt="Share on Facebook" border="0" /></a>
