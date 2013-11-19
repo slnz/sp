@@ -1,4 +1,19 @@
 GIT
+  remote: https://github.com/CruGlobal/common_engine
+  revision: 228e3433dfe038abc6d582c13d5b66675c128b15
+  ref: 228e343
+  specs:
+    common_engine (0.0.1)
+      aasm (~> 3.0.9)
+      acts_as_list (~> 0.3.0)
+      auto_strip_attributes (~> 2.0)
+      geocoder
+      global_registry
+      rails (>= 3.0.0)
+      rubycas-client
+      sidekiq
+
+GIT
   remote: https://github.com/CruGlobal/qe
   revision: f191fdf52f32e8fef75476d53a9f3098f3721199
   ref: f191fdf
@@ -14,19 +29,6 @@ GIT
   specs:
     acts_as_versioned (0.6.0)
       activerecord (>= 3.0.9)
-
-PATH
-  remote: /Users/josh/htdocs/common_engine
-  specs:
-    common_engine (0.0.1)
-      aasm (~> 3.0.9)
-      acts_as_list (~> 0.3.0)
-      auto_strip_attributes (~> 2.0)
-      geocoder
-      global_registry
-      rails (>= 3.0.0)
-      rubycas-client
-      sidekiq
 
 GEM
   remote: http://rubygems.org/
