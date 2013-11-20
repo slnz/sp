@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 228e3433dfe038abc6d582c13d5b66675c128b15
-  ref: 228e343
+  revision: 13bc5130f557df2eec617661df9c760708684db6
+  ref: 13bc513
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
