@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131026204124) do
+ActiveRecord::Schema.define(version: 20131114162222) do
 
   create_table "academic_departments", force: true do |t|
     t.string "name"
@@ -1527,30 +1527,30 @@ ActiveRecord::Schema.define(version: 20131026204124) do
   end
 
   create_table "linczone_contacts", primary_key: "ContactID", force: true do |t|
-    t.datetime "EntryDate"
-    t.string   "FirstName",            limit: 120
-    t.string   "LastName",             limit: 120
-    t.string   "HomeAddress",          limit: 200
-    t.string   "City",                 limit: 20
-    t.string   "State",                limit: 20
-    t.string   "Zip",                  limit: 80
-    t.string   "Email",                limit: 120
-    t.string   "HighSchool",           limit: 120
-    t.string   "CampusName",           limit: 200
-    t.string   "CampusID",             limit: 80
-    t.string   "ReferrerFirstName",    limit: 120
-    t.string   "ReferrerLastName",     limit: 120
-    t.string   "ReferrerRelationship", limit: 100
-    t.string   "ReferrerEmail",        limit: 200
-    t.string   "InfoCCC",              limit: 1,   default: "F"
-    t.string   "InfoNav",              limit: 1,   default: "F"
-    t.string   "InfoIV",               limit: 1,   default: "F"
-    t.string   "InfoFCA",              limit: 1,   default: "F"
-    t.string   "InfoBSU",              limit: 1,   default: "F"
-    t.string   "InfoCACM",             limit: 1,   default: "F"
-    t.string   "InfoEFCA",             limit: 1,   default: "F"
-    t.string   "InfoGCM",              limit: 1,   default: "F"
-    t.string   "InfoWesley",           limit: 1,   default: "F"
+    t.timestamp "EntryDate"
+    t.string    "FirstName",            limit: 120
+    t.string    "LastName",             limit: 120
+    t.string    "HomeAddress",          limit: 200
+    t.string    "City",                 limit: 20
+    t.string    "State",                limit: 20
+    t.string    "Zip",                  limit: 80
+    t.string    "Email",                limit: 120
+    t.string    "HighSchool",           limit: 120
+    t.string    "CampusName",           limit: 200
+    t.string    "CampusID",             limit: 80
+    t.string    "ReferrerFirstName",    limit: 120
+    t.string    "ReferrerLastName",     limit: 120
+    t.string    "ReferrerRelationship", limit: 100
+    t.string    "ReferrerEmail",        limit: 200
+    t.string    "InfoCCC",              limit: 1,   default: "F"
+    t.string    "InfoNav",              limit: 1,   default: "F"
+    t.string    "InfoIV",               limit: 1,   default: "F"
+    t.string    "InfoFCA",              limit: 1,   default: "F"
+    t.string    "InfoBSU",              limit: 1,   default: "F"
+    t.string    "InfoCACM",             limit: 1,   default: "F"
+    t.string    "InfoEFCA",             limit: 1,   default: "F"
+    t.string    "InfoGCM",              limit: 1,   default: "F"
+    t.string    "InfoWesley",           limit: 1,   default: "F"
   end
 
   create_table "mail_delayed_jobs", force: true do |t|
@@ -2241,9 +2241,11 @@ ActiveRecord::Schema.define(version: 20131026204124) do
     t.integer  "eventKeyID"
     t.string   "type",                   limit: 20
     t.string   "county"
-    t.boolean  "ongoing_special_event",              default: false
+    t.boolean  "ongoing_special_event",                                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "latitude",                           precision: 11, scale: 7
+    t.decimal  "longitude",                          precision: 11, scale: 7
   end
 
   add_index "ministry_targetarea", ["country"], name: "index4", using: :btree
@@ -3737,6 +3739,8 @@ ActiveRecord::Schema.define(version: 20131026204124) do
     t.string   "attachment_content_type"
     t.string   "attachment_file_name"
     t.datetime "attachment_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sp_answers", ["answer_sheet_id"], name: "index_sp_answers_on_answer_sheet_id", using: :btree
