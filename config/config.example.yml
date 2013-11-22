@@ -1,0 +1,12 @@
+# NOTE, the 'session_secret' needs to be 30 chars or longer
+development:
+  session_secret: kjfkladsjfklasdjfkljdfalskjfdkjlskgjfslkjfksadjfklsjflkdsjfadl
+  siebel_token: siebel_token
+
+test:
+  session_secret: lkafjlksdjfksdjflkasdjlkfjsdklfjasdklfjlkasdfjlkasdjflksajlask
+  siebel_token: siebel_token
+
+production:
+  session_secret: kafjkldsfjklsdajfksdjflkjdsfkljsdklfjdsklfjlksdjfklsdjfkljsdlk
+  siebel_token: siebel_token
