@@ -2,7 +2,7 @@
 <div id="leader_search" style="display:none">
   <%= form_tag search_admin_leaders_path, :id => 'leader_search_form', :onsubmit => 'return false;' do %>
     <label for="leader_search_name">Start typing a name to find a person to fill this role:</label>
-    <p>Always search for the person's legal name, not a nickname - like Cassandra for Casey or Lucas for Luke. Also, if the female staff was recently married, search for her under her maiden name.</p>
+    <p>Always search for the person's legal name, not a nickname - like Cassandra for Casey or Lucas for Luke. Also, if the female staff was recently married, search for her under her maiden name. Records marked with <b>(STAFF)</b> are preferred to unmarked records.</p>
     <%= hidden_field_tag :leader, 'pd', :id => 'leader_search_type' %>
     <%= hidden_field_tag :project_id, '1', :id => 'leader_search_project_id' %>
     <%= hidden_field_tag :show_all %>
