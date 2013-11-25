@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
     @partners ||= begin
       @partners = Region.where("region <> ''").collect(&:region)
       @partners += Ministry.all.collect(&:name)
-      @partners += ["US Campus","Non-USCM SPs"]
+      @partners += ["US Campus", "Non-USCM SPs"]
     end
   end
   helper_method :partners
@@ -128,8 +128,20 @@ class ApplicationController < ActionController::Base
         conditions = ["(preferredName like ? OR firstName like ?) AND lastName like ?", first, first, last]
       end
 
-      @people = Person.where(conditions).includes(:user)
+      @people = Person.where(conditions).includes(:user).order("isStaff desc").order("accountNo desc")
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
+
+      # Put staff at the top of the list
+      staff = []
+      non_staff = []
+      @people.each do |person|
+        if person.staff.present?
+          staff << person
+        else
+          non_staff << person
+        end
+      end
+      @people = staff + non_staff
       @total = Person.where(conditions).count
       respond_to do |format|
         format.html { render layout: false }
