@@ -127,7 +127,7 @@ $(document).ready(function() {
          borderWidth: 0
       },
       series: [{
-         name: 'WSN',
+         name: 'GMSP',
          data: [<%= @years[0..-1].reverse.collect {|year| @total_wsn[year]}.compact.join(",") %>]
       }, {
          name: 'USSP',
