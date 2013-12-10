@@ -42,7 +42,7 @@
         <% ((i-1) * columns).upto((i * columns) - 1).each do |j| %>
           <% next unless @years[j] %>
           <th class="year <%= 'current' if j == 0 %>"><%= @years[j] %></th>
-          <th class="title">WSN</th>
+          <th class="title">GMSP</th>
           <th class="title">USSP</th>
           <th class="title">Other</th>
           <th class="total"><strong>TOTAL</strong></th>
@@ -127,7 +127,7 @@ $(document).ready(function() {
          borderWidth: 0
       },
       series: [{
-         name: 'WSN',
+         name: 'GMSP',
          data: [<%= @years[0..-1].reverse.collect {|year| @total_wsn[year]}.compact.join(",") %>]
       }, {
          name: 'USSP',
