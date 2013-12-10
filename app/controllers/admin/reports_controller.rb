@@ -932,7 +932,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_applicants_to_all_sps
-    @headers = ["US", "WSN", "Other Ministries"]
+    @headers = ["US", "GM", "Other Ministries"]
 
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
@@ -1219,7 +1219,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def total_num_participants_to_all_sps
-    @headers = ["US", "WSN", "Other Ministries"]
+    @headers = ["US", "GM", "Other Ministries"]
 
     @counts = {}
     scope = SpApplication.joins(:person).where(:year => @year).joins(:project).where("(status = 'accepted_as_participant' OR status = 'accepted_as_student_staff')")
