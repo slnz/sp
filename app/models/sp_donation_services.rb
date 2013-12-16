@@ -190,10 +190,10 @@ class SpDonationServices < SpUser
         values["LIST_ID"] = ""
         values["WSN_APPLICATION_ID"] = row["personID"]
         values["ASSIGNMENT_NAME"] = row["projectName"]
-        values["SCHOLARSHIP_BUSINESS_UNIT"] = row["scholarship_business_unit"].upcase
-        values["SCHOLARSHIP_OPERATING_UNIT"] = row["scholarship_operating_unit"].upcase
-        values["SCHOLARSHIP_DEPT_ID"] = row["scholarship_department"].upcase
-        values["SCHOLARSHIP_PROJECT_ID"] = row["scholarship_project"].upcase
+        values["SCHOLARSHIP_BUSINESS_UNIT"] = row["scholarship_business_unit"].to_s.upcase
+        values["SCHOLARSHIP_OPERATING_UNIT"] = row["scholarship_operating_unit"].to_s.upcase
+        values["SCHOLARSHIP_DEPT_ID"] = row["scholarship_department"].to_s.upcase
+        values["SCHOLARSHIP_PROJECT_ID"] = row["scholarship_project"].to_s.upcase
         values["SCHOLARSHIP_DESIGNATION"] = row["scholarship_designation"]
         values["PROJECT_CODE"] = row["ds_project_code"]
 
