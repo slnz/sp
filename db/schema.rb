@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131223150035) do
+ActiveRecord::Schema.define(version: 20131227085500) do
 
   create_table "academic_departments", force: true do |t|
     t.string "name"
@@ -3783,7 +3783,7 @@ ActiveRecord::Schema.define(version: 20131223150035) do
     t.datetime "accepted_at"
     t.string   "previous_status"
     t.integer  "global_registry_id",       limit: 8
-    t.integer  "rm_liability_signed",      limit: 1
+    t.boolean  "rm_liability_signed"
   end
 
   add_index "sp_applications", ["global_registry_id"], name: "index_sp_applications_on_global_registry_id", using: :btree
