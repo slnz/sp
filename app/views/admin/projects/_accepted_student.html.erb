@@ -10,4 +10,6 @@
   <% if sp_user.can_evaluate_applicant?(app) %>
     <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Review ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Review ' + person.to_s) %></td>
   <% end %>
+
+  <td class="rm_liability"><% if app.rm_liability_signed == true %> <img src="/assets/checkmark.png"> <% end %></td>
 </tr>
