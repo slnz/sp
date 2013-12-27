@@ -11,5 +11,5 @@
     <td class="evaluate"><%= link_to(image_tag("icons/stamp.png", :alt => 'Review ' + person.to_s), evaluate_admin_evaluations_path(:application_id => app.id), :title => 'Review ' + person.to_s) %></td>
   <% end %>
 
-  <td class="rm_liability"><% if app.rm_liability_signed == true %> <img src="/assets/checkmark.png"> <% end %></td>
+  <td class="rm_liability"><% if app.rm_liability_signed == true %> <%= image_tag("/assets/checkmark.png") %> <% end %></td>
 </tr>
