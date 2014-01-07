@@ -135,7 +135,7 @@ GEM
       ox
       rest-client
     geocoder (1.1.9)
-    global_registry (1.0.1)
+    global_registry (1.0.2)
       activesupport
       oj (~> 2.1.0)
       rest-client (~> 1.6.7)
