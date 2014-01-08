@@ -5,7 +5,7 @@ FactoryGirl.define do
     year '2012'
     display_location 'String'
     start_date '05/10/2012 12:00:00'
-    end_date '05/10/2012 12:00:00'
+    end_date '05/11/2012 12:00:00'
     student_cost 1
     max_accepted_men 1
     max_accepted_women 1

@@ -21,8 +21,8 @@ class PaymentsController < ApplicationController
     SpPayment.transaction do
       @payment = SpPayment.new(payment_params)
       if @application.payments.non_denied.length > 0
-        @payment.errors.add_to_base("You have already submitted a payment for this application.")
-        render :action => "error.rjs"
+        @payment.errors.add(:base, "You have already submitted a payment for this application.")
+        render :action => "error"
       else
         @payment.amount = SpApplication.cost
         @payment.application_id = @application.id
