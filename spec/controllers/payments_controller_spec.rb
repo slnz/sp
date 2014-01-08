@@ -12,22 +12,31 @@ describe PaymentsController do
 
   context '#create' do
     it 'Displays an error if the user tries to submit a second payment' do
-      create(:payment, application: application)
+      create(:sp_payment, application: application)
+
+      xhr :post, :create, application_id: application.id, "payment" => {"address" => nil}
+
+      expect(assigns(:payment).errors.count).to eq 1
+    end
+
+    it "Displays an error if we can't find the staff person who is supposed to pay" do
+      xhr :post, :create, application_id: application.id, "payment" => {
+        "payment_account_no" => '32451234',
+        "payment_type" => "Staff",
+        "staff_first" => "kazu",
+        "staff_last" => "kurihara"
+      }
+
+      expect(assigns(:payment).errors.count).to eq 1
+    end
+    it "Displays an error if we don't have an email on file for the staff who is supposed to pay" do
+      staff = create(:staff, accountNo: '000991063')
 
       xhr :post, :create, application_id: application.id, "payment" => {
-        "address" => nil,
-        "card_number" => nil,
-        "card_type" => nil,
-        "city" => nil,
-        "expiration_month" => nil,
-        "expiration_year" => nil,
-        "first_name" => nil,
-        "last_name" => nil,
-        "security_code" => nil,
-        "staff_first" => nil,
-        "staff_last" => nil,
-        "state" => nil,
-        "zip" => nil
+        "payment_account_no" => staff.accountNo,
+        "payment_type" => "Staff",
+        "staff_first" => "kazu",
+        "staff_last" => "kurihara"
       }
 
       expect(assigns(:payment).errors.count).to eq 1

@@ -124,7 +124,7 @@ class PaymentsController < ApplicationController
   
     def send_staff_payment_request(payment)
       @person = @application.person
-      staff = Staff.find_by_accountNo(payment.payment_account_no)
+      staff = Staff.find_by(accountNo: payment.payment_account_no)
       raise "Invalid staff payment request: " + payment.inspect if staff.nil?
       Notifier.notification(staff.email, # RECIPIENTS
                                     "gosummerproject@cru.org", # FROM
@@ -132,7 +132,7 @@ class PaymentsController < ApplicationController
                                     {'staff_full_name' => staff.informal_full_name, # HASH OF VALUES FOR REPLACEMENT IN LIQUID TEMPLATE
                                      'applicant_full_name' => @person.informal_full_name, 
                                      'applicant_email' => @person.email, 
-                                     'applicant_home_phone' => @person.current_address.homePhone, 
+                                     'applicant_home_phone' => @person.current_address.try(:homePhone),
                                      'payment_request_url' => url_for(:action => :edit, :application_id => @application.id, :id => @payment.id)},
                                      {:format => :html}).deliver
     end

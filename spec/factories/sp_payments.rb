@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :payment, class: 'SpPayment' do
+  factory :sp_payment, class: 'SpPayment' do
     association :application
     payment_type 'String'
     amount 1
