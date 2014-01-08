@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :sp_application do
-    person nil
-    project nil
-    year '2012'
+    association :person
+    association :project, factory: :sp_project
+    year SpApplication.year
   end
 end

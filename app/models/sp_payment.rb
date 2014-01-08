@@ -10,12 +10,27 @@ class SpPayment < ActiveRecord::Base
   after_save :check_app_complete
   
   validate :credit_card_validation
+  validate :staff_email_present_if_staff_payment
   
   def credit_card_validation
     if credit?
       errors.add_on_empty([:first_name, :last_name, :address, :city, :state, :zip, :card_number,
                 :expiration_month, :expiration_year, :security_code])
       errors.add(:card_number, "is invalid.") if get_card_type.nil?
+    end
+  end
+
+  def staff_email_present_if_staff_payment
+    if staff?
+      staff = Staff.find_by(accountNo: payment_account_no)
+      unless staff
+        errors.add(:base, "We couldn't find a staff member with that account number")
+        return false
+      end
+
+      unless staff.email.present?
+        errors.add(:base, "The staff member you've picked doesn't have an address on file for us to send the request to.")
+      end
     end
   end
 

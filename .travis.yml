@@ -15,3 +15,6 @@ before_script:
   - cp config/travis/facebook.yml config/facebook.yml
   - bundle exec rake db:schema:load RAILS_ENV=test
   - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+email:
+  - josh.starcher@cru.org
+  - elikem.adadevoh@cru.org
