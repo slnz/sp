@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 474a19a80ab77ca591a40442f56ba7c7de8dfb83
+  revision: 8b58f86cf4434478cb83bc84d827460468c9042e
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -149,7 +149,7 @@ GEM
       lumberjack (~> 1.0)
       pry (>= 0.9.12)
       thor (>= 0.18.1)
-    guard-rspec (4.2.3)
+    guard-rspec (4.2.4)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
     guard-spork (1.5.1)
