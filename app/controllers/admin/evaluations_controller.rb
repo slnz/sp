@@ -100,7 +100,7 @@ class Admin::EvaluationsController < ApplicationController
   end
 
   def application_params
-    params.require(:application).permit(:project_id, :designation_number, :year, :status, :preference1_id, :preference2_id, :preference3_id, :preference4_id, :preference5_id, :current_project_queue_id, :apply_for_leadership, :applicant_notified, :previous_status)
+    params.require(:application).permit(:project_id, :designation_number, :year, :status, :preference1_id, :preference2_id, :preference3_id, :preference4_id, :preference5_id, :current_project_queue_id, :apply_for_leadership, :applicant_notified, :previous_status, :rm_liability_signed)
   end
 
   def event_param
