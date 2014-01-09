@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131114162222) do
+ActiveRecord::Schema.define(version: 20131227085500) do
 
   create_table "academic_departments", force: true do |t|
     t.string "name"
@@ -2241,11 +2241,9 @@ ActiveRecord::Schema.define(version: 20131114162222) do
     t.integer  "eventKeyID"
     t.string   "type",                   limit: 20
     t.string   "county"
-    t.boolean  "ongoing_special_event",                                       default: false
+    t.boolean  "ongoing_special_event",              default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "latitude",                           precision: 11, scale: 7
-    t.decimal  "longitude",                          precision: 11, scale: 7
   end
 
   add_index "ministry_targetarea", ["country"], name: "index4", using: :btree
@@ -3739,8 +3737,6 @@ ActiveRecord::Schema.define(version: 20131114162222) do
     t.string   "attachment_content_type"
     t.string   "attachment_file_name"
     t.datetime "attachment_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   add_index "sp_answers", ["answer_sheet_id"], name: "index_sp_answers_on_answer_sheet_id", using: :btree
@@ -3787,6 +3783,7 @@ ActiveRecord::Schema.define(version: 20131114162222) do
     t.datetime "accepted_at"
     t.string   "previous_status"
     t.integer  "global_registry_id",       limit: 8
+    t.boolean  "rm_liability_signed"
   end
 
   add_index "sp_applications", ["global_registry_id"], name: "index_sp_applications_on_global_registry_id", using: :btree
