@@ -151,7 +151,7 @@ class Admin::ProjectsController < ApplicationController
      "Emergency Contact", "Emergency Relationship", "Emergency Address", "Emergency City", "Emergency State",
      "Emergency Zip", "Emergency Phone", "Emergency Work Phone", "Emergency Email",
      "Participant's Campus Region", "Date Became A Christian", "Major", "Class",
-     "GraduationDate", "Applied for leadership"]
+     "GraduationDate", "Applied for leadership", "Passport Number", "T-Shirt Size"]
 
     sheet1.row(r += 1).concat(applicant_column_headers)
     applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
@@ -159,6 +159,11 @@ class Admin::ProjectsController < ApplicationController
     applications.each do |app|
       values = set_values_from_person(app.person)
       values["Applied for leadership"] = app.apply_for_leadership.to_s
+
+      answers = SpAnswer.select(:value).where(answer_sheet_id: app.id, question_id: [881,872])
+      values["Passport Number"] = answers[0]
+      values["T-Shirt Size"] = answers[1]
+
       row = []
       applicant_column_headers.each do |header|
         if (values[header] && values[header] != "")
