@@ -9,7 +9,6 @@ gem 'mysql2'#, '~> 0.2.7'
 gem 'sass-rails'#,   '~> 3.2.3'
 gem 'coffee-rails'#, '~> 3.2.1'
 gem 'uglifier'#, '~> 1.3.0'
-gem 'therubyracer'
 gem 'jquery-ui-rails'#, '~> 4.0.1'
 
 # jQuery is the default JavaScript library in Rails 3.1
