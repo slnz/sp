@@ -155,15 +155,15 @@ class Admin::ProjectsController < ApplicationController
 
     sheet1.row(r += 1).concat(applicant_column_headers)
     applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
-    question_slug = Element.select(:id).where(slug: ['passport', 'tshirt']).order('slug ASC')
-    
+    question_passport_id = Element.where(slug: 'passport').pluck(:id)
+    question_tshirt_id = Element.where(slug: 'tshirt').pluck(:id)
+
     applications.each do |app|
       values = set_values_from_person(app.person)
       values["Applied for leadership"] = app.apply_for_leadership.to_s
 
-      answers = SpAnswer.select(:value).where(answer_sheet_id: app.id, question_id: [question_slug[0].id, question_slug[1].id])
-      values["Passport Number"] = answers[0]
-      values["T-Shirt Size"] = answers[1]
+      values["Passport Number"] = SpAnswer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
+      values["T-Shirt Size"] = SpAnswer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
 
       row = []
       applicant_column_headers.each do |header|
