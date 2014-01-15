@@ -3806,6 +3806,8 @@ ActiveRecord::Schema.define(version: 20140318124450) do
     t.string   "previous_status"
     t.integer  "global_registry_id",       limit: 8
     t.boolean  "rm_liability_signed"
+    t.date     "start_date"
+    t.date     "end_date"
   end
 
   add_index "sp_applications", ["global_registry_id"], name: "index_sp_applications_on_global_registry_id", using: :btree
