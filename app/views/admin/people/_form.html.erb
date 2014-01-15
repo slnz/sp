@@ -20,6 +20,16 @@
 					<%= hidden_field_tag :project_id, @project_id %><%= hidden_field_tag :year, @year %></td>
 	  </tr>
 	<%- end %>
+
+    <tr>
+        <td class="left">Start Date:</td>
+        <td><%= calendar_date_select_tag 'sp_application[start_date]', @application_dates.start_date %></td>
+    </tr>
+    <tr>
+        <td class="left">End Date:</td>
+        <td><%= calendar_date_select_tag 'sp_application[end_date]', @application_dates.end_date %></td>
+    </tr>
+
   <%= f.fields_for :current_address do |af| %>
     <tr>
       <td class="left">Phone:</td>

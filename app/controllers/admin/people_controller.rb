@@ -30,9 +30,10 @@ class Admin::PeopleController < ApplicationController
   protected
   def get_person
     @person = Person.find(params[:id])
+    @application_dates = SpApplication.select(:id, :start_date, :end_date).where(year: @year, person_id: @person.id, project_id: @project_id).first # SpApplication.select(:id, :start_date, :end_date).where(year: 2013, person_id: 2345236, project_id: 370).first
   end
-
+  
   def person_params
-    params.fetch(:person, {}).permit(:firstName, :lastName, :preferredName, current_address_attributes: [:homePhone, :cellPhone, :workPhone, :email, :address1, :address2, :city, :state, :zip, :country, :id])
+    params.fetch(:person, {}).permit(:start_date, :end_date, :firstName, :lastName, :preferredName, current_address_attributes: [:homePhone, :cellPhone, :workPhone, :email, :address1, :address2, :city, :state, :zip, :country, :id]) # :current_application
   end
 end
