@@ -30,7 +30,7 @@ class Admin::PeopleController < ApplicationController
   protected
   def get_person
     @person = Person.find(params[:id])
-    @application_dates = SpApplication.select(:id, :start_date, :end_date).where(year: @year, person_id: @person.id, project_id: @project_id).first # SpApplication.select(:id, :start_date, :end_date).where(year: 2013, person_id: 2345236, project_id: 370).first
+    @application_dates = SpApplication.select(:id, :start_date, :end_date).where(year: params[:year].to_i, person_id: @person.id, project_id: @project_id).first # SpApplication.select(:id, :start_date, :end_date).where(year: 2013, person_id: 2345236, project_id: 370).first
   end
   
   def person_params
