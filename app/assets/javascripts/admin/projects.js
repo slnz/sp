@@ -108,7 +108,7 @@ $(function() {
       name = $(this).html();
       dom = 'leader_details' + id;
       if ($('#' + dom)[0] == null) {
-        $('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
+        $('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/assets/spinner.gif" style="" /></div>');
         $.ajax({dataType: 'script',
           type:'GET',
           url: '/admin/people/' + id + '?project_id=' + proj + '&year=' + year
