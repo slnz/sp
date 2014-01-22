@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227085500) do
+ActiveRecord::Schema.define(version: 20140122183741) do
 
   create_table "academic_departments", force: true do |t|
     t.string "name"
@@ -2241,9 +2241,11 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.integer  "eventKeyID"
     t.string   "type",                   limit: 20
     t.string   "county"
-    t.boolean  "ongoing_special_event",              default: false
+    t.boolean  "ongoing_special_event",                                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "latitude",                           precision: 11, scale: 7
+    t.decimal  "longitude",                          precision: 11, scale: 7
   end
 
   add_index "ministry_targetarea", ["country"], name: "index4", using: :btree
@@ -3160,33 +3162,45 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   end
 
   create_table "rideshare_event", force: true do |t|
-    t.integer "conference_id"
-    t.string  "event_name",    limit: 50
-    t.string  "password",      limit: 50, null: false
-    t.text    "email_content"
+    t.integer  "conference_id"
+    t.string   "event_name",    limit: 50
+    t.string   "password",      limit: 50, null: false
+    t.text     "email_content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rideshare_ride", force: true do |t|
-    t.integer "event_id"
-    t.integer "driver_ride_id"
-    t.integer "person_id"
-    t.string  "address1",                     null: false
-    t.string  "address2",                     null: false
-    t.string  "address3",                     null: false
-    t.string  "address4",                     null: false
-    t.string  "city",              limit: 50, null: false
-    t.string  "state",             limit: 50, null: false
-    t.string  "zip",               limit: 20, null: false
-    t.string  "country",           limit: 64, null: false
-    t.float   "latitude"
-    t.float   "longitude"
-    t.string  "phone",             limit: 25, null: false
-    t.string  "contact_method",    limit: 5
-    t.integer "number_passengers", limit: 1
-    t.integer "drive_willingness", limit: 1
-    t.time    "depart_time"
-    t.text    "special_info"
-    t.string  "email",                        null: false
+    t.integer  "event_id"
+    t.integer  "driver_ride_id"
+    t.integer  "person_id"
+    t.string   "address1",                                  null: false
+    t.string   "address2",                                  null: false
+    t.string   "address3",                                  null: false
+    t.string   "address4",                                  null: false
+    t.string   "city",               limit: 50,             null: false
+    t.string   "state",              limit: 50,             null: false
+    t.string   "zip",                limit: 20,             null: false
+    t.string   "country",            limit: 64,             null: false
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "phone",              limit: 25,             null: false
+    t.string   "contact_method",     limit: 5
+    t.integer  "number_passengers",  limit: 1,  default: 0, null: false
+    t.integer  "drive_willingness",  limit: 1
+    t.time     "depart_time"
+    t.text     "special_info"
+    t.string   "email",                                     null: false
+    t.string   "situation"
+    t.string   "change"
+    t.string   "time_hour"
+    t.string   "time_minute"
+    t.string   "time_am_pm"
+    t.string   "spaces"
+    t.string   "special_info_check"
+    t.string   "spaces_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "rideshare_ride", ["drive_willingness"], name: "drivewillingness", using: :btree
@@ -3737,6 +3751,8 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.string   "attachment_content_type"
     t.string   "attachment_file_name"
     t.datetime "attachment_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sp_answers", ["answer_sheet_id"], name: "index_sp_answers_on_answer_sheet_id", using: :btree
@@ -4215,11 +4231,13 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   end
 
   create_table "sp_staff", force: true do |t|
-    t.integer "person_id",                                   null: false
-    t.integer "project_id",                                  null: false
-    t.string  "type",               limit: 100, default: "", null: false
-    t.string  "year"
-    t.integer "global_registry_id", limit: 8
+    t.integer  "person_id",                                   null: false
+    t.integer  "project_id",                                  null: false
+    t.string   "type",               limit: 100, default: "", null: false
+    t.string   "year"
+    t.integer  "global_registry_id", limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sp_staff", ["person_id"], name: "person_id", using: :btree
