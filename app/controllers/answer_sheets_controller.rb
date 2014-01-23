@@ -2,7 +2,11 @@ class AnswerSheetsController < ApplicationController
   include AnswerSheetsControllerConcern
 
   prepend_before_filter :login
-  
+
+  def index
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   def submit
     session[:attempted_submit] = true
     return false unless validate_sheet
