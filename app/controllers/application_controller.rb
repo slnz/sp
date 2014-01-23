@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
 
   # set up access control
   def sp_user
-    return nil unless current_user
+    return SpUser.new unless current_user
     @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
     if @sp_user.nil? && current_person.isStaff?
       @sp_user = SpGeneralStaff.create(:ssm_id => current_user.id, :created_by_id => current_user.id, :person_id => current_person.id)
@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
       @sp_user.update_attribute(:last_login, Time.now)
       session[:login_stamped] = true
     end
-    @sp_user
+    @sp_user ||= SpUser.new
   end
   helper_method :sp_user
 
