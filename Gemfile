@@ -42,7 +42,7 @@ gem 'gcx_api'#, git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client'#, git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'common_engine', git: 'https://github.com/CruGlobal/common_engine'
 gem 'image_science', '~> 1.2.5'
-gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '85ec92f'
+gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '822db2d'
 gem 'sidekiq'
 gem 'geocoder'
 

@@ -14,12 +14,13 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/qe
-  revision: 85ec92f238f801eed63492e6dd12d4c2d68c61cb
-  ref: 85ec92f
+  revision: 822db2dc79194e84c01993689f960be7d4b0eeee
+  ref: 822db2d
   specs:
     qe (0.0.2)
       aasm
       acts_as_list
+      mail
       rails (>= 3.1.0)
 
 GIT
