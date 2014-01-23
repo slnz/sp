@@ -7,6 +7,10 @@ class AnswerSheetsController < ApplicationController
     raise ActionController::RoutingError.new('Not Found')
   end
 
+  def show
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   def submit
     session[:attempted_submit] = true
     return false unless validate_sheet
