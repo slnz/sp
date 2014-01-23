@@ -61,7 +61,7 @@ class Admin::ReportsController < ApplicationController
           gender = 'men'
           @percentages.each do |percentage, projects|
             csv << [ "#{percentage}% Full" ]
-            csv << [ "Name", "Fullness", "APD Email", "Primary Partner", "Project Length", "Ministry Focus", "Project Type" ]
+            csv << [ "Name", "Fullness", "PD Email", "Primary Partner", "Project Length", "Ministry Focus", "Project Type" ]
             projects.each do |project|
               csv << [ project.name,
                 percentage == '100' ? 100 : number_with_precision(project.send("percent_full_#{gender}"), :precision => 0),
@@ -101,7 +101,7 @@ class Admin::ReportsController < ApplicationController
           gender = 'women'
           @percentages.each do |percentage, projects|
             csv << [ "#{percentage}% Full" ]
-            csv << [ "Name", "Fullness", "APD Email", "Primary Partner", "Project Length", "Ministry Focus", "Project Type" ]
+            csv << [ "Name", "Fullness", "PD Email", "Primary Partner", "Project Length", "Ministry Focus", "Project Type" ]
             projects.each do |project|
               csv << [ project.name,
                 percentage == '100' ? 100 : number_with_precision(project.send("percent_full_#{gender}"), :precision => 0),
@@ -643,7 +643,7 @@ class Admin::ReportsController < ApplicationController
       format.csv {
         csv = ""
         CSV.generate(csv) do |csv|
-          csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
+          csv << [ "Project Name", "Project Start", "Project End", "Male PD Email", "Femail PD Email", "OPD Email" ]
           @projects.each do |project|
             csv << [ project.name, project.start_date, project.end_date,
               project.pd.try(:email), project.apd.try(:email), project.opd.try(:email)
@@ -716,7 +716,7 @@ class Admin::ReportsController < ApplicationController
           @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
           csv = ""
           CSV.generate(csv) do |csv|
-            csv << [ "Project Name", "Project Start", "Project End", "PD Email", "APD EMail", "OPD EMail" ]
+            csv << [ "Project Name", "Project Start", "Project End", "Male PD Email", "Female PD Email", "OPD Email" ]
             @payments.each do |payment|
               csv << [ payment.payment_account_no,
                 payment.amount, payment.application.person.firstName, payment.application.person.lastName,
