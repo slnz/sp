@@ -5,6 +5,6 @@
   <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
   <td class="email"><%= mail_to(person.email, image_tag('icons/mail.png')) %></td>
   <td class="campus"><%= person.campus %></td>
-  <td class="balance"><%= number_to_currency(designation ? designation.account_balance.to_i : 0, :precision => 0) %></td>
+  <td class="balance"><%= link_to(number_to_currency(designation ? designation.account_balance.to_i : 0, :precision => 0), other_donations_admin_application_path(staff_id: staff.id)) %></td>
   <td class="designation"><%= designation.try(:designation_number).present? ? designation.designation_number : "Not Assigned" %></td>
 </tr>
