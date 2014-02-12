@@ -1,0 +1,33 @@
+<%# encoding: utf-8 %>
+
+<p class="legend">
+  Fields with the <%= image_tag('required.png') %> are required.
+</p>
+
+<p>
+  When your students get issued a designation number, we will also set them up with a personal fund raising site.
+  In order to make it easier for students to set up their sites and increase their chances of success, we will pre-fill
+  the website with the content that you as the director provide.
+</p>
+<p>
+  Look at <a href="https://www.gcx.org/baikens/" target="_blank">https://www.gcx.org/baikens/</a> as an example.
+  The paragraph above the main picture/video is the 'Project Summary'. The paragraphs below the main picture
+  are the 'Full Project Description'
+</p>
+<p>
+  Students will receive an email with instructions for how to upload their pictures and fill out the bio section on the right.
+</p>
+
+<hr />
+
+<div class="field required">
+  <%= f.label :project_summary, 'Project Summary: Short version of what your project is about.' %>
+  <%= f.text_area :project_summary, rows: 10, cols: 80 %>
+</div>
+
+<div class="field required">
+  <%= f.label :full_project_description, 'Full Project Description: Longer description of your project.' %>
+  <%= f.text_area :full_project_description, rows: 20, cols: 80 %>
+</div>
+
+<button type="submit" class="save"><span>Save</span></button>
