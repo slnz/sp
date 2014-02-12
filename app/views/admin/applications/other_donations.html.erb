@@ -1,0 +1,46 @@
+
+<div class="pagepad">
+  <div class="backbutton floatleft">
+    <%= link_to('Back to ' + @project.name, admin_project_path(@project, :year => @project.year)) %>
+  </div>
+  <hr/>
+  <h2>Donations Summary:</h2>
+    <div class="donationsub">
+      <%= @person %> &mdash; <%= number_to_currency(@designation.account_balance.to_i, :precision => 0) %><br/>
+      <%= @project.name %>: <%= @project.year %>
+    </div>
+    
+  <table class="people donations">
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Donor Name</th>
+      <th>Medium</th>
+    </tr>
+    <% SpDonation.where(designation_number: @designation.id).for_year(@project.year).each do |donation| %>
+      <tr>
+        <td><%= l(donation.donation_date) %></td>
+        <td class="amount"><%= number_to_currency(donation.amount) %></td>
+        <td><%= donation.donor_name %></td>
+        <td><span class="sprited sprite-<%= donation.medium.to_s.downcase.gsub(/\s+/,'_') %>"><%= donation.medium %></span></td>
+      </tr>
+      
+    <% end %>
+    <tr class="totals">
+      <td>Total: </td>
+      <td colspan="3">
+        <%= number_to_currency(@designation.account_balance.to_i, :precision => 0) %>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+$(document).ready(function() {
+
+  $('table.donations tbody tr:odd').addClass('odd');
+
+  $('table.donations tbody tr:even').addClass('even');
+
+});
+</script>

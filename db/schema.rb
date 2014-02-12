@@ -3162,45 +3162,33 @@ ActiveRecord::Schema.define(version: 20140122183741) do
   end
 
   create_table "rideshare_event", force: true do |t|
-    t.integer  "conference_id"
-    t.string   "event_name",    limit: 50
-    t.string   "password",      limit: 50, null: false
-    t.text     "email_content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "conference_id"
+    t.string  "event_name",    limit: 50
+    t.string  "password",      limit: 50, null: false
+    t.text    "email_content"
   end
 
   create_table "rideshare_ride", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "driver_ride_id"
-    t.integer  "person_id"
-    t.string   "address1",                                  null: false
-    t.string   "address2",                                  null: false
-    t.string   "address3",                                  null: false
-    t.string   "address4",                                  null: false
-    t.string   "city",               limit: 50,             null: false
-    t.string   "state",              limit: 50,             null: false
-    t.string   "zip",                limit: 20,             null: false
-    t.string   "country",            limit: 64,             null: false
-    t.float    "latitude"
-    t.float    "longitude"
-    t.string   "phone",              limit: 25,             null: false
-    t.string   "contact_method",     limit: 5
-    t.integer  "number_passengers",  limit: 1,  default: 0, null: false
-    t.integer  "drive_willingness",  limit: 1
-    t.time     "depart_time"
-    t.text     "special_info"
-    t.string   "email",                                     null: false
-    t.string   "situation"
-    t.string   "change"
-    t.string   "time_hour"
-    t.string   "time_minute"
-    t.string   "time_am_pm"
-    t.string   "spaces"
-    t.string   "special_info_check"
-    t.string   "spaces_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "event_id"
+    t.integer "driver_ride_id"
+    t.integer "person_id"
+    t.string  "address1",                     null: false
+    t.string  "address2",                     null: false
+    t.string  "address3",                     null: false
+    t.string  "address4",                     null: false
+    t.string  "city",              limit: 50, null: false
+    t.string  "state",             limit: 50, null: false
+    t.string  "zip",               limit: 20, null: false
+    t.string  "country",           limit: 64, null: false
+    t.float   "latitude"
+    t.float   "longitude"
+    t.string  "phone",             limit: 25, null: false
+    t.string  "contact_method",    limit: 5
+    t.integer "number_passengers", limit: 1
+    t.integer "drive_willingness", limit: 1
+    t.time    "depart_time"
+    t.text    "special_info"
+    t.string  "email",                        null: false
   end
 
   add_index "rideshare_ride", ["drive_willingness"], name: "drivewillingness", using: :btree

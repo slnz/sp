@@ -98,6 +98,7 @@ Sp2::Application.routes.draw do
     resources :applications do
       member do
         get :donations
+        get :other_donations
         get :waive_fee
       end
       collection do

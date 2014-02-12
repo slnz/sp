@@ -88,6 +88,16 @@ class Admin::ApplicationsController < ApplicationController
     end
   end
 
+  def other_donations
+    @staff = SpStaff.find(params[:staff_id])
+    @person = @staff.person
+    @project = @staff.sp_project
+    @designation = @person.sp_designation_numbers.where(:project_id => @project.id).first
+    unless @designation
+      render text: "This person does not have a designation number yet."
+    end
+  end
+
   def donations
     @project = @application.project
   end
