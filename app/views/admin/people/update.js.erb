@@ -1,7 +1,7 @@
 <% if @person.errors.present? %>
-  $('#leader_details<%= @person.id %>').dialog('option',{height:600})
-  $('#<%= dom_id(@person) %>_form').html('<%= raw escape_javascript(render('edit', :person => @person)) %>')
+  $('#leader_details<%= @person.id %>').dialog('option',{height:720})
+  $('#<%= dom_id(@person) %>_form').html('<%= raw escape_javascript(render('edit', :person => @person, app: @application)) %>')
 <% else %>
   $('#leader_details<%= @person.id %>').dialog('option',{height:300})
-  $('#leader_details<%= @person.id %>').html('<%= raw escape_javascript(render('person', :person => @person)) %>')
+  $('#leader_details<%= @person.id %>').html('<%= raw escape_javascript(render('person', :person => @person, app: @application)) %>')
 <% end %>

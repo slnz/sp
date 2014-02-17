@@ -1,1 +1,1 @@
-$('#leader_details<%= @person.id %>').html('<%= raw escape_javascript(render('person', :person => @person)) %>')
+$('#leader_details<%= @person.id %>').html('<%= raw escape_javascript(render('person', person: @person, app: @application)) %>')
