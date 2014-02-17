@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227085500) do
+ActiveRecord::Schema.define(version: 20140205160418) do
 
   create_table "academic_departments", force: true do |t|
     t.string "name"
@@ -2241,9 +2241,11 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.integer  "eventKeyID"
     t.string   "type",                   limit: 20
     t.string   "county"
-    t.boolean  "ongoing_special_event",              default: false
+    t.boolean  "ongoing_special_event",                                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "latitude",                           precision: 11, scale: 7
+    t.decimal  "longitude",                          precision: 11, scale: 7
   end
 
   add_index "ministry_targetarea", ["country"], name: "index4", using: :btree
@@ -2892,10 +2894,11 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.boolean  "intern_access"
     t.boolean  "stint_access"
     t.boolean  "mtl_access"
-    t.boolean  "individual_access", default: false
+    t.boolean  "individual_access",       default: false
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "grant_individual_access", default: false, null: false
   end
 
   create_table "phone_numbers", force: true do |t|
@@ -2995,7 +2998,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   add_index "pr_elements", ["slug"], name: "index_pr_elements_on_slug", using: :btree
 
   create_table "pr_email_templates", force: true do |t|
-    t.string   "name",       limit: 1000, null: false
+    t.string   "name",       limit: 100, default: "", null: false
     t.text     "content"
     t.boolean  "enabled"
     t.string   "subject"
@@ -3003,7 +3006,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.datetime "updated_at"
   end
 
-  add_index "pr_email_templates", ["name"], name: "index_pr_email_templates_on_name", length: {"name"=>255}, using: :btree
+  add_index "pr_email_templates", ["name"], name: "index_pr_email_templates_on_name", using: :btree
 
   create_table "pr_page_elements", force: true do |t|
     t.integer  "page_id"
@@ -3266,7 +3269,6 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   add_index "si_conditions", ["trigger_id"], name: "trigger_id", using: :btree
 
   create_table "si_elements", force: true do |t|
-    t.integer  "question_sheet_id",                                    null: false
     t.integer  "page_id"
     t.string   "kind",                      limit: 40,                 null: false
     t.string   "style",                     limit: 40
@@ -3274,7 +3276,6 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.text     "content"
     t.boolean  "required"
     t.string   "slug",                      limit: 36
-    t.integer  "position",                                             null: false
     t.boolean  "is_confidential",                      default: false
     t.string   "source"
     t.string   "value_xpath"
@@ -3296,8 +3297,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.integer  "max_length"
   end
 
-  add_index "si_elements", ["position"], name: "index_si_elements_on_position", using: :btree
-  add_index "si_elements", ["question_sheet_id", "position", "page_id"], name: "index_si_elements_on_question_sheet_id_and_position_and_page_id", using: :btree
+  add_index "si_elements", ["page_id"], name: "index_si_elements_on_question_sheet_id_and_position_and_page_id", using: :btree
   add_index "si_elements", ["slug"], name: "index_si_elements_on_slug", using: :btree
 
   create_table "si_email_templates", force: true do |t|
@@ -3329,7 +3329,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   add_index "si_pages", ["question_sheet_id", "number"], name: "page_number", unique: true, using: :btree
 
   create_table "si_payments", force: true do |t|
-    t.integer  "apply_id",           null: false
+    t.integer  "answer_sheet_id",    null: false
     t.string   "payment_type"
     t.string   "amount"
     t.string   "payment_account_no"
@@ -3339,7 +3339,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.datetime "updated_at"
   end
 
-  add_index "si_payments", ["apply_id"], name: "apply_id", using: :btree
+  add_index "si_payments", ["answer_sheet_id"], name: "apply_id", using: :btree
 
   create_table "si_question_options", force: true do |t|
     t.integer  "question_id"
@@ -3871,7 +3871,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   add_index "sp_elements", ["slug"], name: "index_sp_elements_on_slug", using: :btree
 
   create_table "sp_email_templates", force: true do |t|
-    t.string   "name",       limit: 1000, null: false
+    t.string   "name",       limit: 100, default: "", null: false
     t.text     "content"
     t.boolean  "enabled"
     t.string   "subject"
@@ -3879,7 +3879,7 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.datetime "updated_at"
   end
 
-  add_index "sp_email_templates", ["name"], name: "index_sp_email_templates_on_name", length: {"name"=>255}, using: :btree
+  add_index "sp_email_templates", ["name"], name: "index_sp_email_templates_on_name", using: :btree
 
   create_table "sp_evaluations", force: true do |t|
     t.integer "application_id",                     null: false
@@ -4158,6 +4158,8 @@ ActiveRecord::Schema.define(version: 20131227085500) do
     t.date     "archive_project_date",                            default: '2012-08-31'
     t.boolean  "secure"
     t.integer  "global_registry_id"
+    t.text     "project_summary"
+    t.text     "full_project_description"
   end
 
   add_index "sp_projects", ["global_registry_id"], name: "index_sp_projects_on_global_registry_id", using: :btree
@@ -4215,11 +4217,13 @@ ActiveRecord::Schema.define(version: 20131227085500) do
   end
 
   create_table "sp_staff", force: true do |t|
-    t.integer "person_id",                                   null: false
-    t.integer "project_id",                                  null: false
-    t.string  "type",               limit: 100, default: "", null: false
-    t.string  "year"
-    t.integer "global_registry_id", limit: 8
+    t.integer  "person_id",                                   null: false
+    t.integer  "project_id",                                  null: false
+    t.string   "type",               limit: 100, default: "", null: false
+    t.string   "year"
+    t.integer  "global_registry_id", limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sp_staff", ["person_id"], name: "person_id", using: :btree

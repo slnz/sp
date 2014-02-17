@@ -21,7 +21,7 @@ class SpPayment < ActiveRecord::Base
   end
 
   def staff_email_present_if_staff_payment
-    if staff?
+    if staff? && !payment_account_no.include?('/') # Don't try to validate chart fields
       staff = Staff.find_by(accountNo: payment_account_no)
       unless staff
         errors.add(:base, "We couldn't find a staff member with that account number")
@@ -66,9 +66,5 @@ class SpPayment < ActiveRecord::Base
     card =  ActiveMerchant::Billing::CreditCard.new(:number => card_number)
     card.valid?
     card.type
-  end
-  
-  def to_s
-    payment_type.present? ? payment_type + ': ' + amount.to_s : ''
   end
 end

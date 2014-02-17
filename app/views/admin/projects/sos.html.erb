@@ -1,5 +1,5 @@
 <div class="pagepad">
-  <% form_tag do %>
+  <%= form_tag do %>
     Search for projects that start between the following dates:
     <br /><br />
     <%= text_field_tag :start, 1.month.ago.to_date.to_s(:db), 'data-calendar-db' => true %> and

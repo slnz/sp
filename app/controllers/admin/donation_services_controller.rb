@@ -48,9 +48,8 @@ class Admin::DonationServicesController < ApplicationController
           unless person_id.present? && designation_number.present? && designation_number != 0 && donor_number.present?
             @error_messages << "Row #{row_num} is invalid: missing required data"
           else
-            application = nil
             begin
-              designation_numbers_to_update[person_id] = designation_number.to_i
+              designation_numbers_to_update[person_id] = designation_number
               persons_to_update[person_id] = donor_number
             rescue ActiveRecord::RecordNotFound
               @error_messages << "Person #{person_id} or subsequent does not exist"

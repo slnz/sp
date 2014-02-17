@@ -16,8 +16,14 @@ class AnswerPagesPresenter < Presenter
       @pages.insert(0, instructions) if instructions
     end
     if answer_sheet.respond_to?(:project)
-      if answer_sheet.project && answer_sheet.project.project_specific_question_sheet && answer_sheet.project.project_specific_question_sheet.pages.first && answer_sheet.project.project_specific_question_sheet.pages.first.elements.count > 0
-        @pages.insert(-2, answer_sheet.project.project_specific_question_sheet.pages.first)
+      if answer_sheet.project && answer_sheet.project.project_specific_question_sheet &&
+        answer_sheet.project.project_specific_question_sheet.pages.first &&
+        answer_sheet.project.project_specific_question_sheet.pages.first.elements.count > 0
+        begin
+          @pages.insert(-2, answer_sheet.project.project_specific_question_sheet.pages.first)
+        rescue IndexError
+          @pages << answer_sheet.project.project_specific_question_sheet.pages.first
+        end
       end
     end
     @pages

@@ -40,7 +40,7 @@ describe Admin::DonationServicesController do
       post 'upload', upload: {upload: fixture_file_upload('/donation_services_upload.txt', 'text/csv')}
       expect(response).to render_template('upload')
       expect(assigns(:error_messages)).to eq([])
-      expect(@application.reload.designation_number(SpApplication.year)).to eq('5508771')
+      expect(@application.reload.designation_number(SpApplication.year)).to eq('005508771')
     end
   end
 end
