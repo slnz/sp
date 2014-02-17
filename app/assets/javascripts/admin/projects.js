@@ -123,9 +123,9 @@ $(function() {
         'Edit information': function() {
           $('#person_' + id + '_info').hide();
           $('#person_' + id + '_form').show();
-            $("#sp_application_start_date").datepicker();
-            $("#sp_application_end_date").datepicker();
-          $('#leader_details' + id).dialog('option',{height:560, buttons: {}});
+          $("#sp_application_start_date").datepicker();
+          $("#sp_application_end_date").datepicker();
+          $('#leader_details' + id).dialog('option',{height:720, buttons: {}});
         }
       };
       // If this is a leader, provide the option to change the leader
@@ -276,8 +276,8 @@ $(function() {
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();
 
-    $("#sp_application_start_date").datepicker();
-    $("#sp_application_end_date").datepicker();
+  $("#sp_application_start_date").datepicker();
+  $("#sp_application_end_date").datepicker();
 
   $("#readmoreless").click(function() {
     $('#' + $(this).attr('rel')).toggleClass('showall', 500);

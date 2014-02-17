@@ -13,46 +13,55 @@
     <td class="left">Preferred:</td>
     <td><%= f.text_field :preferredName %></td>
   </tr>
-	<% if @project_id && @project_id != 0 %>
-	  <tr>
-	    <td class="left">Designation: </td>
-	    <td><%= text_field_tag :designation_number, @designation ? @designation.designation_number : "" %>
-					<%= hidden_field_tag :project_id, @project_id %><%= hidden_field_tag :year, @year %></td>
-	  </tr>
-	<%- end %>
+  <% if @project_id && @project_id != 0 %>
+      <tr>
+        <td class="left">Designation:</td>
+        <td><%= text_field_tag :designation_number, @designation ? @designation.designation_number : "" %>
+          <%= hidden_field_tag :project_id, @project_id %><%= hidden_field_tag :year, @year %></td>
+      </tr>
+  <%- end %>
 
-    <tr>
-        <td class="left">Start Date:</td>
-        <td><%= calendar_date_select_tag 'sp_application[start_date]', @application_dates.start_date %></td>
-    </tr>
-    <tr>
-        <td class="left">End Date:</td>
-        <td><%= calendar_date_select_tag 'sp_application[end_date]', @application_dates.end_date %></td>
-    </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Please only adjust the date fields below if a student on your project is arriving late or leaving early. SOS and project insurance fees will be based on these dates.</td>
+  </tr>
+  <tr>
+    <td class="left">Start Date:</td>
+    <td><%= calendar_date_select_tag 'sp_application[start_date]', app.start_date %></td>
+  </tr>
+  <tr>
+    <td class="left">End Date:</td>
+    <td><%= calendar_date_select_tag 'sp_application[end_date]', app.end_date %></td>
+  </tr>
 
   <%= f.fields_for :current_address do |af| %>
-    <tr>
-      <td class="left">Phone:</td>
-      <td>
-        <%= af.text_field :homePhone %> (home)<br/>
-        <%= af.text_field :cellPhone %> (cell)<br/>
-        <%= af.text_field :workPhone %> (work)
-      </td>
-    </tr>
-    <tr>
-      <td class="left">Email:</td>
-      <td><%= af.text_field :email %></td>
-    </tr>
-    <tr>
-      <td class="left">Address:</td>
-      <td>
-        Street 1: <%= af.text_field :address1 %><br/>
-        Street 2: <%= af.text_field :address2 %><br/>
-        City: <%= af.text_field :city %><br/>
-        State: <%= af.select :state, State::NAMES + ['Ontario'], :include_blank => true %><br/>
-        Zip: <%= af.text_field :zip %><br/>
-        Country: <%= af.select :country, Country.order(:country).pluck(:country), :include_blank => true %>
-      </td>
-    </tr>
+      <tr>
+        <td class="left">Phone:</td>
+        <td>
+          <%= af.text_field :homePhone %> (home)<br/>
+          <%= af.text_field :cellPhone %> (cell)<br/>
+          <%= af.text_field :workPhone %> (work)
+        </td>
+      </tr>
+      <tr>
+        <td class="left">Email:</td>
+        <td><%= af.text_field :email %></td>
+      </tr>
+      <tr>
+        <td class="left">Address:</td>
+        <td>
+          Street 1: <%= af.text_field :address1 %>
+          <br/>
+          Street 2: <%= af.text_field :address2 %>
+          <br/>
+          City: <%= af.text_field :city %>
+          <br/>
+          State: <%= af.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
+          <br/>
+          Zip: <%= af.text_field :zip %>
+          <br/>
+          Country: <%= af.select :country, Country.order(:country).pluck(:country), :include_blank => true %>
+        </td>
+      </tr>
   <% end %>
 </table>

@@ -5,21 +5,31 @@ class Admin::PeopleController < ApplicationController
   def show
     @project_id = params[:project_id].to_i
     @year = params[:year].to_i
+    @application = SpApplication.where(year: params[:year], person_id: @person.id, project_id: @project_id).first
     @designation = @person.sp_designation_numbers.where(:project_id => @project_id, :year => @year).first
     @person.current_address = @person.create_current_address unless @person.current_address
-    respond_with(@person)
+    respond_with(@person, @application)
   end
 
   def update
     @person.update_attributes(person_params)
     @project_id = params[:project_id].to_i
     @year = params[:year].to_i
+    @application = SpApplication.where(year: params[:year], person_id: @person.id, project_id: @project_id).first
     if @project_id != 0
       if @designation = @person.sp_designation_numbers.where(:project_id => @project_id, :year => @year).first
         @designation.update_attributes(:designation_number => params[:designation_number])
       else
         @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number], :year => SpApplication.year)
       end
+    end
+    dates = params[:sp_application]
+    start_date = Date.strptime(dates[:start_date], "%m/%d/%Y")
+    end_date = Date.strptime(dates[:end_date], "%m/%d/%Y")
+    if start_date != @application.project.start_date || end_date != @application.project.end_date
+      @application.start_date = start_date
+      @application.end_date = end_date
+      @application.save
     end
     respond_to do |wants|
       wants.html { redirect_to admin_person_path(@person) }
@@ -30,7 +40,6 @@ class Admin::PeopleController < ApplicationController
   protected
   def get_person
     @person = Person.find(params[:id])
-    @application_dates = SpApplication.select(:id, :start_date, :end_date).where(year: params[:year].to_i, person_id: @person.id, project_id: @project_id).first # SpApplication.select(:id, :start_date, :end_date).where(year: 2013, person_id: 2345236, project_id: 370).first
   end
   
   def person_params
