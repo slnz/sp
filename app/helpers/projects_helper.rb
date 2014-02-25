@@ -27,6 +27,7 @@ module ProjectsHelper
       statLink = statLink + "?name=" + project_version.name
       statLink = statLink + "&region=" + project_version.primary_partner
       statLink = statLink + "&strategy="
+      statLink = statLink + "WS" if project_version.report_stats_to == 'Campus Ministry - Global Missions summer project'
       statLink = statLink + "&email="
       if project_version.pd
         if project_version.pd_email
