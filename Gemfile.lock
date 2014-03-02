@@ -13,6 +13,36 @@ GIT
       sidekiq
 
 GIT
+  remote: git://github.com/CruGlobal/gcx_api.git
+  revision: 2496ef297e8c8279ce83c2a2c68e36d09887c167
+  specs:
+    gcx_api (0.0.2)
+      ox
+      rest-client
+
+GIT
+  remote: git://github.com/CruGlobal/relay_api_client.git
+  revision: f99ba58ca8e52c724d86dee13d4ca24129562983
+  specs:
+    relay_api_client (0.0.2)
+      identity_linker (~> 1.0.0)
+      savon (~> 2.1.0)
+
+GIT
+  remote: https://github.com/CruGlobal/common_engine
+  revision: 3a49409d80914d75974f83ff2591a0e65fe44fc5
+  specs:
+    common_engine (0.0.1)
+      aasm (~> 3.0.9)
+      acts_as_list (~> 0.3.0)
+      auto_strip_attributes (~> 2.0)
+      geocoder
+      global_registry
+      rails (>= 3.0.0)
+      rubycas-client
+      sidekiq
+
+GIT
   remote: https://github.com/CruGlobal/qe
   revision: 9866c02abcf2f6fa2ec2ae7e586f9c69c77f04b2
   ref: 9866c02
@@ -29,33 +59,6 @@ GIT
   specs:
     acts_as_versioned (0.6.0)
       activerecord (>= 3.0.9)
-
-PATH
-  remote: /Users/josh/htdocs/common_engine
-  specs:
-    common_engine (0.0.1)
-      aasm (~> 3.0.9)
-      acts_as_list (~> 0.3.0)
-      auto_strip_attributes (~> 2.0)
-      geocoder
-      global_registry
-      rails (>= 3.0.0)
-      rubycas-client
-      sidekiq
-
-PATH
-  remote: /Users/josh/htdocs/gcx_api
-  specs:
-    gcx_api (0.0.1)
-      ox
-      rest-client
-
-PATH
-  remote: /Users/josh/htdocs/relay_api_client
-  specs:
-    relay_api_client (0.0.2)
-      identity_linker (~> 1.0.0)
-      savon (~> 2.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -107,8 +110,8 @@ GEM
       multi_json
     akami (1.2.1)
       gyoku (>= 0.4.0)
-      nokogiri
-    arel (4.0.2)
+      nokogiri (>= 1.4.0)
+    arel (4.0.1)
     atomic (1.1.14)
     auto_strip_attributes (2.0.4)
       activerecord (>= 3.0)
@@ -266,8 +269,8 @@ GEM
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
-    ox (2.1.1)
-    paperclip (3.5.4)
+    ox (2.0.12)
+    paperclip (3.5.2)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
