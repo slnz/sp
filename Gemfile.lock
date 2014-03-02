@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/CruGlobal/gcx_api.git
-  revision: 5faff23381a93945c943aacc58a86a9faf6e8327
+  revision: 2cec4a58cd133871cc36b28f4bc071d5c55a4269
   specs:
     gcx_api (0.0.2)
       ox
