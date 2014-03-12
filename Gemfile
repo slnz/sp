@@ -44,6 +44,8 @@ gem 'common_engine', git: 'https://github.com/CruGlobal/common_engine'
 gem 'image_science', '~> 1.2.5'
 gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '9866c02'
 gem 'sidekiq'
+gem 'sidekiq-failures'
+gem 'sidekiq-unique-jobs'
 gem 'geocoder'
 
 group :development, :test do
