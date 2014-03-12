@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 248ffe71d27492c247adc4e19e7158d1654dedf0
+  revision: 8b671e8f14b6c5d416fb0c799a3c2f562e0e4ef7
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -393,7 +393,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.38)
+    tzinfo (0.3.39)
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
