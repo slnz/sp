@@ -108,4 +108,8 @@ module ProjectsHelper
   def error_wrapping(html_tag, has_error)
     has_error ? ActionView::Base.field_error_proc.call(html_tag, self) : html_tag
   end
+
+  def highlight_date(app, date_field)
+    app.read_attribute(date_field).present? ? "highlight" : ""
+  end
 end

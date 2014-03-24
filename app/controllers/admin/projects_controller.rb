@@ -375,6 +375,10 @@ class Admin::ProjectsController < ApplicationController
     end
   end
 
+  def sos_exceptions
+    @applications = SpApplication.where("start_date is not null OR end_date is not null")
+  end
+
   protected
   def get_project
     @project = SpProject.find(params[:id])
