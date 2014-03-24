@@ -1,23 +1,7 @@
 GIT
-  remote: git://github.com/CruGlobal/gcx_api.git
-  revision: 2cec4a58cd133871cc36b28f4bc071d5c55a4269
-  specs:
-    gcx_api (0.0.2)
-      ox
-      rest-client
-
-GIT
-  remote: git://github.com/CruGlobal/relay_api_client.git
-  revision: f99ba58ca8e52c724d86dee13d4ca24129562983
-  specs:
-    relay_api_client (0.0.2)
-      identity_linker (~> 1.0.0)
-      savon (~> 2.1.0)
-
-GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 9448ed1cc1934fdcc2b68b95e0e06f9c55230191
-  ref: 9448ed1
+  revision: 0b5d0fed97336d6490c923ae2a6b20a8bb5dc075
+  ref: 0b5d0fe
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -154,6 +138,9 @@ GEM
     fuubar (1.3.2)
       rspec (>= 2.14.0, < 3.1.0)
       ruby-progressbar (~> 1.3)
+    gcx_api (0.0.2)
+      ox
+      rest-client
     geocoder (1.1.9)
     global_registry (1.0.2)
       activesupport
@@ -302,6 +289,9 @@ GEM
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
     ref (1.0.5)
+    relay_api_client (0.0.2)
+      identity_linker (~> 1.0.0)
+      savon (~> 2.1.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     retryable-rb (1.1.0)
@@ -437,7 +427,7 @@ DEPENDENCIES
   excelsior (~> 0.1.0)
   factory_girl_rails
   fuubar
-  gcx_api!
+  gcx_api
   geocoder
   google-geocode (~> 1.2.1)
   guard-rspec
@@ -458,7 +448,7 @@ DEPENDENCIES
   rack-contrib (~> 1.1.0)
   rails (~> 4.0.0)
   rb-fsevent (~> 0.9)
-  relay_api_client!
+  relay_api_client
   retryable-rb (~> 1.1.0)
   rspec-rails
   sass-rails
