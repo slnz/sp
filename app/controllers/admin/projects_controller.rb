@@ -376,7 +376,25 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def sos_exceptions
-    @applications = SpApplication.where("start_date is not null OR end_date is not null")
+    applications = SpApplication.where("start_date is not null OR end_date is not null")
+      .where(year: SpApplication.year)
+    @exceptions = {}
+    applications.each do |app|
+      if app.read_attribute(:start_date).present? && app.start_date.year == SpApplication.year
+        if @exceptions[app.start_date].present?
+          @exceptions[app.start_date] = @exceptions[app.start_date] + [app]
+        else
+          @exceptions[app.start_date] = [app]
+        end
+      end
+      if app.read_attribute(:end_date).present? && app.end_date.year == SpApplication.year
+        if @exceptions[app.end_date].present?
+          @exceptions[app.end_date] = @exceptions[app.end_date] + [app]
+        else
+          @exceptions[app.end_date] = [app]
+        end
+      end
+    end
   end
 
   protected

@@ -8,14 +8,23 @@
       <th>End Date</th>
       <th>Designation Number</th>
     </tr>
-    <% @applications.each do |app| %>
-        <tr>
-          <td class="name"><%= app.name %></td>
-          <td class="name"><%= app.project.name %></td>
-          <td class="<%= highlight_date(app, "start_date") %>"><%= l(app.start_date) %></td>
-          <td class="<%= highlight_date(app, "end_date") %>"><%= l(app.end_date) %></td>
-          <td><%= app.designation_number %></td>
-        </tr>
+    <% current_month = 0 %>
+   <% @exceptions.keys.sort.each do |date| %>
+        <% if date.month != current_month %>
+            <% current_month = date.month %>
+            <tr>
+              <td><h3><%= I18n.t("date.month_names")[current_month] %></h3></td>
+            </tr>
+        <% end %>
+        <% @exceptions[date].each do |app| %>
+            <tr>
+              <td class="name"><%= app.name %></td>
+              <td class="name"><%= app.project.name %></td>
+              <td class="<%= highlight_date(app, "start_date") %>"><%= l(app.start_date) %></td>
+              <td class="<%= highlight_date(app, "end_date") %>"><%= l(app.end_date) %></td>
+              <td><%= app.designation_number %></td>
+            </tr>
+        <% end %>
     <% end %>
   </table>
 </div>
