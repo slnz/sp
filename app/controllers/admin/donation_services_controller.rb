@@ -67,6 +67,7 @@ class Admin::DonationServicesController < ApplicationController
 
     @num_emails_sent = 0
     designation_numbers_to_update.each do |person_id, designation_number|
+      padded_designation_number = designation_number.to_s.rjust(7, "0")
       person = Person.find(person_id)
       donor_number = persons_to_update[person_id]
 
@@ -78,22 +79,22 @@ class Admin::DonationServicesController < ApplicationController
         unless project_id.present?
           @warning_messages << "Person #{person_id} is not assigned to a project; skipping"
         else
-          # if (application.designation_number == designation_number && person.donor_number == donor_number)
-          if record.designation_number == designation_number && person.donor_number == donor_number
+          # if (application.designation_number == padded_designation_number && person.donor_number == donor_number)
+          if record.designation_number == padded_designation_number && person.donor_number == donor_number
             @warning_messages << "Person #{person_id} has already been assigned " +
-              "this designation number (#{designation_number}) " +
+              "this designation number (#{padded_designation_number}) " +
               "and has already been assigned this donor id (#{donor_number}); no update necessary"
           else
-            if record.designation_number.present? && record.designation_number != designation_number
+            if record.designation_number.present? && record.designation_number != padded_designation_number
               @warning_messages << "Person #{person_id} was previously assigned a different " +
-                "designation number (#{record.designation_number}); reassigning to #{designation_number}"
+                "designation number (#{record.designation_number}); reassigning to #{padded_designation_number}"
             end
             if !person.donor_number.blank? && person.donor_number != donor_number
               @warning_messages << "Person #{person_id} was previously assigned a different donor id (#{person.donor_number}); reassigning to #{donor_number}"
             end
 
             # Update Records
-            record.designation_number = designation_number
+            record.designation_number = padded_designation_number
             person.donor_number = donor_number
 
             if !record.valid?
@@ -126,7 +127,7 @@ class Admin::DonationServicesController < ApplicationController
                                       {'name' => person.try(:informal_full_name),
                                        'project_name' => project.name,
                                        'email' => person && person.current_address ? person.current_address.email : nil,
-                                       'designation_number' => designation_number,
+                                       'designation_number' => padded_designation_number,
                                        'donor_number' => donor_number}).deliver
                 @num_emails_sent += 1
               end

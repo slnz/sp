@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
         year = params[:year].present? ? params[:year].to_i : SpApplication.year
         conditions = [[],[]]
         conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
-        conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_student_men_applicants + #{SpProject.table_name}.max_student_women_applicants)"
+        conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
         unless params[:all] == 'true'
           if params[:id] && params[:id].present?
             conditions[0] << "#{SpProject.table_name}.id IN(?)"

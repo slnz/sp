@@ -20,3 +20,5 @@ log/*
 coverage
 config/config.yml
 .idea
+app/models/gcx.rb
+app/models/wpdev.rb

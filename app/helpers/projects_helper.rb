@@ -27,6 +27,7 @@ module ProjectsHelper
       statLink = statLink + "?name=" + project_version.name
       statLink = statLink + "&region=" + project_version.primary_partner
       statLink = statLink + "&strategy="
+      statLink = statLink + "WS" if project_version.report_stats_to == 'Campus Ministry - Global Missions summer project'
       statLink = statLink + "&email="
       if project_version.pd
         if project_version.pd_email
@@ -106,5 +107,9 @@ module ProjectsHelper
   
   def error_wrapping(html_tag, has_error)
     has_error ? ActionView::Base.field_error_proc.call(html_tag, self) : html_tag
+  end
+
+  def highlight_date(app, date_field)
+    app.read_attribute(date_field).present? ? "highlight" : ""
   end
 end
