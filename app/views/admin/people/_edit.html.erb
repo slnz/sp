@@ -1,7 +1,7 @@
 <div class="ui-icon ui-icon-person-<%= person.human_gender.downcase %>" style="float:left; margin:0 7px 20px 0;"></div>
 <div>
-  <%= form_for person, :url => admin_person_path(person, :format => :js), :remote => true, :html => {:id => 'update_person_form'} do |f| %>
-    <%= render 'form', :f => f %>
+  <%= form_for person, url: admin_person_path(person, format: :js), remote: true, id: 'update_person_form' do |f| %>
+    <%= render 'form', f: f, app: app %>
     <%= f.submit 'Save' %> or <%= link_to('cancel', '#', :class => 'cancel_edit_person_link', 'data-id' => person.id) %>
   <% end %>
 </div>

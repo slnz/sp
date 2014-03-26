@@ -108,7 +108,7 @@ $(function() {
       name = $(this).html();
       dom = 'leader_details' + id;
       if ($('#' + dom)[0] == null) {
-        $('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/images/spinner.gif" style="" /></div>');
+        $('body').append('<div id="' + dom + '" title="' + name + '"><img alt="Spinner" class="spinner" id="spinner_' + id + '" src="/assets/spinner.gif" style="" /></div>');
         $.ajax({dataType: 'script',
           type:'GET',
           url: '/admin/people/' + id + '?project_id=' + proj + '&year=' + year
@@ -123,7 +123,9 @@ $(function() {
         'Edit information': function() {
           $('#person_' + id + '_info').hide();
           $('#person_' + id + '_form').show();
-          $('#leader_details' + id).dialog('option',{height:560, buttons: {}});
+          $("#sp_application_start_date").datepicker();
+          $("#sp_application_end_date").datepicker();
+          $('#leader_details' + id).dialog('option',{height:720, buttons: {}});
         }
       };
       // If this is a leader, provide the option to change the leader
@@ -273,6 +275,9 @@ $(function() {
 
   $("#sp_project_start_date").datepicker();
   $("#sp_project_end_date").datepicker();
+
+  $("#sp_application_start_date").datepicker();
+  $("#sp_application_end_date").datepicker();
 
   $("#readmoreless").click(function() {
     $('#' + $(this).attr('rel')).toggleClass('showall', 500);
