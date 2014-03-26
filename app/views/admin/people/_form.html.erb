@@ -21,18 +21,20 @@
       </tr>
   <%- end %>
 
-  <tr>
-    <td>&nbsp;</td>
-    <td>Please only adjust the date fields below if a student on your project is arriving late or leaving early. SOS and project insurance fees will be based on these dates.</td>
-  </tr>
-  <tr>
-    <td class="left">Start Date:</td>
-    <td><%= calendar_date_select_tag 'sp_application[start_date]', app.start_date %></td>
-  </tr>
-  <tr>
-    <td class="left">End Date:</td>
-    <td><%= calendar_date_select_tag 'sp_application[end_date]', app.end_date %></td>
-  </tr>
+  <% if app.present? %>
+      <tr>
+        <td>&nbsp;</td>
+        <td>Please only adjust the date fields below if a student on your project is arriving late or leaving early. SOS and project insurance fees will be based on these dates.</td>
+      </tr>
+      <tr>
+        <td class="left">Start Date:</td>
+        <td><%= calendar_date_select_tag 'sp_application[start_date]', app.start_date %></td>
+      </tr>
+      <tr>
+        <td class="left">End Date:</td>
+        <td><%= calendar_date_select_tag 'sp_application[end_date]', app.end_date %></td>
+      </tr>
+  <% end %>
 
   <%= f.fields_for :current_address do |af| %>
       <tr>
