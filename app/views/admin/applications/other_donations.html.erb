@@ -6,7 +6,7 @@
   <hr/>
   <h2>Donations Summary:</h2>
     <div class="donationsub">
-      <%= @person %> &mdash; <%= number_to_currency(@designation.account_balance.to_i, :precision => 0) %><br/>
+      <%= @person %> &mdash; <%= number_to_currency(SpDonation.get_balance(@designation.designation_number, @designation.year).to_i, :precision => 0) %><br/>
       <%= @project.name %>: <%= @project.year %>
     </div>
     
@@ -29,7 +29,7 @@
     <tr class="totals">
       <td>Total: </td>
       <td colspan="3">
-        <%= number_to_currency(@designation.account_balance.to_i, :precision => 0) %>
+        <%= number_to_currency(SpDonation.get_balance(@designation.designation_number, @designation.year).to_i, :precision => 0) %>
       </td>
     </tr>
   </table>
