@@ -17,7 +17,7 @@
       <th>Donor Name</th>
       <th>Medium</th>
     </tr>
-    <% SpDonation.where(designation_number: @designation.id).for_year(@project.year).each do |donation| %>
+    <% SpDonation.where(designation_number: @designation.designation_number).for_year(@project.year).each do |donation| %>
       <tr>
         <td><%= l(donation.donation_date) %></td>
         <td class="amount"><%= number_to_currency(donation.amount) %></td>
