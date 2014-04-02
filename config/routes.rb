@@ -15,6 +15,17 @@ Sp2::Application.routes.draw do
     end
   end
 
+  namespace :api, defaults: {format: 'json'} do
+    api_version(module: 'v1', header: {name: 'API-VERSION', value: 'v1'}, parameter: {name: "version", value: 'v1'}, path: {value: 'v1'}) do
+      resources :ministries
+      resources :regions
+      resources :teams
+      resources :users
+      resources :people
+      resources :projects
+    end
+  end
+
   # Sample resource route within a namespace:
   namespace :admin do
     resources :donation_services do
