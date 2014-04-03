@@ -92,7 +92,7 @@ class Admin::ApplicationsController < ApplicationController
     @staff = SpStaff.find(params[:staff_id])
     @person = @staff.person
     @project = @staff.sp_project
-    @designation = @person.sp_designation_numbers.where(:project_id => @project.id).first
+    @designation = @person.sp_designation_numbers.where(project_id: @project.id, year: SpApplication.year).first
     unless @designation
       render text: "This person does not have a designation number yet."
     end

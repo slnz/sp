@@ -1,5 +1,5 @@
 <% person = staff.person %>
-<% designation = person.sp_designation_numbers.where(:project_id => @project.id).first %>
+<% designation = person.sp_designation_numbers.where(project_id: @project.id, year: SpApplication.year).first %>
 <tr>
   <td class="gender"><%= image_tag("icons/user-#{person.human_gender.downcase}.png") if person.human_gender.present? %></td>
   <td class="name"><%= link_to(person, '#', :class => 'person', 'data-id' => person.id, 'data-project-id' => @project.present? ? @project.id : '', 'data-year' => params[:year] || SpApplication.year) %></td>
