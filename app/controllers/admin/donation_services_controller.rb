@@ -103,16 +103,17 @@ class Admin::DonationServicesController < ApplicationController
             else
               project = SpProject.find(project_id)
               leaders = Hash.new
-              leaders["Project Director"] = project.pd
+              leaders["Project Director (Male)"] = project.pd
+              leaders["Project Director (Female)"] = project.apd
               leaders["Operations Project Director"] = project.opd
               leaders["Coordinator"] = project.coordinator
               recipients = Array.new
               leaders.each do |position, leader|
                 if leader
-                  if !(leader.current_address && !leader.current_address.email.blank?)
+                  if leader.email.blank?
                     @warning_messages << "#{position} for project #{project.id} does not have an email address"
                   else
-                    recipients << leader.current_address.email
+                    recipients << leader.email
                   end
                 end
               end
