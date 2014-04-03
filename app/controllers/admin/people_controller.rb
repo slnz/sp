@@ -24,11 +24,13 @@ class Admin::PeopleController < ApplicationController
       end
     end
     dates = params[:sp_application]
-    start_date = Date.strptime(dates[:start_date], "%m/%d/%Y")
-    end_date = Date.strptime(dates[:end_date], "%m/%d/%Y")
-    @application.start_date = start_date
-    @application.end_date = end_date
-    @application.save
+    if dates.present?
+      start_date = Date.strptime(dates[:start_date], "%m/%d/%Y")
+      end_date = Date.strptime(dates[:end_date], "%m/%d/%Y")
+      @application.start_date = start_date
+      @application.end_date = end_date
+      @application.save
+    end
     respond_to do |wants|
       wants.html { redirect_to admin_person_path(@person) }
       wants.js
