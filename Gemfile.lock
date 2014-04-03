@@ -270,6 +270,8 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
@@ -455,6 +457,7 @@ DEPENDENCIES
   omniauth-facebook (~> 1.6.0)
   paperclip (~> 3.5.1)
   qe!
+  quiet_assets
   rack-contrib (~> 1.1.0)
   rails (~> 4.0.0)
   rb-fsevent (~> 0.9)

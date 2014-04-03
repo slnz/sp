@@ -49,6 +49,7 @@ gem 'sidekiq-unique-jobs'
 gem 'geocoder'
 
 group :development, :test do
+  gem 'quiet_assets'
   gem 'awesome_print'
   gem 'mailcatcher'
   gem 'guard-rspec'
