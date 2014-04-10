@@ -1,5 +1,5 @@
 <script type="text/javascript" charset="utf-8">
-  var emails = <%= raw @emails.to_json %>
+    var emails = <%= raw @emails.to_json %>
 </script>
 <div class="pagepad">
   <div id="breadcrumb">
@@ -10,61 +10,78 @@
     </ul>
   </div>
   <%= render :partial => 'project_year' %>
-  
+
   <div class="projectedit">
-  
+
     <div class="emailwrap compose">
 
       <!-- Compose Email -->
       <div class="backbutton">
         <%= link_to('Back to project', admin_project_path(@project, :year => @year)) %>
-      </div>            
+      </div>
       <%= form_tag(send_email_admin_project_path(@project), :multipart => true, :id => 'email_form') do %>
-        <%= hidden_field_tag :validated, '0', :id => 'validated' %>
-        <div class="field">
-          <label>From</label>
-          <div class="fieldinput"><input name="from" size="70" type="text" value="<%= params[:from] || current_person.email %>" class="frombox">&nbsp;&nbsp; A copy of the email will be sent to this address.</div>
-        </div>        
-        
-        <div class="field">
-          <label>To:</label>
-          <div class="fieldinput">
-            <%= select_tag :group, options_for_select(@group_options) %>
-            <textarea name="to" id="to" type="text" cols="70" rows="5" wrap="virtual" class="addresses"><%= params[:to] %></textarea>
-          </div>
-        </div>
-        
-        <div class="field">
-          <label>Subject</label>
-          <div class="fieldinput"><%= text_field_tag :subject, params[:subject], :id => 'subject' %></div>
-        </div>
-        
-        <textarea name="body" cols="100" style="width: 100%;" rows="18" wrap="virtual" class="tinymce"></textarea>
+          <%= hidden_field_tag :validated, '0', :id => 'validated' %>
+          <div class="field">
+            <label>From</label>
 
-        <% (0..4).each do |i| %>        
-          <div class="field" style="<%= i == 0 ? '' : 'display:none' %>" id="attachment_<%= i %>">
-            <label><%= image_tag('attach.png') %></label>
-            <div class="fieldinput" style="padding-top: 8px;">
-              <%= file_field_tag "file[#{i}]" %>  <%= link_to_function(image_tag('icons/plus-button.png') + ' Add another attachment', "$('#attachment_#{i+1}').show()") unless i == 4  %><br/>
+            <div class="fieldinput">
+              <input name="from" size="70" type="text" value="<%= params[:from] || current_person.email %>" class="frombox">&nbsp;&nbsp;
+              <span class="right_label"><span class="warning">This MUST be an @cru.org email address or you will receive an error.  If you don't have an @cru.org email address, please use summerproject-noreply@cru.org.</span>
+              <br/><!--A copy of the email will be sent to this address.--></span>
             </div>
           </div>
-          <div style="clear:both"></div>
-        <% end %>
-        
-        <div class="clear"></div>
-        
-        <button type="submit" value="Send Email" class="save" /><span>Send Email</span></button>
+
+          <div class="field">
+            <label>Reply To</label>
+
+            <div class="fieldinput">
+              <input name="reply_to" size="70" type="text" value="<%= params[:reply_to] || current_person.email %>" class="frombox">&nbsp;&nbsp;
+              <span class="right_label">A copy of the email will be sent to this address.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>To:</label>
+
+            <div class="fieldinput">
+              <%= select_tag :group, options_for_select(@group_options) %>
+              <textarea name="to" id="to" type="text" cols="70" rows="5" wrap="virtual" class="addresses"><%= params[:to] %></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Subject</label>
+
+            <div class="fieldinput"><%= text_field_tag :subject, params[:subject], :id => 'subject' %></div>
+          </div>
+
+          <textarea name="body" cols="100" style="width: 100%;" rows="18" wrap="virtual" class="tinymce"></textarea>
+
+          <% (0..4).each do |i| %>
+              <div class="field" style="<%= i == 0 ? '' : 'display:none' %>" id="attachment_<%= i %>">
+                <label><%= image_tag('attach.png') %></label>
+
+                <div class="fieldinput" style="padding-top: 8px;">
+                  <%= file_field_tag "file[#{i}]" %>  <%= link_to_function(image_tag('icons/plus-button.png') + ' Add another attachment', "$('#attachment_#{i+1}').show()") unless i == 4 %>
+                  <br/>
+                </div>
+              </div>
+              <div style="clear:both"></div>
+          <% end %>
+
+          <div class="clear"></div>
+
+          <button type="submit" value="Send Email" class="save"/>
+          <span>Send Email</span></button>
       <% end %>
 
 
+    </div>
+    <!-- left -->
 
-
-
-    </div><!-- left -->  
-  
 
   </div>
-  
+
   <div class="projectfooter">
     <div class="clear"></div>
   </div>

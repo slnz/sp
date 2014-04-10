@@ -1032,13 +1032,15 @@ a.AddNewPerson {
     width: 50px;
     font-size: 12px;
     }
-   input[type=text] {width: 100%; font-size: 12px;}
-   input.frombox {width: 35%;}
-   textarea {width: 100%;}
+   input[type=text] {width: 95%; font-size: 12px;}
+   input.frombox {width: 35%; float: left}
+   textarea {width: 95%;}
    select {padding: 2px 2px 2px 0; font-family: Arial; font-size: 12px;}
   }
   .fieldinput {
     margin-left: 60px;
+    overflow: hidden;
+    width: 93%;
   }
   .addresses {
     border: 1px solid $form-gray;
@@ -1135,6 +1137,7 @@ a.AddNewPerson {
   cursor: default;
 }
 
+
 #feedback:hover {
   width: auto;
   height: auto;
@@ -1171,4 +1174,13 @@ a.AddNewPerson {
 
 .highlight {
     background-color: #ffff00;
+}
+
+.warning {
+  color: red;
+}
+
+.right_label {
+  width: 60%;
+  float: right;
 }
