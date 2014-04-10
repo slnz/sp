@@ -44,7 +44,7 @@ gem 'common_engine', git: 'https://github.com/CruGlobal/common_engine', ref: '6e
 # gem 'common_engine', git: 'https://github.com/CruGlobal/common_engine', ref: '577d4b9'
 # gem 'common_engine', path: "/Users/kennethjohnbalgos/Rails/ce-gem"
 gem 'image_science', '~> 1.2.5'
-gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '9866c02'
+gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '0a8c8f9'
 gem 'sidekiq'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
