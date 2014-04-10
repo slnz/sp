@@ -249,6 +249,7 @@ class Admin::ProjectsController < ApplicationController
 
       files = (params[:file] || {}).values
       recipients << params[:from]
+      recipients << params[:reply_to] if params[:reply_to]
       email_success = Array.new
       email_failed = Array.new
 
@@ -256,7 +257,7 @@ class Admin::ProjectsController < ApplicationController
         if recipients.count > 0
           recipients.each do |recipient|
             begin
-              ProjectMailer.team_email(recipient, params[:from], '', files.compact, params[:subject], params[:body]).deliver
+              ProjectMailer.team_email(recipient, params[:from], params[:reply_to], '', files.compact, params[:subject], params[:body]).deliver
               email_success << recipient
             rescue => e
               raise e.inspect
