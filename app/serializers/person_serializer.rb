@@ -14,12 +14,4 @@ class PersonSerializer < ActiveModel::Serializer
   def address
     object.current_address
   end
-
-  def is_staff
-    object.isStaff?
-  end
-
-  def is_secure
-    object.isSecure == 'T'
-  end
 end
