@@ -10,6 +10,11 @@ class Api::V1::PeopleController < Api::V1::BaseController
     render render_options(filtered_people, order)
   end
 
+  def show
+    person = Person.find(params[:id])
+    render render_options(person)
+  end
+
   private
 
   def available_includes

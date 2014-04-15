@@ -17,6 +17,6 @@ class Api::V1::ProjectsController < Api::V1::BaseController
   end
 
   def available_methods
-    [:applicants, :pd, :apd, :opd, :coordinator, :staff, :volunteers, :kids, :evaluators]
+    [:applicants, :pd, :apd, :opd, :staff, :volunteers]
   end
 end
