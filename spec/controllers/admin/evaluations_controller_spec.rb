@@ -22,6 +22,7 @@ describe Admin::EvaluationsController do
   context '#update' do
     it "ignores attempts to double transition a state" do
       # This is usually caused by a double click
+      create(:email_template, name: 'Application Moved')
       application.update_column(:status, 'accepted_as_participant')
       put :update, "id" => evaluation.id, "application_id" => application.id, "event" => "accept_as_participant",
                    "application" => {
