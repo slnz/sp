@@ -8,6 +8,7 @@ class SpProjectSerializer < ActiveModel::Serializer
   has_one :pd
   has_one :apd
   has_one :opd
+  has_one :coordinator
   has_many :staff
   has_many :volunteers
   has_many :applicants
