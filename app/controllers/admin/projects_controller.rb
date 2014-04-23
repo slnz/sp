@@ -231,8 +231,8 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def send_email
-    if params[:from].blank?
-      flash[:notice] = 'You must specify a "From" address'
+    if params[:from].blank? || !params[:from].end_with?("@cru.org")
+      flash[:notice] = 'You must specify a "From" address that ends with @cru.org'
       redirect_to :back
     else
       to = params[:to].split(/,|;/)
@@ -248,7 +248,7 @@ class Admin::ProjectsController < ApplicationController
       end
 
       files = (params[:file] || {}).values
-      recipients << params[:from]
+      recipients << params[:from] unless params[:from] == "gosummerproject@cru.org"
       recipients << params[:reply_to] if params[:reply_to]
       email_success = Array.new
       email_failed = Array.new
@@ -602,7 +602,10 @@ class Admin::ProjectsController < ApplicationController
       @emails[group[1]] = addresses.join(",\n")
     end
 
-    @from = current_user.person.current_address.try(:email).to_s
+    @from = params[:from] || current_person.email
+    unless @from.end_with?("@cru.org")
+      @from = "gosummerproject@cru.org"
+    end
   end
 
   def get_email(str)

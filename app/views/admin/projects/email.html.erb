@@ -25,8 +25,8 @@
             <label>From</label>
 
             <div class="fieldinput">
-              <input name="from" size="70" type="text" value="<%= params[:from] || current_person.email %>" class="frombox">&nbsp;&nbsp;
-              <span class="right_label"><span class="warning">This MUST be an @cru.org email address or you will receive an error.  If you don't have an @cru.org email address, please use summerproject-noreply@cru.org.</span>
+              <input name="from" size="70" type="text" value="<%= @from %>" class="frombox">&nbsp;&nbsp;
+              <span class="right_label"><span class="warning">This MUST be an @cru.org email address or you will receive an error.  If you don't have an @cru.org email address, please use gosummerproject@cru.org.</span>
               <br/><!--A copy of the email will be sent to this address.--></span>
             </div>
           </div>
