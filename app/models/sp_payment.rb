@@ -1,4 +1,7 @@
+require 'global_registry_methods'
 class SpPayment < ActiveRecord::Base
+  include GlobalRegistryMethods
+  include Sidekiq::Worker
 
   attr_accessor :first_name, :last_name, :address, :city, :state, :zip, :card_number,
                 :expiration_month, :expiration_year, :security_code, :staff_first, :staff_last, :card_type
@@ -66,5 +69,13 @@ class SpPayment < ActiveRecord::Base
     card =  ActiveMerchant::Billing::CreditCard.new(:number => card_number)
     card.valid?
     card.type
+  end
+
+  def async_push_to_global_registry
+    return unless application
+
+    application.async_push_to_global_registry unless application.global_registry_id.present?
+
+    super(application.global_registry_id)
   end
 end

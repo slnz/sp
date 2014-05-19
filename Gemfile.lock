@@ -16,8 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/common_engine
-  revision: 6e27ba8af24dea20131abc663068672a1f609c71
-  ref: 6e27ba8
+  revision: 35d5ec14b16e79fb072eca403035e10b0ac94604
   specs:
     common_engine (0.0.1)
       aasm (~> 3.0.9)
@@ -25,6 +24,7 @@ GIT
       auto_strip_attributes (~> 2.0)
       geocoder
       global_registry
+      paperclip
       rails (>= 3.0.0)
       rubycas-client
       sidekiq
