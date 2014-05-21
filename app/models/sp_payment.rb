@@ -78,4 +78,8 @@ class SpPayment < ActiveRecord::Base
 
     super(application.global_registry_id)
   end
+
+  def self.global_registry_entity_type_name
+    'summer_project_application'
+  end
 end
