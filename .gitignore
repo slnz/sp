@@ -22,3 +22,4 @@ config/config.yml
 app/models/gcx.rb
 app/models/wpdev.rb
 vendor/ruby
+public/cache
