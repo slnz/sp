@@ -11,7 +11,7 @@ class Admin::EvaluationsController < ApplicationController
   end
 
   def evaluate
-    projects_base = SpProject.current.uses_application.order(:name)
+    projects_base = SpProject.open.uses_application.order(:name)
     @projects = @person.is_male? ? projects_base.not_full_men : projects_base.not_full_women
     @projects = [@application.project] + @projects if @application.project && !@projects.include?(@application.project)
     @valid_events = @application.next_states_for_events
