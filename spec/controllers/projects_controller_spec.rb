@@ -12,4 +12,11 @@ describe ProjectsController do
       should respond_with 200
     end
   end
+
+  context '#index' do
+    it 'should list all the projects' do
+      get :index
+      should render_template('index')
+    end
+  end
 end
