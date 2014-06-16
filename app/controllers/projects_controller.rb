@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
     @project = SpProject.find(params[:id])
     respond_to do |format|
       format.xml {
-        if @project.show_on_website && @project.project_status == "open"
+        if @project.show_on_website? && @project.project_status == "open"
           render :xml => @project.to_xml(serialization_attributes.merge(:cdata => true))
         else
           render :xml => "<sp-project/>"
