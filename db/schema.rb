@@ -1340,7 +1340,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "maxNoStudentPCouples"
     t.integer  "maxNoStudentPFamilies"
     t.integer  "maxNoStudentP"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id"
   end
 
   add_index "hr_si_project", ["global_registry_id"], name: "index_hr_si_project_on_global_registry_id", using: :btree
@@ -1528,30 +1528,30 @@ ActiveRecord::Schema.define(version: 20140603174337) do
   end
 
   create_table "linczone_contacts", primary_key: "ContactID", force: true do |t|
-    t.timestamp "EntryDate"
-    t.string    "FirstName",            limit: 120
-    t.string    "LastName",             limit: 120
-    t.string    "HomeAddress",          limit: 200
-    t.string    "City",                 limit: 20
-    t.string    "State",                limit: 20
-    t.string    "Zip",                  limit: 80
-    t.string    "Email",                limit: 120
-    t.string    "HighSchool",           limit: 120
-    t.string    "CampusName",           limit: 200
-    t.string    "CampusID",             limit: 80
-    t.string    "ReferrerFirstName",    limit: 120
-    t.string    "ReferrerLastName",     limit: 120
-    t.string    "ReferrerRelationship", limit: 100
-    t.string    "ReferrerEmail",        limit: 200
-    t.string    "InfoCCC",              limit: 1,   default: "F"
-    t.string    "InfoNav",              limit: 1,   default: "F"
-    t.string    "InfoIV",               limit: 1,   default: "F"
-    t.string    "InfoFCA",              limit: 1,   default: "F"
-    t.string    "InfoBSU",              limit: 1,   default: "F"
-    t.string    "InfoCACM",             limit: 1,   default: "F"
-    t.string    "InfoEFCA",             limit: 1,   default: "F"
-    t.string    "InfoGCM",              limit: 1,   default: "F"
-    t.string    "InfoWesley",           limit: 1,   default: "F"
+    t.datetime "EntryDate"
+    t.string   "FirstName",            limit: 120
+    t.string   "LastName",             limit: 120
+    t.string   "HomeAddress",          limit: 200
+    t.string   "City",                 limit: 20
+    t.string   "State",                limit: 20
+    t.string   "Zip",                  limit: 80
+    t.string   "Email",                limit: 120
+    t.string   "HighSchool",           limit: 120
+    t.string   "CampusName",           limit: 200
+    t.string   "CampusID",             limit: 80
+    t.string   "ReferrerFirstName",    limit: 120
+    t.string   "ReferrerLastName",     limit: 120
+    t.string   "ReferrerRelationship", limit: 100
+    t.string   "ReferrerEmail",        limit: 200
+    t.string   "InfoCCC",              limit: 1,   default: "F"
+    t.string   "InfoNav",              limit: 1,   default: "F"
+    t.string   "InfoIV",               limit: 1,   default: "F"
+    t.string   "InfoFCA",              limit: 1,   default: "F"
+    t.string   "InfoBSU",              limit: 1,   default: "F"
+    t.string   "InfoCACM",             limit: 1,   default: "F"
+    t.string   "InfoEFCA",             limit: 1,   default: "F"
+    t.string   "InfoGCM",              limit: 1,   default: "F"
+    t.string   "InfoWesley",           limit: 1,   default: "F"
   end
 
   create_table "mail_delayed_jobs", force: true do |t|
@@ -1631,13 +1631,11 @@ ActiveRecord::Schema.define(version: 20140603174337) do
 
   create_table "ministries", force: true do |t|
     t.string "name"
-    t.string "abbreviation"
-    t.string "global_registry_id"
   end
 
   create_table "ministry_activity", primary_key: "ActivityID", force: true do |t|
     t.string   "status",                   limit: 2
-    t.date     "periodBegin"
+    t.datetime "periodBegin"
     t.datetime "periodEnd_deprecated"
     t.string   "strategy",                 limit: 2
     t.string   "transUsername",            limit: 50
@@ -1650,7 +1648,6 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "gcx_site"
-    t.string   "global_registry_id"
   end
 
   add_index "ministry_activity", ["fk_targetAreaID", "strategy"], name: "index_ministry_activity_on_fk_targetareaid_and_strategy", unique: true, using: :btree
@@ -1771,7 +1768,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.string   "dept_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id"
   end
 
   add_index "ministry_locallevel", ["global_registry_id"], name: "index_ministry_locallevel_on_global_registry_id", using: :btree
@@ -1926,14 +1923,13 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.decimal  "balance_daily",                                    precision: 10, scale: 2
     t.string   "siebel_contact_id"
     t.string   "sp_gcx_site"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id"
   end
 
   add_index "ministry_person", ["accountNo"], name: "accountNo_ministry_Person", using: :btree
   add_index "ministry_person", ["campus"], name: "campus", using: :btree
   add_index "ministry_person", ["fb_uid"], name: "index_ministry_person_on_fb_uid", using: :btree
   add_index "ministry_person", ["firstName", "lastName"], name: "firstName_lastName", using: :btree
-  add_index "ministry_person", ["fk_spouseID"], name: "index_ministry_person_on_fk_spouseid", using: :btree
   add_index "ministry_person", ["fk_ssmUserId"], name: "fk_ssmUserId", using: :btree
   add_index "ministry_person", ["global_registry_id"], name: "index_ministry_person_on_global_registry_id", using: :btree
   add_index "ministry_person", ["lastName"], name: "lastname_ministry_Person", using: :btree
@@ -1961,27 +1957,26 @@ ActiveRecord::Schema.define(version: 20140603174337) do
   add_index "ministry_regionalstat", ["fk_regionalTeamID"], name: "fk_regionalTeamID", using: :btree
 
   create_table "ministry_regionalteam", primary_key: "teamID", force: true do |t|
-    t.string   "name",               limit: 100
+    t.string   "name",      limit: 100
     t.string   "note"
-    t.string   "region",             limit: 2
-    t.string   "address1",           limit: 35
-    t.string   "address2",           limit: 35
-    t.string   "city",               limit: 30
-    t.string   "state",              limit: 6
-    t.string   "zip",                limit: 10
-    t.string   "country",            limit: 64
-    t.string   "phone",              limit: 24
-    t.string   "fax",                limit: 24
-    t.string   "email",              limit: 50
+    t.string   "region",    limit: 2
+    t.string   "address1",  limit: 35
+    t.string   "address2",  limit: 35
+    t.string   "city",      limit: 30
+    t.string   "state",     limit: 6
+    t.string   "zip",       limit: 10
+    t.string   "country",   limit: 64
+    t.string   "phone",     limit: 24
+    t.string   "fax",       limit: 24
+    t.string   "email",     limit: 50
     t.string   "url"
-    t.string   "isActive",           limit: 1
+    t.string   "isActive",  limit: 1
     t.datetime "startdate"
     t.datetime "stopdate"
-    t.string   "no",                 limit: 80
-    t.string   "abbrv",              limit: 80
-    t.string   "hrd",                limit: 50
-    t.string   "spPhone",            limit: 24
-    t.string   "global_registry_id"
+    t.string   "no",        limit: 80
+    t.string   "abbrv",     limit: 80
+    t.string   "hrd",       limit: 50
+    t.string   "spPhone",   limit: 24
   end
 
   create_table "ministry_staff", force: true do |t|
@@ -2219,7 +2214,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.string   "region"
     t.string   "mpta",                   limit: 30
     t.string   "urlToLogo"
-    t.integer  "enrollment"
+    t.string   "enrollment",             limit: 10
     t.string   "monthSchoolStarts",      limit: 10
     t.string   "monthSchoolStops",       limit: 10
     t.string   "isSemester",             limit: 1
@@ -2248,12 +2243,9 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "eventKeyID"
     t.string   "type",                   limit: 20
     t.string   "county"
-    t.boolean  "ongoing_special_event",                                       default: false
+    t.boolean  "ongoing_special_event",              default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "latitude",                           precision: 11, scale: 7
-    t.decimal  "longitude",                          precision: 11, scale: 7
-    t.string   "global_registry_id"
   end
 
   add_index "ministry_targetarea", ["country"], name: "index4", using: :btree
@@ -2371,7 +2363,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.string  "region"
     t.string  "mpta",              limit: 30
     t.string  "urlToLogo"
-    t.integer "enrollment"
+    t.string  "enrollment",        limit: 10
     t.string  "monthSchoolStarts", limit: 10
     t.string  "monthSchoolStops",  limit: 10
     t.string  "isSemester",        limit: 1
@@ -2383,16 +2375,16 @@ ActiveRecord::Schema.define(version: 20140603174337) do
   end
 
   create_table "ministry_viewsortedactivities", id: false, force: true do |t|
-    t.string  "name",            limit: 100
-    t.string  "url"
-    t.string  "facebook"
-    t.integer "ActivityID",                  default: 0, null: false
-    t.string  "status",          limit: 2
-    t.date    "periodBegin"
-    t.string  "strategy",        limit: 2
-    t.string  "transUsername",   limit: 50
-    t.integer "fk_teamID",                               null: false
-    t.integer "fk_targetAreaID",                         null: false
+    t.string   "name",            limit: 100
+    t.string   "url"
+    t.string   "facebook"
+    t.integer  "ActivityID",                  default: 0, null: false
+    t.string   "status",          limit: 2
+    t.datetime "periodBegin"
+    t.string   "strategy",        limit: 2
+    t.string   "transUsername",   limit: 50
+    t.integer  "fk_teamID",                               null: false
+    t.integer  "fk_targetAreaID",                         null: false
   end
 
   create_table "ministry_viewstaffdependents", id: false, force: true do |t|
@@ -2902,11 +2894,10 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.boolean  "intern_access"
     t.boolean  "stint_access"
     t.boolean  "mtl_access"
-    t.boolean  "individual_access",       default: false
+    t.boolean  "individual_access", default: false
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "grant_individual_access", default: false, null: false
   end
 
   create_table "phone_numbers", force: true do |t|
@@ -3172,45 +3163,33 @@ ActiveRecord::Schema.define(version: 20140603174337) do
   end
 
   create_table "rideshare_event", force: true do |t|
-    t.integer  "conference_id"
-    t.string   "event_name",    limit: 50
-    t.string   "password",      limit: 50, null: false
-    t.text     "email_content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "conference_id"
+    t.string  "event_name",    limit: 50
+    t.string  "password",      limit: 50, null: false
+    t.text    "email_content"
   end
 
   create_table "rideshare_ride", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "driver_ride_id"
-    t.integer  "person_id"
-    t.string   "address1",                                  null: false
-    t.string   "address2",                                  null: false
-    t.string   "address3",                                  null: false
-    t.string   "address4",                                  null: false
-    t.string   "city",               limit: 50,             null: false
-    t.string   "state",              limit: 50,             null: false
-    t.string   "zip",                limit: 20,             null: false
-    t.string   "country",            limit: 64,             null: false
-    t.float    "latitude"
-    t.float    "longitude"
-    t.string   "phone",              limit: 25,             null: false
-    t.string   "contact_method",     limit: 5
-    t.integer  "number_passengers",  limit: 1,  default: 0, null: false
-    t.integer  "drive_willingness",  limit: 1
-    t.time     "depart_time"
-    t.text     "special_info"
-    t.string   "email",                                     null: false
-    t.string   "situation"
-    t.string   "change"
-    t.string   "time_hour"
-    t.string   "time_minute"
-    t.string   "time_am_pm"
-    t.string   "spaces"
-    t.string   "special_info_check"
-    t.string   "spaces_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "event_id"
+    t.integer "driver_ride_id"
+    t.integer "person_id"
+    t.string  "address1",                     null: false
+    t.string  "address2",                     null: false
+    t.string  "address3",                     null: false
+    t.string  "address4",                     null: false
+    t.string  "city",              limit: 50, null: false
+    t.string  "state",             limit: 50, null: false
+    t.string  "zip",               limit: 20, null: false
+    t.string  "country",           limit: 64, null: false
+    t.float   "latitude"
+    t.float   "longitude"
+    t.string  "phone",             limit: 25, null: false
+    t.string  "contact_method",    limit: 5
+    t.integer "number_passengers", limit: 1
+    t.integer "drive_willingness", limit: 1
+    t.time    "depart_time"
+    t.text    "special_info"
+    t.string  "email",                        null: false
   end
 
   add_index "rideshare_ride", ["drive_willingness"], name: "drivewillingness", using: :btree
@@ -3698,9 +3677,6 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "send_dept"
     t.string   "regionOfOrigin",        limit: 50
     t.date     "background_check_date"
-    t.string   "ptfs_level"
-    t.string   "supervisor"
-    t.string   "work_location"
   end
 
   add_index "sitrack_tracking", ["application_id"], name: "fk_applicationID", using: :btree
@@ -3764,8 +3740,6 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.string   "attachment_content_type"
     t.string   "attachment_file_name"
     t.datetime "attachment_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   add_index "sp_answers", ["answer_sheet_id"], name: "index_sp_answers_on_answer_sheet_id", using: :btree
@@ -3811,7 +3785,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "account_balance"
     t.datetime "accepted_at"
     t.string   "previous_status"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id",       limit: 8
     t.boolean  "rm_liability_signed"
     t.date     "start_date"
     t.date     "end_date"
@@ -3935,12 +3909,12 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id", limit: 8
   end
 
   create_table "sp_ministry_focuses", force: true do |t|
-    t.string "name"
-    t.string "global_registry_id"
+    t.string  "name"
+    t.integer "global_registry_id", limit: 8
   end
 
   create_table "sp_page_elements", force: true do |t|
@@ -3981,18 +3955,18 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id",  limit: 8
   end
 
   add_index "sp_project_gospel_in_actions", ["gospel_in_action_id"], name: "gospel_in_action_id", using: :btree
   add_index "sp_project_gospel_in_actions", ["project_id"], name: "project_id", using: :btree
 
   create_table "sp_project_ministry_focuses", force: true do |t|
-    t.integer  "project_id",         default: 0, null: false
-    t.integer  "ministry_focus_id",  default: 0, null: false
+    t.integer  "project_id",                   default: 0, null: false
+    t.integer  "ministry_focus_id",            default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id", limit: 8
   end
 
   create_table "sp_project_versions", force: true do |t|
@@ -4189,7 +4163,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.date     "open_application_date",                           default: '2012-11-01'
     t.date     "archive_project_date",                            default: '2012-08-31'
     t.boolean  "secure"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id"
     t.text     "project_summary"
     t.text     "full_project_description"
   end
@@ -4253,7 +4227,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "project_id",                                  null: false
     t.string   "type",               limit: 100, default: "", null: false
     t.string   "year"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -4285,7 +4259,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "key_contact_campuses"
     t.integer  "launched_campuses"
     t.integer  "movements_launched"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id",                limit: 8
   end
 
   create_table "sp_student_quotes", force: true do |t|
@@ -4294,7 +4268,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.text     "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id", limit: 8
   end
 
   add_index "sp_student_quotes", ["project_id"], name: "project_id", using: :btree
@@ -4306,7 +4280,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "created_by_id"
     t.string   "type"
     t.integer  "person_id"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id", limit: 8
   end
 
   add_index "sp_users", ["person_id"], name: "person_id", using: :btree
@@ -4316,7 +4290,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "global_registry_id"
+    t.integer  "global_registry_id", limit: 8
   end
 
   create_table "staffsite_staffsitepref", primary_key: "StaffSitePrefID", force: true do |t|

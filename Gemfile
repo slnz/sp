@@ -56,10 +56,12 @@ group :development, :test do
   gem 'awesome_print'
   gem 'mailcatcher'
   gem 'guard-rspec'
+  gem 'capybara'
   gem 'unicorn'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'
+  gem 'shoulda-matchers'
   gem 'simplecov', :require => false
   gem 'database_cleaner'
   gem 'therubyracer'
