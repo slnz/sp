@@ -52,6 +52,7 @@ gem 'versionist'
 gem 'active_model_serializers'
 
 group :development, :test do
+  gem 'meta_request'
   gem 'quiet_assets'
   gem 'awesome_print'
   gem 'mailcatcher'
@@ -65,6 +66,8 @@ group :development, :test do
   gem 'therubyracer'
   gem 'spork-rails'#, '~> 3.2.0'
   gem 'guard-spork'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 
