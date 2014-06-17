@@ -35,5 +35,19 @@ describe ProjectsController do
       get :index, year: '2013', start_month: '5', format: :json
       expect(assigns(:projects)).to eq([project])
     end
+
+    it 'should test for params[:all]' do
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      project = create(:sp_project, open_application_date: open_application_date, start_date: start_date, end_date: end_date, project_status: 'open')
+
+      get :index, all: :true
+
+      if project.project_status == 'open' && (project.open_application_date <= Date.today && project.start_date >= Date.today)
+        expect(assigns(:projects)).to eq [project]
+        # expect(assigns(:projects)).to eq([SpProject.current.last]) # not sure if we want to test the scope SpProject.current?
+      end
+    end
   end
 end
