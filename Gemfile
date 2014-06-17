@@ -56,7 +56,6 @@ group :development, :test do
   gem 'awesome_print'
   gem 'mailcatcher'
   gem 'guard-rspec'
-  gem 'capybara'
   gem 'meta_request'
   gem 'better_errors'
   gem 'binding_of_caller'
@@ -64,7 +63,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'
-  gem 'shoulda-matchers'
   gem 'simplecov', :require => false
   gem 'database_cleaner'
   gem 'therubyracer'
