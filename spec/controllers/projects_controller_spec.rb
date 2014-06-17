@@ -19,4 +19,21 @@ describe ProjectsController do
       should render_template('index')
     end
   end
+
+  context '#index' do
+    it 'should test for params[:year]' do
+      create(:sp_project,
+             start_date: Date.new(2014, 1, 1),
+             end_date: Date.new(2014, 2, 1)
+      )
+
+      project = create(:sp_project,
+                       start_date: Date.new(2013, 6, 1),
+                       end_date: Date.new(2013, 8, 1)
+      )
+
+      get :index, year: '2013', start_month: '5', format: :json
+      expect(assigns(:projects)).to eq([project])
+    end
+  end
 end
