@@ -11,6 +11,17 @@ describe ProjectsController do
       get :show, id: create(:sp_project).id, format: :xml
       expect(response.status).to eq(200)
     end
+
+    # BAD SPEC!!! This needs to be rewritten
+    # review projects_controller#show line 8
+    it 'responds to XML with 200 and <sp-project/> in body' do
+      project = create(:sp_project)
+      project.project_status = 'closed'
+      project.show_on_website = false
+
+      get :show, id: project.id, format: :xml
+      expect(response.status).to eq(200)
+    end
   end
 
   context '#index' do
@@ -36,18 +47,55 @@ describe ProjectsController do
       expect(assigns(:projects)).to eq([project])
     end
 
-    it 'should test for params[:all]' do
+    it 'should test for params[:all] true' do
       open_application_date = Date.today - 30
       start_date = Date.today + 30
       end_date = Date.today + 60
-      project = create(:sp_project, open_application_date: open_application_date, start_date: start_date, end_date: end_date, project_status: 'open')
+      project = create(:sp_project, open_application_date: open_application_date, start_date: start_date, end_date: end_date)
 
-      get :index, all: :true
+      get :index, all: 'true'
 
       if project.project_status == 'open' && (project.open_application_date <= Date.today && project.start_date >= Date.today)
         expect(assigns(:projects)).to eq [project]
-        # expect(assigns(:projects)).to eq([SpProject.current.last]) # not sure if we want to test the scope SpProject.current?
       end
+    end
+
+    it 'should test for most params' do
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+
+      project = create(:sp_project,
+                       open_application_date: open_application_date,
+                       start_date: start_date,
+                       end_date: end_date,
+
+                       name: 'Orl Ruby Dojo',
+                       city: 'Orlando',
+                       state: 'FL',
+                       country: 'United States',
+                       world_region: 'USA/Canada',
+                       job: 1
+      )
+
+      focus = SpMinistryFocus.create(name: 'Coders')
+      ministry_focus = SpProjectMinistryFocus.create(project_id: project.id, ministry_focus_id: focus.id)
+
+      get :index,
+          start_month: 3,
+          end_month: 12,
+          from_weeks: 3,
+          name: 'Orl Ruby Dojo',
+          to_weeks: 4,
+          focus_name: focus.name,
+          focus: focus.id,
+          world_region: 'USA/Canada',
+          country: 'United States',
+          project_type: 'US',
+          job: 1,
+          city: 'Orlando'
+
+      expect(assigns(:projects)).to eq([project])
     end
   end
 end
