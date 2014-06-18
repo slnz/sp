@@ -104,7 +104,7 @@ class ProjectsController < ApplicationController
           end
           if params[:job] && !params[:job].empty?
             conditions[0] << "#{SpProject.table_name}.job = ?"
-            conditions[1] << (params[:job] ? 1 : 0)
+            conditions[1] << (params[:job] ? true : false)
           end
         end
         conditions[0] = conditions[0].join(' AND ')
