@@ -11,9 +11,7 @@ describe Admin::ReportsController do
 
       get :show
 
-      if SpUser.find_by_ssm_id(session[:user_id]).type == 'SpDirector'
-        response.should redirect_to(action: :director)
-      end
+      response.should redirect_to(action: :director)
     end
   end
 end
