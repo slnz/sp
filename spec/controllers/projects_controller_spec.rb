@@ -12,15 +12,12 @@ describe ProjectsController do
       expect(response.status).to eq(200)
     end
 
-    # BAD SPEC!!! This needs to be rewritten
-    # review projects_controller#show line 8
     it 'responds to XML with 200 and <sp-project/> in body' do
       project = create(:sp_project)
-      project.project_status = 'closed'
-      project.show_on_website = false
+      project.update_attributes(project_status: 'closed', show_on_website: false)
 
       get :show, id: project.id, format: :xml
-      expect(response.status).to eq(200)
+      expect(response.body).to eq('<sp-project/>')
     end
   end
 
@@ -54,10 +51,7 @@ describe ProjectsController do
       project = create(:sp_project, open_application_date: open_application_date, start_date: start_date, end_date: end_date)
 
       get :index, all: 'true'
-
-      if project.project_status == 'open' && (project.open_application_date <= Date.today && project.start_date >= Date.today)
-        expect(assigns(:projects)).to eq [project]
-      end
+      expect(assigns(:projects)).to eq [project]
     end
 
     it 'should test for most params' do
