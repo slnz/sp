@@ -28,15 +28,13 @@ class Admin::ReportsController < ApplicationController
 
   def preference
     @applications = {}
-    if current_person.directed_projects.length == 0
+    unless current_person.directed_projects.present?
       flash[:error] = "You aren't directing any projects"
-      redirect_to :back and return
-    elsif current_person.directed_projects.length > 1
-      current_person.directed_projects.each do |project|
-        @applications[project] = get_applications(project)
-      end
-    else
-      project = current_person.directed_projects.first
+      redirect_to :back
+      return
+    end
+
+    current_person.directed_projects.each do |project|
       @applications[project] = get_applications(project)
     end
   end
