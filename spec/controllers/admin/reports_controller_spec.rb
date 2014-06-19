@@ -27,8 +27,8 @@ describe Admin::ReportsController do
                            project_id: project.id
       )
 
-      # create applications and assign them to a project
-      # search for staff for projects assigned to them
+      expect(assigns(:applications[project])).to eq(project)
+      # expect(staff.person.directed_projects.last).to eq(project)
     end
   end
 end
