@@ -30,12 +30,20 @@ describe Admin::ReportsController do
       )
 
       get :preference
-
       expect(assigns(:applications)[project]).to eq([application])
     end
   end
 
   context '#male_openings' do
+    it 'responds to CSV' do
+      create(:sp_director, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      get :male_openings, format: :csv
+      expect(response.content_type).to eq('text/csv')
+    end
+
     it 'calculates percentage of men in a project via HTML - 0-50%' do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
@@ -102,5 +110,139 @@ describe Admin::ReportsController do
     end
   end
 
-  
+  context '#male_openings' do
+    it 'calculates percentage of men in a project via HTML - 100%' do
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      max_accepted_men = 1
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      project = create(:sp_project,
+                       max_accepted_men: max_accepted_men,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+      applicant = create(:person, gender: '1')
+      application = create(:sp_application,
+                            person_id: applicant.id,
+                            project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+
+      get :male_openings
+      expect(SpProject.current.uses_application.last.percent_full_men.to_i).to eq(100)
+    end
+  end
+
+  context '#female_openings' do
+    it 'responds to CSV' do
+      create(:sp_director, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      get :female_openings, format: :csv
+      expect(response.content_type).to eq('text/csv')
+    end
+
+    it 'calculates percentage of women in a project via HTML - 0-50%' do
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      max_accepted_women = 2
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+
+      project = create(:sp_project,
+                       max_accepted_women: max_accepted_women,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+      applicant = create(:person, gender: '0')
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+
+      get :female_openings
+      expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(50)
+    end
+  end
+
+  context '#female_openings' do
+    it 'calculates percentage of women in a project via HTML - 51-99%' do
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      max_accepted_women = 3
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      project = create(:sp_project,
+                       max_accepted_women: max_accepted_women,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+      applicant1 = create(:person, gender: '0')
+      application1 = create(:sp_application,
+                            person_id: applicant1.id,
+                            project_id: project.id
+      )
+      applicant2 = create(:person, gender: '0')
+      application2 = create(:sp_application,
+                            person_id: applicant2.id,
+                            project_id: project.id
+      )
+      application1.update_attribute('status', 'accepted_as_participant')
+      application2.update_attribute('status', 'accepted_as_participant')
+
+
+      get :female_openings
+      expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(66)
+    end
+  end
+
+  context '#female_openings' do
+    it 'calculates percentage of women in a project via HTML - 100%' do
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      max_accepted_women = 1
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      project = create(:sp_project,
+                       max_accepted_women: max_accepted_women,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+      applicant = create(:person, gender: '0')
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+
+      get :female_openings
+      expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(100)
+    end
+  end
 end
