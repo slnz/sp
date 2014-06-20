@@ -245,4 +245,28 @@ describe Admin::ReportsController do
       expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(100)
     end
   end
+
+  context '#ministry_focus' do
+    it 'sorts projects by ministry focus via CSV' do
+      create(:sp_director, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      focus = SpMinistryFocus.create(name: 'String')
+
+      get :ministry_focus, focus_id: focus.id, format: :csv
+      expect(response.content_type).to eq('text/csv')
+    end
+
+    it 'sorts projects by ministry focus' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      focus = SpMinistryFocus.create(name: 'String')
+
+      get :ministry_focus, focus_id: focus.id
+      expect(SpMinistryFocus.order(:name)).to eq([focus])
+    end
+  end
 end
