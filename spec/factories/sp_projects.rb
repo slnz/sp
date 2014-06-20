@@ -2,10 +2,10 @@ FactoryGirl.define do
   factory :sp_project do
     sequence(:name) {|n| "Project1#{n}" }
     description 'String'
-    year '2013'
+    year { SpApplication.year }
     display_location 'String'
-    start_date '05/10/2012 12:00:00'
-    end_date '06/10/2012 12:00:00'
+    start_date '06/10/2014 12:00:00'
+    end_date '06/12/2014 12:00:00'
     student_cost 1
     max_accepted_men 10
     max_accepted_women 10

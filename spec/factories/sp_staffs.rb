@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :sp_staff do
     type 'String'
-    year '2012'
+    year { SpApplication.year }
     project nil
     person nil
   end

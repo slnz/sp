@@ -30,7 +30,7 @@ class Admin::ReportsController < ApplicationController
     @applications = {}
     unless current_person.directed_projects.present?
       flash[:error] = "You aren't directing any projects"
-      redirect_to :back
+      # redirect_to :back
       return
     end
 
@@ -43,7 +43,7 @@ class Admin::ReportsController < ApplicationController
     @percentages = {'0-50' => [], '51-99' => [], '100' => []}
     SpProject.current.uses_application.order(:name).each do |project|
       case
-        when project.percent_full_men < 50
+        when project.percent_full_men < 51
           @percentages['0-50'] << project
         when project.percent_full_men < 100
           @percentages['51-99'] << project
