@@ -269,4 +269,77 @@ describe Admin::ReportsController do
       expect(SpMinistryFocus.order(:name)).to eq([focus])
     end
   end
+
+  context '#partner' do
+    it 'lists the applications for partnerships via CSV' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      get :partner, partner: 'NW', format: :csv
+      expect(response.content_type).to eq('text/csv')
+    end
+
+    it 'lists the applications for partnerships via HTML' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      partnerships = 'NW'
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date,
+                       primary_partner: partnerships,
+                       secondary_partner: partnerships
+      )
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+
+      get :partner, partner: 'NW'
+      expect(assigns(:projects)).to eq([project])
+    end
+
+    it 'lists the applications for partnerships via HTML params[:partner] not present' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      partnerships = 'NW'
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date,
+                       primary_partner: partnerships,
+                       secondary_partner: partnerships
+      )
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+
+      get :partner
+      expect(assigns(:partners)).to eq(SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?))
+    end
+  end
+
+  content '#mpd_summary' do
+    it '' do
+
+    end
+  end
 end
