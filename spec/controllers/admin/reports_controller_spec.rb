@@ -337,9 +337,43 @@ describe Admin::ReportsController do
     end
   end
 
-  content '#mpd_summary' do
-    it '' do
+  context '#mpd_summary' do
+    it 'list applications by mpd summary via CSV -- params[:project_id] present' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
 
+      project = create(:sp_project)
+      year = project.year
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+      get :mpd_summary, project_id: project.id, format: :csv
+      expect(response.content_type).to eq('text/csv')
+    end
+
+    it 'list applications by mpd summary via HTML -- params[:project_id] present' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      project = create(:sp_project)
+      year = project.year
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+      get :mpd_summary, project_id: project.id
+      expect(assigns(:applications)).to eq(project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year))
     end
   end
 end
