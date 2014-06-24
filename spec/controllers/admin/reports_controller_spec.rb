@@ -405,6 +405,8 @@ describe Admin::ReportsController do
 
     it 'list applications by mpd summary via HTML -- SpRegionalCoordinator' do
       staff = create(:sp_regional_coordinator, user: user)
+      user.person.update(region: 'NW', ministry: 'Campus Ministry')
+
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
@@ -431,6 +433,7 @@ describe Admin::ReportsController do
       )
       application.update_attribute('status', 'accepted_as_participant')
 
+
       get :mpd_summary
       # undefined method `ministry' for nil:NilClass
       # person is nil, how to set this
@@ -442,34 +445,34 @@ describe Admin::ReportsController do
       # to project LN 416 spec/reports_controller_spec.rb
     end
 
-    # it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do
-    #   session[:cas_user] = 'foo@example.com'
-    #   session[:user_id] = user.id
-    #
-    #   open_application_date = Date.today - 30
-    #   start_date = Date.today + 30
-    #   end_date = Date.today + 60
-    #   partnerships = 'NW'
-    #
-    #   project = create(:sp_project,
-    #                    start_date: start_date,
-    #                    end_date: end_date,
-    #                    open_application_date: open_application_date,
-    #                    primary_partner: partnerships,
-    #                    secondary_partner: partnerships
-    #   )
-    #   year = project.year
-    #   staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
-    #
-    #   applicant = create(:person)
-    #   application = create(:sp_application,
-    #                        person_id: applicant.id,
-    #                        project_id: project.id
-    #   )
-    #   application.update_attribute('status', 'accepted_as_participant')
-    #
-    #   get :mpd_summary
-    #   expect(assigns(:projects)).to eq([project])
-    # end
+    it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+      partnerships = 'NW'
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date,
+                       primary_partner: partnerships,
+                       secondary_partner: partnerships
+      )
+      year = project.year
+      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+      get :mpd_summary
+      expect(assigns(:projects)).to eq([project])
+    end
   end
 end
