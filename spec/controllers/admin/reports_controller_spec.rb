@@ -423,8 +423,6 @@ describe Admin::ReportsController do
                        secondary_partner: partnerships
       )
       year = project.year
-      # create a staff and set them as a regional director -- delete staff above
-
 
       applicant = create(:person)
       application = create(:sp_application,
@@ -435,17 +433,9 @@ describe Admin::ReportsController do
 
 
       get :mpd_summary
-      # undefined method `ministry' for nil:NilClass
-      # person is nil, how to set this
-
-      # how to set partnerships (ministry) and region on staff
-      # sp_regional_director is an sp_user
-
-      # expectation is that @projects LN 166 admin/reports_controller.rb is equal
-      # to project LN 416 spec/reports_controller_spec.rb
     end
 
-    it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do
+    it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do2
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
