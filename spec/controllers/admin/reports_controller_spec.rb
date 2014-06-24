@@ -376,7 +376,7 @@ describe Admin::ReportsController do
       expect(assigns(:applications)).to eq(project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year))
     end
 
-    it 'list applications by mpd summary via HTML -- session[:user] is SpNationalCoordinator' do
+    it 'list applications by mpd summary via HTML -- SpNationalCoordinator' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
@@ -403,7 +403,7 @@ describe Admin::ReportsController do
       expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
     end
 
-    it 'list applications by mpd summary via HTML -- session[:user] is SpRegionalCoordinator' do
+    it 'list applications by mpd summary via HTML -- SpRegionalCoordinator' do
       staff = create(:sp_regional_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
@@ -421,6 +421,8 @@ describe Admin::ReportsController do
                        secondary_partner: partnerships
       )
       year = project.year
+      # create a staff and set them as a regional director -- delete staff above
+
 
       applicant = create(:person)
       application = create(:sp_application,
@@ -431,11 +433,43 @@ describe Admin::ReportsController do
 
       get :mpd_summary
       # undefined method `ministry' for nil:NilClass
+      # person is nil, how to set this
+
       # how to set partnerships (ministry) and region on staff
       # sp_regional_director is an sp_user
 
       # expectation is that @projects LN 166 admin/reports_controller.rb is equal
       # to project LN 416 spec/reports_controller_spec.rb
     end
+
+    # it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do
+    #   session[:cas_user] = 'foo@example.com'
+    #   session[:user_id] = user.id
+    #
+    #   open_application_date = Date.today - 30
+    #   start_date = Date.today + 30
+    #   end_date = Date.today + 60
+    #   partnerships = 'NW'
+    #
+    #   project = create(:sp_project,
+    #                    start_date: start_date,
+    #                    end_date: end_date,
+    #                    open_application_date: open_application_date,
+    #                    primary_partner: partnerships,
+    #                    secondary_partner: partnerships
+    #   )
+    #   year = project.year
+    #   staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+    #
+    #   applicant = create(:person)
+    #   application = create(:sp_application,
+    #                        person_id: applicant.id,
+    #                        project_id: project.id
+    #   )
+    #   application.update_attribute('status', 'accepted_as_participant')
+    #
+    #   get :mpd_summary
+    #   expect(assigns(:projects)).to eq([project])
+    # end
   end
 end
