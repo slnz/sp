@@ -30,7 +30,7 @@ class Admin::ReportsController < ApplicationController
     @applications = {}
     unless current_person.directed_projects.present?
       flash[:error] = "You aren't directing any projects"
-      # redirect_to :back
+      redirect_to :back
       return
     end
 
