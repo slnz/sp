@@ -375,5 +375,32 @@ describe Admin::ReportsController do
       get :mpd_summary, project_id: project.id
       expect(assigns(:applications)).to eq(project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year))
     end
+
+    it 'list applications by mpd summary via HTML -- session[:user] is SpNationalCoordinator' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = Date.today + 30
+      end_date = Date.today + 60
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      year = project.year
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+      get :mpd_summary
+      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+    end
   end
 end
