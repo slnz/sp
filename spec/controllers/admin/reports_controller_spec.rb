@@ -404,7 +404,7 @@ describe Admin::ReportsController do
     end
 
     it 'list applications by mpd summary via HTML -- SpRegionalCoordinator' do
-      staff = create(:sp_regional_coordinator, user: user)
+      staff = create(:sp_regional_coordinator, user: user, person: user.person)
       user.person.update(region: 'NW', ministry: 'Campus Ministry')
 
       session[:cas_user] = 'foo@example.com'
@@ -472,7 +472,7 @@ describe Admin::ReportsController do
       application.update_attribute('status', 'accepted_as_participant')
 
       get :mpd_summary
-      expect(assigns(:projects)).to eq([project])
+      expect(assigns(:project)).to eq(project)
     end
   end
 end
