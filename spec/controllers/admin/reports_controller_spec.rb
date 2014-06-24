@@ -431,11 +431,10 @@ describe Admin::ReportsController do
       )
       application.update_attribute('status', 'accepted_as_participant')
 
-
       get :mpd_summary
     end
 
-    it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do2
+    it 'list applications by mpd summary via HTML -- SpRegionalCoordinator or SpDirector' do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
@@ -463,6 +462,34 @@ describe Admin::ReportsController do
 
       get :mpd_summary
       expect(assigns(:project)).to eq(project)
+    end
+
+    context '#evangelism_combined' do
+      it 'list applications by evangelism summary via HTML with params[:partner present]', :focus do
+        session[:cas_user] = 'foo@example.com'
+        session[:user_id] = user.id
+
+        open_application_date = Date.today - 30
+        start_date = Date.today + 30
+        end_date = Date.today + 60
+        partnerships = 'NW'
+
+        project = create(:sp_project,
+                         start_date: start_date,
+                         end_date: end_date,
+                         open_application_date: open_application_date,
+                         primary_partner: partnerships,
+                         secondary_partner: partnerships
+        )
+        year = project.year
+        staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+
+        get :evangelism_combined, partner: 'NW'
+        # need to create an activity and statistic
+        # expect that @statistic equals statistic (in spec)
+        # maybe '200' is good enough, not sure
+      end
     end
   end
 end
