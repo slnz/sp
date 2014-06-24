@@ -465,7 +465,7 @@ describe Admin::ReportsController do
     end
 
     context '#evangelism_combined' do
-      it 'list applications by evangelism summary via HTML with params[:partner present]', :focus do
+      it 'list applications by evangelism summary via HTML with params[:partner present]' do
         session[:cas_user] = 'foo@example.com'
         session[:user_id] = user.id
 
