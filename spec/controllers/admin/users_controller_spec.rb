@@ -83,4 +83,16 @@ describe Admin::UsersController do
       # i can't and shouldn't stub super, however super goes to parent class for search method
     end
   end
+
+  context '#create' do
+    it 'should do nothing when person id and params do not exist' do
+      create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      get :create
+      expect(response.body).to match(/\s?/)
+      # response.body could return 1/2 whitespaces
+    end
+  end
 end
