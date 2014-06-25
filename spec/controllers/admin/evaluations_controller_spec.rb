@@ -41,4 +41,26 @@ describe Admin::EvaluationsController do
       expect(assigns(:application).project).to eq(project)
     end
   end
+
+  context '#evaluate' do
+    it 'evaluates projects -- applicant is male' do
+      project = create(:sp_project)
+      project.update(project_status: 'open', use_provided_application: 1, )
+
+      project_base = SpProject.open.uses_application.order(:name)
+
+      applicant = create(:person)
+      applicant.update(gender: 1)
+
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+      evaluation = create(:sp_evaluation, application_id: application.id)
+
+      get :evaluate, application_id: application.id
+      expect(assigns(:projects)).to eq(project_base.not_full_men)
+    end
+  end
 end
