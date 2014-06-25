@@ -63,4 +63,14 @@ describe Admin::EvaluationsController do
       expect(assigns(:projects)).to eq(project_base.not_full_men)
     end
   end
+
+  context '#page' do
+    it 'applicants answers' do
+      # what chokes up the next page on line 24?
+      # create a page or two
+      # create an answer_sheet
+
+      get :page
+    end
+  end
 end
