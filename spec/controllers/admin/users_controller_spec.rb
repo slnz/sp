@@ -70,4 +70,17 @@ describe Admin::UsersController do
       expect(response).to redirect_to(admin_users_path)
     end
   end
+
+  context '#search' do
+    it 'should call super search' do
+      create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      get :search
+      # BAD SPEC!!!
+      # i expect some sort of redirection to happen here like to /admin/applications/search
+      # i can't and shouldn't stub super, however super goes to parent class for search method
+    end
+  end
 end
