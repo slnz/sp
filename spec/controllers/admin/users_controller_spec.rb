@@ -19,8 +19,8 @@ describe Admin::UsersController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      sp_user = create(:user, person: create(:person))
-      regional_coordinator = create(:sp_regional_coordinator, user: sp_user, person_id: sp_user.person.id)
+      user = create(:user, person: create(:person))
+      regional_coordinator = create(:sp_regional_coordinator, user: user, person_id: user.person.id)
 
       get :index, type: 'regional'
       expect(assigns(:users)).to eq([regional_coordinator])
@@ -32,8 +32,8 @@ describe Admin::UsersController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      sp_user = create(:user, person: create(:person))
-      donation_services = create(:sp_donation_services, user: sp_user, person_id: sp_user.person.id)
+      user = create(:user, person: create(:person))
+      donation_services = create(:sp_donation_services, user: user, person_id: user.person.id)
 
       get :index, type: 'donation_services'
       expect(assigns(:users)).to eq([donation_services])
@@ -45,12 +45,29 @@ describe Admin::UsersController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      sp_user = create(:user, person: create(:person))
-      director = create(:sp_director, user: sp_user, person_id: sp_user.person.id)
+      user = create(:user, person: create(:person))
+      director = create(:sp_director, user: user, person_id: user.person.id)
 
       get :index, type: 'directors'
       expect(assigns(:users)).to eq([director])
       expect(response).to render_template(:_users)
+    end
+  end
+
+  context '#destroy' do
+    it 'should destroy a user' do
+      create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      user = create(:user, person: create(:person))
+      regional_coordinator = create(:sp_regional_coordinator, user: user, person_id: user.person.id)
+
+      expect {
+        delete :destroy, id: regional_coordinator.id
+      }.to change(SpUser, :count).by(-1)
+
+      expect(response).to redirect_to(admin_users_path)
     end
   end
 end
