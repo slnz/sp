@@ -67,7 +67,9 @@ class Admin::UsersController < ApplicationController
     end
     respond_with(@user)
   end
-  
+
+  private
+
   def check_access
     unless sp_user.can_add_user?
       redirect_to '/admin' and return
