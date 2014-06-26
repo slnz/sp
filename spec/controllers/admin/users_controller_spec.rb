@@ -94,5 +94,31 @@ describe Admin::UsersController do
       expect(response.body).to match(/\s?/)
       # response.body could return 1/2 whitespaces
     end
+
+    it 'should create corresponding type -- national' do
+      create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      user_for_sp_staff = create(:user, person: create(:person))
+      sp_staff = create(:sp_regional_coordinator, user: user_for_sp_staff, person_id: user_for_sp_staff.person.id)
+
+      SpUser.delete_all(:person_id => sp_staff.person.id)
+
+      xhr :get, :create, type: 'national', person_id: sp_staff.person.id
+      expect(assigns(:user)).to eq(SpNationalCoordinator.create!(person_id: sp_staff.person.id, ssm_id: sp_staff.ssm_id, created_by_id: session[:user_id]))
+    end
+  end
+
+  context '#check_access' do
+    it 'verifies sp user can add user -- w/ add rights' do
+      sp_user = create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      expect(sp_user.can_add_user?).to eq(true)
+    end
+
+    it 'verifies sp user can add user -- w/o add rights' do
+      sp_user = create(:sp_regional_coordinator, user: user, person_id: user.person.id)
+      expect(sp_user.can_add_user?).to eq(false)
+    end
   end
 end
