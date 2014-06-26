@@ -77,10 +77,9 @@ describe Admin::UsersController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      get :search
+      get :search, controller: 'admin/applications'
       # BAD SPEC!!!
-      # i expect some sort of redirection to happen here like to /admin/applications/search
-      # i can't and shouldn't stub super, however super goes to parent class for search method
+      # not complete
     end
   end
 
@@ -100,13 +99,38 @@ describe Admin::UsersController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      user_for_sp_staff = create(:user, person: create(:person))
-      sp_staff = create(:sp_regional_coordinator, user: user_for_sp_staff, person_id: user_for_sp_staff.person.id)
+      user_for_sp_user = create(:user, person: create(:person))
+      sp_user = create(:sp_regional_coordinator, user: user_for_sp_user, person_id: user_for_sp_user.person.id)
 
-      SpUser.delete_all(:person_id => sp_staff.person.id)
+      expect {
+        xhr :get, :create, type: 'national', person_id: sp_user.person.id
+      }.to change(SpRegionalCoordinator, :count).by(-1) && change(SpNationalCoordinator, :count).by(+1)
+    end
 
-      xhr :get, :create, type: 'national', person_id: sp_staff.person.id
-      expect(assigns(:user)).to eq(SpNationalCoordinator.create!(person_id: sp_staff.person.id, ssm_id: sp_staff.ssm_id, created_by_id: session[:user_id]))
+    it 'should create corresponding type -- regional' do
+      create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      user_for_sp_user = create(:user, person: create(:person))
+      sp_user = create(:sp_national_coordinator, user: user_for_sp_user, person_id: user_for_sp_user.person.id)
+
+      expect {
+        xhr :get, :create, type: 'regional', person_id: sp_user.person.id
+      }.to change(SpRegionalCoordinator, :count).by(+1) && change(SpNationalCoordinator, :count).by(-1)
+    end
+
+    it 'should create corresponding type -- donation' do
+      create(:sp_national_coordinator, user: user, person_id: user.person.id)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      user_for_sp_user = create(:user, person: create(:person))
+      sp_user = create(:sp_national_coordinator, user: user_for_sp_user, person_id: user_for_sp_user.person.id)
+
+      expect {
+        xhr :get, :create, type: 'donation_services', person_id: sp_user.person.id
+      }.to change(SpDonationServices, :count).by(+1) && change(SpNationalCoordinator, :count).by(-1)
     end
   end
 
