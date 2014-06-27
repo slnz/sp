@@ -55,7 +55,7 @@ describe Admin::PeopleController do
       expect(assigns(:designation)).to eq(designation)
       expect(assigns(:application)).to eq(application)
 
-      # dates = params[:sp_application]
+      # dates = params[:sp_application] LN 26 in controller
       # what would the :sp_application param be, the sp application id?
     end
 
@@ -65,7 +65,7 @@ describe Admin::PeopleController do
       end_date = Date.today + 60
       year = SpApplication.year
 
-      project = SpProject.last.update(open_application_date: open_application_date,
+      project = SpProject.last.update_attributes(open_application_date: open_application_date,
                               start_date: start_date,
                               end_date: end_date
       )
@@ -86,6 +86,15 @@ describe Admin::PeopleController do
         xhr :patch, :update, person_id: applicant.id, designation_number: designation_number, sp_application: application.id
           expect(assigns(:application)).to eq(application)
       }.to change(SpDonationServices, count).by(-1)
+    end
+  end
+
+  context '#get_person' do
+    it 'gets a person' do
+      person = create(:person)
+
+      get :get_person, id: person.id
+      expect(assigns(:person)).to eq(person)
     end
   end
 end
