@@ -28,7 +28,7 @@ describe Admin::PeopleController do
   end
 
   context '#update' do
-    it 'update w/ project > 0' do
+    it 'update w/ project > 0', :focus do
       open_application_date = Date.today - 30
       start_date = Date.today + 30
       end_date = Date.today + 60
@@ -48,15 +48,13 @@ describe Admin::PeopleController do
       )
       designation = SpDesignationNumber.create(person_id: applicant.id,
                                                project_id: project.id,
-                                               designation_number: designation_number
+                                               designation_number: designation_number,
+                                               year: year
       )
 
-      xhr :patch, :update, person_id: applicant.id, project_id: project.id, designation_number: designation_number, sp_application: application.id
+      xhr :put, :update, id: applicant.id, project_id: project.id, designation_number: designation_number, sp_application: application.id, year: year
       expect(assigns(:designation)).to eq(designation)
       expect(assigns(:application)).to eq(application)
-
-      # dates = params[:sp_application] LN 26 in controller
-      # what would the :sp_application param be, the sp application id?
     end
 
     it 'update w/o project' do

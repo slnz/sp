@@ -23,10 +23,11 @@ class Admin::PeopleController < ApplicationController
         @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number], :year => SpApplication.year)
       end
     end
-    dates = params[:sp_application]
-    if dates.present?
-      start_date = Date.strptime(dates[:start_date], "%m/%d/%Y")
-      end_date = Date.strptime(dates[:end_date], "%m/%d/%Y")
+    application_start_date = SpApplication.find(params[:sp_application]).start_date.to_s
+    application_end_date = SpApplication.find(params[:sp_application]).end_date.to_s
+    if params[:sp_application].present?
+      start_date = Date.strptime(application_start_date, "%Y-%m-%d")
+      end_date = Date.strptime(application_end_date, "%Y-%m-%d")
       @application.start_date = start_date
       @application.end_date = end_date
       @application.save
