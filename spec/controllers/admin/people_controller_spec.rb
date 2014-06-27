@@ -59,7 +59,7 @@ describe Admin::PeopleController do
       # what would the :sp_application param be, the sp application id?
     end
 
-    it 'update w/o project', :focus do
+    it 'update w/o project' do
       open_application_date = Date.today - 30
       start_date = Date.today + 30
       end_date = Date.today + 60
