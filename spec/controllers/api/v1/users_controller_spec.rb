@@ -11,33 +11,33 @@ describe Api::V1::UsersController do
   context '#index' do
     it 'returns http success' do
       get 'index', access_token: api_key.access_token
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'returns users array' do
       get 'index', access_token: api_key.access_token
       json = JSON.parse(response.body)
-      json['users'].should be_present
-      json['users'].should be_a(Array)
+      expect(json['users']).to be_present
+      expect(json['users']).to be_a(Array)
     end
 
     it 'returns invalid token msg' do
       get 'index', access_token: "1234"
       json = JSON.parse(response.body)
-      json['error'].should be_present
+      expect(json['error']).to be_present
     end
   end
 
   context '#show' do
     it 'returns http success' do
       get 'show', id: user.id, access_token: api_key.access_token
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'returns user' do
       get 'show', id: user.id, access_token: api_key.access_token
       json = JSON.parse(response.body)
-      json['user'].should be_present
+      expect(json['user']).to be_present
     end
   end
 

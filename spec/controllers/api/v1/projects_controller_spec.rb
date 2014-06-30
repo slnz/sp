@@ -11,20 +11,20 @@ describe Api::V1::ProjectsController do
   context '#index' do
     it 'returns http success' do
       get 'index', access_token: api_key.access_token
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'returns projects array' do
       get 'index', access_token: api_key.access_token
       json = JSON.parse(response.body)
-      json['projects'].should be_present
-      json['projects'].should be_a(Array)
+      expect(json['projects']).to be_present
+      expect(json['projects']).to be_a(Array)
     end
 
     it 'returns invalid token msg' do
       get 'index', access_token: "1234"
       json = JSON.parse(response.body)
-      json['error'].should be_present
+      expect(json['error']).to be_present
     end
 
     %w{applicants pd apd opd staff volunteers}.each do |incl|
@@ -32,7 +32,7 @@ describe Api::V1::ProjectsController do
         it "returns project w/ #{incl}" do
           get 'index', include: incl, access_token: api_key.access_token
           json = JSON.parse(response.body)
-          json['projects'].first.should have_key(incl)
+          expect(json['projects'].first).to have_key(incl)
         end
       end
     end
@@ -41,7 +41,7 @@ describe Api::V1::ProjectsController do
       it 'returns specific person' do
         get 'index', filters: {id: project.id}, access_token: api_key.access_token
         json = JSON.parse(response.body)
-        json['projects'].first['id'].to_i.should eq(project.id)
+        expect(json['projects'].first['id'].to_i).to eq(project.id)
       end
     end
 
@@ -49,7 +49,7 @@ describe Api::V1::ProjectsController do
       it 'returns specific person' do
         get 'index', filters: {primary_partner: 'String'}, access_token: api_key.access_token
         json = JSON.parse(response.body)
-        json['projects'].first['primary_partner'].should eq('String')
+        expect(json['projects'].first['primary_partner']).to eq('String')
       end
     end
 
@@ -57,7 +57,7 @@ describe Api::V1::ProjectsController do
       it 'returns specific person' do
         get 'index', filters: {not_primary_partner: 'String'}, access_token: api_key.access_token
         json = JSON.parse(response.body)
-        json['projects'].count.should eq(0)
+        expect(json['projects'].count).to eq(0)
       end
     end
   end
@@ -65,13 +65,13 @@ describe Api::V1::ProjectsController do
   context '#show' do
     it 'returns http success' do
       get 'show', id: project.id, access_token: api_key.access_token
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'returns project' do
       get 'show', id: project.id, access_token: api_key.access_token
       json = JSON.parse(response.body)
-      json['sp_project'].should be_present
+      expect(json['sp_project']).to be_present
     end
   end
 

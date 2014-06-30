@@ -8,67 +8,67 @@ describe SpEvaluator do
     @sp_evaluator = create(:sp_evaluator, person: @person, user: @user)
   end
   
-  it "should not be allowed to change project status" do
+  it "is not be allowed to change project status" do
     response = @sp_evaluator.send(:can_change_project_status?)
-    response.should be false
+    expect(response).to be_falsey
   end
   
-  it "should not be allowed to change it own information" do
+  it "is not be allowed to change it own information" do
     response = @sp_evaluator.send(:can_change_self?)
-    response.should be false
+    expect(response).to be_falsey
   end
   
-  it "should not be allowed to add a user" do
+  it "is not be allowed to add a user" do
     response = @sp_evaluator.send(:can_add_user?)
-    response.should be false
+    expect(response).to be_falsey
   end
   
-  it "should be allowed to search" do
+  it "is allowed to search" do
     response = @sp_evaluator.send(:can_search?)
-    response.should be true
+    expect(response).to be_truthy
   end
   
-  it "should not be allowed to view other regions" do
+  it "is not be allowed to view other regions" do
     response = @sp_evaluator.send(:can_see_other_regions?)
-    response.should be false
+    expect(response).to be_falsey
   end
   
-  it "should be allowed to evaluate an application" do
+  it "is allowed to evaluate an application" do
     project = create(:sp_project)
     application = create(:sp_application, person: @person, project: project)
     
     sample = Array.new
     sample << project
     
-    @sp_evaluator.person.should_receive(:current_staffed_projects).and_return(sample)
+    expect(@sp_evaluator.person).to receive(:current_staffed_projects).and_return(sample)
     response = @sp_evaluator.send(:can_evaluate_applicant?, application)
-    response.should be true
+    expect(response).to be_truthy
   end
   
-  it "should be allowed to evaluate an unknown application" do
+  it "is allowed to evaluate an unknown application" do
     response = @sp_evaluator.send(:can_evaluate_applicant?)
-    response.should be false
+    expect(response).to be_falsey
   end
   
-  it "should be allowed to view the roster" do
+  it "is allowed to view the roster" do
     response = @sp_evaluator.send(:can_see_roster?)
-    response.should be true
+    expect(response).to be_truthy
   end
   
-  it "should return a string region when 'creatable_user_types' function is called" do
-    @sp_evaluator.should_receive(:creatable_user_types_array).with(nil).and_return([])
+  it "returns a string region when 'creatable_user_types' function is called" do
+    expect(@sp_evaluator).to receive(:creatable_user_types_array).with(nil).and_return([])
     response = @sp_evaluator.send(:creatable_user_types)
-    response.should == []
+    expect(response).to eq []
   end
   
-  it "should return a string region when the region function is called" do
-    @sp_evaluator.user.person.should_receive(:region).and_return('Region')
+  it "returns a string region when the region function is called" do
+    expect(@sp_evaluator.user.person).to receive(:region).and_return('Region')
     response = @sp_evaluator.send(:region)
-    response.should == 'Region'
+    expect(response).to eq 'Region'
   end
   
-  it "should return a string 'Evaluator' when asking for its role" do
+  it "returns a string 'Evaluator' when asking for its role" do
     response = @sp_evaluator.send(:role)
-    response.should == 'Evaluator'
+    expect(response).to eq 'Evaluator'
   end
 end

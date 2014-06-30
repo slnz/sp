@@ -5,7 +5,7 @@ describe User do
     it "creates a person associated with the new user" do
       user = User.find_or_create_from_guid_or_email('a', 'a@example.com', 'John', 'Doe')
       user.reload
-      user.person.should_not be_nil
+      expect(user.person).to_not be_nil
     end
   end
 

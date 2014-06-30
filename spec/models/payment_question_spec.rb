@@ -12,35 +12,35 @@ describe PaymentQuestion do
   describe "when calling 'response' function" do
     it 'returns a new payment if no application specified' do
       response = @payment_question.send(:response)
-      response.new_record?.should be_true
+      expect(response.new_record?).to be_truthy
     end
     it 'returns the existing application payment if the application already have payments' do
       payment = create(:sp_payment, application: @application)
       response = @payment_question.send(:response, @application).first
-      response.id.should be payment.id
+      expect(response.id).to be payment.id
     end
     it 'returns a new application payment if the application do not have payments yet' do
       response = @payment_question.send(:response, @application)
-      response.should_not be nil
+      expect(response).not_to be nil
     end
   end
 
   describe "when calling 'display_response' function" do
     it 'returns a blank string if no application specified' do
-      @payment_question.should_receive(:response)
+      expect(@payment_question).to receive(:response)
       response = @payment_question.send(:display_response)
-      response.should == ''
+      expect(response).to eq('')
     end
     it 'returns an existing application payment string if the application already have payments' do
       payment = create(:sp_payment, application: @application)
-      @payment_question.should_receive(:response).with(@application).and_return(payment)
+      expect(@payment_question).to receive(:response).with(@application).and_return(payment)
       response = @payment_question.send(:display_response, @application)
-      response.should_not be_blank
+      expect(response).not_to be_blank
     end
     it 'returns a blank string if the application do not have payments yet' do
-      @payment_question.should_receive(:response).with(@application)
+      expect(@payment_question).to receive(:response).with(@application)
       response = @payment_question.send(:display_response, @application)
-      response.should == ''
+      expect(response).to eq('')
     end
   end
 

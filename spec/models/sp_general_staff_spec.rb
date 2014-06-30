@@ -9,11 +9,11 @@ describe SpGeneralStaff do
   
   it "should be allowed to search" do
     response = @sp_general_staff.send(:can_search?)
-    response.should be true
+    expect(response).to be_truthy
   end
   
   it "should return a string 'General Staff' when asking for its role" do
     response = @sp_general_staff.send(:role)
-    response.should == 'General Staff'
+    expect(response).to eq 'General Staff'
   end
 end

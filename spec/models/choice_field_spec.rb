@@ -3,32 +3,32 @@ require 'spec_helper'
 describe ChoiceField do
   
   describe "when calling 'ptemplate' function" do
-    it 'should return a nil if style is nil' do
-      ChoiceField.new().ptemplate.should be nil
+    it 'returns a nil if style is nil' do
+      expect(ChoiceField.new().ptemplate).to be_nil
     end
-    it 'should return a checkbox_field type' do
-      ChoiceField.new(style: 'checkbox').ptemplate.should == 'checkbox_field'
+    it 'returns a checkbox_field type' do
+      expect(ChoiceField.new(style: 'checkbox').ptemplate).to eq 'checkbox_field'
     end
-    it 'should return a drop_down_field type' do
-      ChoiceField.new(style: 'drop-down').ptemplate.should == 'drop_down_field'
+    it 'returns a drop_down_field type' do
+      expect(ChoiceField.new(style: 'drop-down').ptemplate).to eq 'drop_down_field'
     end
-    it 'should return a radio_button_field type' do
-      ChoiceField.new(style: 'radio').ptemplate.should == 'radio_button_field'
+    it 'returns a radio_button_field type' do
+      expect(ChoiceField.new(style: 'radio').ptemplate).to eq 'radio_button_field'
     end
-    it 'should return a yes_no type' do
-      ChoiceField.new(style: 'yes-no').ptemplate.should == 'yes_no'
+    it 'returns a yes_no type' do
+      expect(ChoiceField.new(style: 'yes-no').ptemplate).to eq 'yes_no'
     end
-    it 'should return a rating type' do
-      ChoiceField.new(style: 'rating').ptemplate.should == 'rating'
+    it 'returns a rating type' do
+      expect(ChoiceField.new(style: 'rating').ptemplate).to eq 'rating'
     end
-    it 'should return a acceptance type' do
-      ChoiceField.new(style: 'acceptance').ptemplate.should == 'acceptance'
+    it 'returns a acceptance type' do
+      expect(ChoiceField.new(style: 'acceptance').ptemplate).to eq 'acceptance'
     end
-    it 'should return a country type' do
-      ChoiceField.new(style: 'country').ptemplate.should == 'country'
+    it 'returns a country type' do
+      expect(ChoiceField.new(style: 'country').ptemplate).to eq 'country'
     end
-    it 'should return a project_preference type' do
-      ChoiceField.new(style: 'project-preference').ptemplate.should == 'project_preference'
+    it 'returns a project_preference type' do
+      expect(ChoiceField.new(style: 'project-preference').ptemplate).to eq 'project_preference'
     end
   end
   

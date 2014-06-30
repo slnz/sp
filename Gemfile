@@ -52,6 +52,7 @@ gem 'versionist'
 gem 'active_model_serializers'
 
 group :development, :test do
+  gem 'rspec', '~> 3.0'
   gem 'quiet_assets'
   gem 'awesome_print'
   gem 'mailcatcher'

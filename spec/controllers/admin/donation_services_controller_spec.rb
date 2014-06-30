@@ -16,19 +16,6 @@ describe Admin::DonationServicesController do
     end
   end
 
-  context '#download' do
-    let(:csv_string)  { SpDonationServices.generate_file(user.person) }
-    let(:csv_options) { {:filename => "sp_need_account_no.txt", :type => 'text/tab'} }
-
-    it 'spits out a tab separated file' do
-      @controller.should_receive(:send_data).with(csv_string, csv_options).
-          and_return { @controller.render nothing: true } # to prevent a 'missing template' error
-
-      get 'download'
-
-    end
-  end
-
   context '#upload' do
     let(:person) { create(:person) }
     before do

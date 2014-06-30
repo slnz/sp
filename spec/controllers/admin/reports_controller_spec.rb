@@ -11,7 +11,7 @@ describe Admin::ReportsController do
 
       get :show
 
-      response.should redirect_to(action: :director)
+      expect(response).to redirect_to(action: :director)
     end
   end
 

@@ -10,70 +10,70 @@ describe SchoolPicker do
   end
   
   describe "when calling the 'state' function" do
-    it "should return a blank string if no application specified" do
+    it "returns a blank string if no application specified" do
       response = @school_picker.send(:state)
-      response.should == ""
+      expect(response).to eq("")
     end
-    it "should return the universityState if the person of application has a universityState record" do
+    it "returns the universityState if the person of application has a universityState record" do
       @person.update_column(:universityState, 'FL')
       response = @school_picker.send(:state, @application)
-      response.should == @person.universityState
+      expect(response).to eq(@person.universityState)
     end
-    it "should return the campus state if the person of application do not have a universtyState record" do
+    it "returns the campus state if the person of application do not have a universtyState record" do
       @person.update_column(:universityState, nil)
       campus = create(:campus, name: 'Campus Name', state: 'CA')
-      @school_picker.should_receive(:response).with(@application).and_return(campus.name)
+      expect(@school_picker).to receive(:response).with(@application).and_return(campus.name)
       response = @school_picker.send(:state, @application)
-      response.should == campus.state
+      expect(response).to eq(campus.state)
     end
   end
   
   describe "when calling 'colleges' function" do
-    it "should return a blank array if no application specified" do
+    it "returns a blank array if no application specified" do
       response = @school_picker.send(:colleges)
-      response.should == []
+      expect(response).to eq([])
     end
-    it "should return a blank array if the given application do not have a state record" do
-      @school_picker.should_receive(:state).with(@application).and_return("")
+    it "returns a blank array if the given application do not have a state record" do
+      expect(@school_picker).to receive(:state).with(@application).and_return("")
       response = @school_picker.send(:colleges, @application)
-      response.should == []
+      expect(response).to eq([])
     end
-    it "should return an array of campus names if the given application has a state record" do
+    it "returns an array of campus names if the given application has a state record" do
       campus = create(:campus, name: 'Campus Name', state: 'Campus State', type: 'College', isClosed: nil)
-      @school_picker.should_receive(:state).exactly(2).times.with(@application).and_return(campus.state)
+      expect(@school_picker).to receive(:state).exactly(2).times.with(@application).and_return(campus.state)
       response = @school_picker.send(:colleges, @application)
-      response.first.should == campus.name
+      expect(response.first).to eq(campus.name)
     end
   end
   
   describe "when calling 'high_schools' function" do
-    it "should return a blank array if no application specified" do
+    it "returns a blank array if no application specified" do
       response = @school_picker.send(:high_schools)
-      response.should == []
+      expect(response).to eq([])
     end
-    it "should return a blank array if the given application do not have a state record" do
-      @school_picker.should_receive(:state).with(@application).and_return("")
+    it "returns a blank array if the given application do not have a state record" do
+      expect(@school_picker).to receive(:state).with(@application).and_return("")
       response = @school_picker.send(:high_schools, @application)
-      response.should == []
+      expect(response).to eq([])
     end
-    it "should return an array of campus names if the given application has a state record" do
+    it "returns an array of campus names if the given application has a state record" do
       campus = create(:campus, name: 'Campus Name', state: 'Campus State', type: 'HighSchool')
-      @school_picker.should_receive(:state).with(@application).and_return(campus.state)
+      expect(@school_picker).to receive(:state).with(@application).and_return(campus.state)
       response = @school_picker.send(:high_schools, @application)
-      response.first.should == campus.name
+      expect(response.first).to eq(campus.name)
     end
   end
   
   describe "when calling 'validation_class' function" do
-    it "should return a blank string if SchoolPicker is not required" do
-      @school_picker.should_receive(:required?).and_return(false)
+    it "returns a blank string if SchoolPicker is not required" do
+      expect(@school_picker).to receive(:required?).and_return(false)
       response = @school_picker.send(:validation_class)
-      response.should == ""
+      expect(response).to eq("")
     end
-    it "should return a string if SchoolPicker is required" do
-      @school_picker.should_receive(:required?).and_return(true)
+    it "returns a string if SchoolPicker is required" do
+      expect(@school_picker).to receive(:required?).and_return(true)
       response = @school_picker.send(:validation_class)
-      response.should == "validate-selection required"
+      expect(response).to eq("validate-selection required")
     end
   end
 end
