@@ -86,7 +86,7 @@
         <label>Other Ministry Foci:</label>
         <div class="checkboxes">
           <% SpMinistryFocus.all.each do |sf| %>
-            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if !@project.new_record? && @project.ministry_focuses.include?(sf) %>">
+            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if !@project.new_record? && @project.ministry_focuses.to_a.include?(sf) %>">
               <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= !@project.new_record? && @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
               <%= f.label "ministry_focus_ids_#{sf.id}", sf.name %>
             </div>
@@ -98,7 +98,7 @@
         <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
         <div class="checkboxes">
         <% SpGospelInAction.all.each do |ga| %>
-          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.include?(ga) %>">
+          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.to_a.include?(ga) %>">
             <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
             <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
           </div>
@@ -197,7 +197,7 @@
             </div>
             <div class="clear"></div>
             <% unless i == 2 || @project.student_quotes[i+1].try(:quote).present?%>
-              <%= link_to_function(image_tag('icons/plus-small.png') + 'Add another quote', "$(this).hide();$('#quote_#{i+1}').show()", :class => 'addanother') %>
+              <%= link_to(image_tag('icons/plus-small.png') + 'Add another quote', '#', onclick: "$(this).hide();$('#quote_#{i+1}').show(); return false", :class => 'addanother') %>
             <% end %>
           </div>
         <% end %>

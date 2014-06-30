@@ -9,7 +9,7 @@
     <span class="schoolleft">School: <%= @person.campus %></span>
   <% end %>
   
-  <%= link_to_function('Print Application', '', :class => 'print_button') %>
+  <%= link_to('Print Application', '#', :class => 'print_button') %>
   <div id="print_options" style="display:none;" title="Print Options">
     <%= form_tag(print_admin_evaluation_path(@evaluation), :method => :get, :id => 'print-options-form') do %>
     <p>

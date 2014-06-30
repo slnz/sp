@@ -78,11 +78,11 @@ class SpUser < ActiveRecord::Base
     p = Person.find(person_id)
     if p && p.user
       max_role = get_max_role(person_id)
-      sp_user = SpUser.find_by_ssm_id(p.user.id)
+      sp_user = SpUser.find_by(ssm_id: p.user.id)
       if sp_user && sp_user.class != max_role
         sp_user.try(:destroy)
       else
-        max_role.find_or_create_by_person_id_and_ssm_id(p.id, p.user.id) if max_role
+        max_role.find_or_create_by(person_id:p.id, ssm_id: p.user.id) if max_role
       end
     end
   end

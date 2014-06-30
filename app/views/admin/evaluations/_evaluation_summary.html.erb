@@ -66,7 +66,7 @@
   <tr>
     <td class="title">Status</td>
     <td>
-      <%= select_tag :event, options_for_select(@valid_events.insert(0, [@application.aasm_current_state.to_s.humanize, ''])), :onchange => "displayWarning()"%>
+      <%= select_tag :event, options_for_select(@valid_events.insert(0, [@application.aasm.current_state.to_s.humanize, ''])), :onchange => "displayWarning()"%>
       <%= tip('If you are moving a student to a different project, keep the status as "ready". The "withdraw" status is if a student tells you they are not going on project any more. "Unsubmit" and "Submit" are statuses that National Coordinators use. You will almost never use "decline" - if you do, a warning with further explanation will appear.') %>
     </td>
   </tr>

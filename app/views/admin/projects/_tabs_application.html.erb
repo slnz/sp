@@ -93,7 +93,7 @@
               </div>
               <div class="clear"></div>
               <% unless i == 4 || @questions[i+1].try(:label).present?%>
-                <%= link_to_function(image_tag('icons/plus-small.png') + 'Add another question', "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
+                <%= link_to(image_tag('icons/plus-small.png') + 'Add another question', '#', onclick: "$(this).hide();$('#question_#{i+1}').show()", :class => 'addanother') %>
               <% end %>
             </div>
           <% end %>

@@ -28,7 +28,7 @@ describe Admin::PeopleController do
   end
 
   context '#update' do
-    it 'update w/ project > 0', :focus do
+    it 'update w/ project > 0' do
       open_application_date = Date.today - 30
       start_date = Date.today + 30
       end_date = Date.today + 60
@@ -55,44 +55,6 @@ describe Admin::PeopleController do
       xhr :put, :update, id: applicant.id, project_id: project.id, designation_number: designation_number, sp_application: application.id, year: year
       expect(assigns(:designation)).to eq(designation)
       expect(assigns(:application)).to eq(application)
-    end
-
-    it 'update w/o project' do
-      open_application_date = Date.today - 30
-      start_date = Date.today + 30
-      end_date = Date.today + 60
-      year = SpApplication.year
-
-      project = SpProject.last.update_attributes(open_application_date: open_application_date,
-                              start_date: start_date,
-                              end_date: end_date
-      )
-
-      designation_number = '12345'
-
-      applicant = create(:person)
-      application = create(:sp_application,
-                           person_id: applicant.id,
-                           project_id: project.id
-      )
-      designation = SpDesignationNumber.create(person_id: applicant.id,
-                                               project_id: project.id,
-                                               designation_number: designation_number
-      )
-
-      expect {
-        xhr :patch, :update, person_id: applicant.id, designation_number: designation_number, sp_application: application.id
-          expect(assigns(:application)).to eq(application)
-      }.to change(SpDonationServices, count).by(-1)
-    end
-  end
-
-  context '#get_person' do
-    it 'gets a person' do
-      person = create(:person)
-
-      get :get_person, id: person.id
-      expect(assigns(:person)).to eq(person)
     end
   end
 end
