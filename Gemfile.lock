@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/cru_lib
-  revision: 2dea444986b34fe146a9e03337b0d0428d7bdb44
+  revision: c55dfdbdda51888891209c05db2d46e566c2236a
   specs:
     cru_lib (0.0.1)
       global_registry
@@ -181,7 +181,7 @@ GEM
     httpauth (0.2.1)
     httpi (2.0.2)
       rack
-    i18n (0.6.9)
+    i18n (0.6.11)
     identity_linker (1.0.0)
       savon (~> 2.1.0)
     image_science (1.2.6)
@@ -406,7 +406,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.39)
+    tzinfo (0.3.40)
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)

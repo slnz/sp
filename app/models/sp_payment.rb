@@ -75,13 +75,13 @@ class SpPayment < ActiveRecord::Base
 
     application.async_push_to_global_registry unless application.global_registry_id.present?
 
-    super(application.global_registry_id, 'person_applicant_summer_project_summer_project_application')
+    super(application.global_registry_id, 'summer_project_application', application)
   end
 
 
   def self.push_structure_to_global_registry
     parent_id = GlobalRegistry::EntityType.get(
-        {'filters[name]' => 'person_applicant_summer_project_summer_project_application'}
+        {'filters[name]' => 'summer_project_application'}
     )['entity_types'].first['id']
     super(parent_id)
   end

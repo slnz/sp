@@ -63,7 +63,7 @@ class Address < ActiveRecord::Base
     attributes_to_push['line3'] = address3
     attributes_to_push['line4'] = address4
     attributes_to_push['postal_code'] = zip
-    super(parent_id, parent_type)
+    super(parent_id, parent_type, person)
   end
 
   def self.push_structure_to_global_registry
