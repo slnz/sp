@@ -1,7 +1,5 @@
-require_dependency 'global_registry_methods'
-
 class SpStudentQuote < ActiveRecord::Base
-  include GlobalRegistryMethods
+  include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
 
   belongs_to :project, :class_name => "SpProject", :foreign_key => "project_id"

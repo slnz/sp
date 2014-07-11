@@ -15,21 +15,11 @@ GIT
       savon (~> 2.1.0)
 
 GIT
-  remote: https://github.com/CruGlobal/common_engine
-  revision: 01b69db8b9beac4fc58e29bf8ed884a6dd6388a1
+  remote: https://github.com/CruGlobal/cru_lib
+  revision: 2dea444986b34fe146a9e03337b0d0428d7bdb44
   specs:
-    common_engine (0.0.1)
-      aasm (~> 3.0.9)
-      acts_as_list (~> 0.3.0)
-      auto_strip_attributes (~> 2.0)
-      geocoder
+    cru_lib (0.0.1)
       global_registry
-      paperclip
-      rails (>= 3.0.0)
-      rubycas-client
-      sidekiq
-      sidekiq-failures
-      sidekiq-unique-jobs
 
 GIT
   remote: https://github.com/CruGlobal/qe
@@ -440,17 +430,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
   active_model_serializers
   activemerchant (~> 1.28.0)
   acts_as_versioned!
   airbrake (~> 3.1.5)
+  auto_strip_attributes
   awesome_print
   aws-sdk
   better_errors
   binding_of_caller
   carmen (~> 0.2.12)
   coffee-rails
-  common_engine!
+  cru_lib!
   dalli (~> 2.2.1)
   database_cleaner
   dynamic_form (~> 1.1.4)
@@ -484,6 +476,7 @@ DEPENDENCIES
   retryable-rb (~> 1.1.0)
   rspec (~> 3.0)
   rspec-rails
+  rubycas-client
   sass-rails
   sidekiq-failures
   sidekiq-pro

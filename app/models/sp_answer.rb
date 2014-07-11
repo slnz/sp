@@ -1,0 +1,2 @@
+class SpAnswer < Answer
+end

@@ -1,6 +1,5 @@
-require 'global_registry_methods'
 class SpPayment < ActiveRecord::Base
-  include GlobalRegistryMethods
+  include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
 
   attr_accessor :first_name, :last_name, :address, :city, :state, :zip, :card_number,
