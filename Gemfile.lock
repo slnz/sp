@@ -15,21 +15,11 @@ GIT
       savon (~> 2.1.0)
 
 GIT
-  remote: https://github.com/CruGlobal/common_engine
-  revision: 01b69db8b9beac4fc58e29bf8ed884a6dd6388a1
+  remote: https://github.com/CruGlobal/cru_lib
+  revision: c55dfdbdda51888891209c05db2d46e566c2236a
   specs:
-    common_engine (0.0.1)
-      aasm (~> 3.0.9)
-      acts_as_list (~> 0.3.0)
-      auto_strip_attributes (~> 2.0)
-      geocoder
+    cru_lib (0.0.1)
       global_registry
-      paperclip
-      rails (>= 3.0.0)
-      rubycas-client
-      sidekiq
-      sidekiq-failures
-      sidekiq-unique-jobs
 
 GIT
   remote: https://github.com/CruGlobal/qe
@@ -191,7 +181,7 @@ GEM
     httpauth (0.2.1)
     httpi (2.0.2)
       rack
-    i18n (0.6.9)
+    i18n (0.6.11)
     identity_linker (1.0.0)
       savon (~> 2.1.0)
     image_science (1.2.6)
@@ -416,7 +406,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.39)
+    tzinfo (0.3.40)
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -440,17 +430,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
   active_model_serializers
   activemerchant (~> 1.28.0)
   acts_as_versioned!
   airbrake (~> 3.1.5)
+  auto_strip_attributes
   awesome_print
   aws-sdk
   better_errors
   binding_of_caller
   carmen (~> 0.2.12)
   coffee-rails
-  common_engine!
+  cru_lib!
   dalli (~> 2.2.1)
   database_cleaner
   dynamic_form (~> 1.1.4)
@@ -484,6 +476,7 @@ DEPENDENCIES
   retryable-rb (~> 1.1.0)
   rspec (~> 3.0)
   rspec-rails
+  rubycas-client
   sass-rails
   sidekiq-failures
   sidekiq-pro

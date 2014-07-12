@@ -1,6 +1,5 @@
-require 'global_registry_methods'
 class SpPayment < ActiveRecord::Base
-  include GlobalRegistryMethods
+  include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
 
   attr_accessor :first_name, :last_name, :address, :city, :state, :zip, :card_number,
@@ -76,13 +75,13 @@ class SpPayment < ActiveRecord::Base
 
     application.async_push_to_global_registry unless application.global_registry_id.present?
 
-    super(application.global_registry_id, 'person_applicant_summer_project_summer_project_application')
+    super(application.global_registry_id, 'summer_project_application', application)
   end
 
 
   def self.push_structure_to_global_registry
     parent_id = GlobalRegistry::EntityType.get(
-        {'filters[name]' => 'person_applicant_summer_project_summer_project_application'}
+        {'filters[name]' => 'summer_project_application'}
     )['entity_types'].first['id']
     super(parent_id)
   end

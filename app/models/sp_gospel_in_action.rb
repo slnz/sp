@@ -1,8 +1,6 @@
-require_dependency 'global_registry_methods'
-
 class SpGospelInAction < ActiveRecord::Base
   include Sidekiq::Worker
-  include GlobalRegistryMethods
+  include CruLib::GlobalRegistryMethods
 
   has_many :project_gospel_in_actions, :class_name => "SpProjectGospelInAction", :foreign_key => "sp_gospel_in_action_id"
   default_scope -> { order(:name) }

@@ -1,7 +1,5 @@
-require_dependency 'global_registry_methods'
-
 class SpWorldRegion < ActiveRecord::Base
-  include GlobalRegistryMethods
+  include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
 
   def self.skip_fields_for_gr
