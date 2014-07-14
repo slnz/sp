@@ -53,6 +53,7 @@ gem 'active_model_serializers'
 gem 'rubycas-client'
 gem 'aasm'
 gem 'auto_strip_attributes'
+gem 'therubyracer'
 
 group :development, :test do
   gem 'rspec', '~> 3.0'
@@ -69,7 +70,6 @@ group :development, :test do
   gem 'fuubar'
   gem 'simplecov', :require => false
   gem 'database_cleaner'
-  gem 'therubyracer'
   gem 'spork-rails'#, '~> 3.2.0'
   gem 'guard-spork'
 end
