@@ -483,6 +483,7 @@ DEPENDENCIES
   sidekiq-unique-jobs
   siebel_donations (~> 1.0.4)
   simplecov
+  sinatra (>= 1.3.0)
   spork-rails
   spreadsheet (~> 0.7.4)
   therubyracer
