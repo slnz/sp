@@ -14,15 +14,15 @@ class SpProjectMinistryFocus < ActiveRecord::Base
     super
   end
 
-  def attributes_to_push
+  def attributes_to_push(*args)
     if global_registry_id
       super
     else
-      super('ministry_focus', 'summer_project_ministry_focus', ministry_focus)
+      super(relationship_name: 'ministry_focus', related_name: 'summer_project_ministry_focus', related_object: ministry_focus, base_object: project)
     end
   end
 
-  def create_in_global_registry(base_object = nil, relationship_name = nil)
+  def create_in_global_registry(*args)
     super(project, 'ministry_focus')
   end
 
