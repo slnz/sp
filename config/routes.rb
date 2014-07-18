@@ -148,6 +148,9 @@ Sp2::Application.routes.draw do
 
   match '/references/done' => "reference_sheets#done", via: [:get, :post]
 
+  match '/logout' => "sessions#destroy", :as => :logout, via: [:get, :post, :delete]
+  match '/login' => "sessions#new", :as => :login, via: :get
+
  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 
   constraint = lambda { |request| request.session['user_id'] and
@@ -155,6 +158,8 @@ Sp2::Application.routes.draw do
   constraints constraint do
     mount Sidekiq::Web => '/sidekiq'
   end
+
+  get 'monitors/lb' => 'monitors#lb'
 
   root :to => "applications#apply"
 

@@ -10,8 +10,6 @@ config/amazon_s3.yml
 .rvmrc
 config/facebook.yml
 public/packages/
-config/initializers/active_merchant.rb
-config/initializers/email.rb
 *.swp
 vendor/ruby
 development/
@@ -19,7 +17,6 @@ log/*
 coverage
 config/config.yml
 .idea
-app/models/gcx.rb
-app/models/wpdev.rb
 vendor/ruby
 public/cache
+public/assets
