@@ -8,6 +8,13 @@ class SpStudentQuote < ActiveRecord::Base
     super(project.global_registry_id)
   end
 
+  def self.push_structure_to_global_registry
+    parent_id = GlobalRegistry::EntityType.get(
+        {'filters[name]' => 'summer_project'}
+    )['entity_types'].first['id']
+    super(parent_id)
+  end
+
   def self.skip_fields_for_gr
     %w[id created_at updated_at project_id global_registry_id]
   end
