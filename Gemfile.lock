@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/cru_lib
-  revision: c55dfdbdda51888891209c05db2d46e566c2236a
+  revision: 7e22531b5e49c57a5a4fa84b84103982bf48fa46
   specs:
     cru_lib (0.0.1)
       global_registry
