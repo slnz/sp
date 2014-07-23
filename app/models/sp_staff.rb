@@ -62,7 +62,7 @@ class SpStaff < ActiveRecord::Base
     end
   end
 
-  def create_in_global_registry(base_object = nil, relationship_name = nil)
+  def create_in_global_registry(*args)
     super(person, 'summer_project_staff')
   end
 
