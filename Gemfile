@@ -54,7 +54,6 @@ gem 'active_model_serializers'
 gem 'rubycas-client'
 gem 'aasm'
 gem 'auto_strip_attributes'
-gem 'therubyracer'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
 group :development, :test do
