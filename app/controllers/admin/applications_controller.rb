@@ -109,7 +109,7 @@ class Admin::ApplicationsController < ApplicationController
 
   protected
     def set_up_search_form
-      @region_options = Region.order('region')
+      @region_options = Region.all_regions
       @team_options = Team.where("lane = 'FS'").order('name')
       @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
       @project_options = SpProject.current.order(:name)

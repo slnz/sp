@@ -10,7 +10,7 @@ module ProjectsHelper
       @options << option
     end
   end
-  
+
   # This method was written by Isaac Kimball
   def stat_link(project, project_version,text, options = {})
     pb = Time.now.to_date
@@ -84,7 +84,7 @@ module ProjectsHelper
     collections = [none]
     if !options || options.include?(:regions)
       region = PartnershipType.new('Region')
-      @regions ||= Region.order("region")
+      @regions ||= Region.all_regions
       @regions.each {|r| region << PartnershipOption.new(r.region, r.name) unless r.region.empty?}
       collections << region
     end
@@ -104,7 +104,7 @@ module ProjectsHelper
     tag = content_tag("select", option_groups_from_collection_for_select(collections, :options, :type_name, :id, :name, eval("@#{object}.#{method}")), html_options)
     tag = error_wrapping(tag, record.errors[method]) unless options && options.include?(:no_errors)
   end
-  
+
   def error_wrapping(html_tag, has_error)
     has_error ? ActionView::Base.field_error_proc.call(html_tag, self) : html_tag
   end

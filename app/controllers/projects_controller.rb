@@ -149,7 +149,7 @@ class ProjectsController < ApplicationController
     end
 
     def get_regions
-      @region_options = Region.find(:all, :order => 'region').map(&:region)
+      @region_options = Region.all_regions.map(&:region)
     end
 
     def get_project_type_condition
