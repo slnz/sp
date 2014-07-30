@@ -81,7 +81,7 @@ class Admin::ProjectsController < ApplicationController
     year = get_year
 
     book = Spreadsheet::Workbook.new
-    sheet1 = book.create_worksheet(:name => @project.name)
+    sheet1 = book.create_worksheet(name: "Team DB")
 
     r = -1
 
