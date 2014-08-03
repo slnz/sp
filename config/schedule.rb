@@ -20,7 +20,7 @@
 set :output, '/tmp/cron.log'
 
 job_type :rake,    "cd :path && RAILS_ENV=:environment /usr/local/bin/bundle exec /usr/local/bin/rake :task --silent :output"
-job_type :rails,    "cd :path && RAILS_ENV=:environment /usr/local/bin/bundle exec /usr/local/bin/rails :task --silent :output"
+job_type :rails,    "cd :path && RAILS_ENV=:environment /usr/local/bin/bundle exec rails :task --silent :output"
 
 every 1.week do
   rails "runner Run.weekly_tasks"

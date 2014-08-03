@@ -16,15 +16,15 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/cru_lib
-  revision: c55dfdbdda51888891209c05db2d46e566c2236a
+  revision: 56879b2fec1dc9497e763847fb7cf8a5e546e36b
   specs:
     cru_lib (0.0.1)
       global_registry
 
 GIT
   remote: https://github.com/CruGlobal/qe
-  revision: 0a8c8f90b99d3d3b4be4f23867e913bd299e7033
-  ref: 0a8c8f9
+  revision: 84fed3dcb9d40e1d8abf55ee91d304d6a69b5cf4
+  ref: 84fed3d
   specs:
     qe (0.0.2)
       aasm
@@ -83,7 +83,7 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
-    acts_as_list (0.3.0)
+    acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.6)
     airbrake (3.1.17)

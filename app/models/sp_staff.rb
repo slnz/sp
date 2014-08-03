@@ -51,18 +51,18 @@ class SpStaff < ActiveRecord::Base
     super
   end
 
-  def attributes_to_push
+  def attributes_to_push(*args)
     if global_registry_id
       attributes_to_push = super
       attributes_to_push['role'] = type
 
       attributes_to_push
     else
-      super('summer_project_staff', 'summer_project', sp_project)
+      super(relationship_name: 'summer_project_staff', related_name: 'summer_project', related_object: sp_project, base_object: person)
     end
   end
 
-  def create_in_global_registry(base_object = nil, relationship_name = nil)
+  def create_in_global_registry(*args)
     super(person, 'summer_project_staff')
   end
 

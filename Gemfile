@@ -44,7 +44,7 @@ gem 'relay_api_client', git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'cru_lib', git: 'https://github.com/CruGlobal/cru_lib'
 # gem 'cru_lib', path: '/Users/josh/htdocs/cru_lib'
 gem 'image_science', '~> 1.2.5'
-gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '0a8c8f9'
+gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '84fed3d'
 gem 'sidekiq-pro'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
@@ -54,7 +54,6 @@ gem 'active_model_serializers'
 gem 'rubycas-client'
 gem 'aasm'
 gem 'auto_strip_attributes'
-gem 'therubyracer'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
 group :development, :test do
