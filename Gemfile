@@ -75,4 +75,7 @@ group :development, :test do
   gem 'dotenv'
 end
 
+group :production do
+  gem 'rails_12factor'
+end
 
