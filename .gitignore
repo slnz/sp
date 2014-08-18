@@ -15,7 +15,6 @@ vendor/ruby
 development/
 log/*
 coverage
-config/config.yml
 .idea
 vendor/ruby
 public/cache
