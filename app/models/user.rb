@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
     guid = att_from_receipt(atts, 'ssoGuid')
     first_name = att_from_receipt(atts, 'firstName')
     last_name = att_from_receipt(atts, 'lastName')
-    email = atts['username']
+    email = atts['email']
     find_or_create_from_guid_or_email(guid, email, first_name, last_name)
   end
 
