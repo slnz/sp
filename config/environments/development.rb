@@ -40,4 +40,6 @@ Sp2::Application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { :host => "localhost", :port => 1025 }
 
+  config.cache_store = :dalli_store, '127.0.0.1'
+
 end
