@@ -1,15 +1,14 @@
 <tr>
-  <td><%= stat.sp_year %></td>
-  <td><%= number_with_delimiter(stat.exposuresViaMedia.to_i) %></td>
-  <td><%= number_with_delimiter(stat.evangelisticOneOnOne.to_i) %></td>
-  <td><%= number_with_delimiter(stat.evangelisticGroup.to_i) %></td>
-  <td><%= number_with_delimiter(stat.decisions.to_i) %></td>
-  <td><%= number_with_delimiter(stat.decisionsHelpedByMedia.to_i) %></td>
-  <td><%= number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i) %></td>
-  <td><%= number_with_delimiter(stat.decisionsHelpedByGroup.to_i) %></td>
-  <td><%= number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i) %></td>
-  <td><%= number_with_delimiter(stat.holySpiritConversations.to_i) %></td>
-  <td><%= number_with_delimiter(stat.invldNewBlvrs.to_i) %></td>
-  <td><%= number_with_delimiter(stat.invldStudents.to_i) %></td>
-  <td><%= number_to_currency(stat.dollars_raised.to_i, precision: 0) %></td>
+  <td><%= stat['sp_year'] %></td>
+  <td><%= number_with_delimiter(stat['media_exposures'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['personal_evangelism'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['group_evangelism'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['media_decisions'].to_i + stat['personal_decisions'].to_i + stat['group_decisions'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['media_decisions'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['personal_decisions'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['group_decisions'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['holy_spirit_presentations'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['students_involved'].to_i) %></td>
+  <td><%= number_with_delimiter(stat['student_leaders'].to_i) %></td>
+  <td><%= number_to_currency(stat['dollars_raised'].to_i, precision: 0) %></td>
 </tr>
