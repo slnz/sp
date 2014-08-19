@@ -5,3 +5,5 @@ test: &common
   siebel_token: 'asdfasdf'
   global_registry_token: '912ec803b2ce4asdfasfaslk8d495ab570'
   global_registry_url: 'http://localhost/'
+  infobase_url: 'http://example.com/api/v1'
+  infobase_token: 'asdf'
