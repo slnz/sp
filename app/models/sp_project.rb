@@ -38,9 +38,9 @@ class SpProject < ActiveRecord::Base
   belongs_to :created_by, :class_name => "::Person", :foreign_key => "created_by_id"
   belongs_to :updated_by, :class_name => "::Person", :foreign_key => "updated_by_id"
 
-  belongs_to :basic_info_question_sheet, :class_name => "QuestionSheet", :foreign_key => "basic_info_question_sheet_id"
-  belongs_to :template_question_sheet, :class_name => "QuestionSheet", :foreign_key => "template_question_sheet_id"
-  belongs_to :project_specific_question_sheet, :class_name => "QuestionSheet", :foreign_key => "project_specific_question_sheet_id"
+  belongs_to :basic_info_question_sheet, :class_name => "Fe::QuestionSheet", :foreign_key => "basic_info_question_sheet_id"
+  belongs_to :template_question_sheet, :class_name => "Fe::QuestionSheet", :foreign_key => "template_question_sheet_id"
+  belongs_to :project_specific_question_sheet, :class_name => "Fe::QuestionSheet", :foreign_key => "project_specific_question_sheet_id"
 
   has_many   :stats, :class_name => "SpStat", :foreign_key => "project_id"
   belongs_to :primary_ministry_focus, :class_name => 'SpMinistryFocus', :foreign_key => :primary_ministry_focus_id
@@ -409,7 +409,11 @@ class SpProject < ActiveRecord::Base
   end
 
   def pd_email_non_secure
-    pd.current_address.email if pd && pd.current_address
+    begin
+      pd.current_address.email if pd && pd.current_address
+    rescue
+      binding.pry
+    end
   end
 
   def pd_email
@@ -585,7 +589,7 @@ class SpProject < ActiveRecord::Base
 
   def initialize_project_specific_question_sheet
     unless project_specific_question_sheet
-      update_attribute(:project_specific_question_sheet_id, QuestionSheet.where(label: 'Project - ' + self.to_s).first_or_create.id)
+      update_attribute(:project_specific_question_sheet_id, Fe::QuestionSheet.where(label: 'Project - ' + self.to_s).first_or_create.id)
     end
     if project_specific_question_sheet.pages.length == 0
       project_specific_question_sheet.pages.create!(:label => 'Project Specific Questions', :number => 1)

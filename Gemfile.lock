@@ -1,10 +1,22 @@
-GIT
-  remote: git://github.com/CruGlobal/gcx_api.git
-  revision: 2cec4a58cd133871cc36b28f4bc071d5c55a4269
+PATH
+  remote: /Users/andrewroth/Development/fe
   specs:
-    gcx_api (0.0.2)
-      ox
-      rest-client
+    fe (0.0.3)
+      aasm
+      activemerchant
+      acts_as_list
+      carmen (~> 0.2.12)
+      dynamic_form
+      jquery-rails
+      jquery-ui-rails
+      rails (>= 3.1.0)
+
+GIT
+  remote: https://github.com/CruGlobal/cru_lib
+  revision: 56879b2fec1dc9497e763847fb7cf8a5e546e36b
+  specs:
+    cru_lib (0.0.1)
+      global_registry
 
 GIT
   remote: git://github.com/CruGlobal/relay_api_client.git
@@ -15,21 +27,12 @@ GIT
       savon (~> 2.1.0)
 
 GIT
-  remote: https://github.com/CruGlobal/cru_lib
-  revision: 56879b2fec1dc9497e763847fb7cf8a5e546e36b
+  remote: git://github.com/CruGlobal/gcx_api.git
+  revision: 2cec4a58cd133871cc36b28f4bc071d5c55a4269
   specs:
-    cru_lib (0.0.1)
-      global_registry
-
-GIT
-  remote: https://github.com/CruGlobal/qe
-  revision: 84fed3dcb9d40e1d8abf55ee91d304d6a69b5cf4
-  specs:
-    qe (0.0.2)
-      aasm
-      acts_as_list
-      mail
-      rails (>= 3.1.0)
+    gcx_api (0.0.2)
+      ox
+      rest-client
 
 GIT
   remote: https://github.com/technoweenie/acts_as_versioned.git
@@ -43,17 +46,21 @@ GEM
   specs:
     RubyInline (3.12.3)
       ZenTest (~> 4.3)
-    ZenTest (4.10.1)
-    aasm (3.3.3)
-    actionmailer (4.0.9)
-      actionpack (= 4.0.9)
+    ZenTest (4.10.0)
+    aasm (3.0.26)
+    actionmailer (4.1.5)
+      actionpack (= 4.1.5)
+      actionview (= 4.1.5)
       mail (~> 2.5.4)
-    actionpack (4.0.9)
-      activesupport (= 4.0.9)
-      builder (~> 3.1.0)
-      erubis (~> 2.7.0)
+    actionpack (4.1.5)
+      actionview (= 4.1.5)
+      activesupport (= 4.1.5)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    actionview (4.1.5)
+      activesupport (= 4.1.5)
+      builder (~> 3.1)
+      erubis (~> 2.7.0)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
     active_utils (2.2.3)
@@ -67,21 +74,19 @@ GEM
       json (>= 1.5.1)
       money
       nokogiri
-    activemodel (4.0.9)
-      activesupport (= 4.0.9)
-      builder (~> 3.1.0)
-    activerecord (4.0.9)
-      activemodel (= 4.0.9)
-      activerecord-deprecated_finders (~> 1.0.2)
-      activesupport (= 4.0.9)
-      arel (~> 4.0.0)
-    activerecord-deprecated_finders (1.0.3)
-    activesupport (4.0.9)
+    activemodel (4.1.5)
+      activesupport (= 4.1.5)
+      builder (~> 3.1)
+    activerecord (4.1.5)
+      activemodel (= 4.1.5)
+      activesupport (= 4.1.5)
+      arel (~> 5.0.0)
+    activesupport (4.1.5)
       i18n (~> 0.6, >= 0.6.9)
-      minitest (~> 4.2)
-      multi_json (~> 1.3)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
       thread_safe (~> 0.1)
-      tzinfo (~> 0.3.37)
+      tzinfo (~> 1.1)
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.6)
@@ -91,8 +96,8 @@ GEM
     akami (1.2.2)
       gyoku (>= 0.4.0)
       nokogiri
-    arel (4.0.2)
-    auto_strip_attributes (2.0.6)
+    arel (5.0.1.20140414130214)
+    auto_strip_attributes (2.0.5)
       activerecord (>= 3.0)
     awesome_print (1.2.0)
     aws-sdk (1.51.0)
@@ -100,7 +105,10 @@ GEM
       nokogiri (>= 1.4.4)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    builder (3.1.4)
+    builder (3.2.2)
+    byebug (2.7.0)
+      columnize (~> 0.3)
+      debugger-linecache (~> 1.2)
     callsite (0.0.11)
     carmen (0.2.13)
     celluloid (0.15.2)
@@ -117,7 +125,8 @@ GEM
     coffee-script (2.3.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.7.1)
+    coffee-script-source (1.7.0)
+    columnize (0.8.9)
     connection_pool (2.0.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -125,6 +134,7 @@ GEM
     dalli (2.2.1)
     database_cleaner (1.3.0)
     debug_inspector (0.0.2)
+    debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
     dynamic_form (1.1.4)
@@ -188,6 +198,9 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
+    jquery-validation-rails (1.12.0)
+      railties (>= 3.2, < 5.0)
+      thor (~> 0.14)
     json (1.8.1)
     jwt (0.1.13)
       multi_json (>= 1.5)
@@ -219,7 +232,7 @@ GEM
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.0)
-    minitest (4.7.5)
+    minitest (5.4.0)
     mock_redis (0.13.2)
     money (6.1.1)
       i18n (~> 0.6.4)
@@ -261,6 +274,15 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (1.3.3)
+      byebug (~> 2.7)
+      pry (~> 0.10)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
+    pry-stack_explorer (0.4.9.1)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -270,17 +292,19 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails (4.0.9)
-      actionmailer (= 4.0.9)
-      actionpack (= 4.0.9)
-      activerecord (= 4.0.9)
-      activesupport (= 4.0.9)
+    rails (4.1.5)
+      actionmailer (= 4.1.5)
+      actionpack (= 4.1.5)
+      actionview (= 4.1.5)
+      activemodel (= 4.1.5)
+      activerecord (= 4.1.5)
+      activesupport (= 4.1.5)
       bundler (>= 1.3.0, < 2.0)
-      railties (= 4.0.9)
+      railties (= 4.1.5)
       sprockets-rails (~> 2.0)
-    railties (4.0.9)
-      actionpack (= 4.0.9)
-      activesupport (= 4.0.9)
+    railties (4.1.5)
+      actionpack (= 4.1.5)
+      activesupport (= 4.1.5)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
@@ -404,8 +428,9 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.41)
-    uglifier (2.5.3)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
+    uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unicorn (4.8.3)
@@ -424,7 +449,10 @@ GEM
     whenever (0.7.3)
       activesupport (>= 2.3.4)
       chronic (~> 0.6.3)
-    will_paginate (3.0.7)
+    will_paginate (3.0.6)
+    xray-rails (0.1.14)
+      coffee-rails
+      rails (>= 3.1.0)
     yard (0.8.7.4)
 
 PLATFORMS
@@ -448,6 +476,7 @@ DEPENDENCIES
   dynamic_form (~> 1.1.4)
   excelsior (~> 0.1.0)
   factory_girl_rails
+  fe!
   fuubar
   gcx_api!
   geocoder
@@ -457,6 +486,7 @@ DEPENDENCIES
   infobase
   jquery-rails
   jquery-ui-rails
+  jquery-validation-rails
   libv8 (~> 3.11.8)
   liquid (~> 2.4.1)
   mailcatcher
@@ -466,11 +496,13 @@ DEPENDENCIES
   omniauth-cas (~> 1.0.2)
   omniauth-facebook (~> 1.6.0)
   paperclip (~> 3.5.1)
-  pg
-  qe!
+  pry
+  pry-byebug
+  pry-remote
+  pry-stack_explorer
   quiet_assets
   rack-contrib (~> 1.1.0)
-  rails (~> 4.0.0)
+  rails (~> 4.1.5)
   rb-fsevent (~> 0.9)
   redis-session-store
   relay_api_client!
@@ -489,6 +521,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   therubyracer
+  thin
   tinymce-rails (~> 4.0.6)
   uglifier
   unicorn
@@ -496,3 +529,4 @@ DEPENDENCIES
   webmock
   whenever (~> 0.7.3)
   will_paginate (~> 3.0.0)
+  xray-rails

@@ -1,6 +1,6 @@
 module ApplicationHelper
-  include AnswerPagesHelper
-  include QeHelper
+  include Fe::AnswerPagesHelper
+
   def embed_params(include_action = false)
     params_to_js = params.dup
     unless include_action

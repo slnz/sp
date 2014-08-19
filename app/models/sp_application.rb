@@ -1,9 +1,8 @@
 require 'aasm'
-require_dependency 'answer_sheet_concern'
 
 require 'digest/md5'
 class SpApplication < ActiveRecord::Base
-  include AnswerSheetConcern
+  include Fe::AnswerSheetConcern
   include CruLib::GlobalRegistryRelationshipMethods
   include Sidekiq::Worker
   include AASM

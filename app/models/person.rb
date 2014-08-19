@@ -1,6 +1,6 @@
 require 'auto_strip_attributes'
 
-class Person < ActiveRecord::Base
+class Person < Fe::Person
   include Sidekiq::Worker
   include CruLib::GlobalRegistryMethods
 
@@ -12,18 +12,15 @@ class Person < ActiveRecord::Base
   # SP-298
   has_many                :sp_designation_numbers, dependent: :destroy
 
-  belongs_to              :user, :foreign_key => "fk_ssmUserId"  #Link it to SSM
-
   has_one                 :staff
 
   # Addresses
-  has_many                :email_addresses, :foreign_key => "person_id", :class_name => '::EmailAddress', dependent: :destroy
-  has_many                :phone_numbers, :foreign_key => "person_id", :class_name => '::PhoneNumber', dependent: :destroy
-  has_one                 :current_address, -> { where("addressType = 'current'") }, :foreign_key => "fk_PersonID", :class_name => '::Address'
-  has_one                 :permanent_address, -> { where("addressType = 'permanent'") }, :foreign_key => "fk_PersonID", :class_name => '::Address'
-  has_one                 :emergency_address1, -> { where("addressType = 'emergency1'") }, :foreign_key => "fk_PersonID", :class_name => '::Address'
-  has_many                :addresses, :foreign_key => "fk_PersonID", dependent: :destroy
-
+  has_many                :email_addresses, :foreign_key => "person_id", dependent: :destroy
+  has_many                :phone_numbers, :foreign_key => "person_id", dependent: :destroy
+  has_one                 :current_address, -> { where("address_type = 'current'") }, :foreign_key => "person_id", :class_name => 'Address'
+  has_one                 :permanent_address, -> { where("address_type = 'permanent'") }, :foreign_key => "person_id", :class_name => 'Address'
+  has_one                 :emergency_address1, -> { where("address_type = 'emergency1'") }, :foreign_key => "person_id", :class_name => 'Address'
+  has_many                :addresses, :foreign_key => "person_id", dependent: :destroy
 
   # Summer Project
   has_many                :sp_applications

@@ -1,5 +1,5 @@
 class AnswerSheetsController < ApplicationController
-  include AnswerSheetsControllerConcern
+  include Fe::AnswerSheetsControllerConcern
 
   prepend_before_filter :login
 

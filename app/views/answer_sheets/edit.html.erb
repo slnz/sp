@@ -9,7 +9,7 @@
 		<% end %>
   </div>
   <div id="panel">
-    <%= render :partial => 'answer_sheets/pages_list' %>
+    <%= render :partial => 'fe/answer_sheets/pages_list' %>
   </div>
   <div id="legend">
     <%= image_tag('qe/icons/question-balloon.png') %> Rolling over this symbol gives you help<br/>
@@ -25,8 +25,8 @@
 				<%= link_to('click here to apply to a different project', '/projects', :class => 'applydiff') %>
 			</div>
     <% end %>
-    <%= render :partial => 'answer_sheets/title' %>
-    <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
+    <%= render :partial => 'fe/answer_sheets/title' %>
+    <%= render :partial => 'fe/answer_pages/answer_page', :locals => { :show_first => true } %>
 </div>
 
 <script type="text/javascript">
@@ -73,4 +73,4 @@
   }
 </script>
 
-<%= hidden_field_tag 'submit_to', submit_answer_sheet_path(@answer_sheet), :id => 'submit_to' %>
+<%= hidden_field_tag 'submit_to', fe_application_submit_page_path(@answer_sheet), :id => 'submit_to' %>

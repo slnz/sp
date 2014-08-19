@@ -2,7 +2,7 @@
 *= require_self
 *= require jquery-ui
 *= require jquery-ui-1.8.2.custom
-*= require qe/qe.screen
+*= require fe/fe.screen
 *= require message_block
 *= require frontend
 *= require theme

@@ -1,4 +1,4 @@
-class EmailAddress < ActiveRecord::Base
+class EmailAddress < Fe::EmailAddress
   include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
   belongs_to :person

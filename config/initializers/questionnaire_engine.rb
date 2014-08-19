@@ -1,4 +1,4 @@
-module Qe
+module Fe
   # prefix for database tables
   mattr_accessor :table_name_prefix
   self.table_name_prefix = 'sp_'

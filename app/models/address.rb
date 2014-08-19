@@ -1,4 +1,4 @@
-class Address < ActiveRecord::Base
+class Address < Fe::Address
   include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
 
