@@ -11,6 +11,9 @@ describe Admin::ProjectsController do
 
   context '#index' do
     it 'lists open projects' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
       get :index
       expect(response).to render_template('index')
     end
@@ -25,6 +28,9 @@ describe Admin::ProjectsController do
 
   context '#edit' do
     it 'shows project edit form' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
       get :edit, id: create(:sp_project).id
       expect(response).to render_template('edit')
     end

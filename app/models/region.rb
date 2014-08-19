@@ -2,19 +2,20 @@ class Region
   cattr_reader :standard_region_codes, :campus_region_codes
   @@standard_region_codes = ["GL", "GP", "MA", "MS", "NE", "NW", "RR", "SE", "SW", "UM"]
   @@campus_region_codes = @@standard_region_codes.clone << "NC"
-  attr_accessor :teamID, :name, :note, :region, :address1, :address2, :city, :state, :zip, :country, :phone,
+  attr_accessor :id, :name, :note, :region, :address1, :address2, :city, :state, :zip, :country, :phone,
     :fax, :email, :url, :isActive, :startdate, :stopdate, :no, :abbrv, :hrd, :spPhone, :global_registry_id
 
   def initialize(region)
-    region.each { |k, v| self.send(k.to_sym, v) }
+    region.each { |k, v| self.send("#{k}=".to_sym, v) }
+    self.region = self.abbrv
   end
 
   def self.standard_regions
-    all_regions.select_all { |r| @@standard_region_codes.include?(r.region) }
+    all.select_all { |r| @@standard_region_codes.include?(r.region) }
   end
 
   def self.campus_regions
-    all_regions.select_all { |r| @@campus_region_codes.include?(r.region) }
+    all.select_all { |r| @@campus_region_codes.include?(r.region) }
   end
 
   def self.standard_regions_hash
@@ -36,14 +37,14 @@ class Region
     end
   end
 
-  def self.all_regions
-    cache(:fetch, :all_regions, expires_in: 1.day) do
+  def self.all
+    Rails.cache.fetch(['all_regions', 'v1'], expires_in: 1.day) do
       Infobase::Region.get()['regions'].map { |r| Region.new(r) }
     end
   end
 
   def self.find_by_region(region)
-    all_regions.detect { |r| r.region == region }
+    all.detect { |r| r.region == region }
   end
 
   def sp_phone

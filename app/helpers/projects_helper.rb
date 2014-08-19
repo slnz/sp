@@ -84,7 +84,7 @@ module ProjectsHelper
     collections = [none]
     if !options || options.include?(:regions)
       region = PartnershipType.new('Region')
-      @regions ||= Region.all_regions
+      @regions ||= Region.all
       @regions.each {|r| region << PartnershipOption.new(r.region, r.name) unless r.region.empty?}
       collections << region
     end

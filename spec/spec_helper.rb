@@ -13,6 +13,7 @@
   #require 'webmock/rspec'
 
   require 'simplecov'
+  require 'webmock/rspec'
   SimpleCov.start 'rails' do
     add_filter "vendor"
   end
