@@ -14,14 +14,6 @@ class Person < Fe::Person
 
   has_one                 :staff
 
-  # Addresses
-  has_many                :email_addresses, :foreign_key => "person_id", dependent: :destroy
-  has_many                :phone_numbers, :foreign_key => "person_id", dependent: :destroy
-  has_one                 :current_address, -> { where("address_type = 'current'") }, :foreign_key => "person_id", :class_name => 'Address'
-  has_one                 :permanent_address, -> { where("address_type = 'permanent'") }, :foreign_key => "person_id", :class_name => 'Address'
-  has_one                 :emergency_address1, -> { where("address_type = 'emergency1'") }, :foreign_key => "person_id", :class_name => 'Address'
-  has_many                :addresses, :foreign_key => "person_id", dependent: :destroy
-
   # Summer Project
   has_many                :sp_applications
 
