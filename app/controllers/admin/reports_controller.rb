@@ -83,7 +83,7 @@ class Admin::ReportsController < ApplicationController
     @percentages = {'0-50' => [], '51-99' => [], '100' => []}
     SpProject.current.uses_application.order(:name).each do |project|
       case
-        when project.percent_full_women < 50
+        when project.percent_full_women < 51
           @percentages['0-50'] << project
         when project.percent_full_women < 100
           @percentages['51-99'] << project
@@ -219,24 +219,24 @@ class Admin::ReportsController < ApplicationController
       format.csv {
         csv = ""
         CSV.generate(csv) do |csv|
-          csv << ["Year", "Media Exposures", "Evangelistic One-One", "Evangelistic Group", "Decisions",
+          csv << ["Year", 'Spiritual Conversations', "Media Exposures", "Evangelistic One-One", "Evangelistic Group", "Decisions",
                   "Decisions Media", "Decisions One-One", "Decisions Group", "Holy Spirit Convo",
-                  "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised"]
+                  "Involved Students", "Students Leaders", "Dollars Raised"]
           @project.statistics.each do |stat|
             csv << [
-                stat.sp_year,
-                number_with_delimiter(stat.exposuresViaMedia.to_i),
-                number_with_delimiter(stat.evangelisticOneOnOne.to_i),
-                number_with_delimiter(stat.evangelisticGroup.to_i),
-                number_with_delimiter(stat.decisions.to_i),
-                number_with_delimiter(stat.decisionsHelpedByMedia.to_i),
-                number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
-                number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
-                number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i),
-                number_with_delimiter(stat.holySpiritConversations.to_i),
-                number_with_delimiter(stat.invldNewBlvrs.to_i),
-                number_with_delimiter(stat.invldStudents.to_i),
-                number_to_currency(stat.dollars_raised.to_i, precision: 0)
+                stat['sp_year'],
+                number_with_delimiter(stat['spiritual_conversations'].to_i),
+                number_with_delimiter(stat['media_exposures'].to_i),
+                number_with_delimiter(stat['personal_evangelism'].to_i),
+                number_with_delimiter(stat['group_evangelism'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i + stat['personal_decisions'].to_i + stat['group_decisions'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i),
+                number_with_delimiter(stat['personal_decisions'].to_i),
+                number_with_delimiter(stat['group_decisions'].to_i),
+                number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+                number_with_delimiter(stat['students_involved'].to_i),
+                number_with_delimiter(stat['student_leaders'].to_i),
+                number_to_currency(stat['dollars_raised'].to_i, precision: 0)
             ]
           end
         end
@@ -247,16 +247,7 @@ class Admin::ReportsController < ApplicationController
 
   def evangelism_combined
     if params[:partner].present?
-      @partners = [params[:partner]]
-      columns_we_care_about = %w[exposuresViaMedia evangelisticOneOnOne evangelisticGroup decisions decisionsHelpedByMedia decisionsHelpedByOneOnOne
-                                 decisionsHelpedByGroup decisionsHelpedByOngoingReln holySpiritConversations invldNewBlvrs invldStudents
-                                 dollars_raised]
-      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `sp_year`, #{columns_we_care_about.collect { |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
-                                              "left join ministry_targetarea on sp_projects.id = ministry_targetarea.eventKeyID and eventType = 'SP' " +
-                                              "left join ministry_activity on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` " +
-                                              "left join ministry_statistic on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` " +
-                                              "where sp_projects.primary_partner IN (#{@partners.collect { |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by sp_year desc")
-      @statistics.select! { |s| s.sp_year.present? }
+      @statistics = Infobase::Base.request(:get, { partner: params[:partner] }, '/statistics/sp_evangelism_combined')
     elsif sp_user.is_a?(SpNationalCoordinator)
       partner
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
@@ -275,19 +266,19 @@ class Admin::ReportsController < ApplicationController
                     "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised"]
             @statistics.each do |stat|
               csv << [
-                  stat.sp_year,
-                  number_with_delimiter(stat.exposuresViaMedia.to_i),
-                  number_with_delimiter(stat.evangelisticOneOnOne.to_i),
-                  number_with_delimiter(stat.evangelisticGroup.to_i),
-                  number_with_delimiter(stat.decisions.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByMedia.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i),
-                  number_with_delimiter(stat.holySpiritConversations.to_i),
-                  number_with_delimiter(stat.invldNewBlvrs.to_i),
-                  number_with_delimiter(stat.invldStudents.to_i),
-                  number_to_currency(stat.dollars_raised.to_i, precision: 0)
+                stat['sp_year'],
+                number_with_delimiter(stat['spiritual_conversations'].to_i),
+                number_with_delimiter(stat['media_exposures'].to_i),
+                number_with_delimiter(stat['personal_evangelism'].to_i),
+                number_with_delimiter(stat['group_evangelism'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i + stat['personal_decisions'].to_i + stat['group_decisions'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i),
+                number_with_delimiter(stat['personal_decisions'].to_i),
+                number_with_delimiter(stat['group_decisions'].to_i),
+                number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+                number_with_delimiter(stat['students_involved'].to_i),
+                number_with_delimiter(stat['student_leaders'].to_i),
+                number_to_currency(stat['dollars_raised'].to_i, precision: 0)
               ]
             end
           end
@@ -662,7 +653,7 @@ class Admin::ReportsController < ApplicationController
                 'Decisions Group', 'Holy Spirit Convo', 'Student Attendees']
     @rows = []
     SpProject.open.order('name').each do |project|
-      if stat = project.statistics.detect { |s| s.sp_year.to_i == @year.to_i }
+      if stat = project.statistics(@year)
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
                   case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then
                                                  'Global Missions'; when 'Campus Ministry - US summer project' then
@@ -670,13 +661,15 @@ class Admin::ReportsController < ApplicationController
                     else
                       'Other';
                   end,
-                  number_with_delimiter(stat.spiritual_conversations.to_i),
-                  number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i),
-                  number_with_delimiter(stat.evangelisticGroup.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByMedia.to_i), number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
-                  number_with_delimiter(stat.holySpiritConversations.to_i),
-                  number_with_delimiter(stat.invldStudents.to_i)]
+                  number_with_delimiter(stat['spiritual_conversations'].to_i),
+                  number_with_delimiter(stat['media_exposures'].to_i),
+                  number_with_delimiter(stat['personal_evangelism'].to_i),
+                  number_with_delimiter(stat['group_evangelism'].to_i),
+                  number_with_delimiter(stat['media_decisions'].to_i),
+                  number_with_delimiter(stat['personal_decisions'].to_i),
+                  number_with_delimiter(stat['group_decisions'].to_i),
+                  number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+                  number_with_delimiter(stat['students_involved'].to_i)]
       else #if project.open?
         @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
                   case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then

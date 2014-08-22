@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery-ui
 //= require qe/jquery.validate.pack.js
 //= require qe/jquery.metadata.js
 //= require qe/qe.common.js

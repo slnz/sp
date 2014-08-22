@@ -11,6 +11,9 @@ describe Admin::ApplicationsController do
 
   context '#search' do
     it 'sets up a search form' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
       get 'search'
       expect(response).to render_template('search')
     end
@@ -18,6 +21,9 @@ describe Admin::ApplicationsController do
 
   context '#search_results' do
     it 'returns results' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
       application = create(:sp_application, project_id: 1)
       post 'search_results', preference: 1
       expect(assigns(:applications).first).to eq(application)

@@ -59,13 +59,13 @@ class SpProject < ActiveRecord::Base
 
   has_one :target_area, -> { where(:eventType => "SP") }, :foreign_key => :eventKeyID
 
-  def statistics
-    Statistic.joins('left join ministry_activity on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` ' +
-                    'left join ministry_targetarea on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` ' +
-                    'left join sp_projects on sp_projects.id = ministry_targetarea.eventKeyID and eventType = "SP" '
-                    )
-             .where("sp_projects.id = #{id} and ministry_statistic.sp_year is not null")
-             .order("periodBegin desc")
+  def statistics(year = nil)
+    Infobase::Statistic.get(
+      'filters[sp_year]' => year,
+      'filters[event_id' => id,
+      'filters[activity_type]' => 'SP',
+      order: 'periodBegin desc'
+    )['statistics']
   end
 
   validates_presence_of :name, :display_location, :start_date, :end_date, :student_cost, :max_accepted_men, :max_accepted_women,

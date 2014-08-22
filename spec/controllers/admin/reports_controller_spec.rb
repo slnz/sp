@@ -50,7 +50,7 @@ describe Admin::ReportsController do
 
       max_accepted_men = 2
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
+      start_date = Date.today
       end_date = Date.today + 60
 
       project = create(:sp_project,
@@ -59,18 +59,18 @@ describe Admin::ReportsController do
                        end_date: end_date,
                        open_application_date: open_application_date
       )
-      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+      create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
       applicant = create(:person, gender: '1')
       application = create(:sp_application,
                             person_id: applicant.id,
                             project_id: project.id
       )
-      application.update_attribute('status', 'accepted_as_participant')
+      application.update_attributes(status: 'accepted_as_participant')
 
 
       get :male_openings
-      expect(SpProject.current.uses_application.last.percent_full_men.to_i).to eq(50)
+      expect(assigns(:percentages)['0-50']).to include(project)
     end
   end
 
@@ -81,7 +81,7 @@ describe Admin::ReportsController do
 
       max_accepted_men = 3
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
+      start_date = Date.today
       end_date = Date.today + 60
       project = create(:sp_project,
                        max_accepted_men: max_accepted_men,
@@ -89,24 +89,24 @@ describe Admin::ReportsController do
                        end_date: end_date,
                        open_application_date: open_application_date
       )
-      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+      create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
-      applicant1 = create(:person, gender: '1')
+      applicant1 = create(:person, gender: 1)
       application1 = create(:sp_application,
                             person_id: applicant1.id,
                             project_id: project.id
       )
-      applicant2 = create(:person, gender: '1')
+      applicant2 = create(:person, gender: 1)
       application2 = create(:sp_application,
                             person_id: applicant2.id,
                             project_id: project.id
       )
-      application1.update_attribute('status', 'accepted_as_participant')
-      application2.update_attribute('status', 'accepted_as_participant')
+      application1.update_attributes(status: 'accepted_as_participant')
+      application2.update_attributes(status: 'accepted_as_participant')
 
 
       get :male_openings
-      expect(SpProject.current.uses_application.last.percent_full_men.to_i).to eq(66)
+      expect(assigns(:percentages)['51-99']).to include(project)
     end
   end
 
@@ -117,7 +117,7 @@ describe Admin::ReportsController do
 
       max_accepted_men = 1
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
+      start_date = Date.today
       end_date = Date.today + 60
       project = create(:sp_project,
                        max_accepted_men: max_accepted_men,
@@ -125,7 +125,7 @@ describe Admin::ReportsController do
                        end_date: end_date,
                        open_application_date: open_application_date
       )
-      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+      create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
       applicant = create(:person, gender: '1')
       application = create(:sp_application,
@@ -136,7 +136,7 @@ describe Admin::ReportsController do
 
 
       get :male_openings
-      expect(SpProject.current.uses_application.last.percent_full_men.to_i).to eq(100)
+      expect(assigns(:percentages)['100']).to include(project)
     end
   end
 
@@ -156,7 +156,7 @@ describe Admin::ReportsController do
 
       max_accepted_women = 2
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
+      start_date = Date.today
       end_date = Date.today + 60
 
       project = create(:sp_project,
@@ -165,18 +165,18 @@ describe Admin::ReportsController do
                        end_date: end_date,
                        open_application_date: open_application_date
       )
-      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+      create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
-      applicant = create(:person, gender: '0')
+      applicant = create(:person, gender: 0)
       application = create(:sp_application,
                            person_id: applicant.id,
                            project_id: project.id
       )
-      application.update_attribute('status', 'accepted_as_participant')
+      application.update_attributes(status: 'accepted_as_participant')
 
 
       get :female_openings
-      expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(50)
+      expect(assigns(:percentages)['0-50']).to include(project)
     end
   end
 
@@ -187,7 +187,7 @@ describe Admin::ReportsController do
 
       max_accepted_women = 3
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
+      start_date = Date.today
       end_date = Date.today + 60
       project = create(:sp_project,
                        max_accepted_women: max_accepted_women,
@@ -195,24 +195,24 @@ describe Admin::ReportsController do
                        end_date: end_date,
                        open_application_date: open_application_date
       )
-      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+      create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
-      applicant1 = create(:person, gender: '0')
+      applicant1 = create(:person, gender: 0)
       application1 = create(:sp_application,
                             person_id: applicant1.id,
                             project_id: project.id
       )
-      applicant2 = create(:person, gender: '0')
+      applicant2 = create(:person, gender: 0)
       application2 = create(:sp_application,
                             person_id: applicant2.id,
                             project_id: project.id
       )
-      application1.update_attribute('status', 'accepted_as_participant')
-      application2.update_attribute('status', 'accepted_as_participant')
+      application1.update_attributes(status: 'accepted_as_participant')
+      application2.update_attributes(status: 'accepted_as_participant')
 
 
       get :female_openings
-      expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(66)
+      expect(assigns(:percentages)['51-99']).to include(project)
     end
   end
 
@@ -223,7 +223,7 @@ describe Admin::ReportsController do
 
       max_accepted_women = 1
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
+      start_date = Date.today
       end_date = Date.today + 60
       project = create(:sp_project,
                        max_accepted_women: max_accepted_women,
@@ -231,18 +231,18 @@ describe Admin::ReportsController do
                        end_date: end_date,
                        open_application_date: open_application_date
       )
-      staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+      create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
       applicant = create(:person, gender: '0')
       application = create(:sp_application,
                            person_id: applicant.id,
                            project_id: project.id
       )
-      application.update_attribute('status', 'accepted_as_participant')
+      application.update_attributes(status: 'accepted_as_participant')
 
 
       get :female_openings
-      expect(SpProject.current.uses_application.last.percent_full_women.to_i).to eq(100)
+      expect(assigns(:percentages)['100']).to include(project)
     end
   end
 
@@ -466,6 +466,9 @@ describe Admin::ReportsController do
 
     context '#evangelism_combined' do
       it 'list applications by evangelism summary via HTML with params[:partner present]' do
+        stub_request(:get, "https://infobase.uscm.org/api/v1//statistics/sp_evangelism_combined?partner=NW").
+          to_return(:status => 200, :body => "", :headers => {})
+
         session[:cas_user] = 'foo@example.com'
         session[:user_id] = user.id
 
