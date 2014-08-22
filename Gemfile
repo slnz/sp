@@ -55,6 +55,7 @@ gem 'rubycas-client'
 gem 'aasm'
 gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
+# gem 'infobase'
 gem 'infobase'
 
 group :development, :test do

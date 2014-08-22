@@ -11,11 +11,11 @@ class Region
   end
 
   def self.standard_regions
-    all.select_all { |r| @@standard_region_codes.include?(r.region) }
+    all.select { |r| @@standard_region_codes.include?(r.region) }
   end
 
   def self.campus_regions
-    all.select_all { |r| @@campus_region_codes.include?(r.region) }
+    all.select { |r| @@campus_region_codes.include?(r.region) }
   end
 
   def self.standard_regions_hash

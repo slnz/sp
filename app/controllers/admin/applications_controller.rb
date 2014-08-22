@@ -111,7 +111,7 @@ class Admin::ApplicationsController < ApplicationController
     def set_up_search_form
       @region_options = Region.all
       @team_options = Team.where("lane = 'FS'").order('name')
-      @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
+      @school_options = Infobase::TargetArea.get(country: 'USA')['target_areas'].collect { |t| t['name'] }.uniq.sort
       @project_options = SpProject.current.order(:name)
     end
 

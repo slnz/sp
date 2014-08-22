@@ -80,7 +80,7 @@ class Person < ActiveRecord::Base
 
   def region(try_target_area = true)
     region = self[:region]
-    region ||= self.target_area.try(:region) if try_target_area
+    region ||= target_area['region'] if try_target_area && target_area
     region
   end
 
@@ -93,17 +93,15 @@ class Person < ActiveRecord::Base
   #end
 
   def target_area
-    if (self.school)
-      self.school
-    else
-      if (campus? && universityState?)
-        self.school = TargetArea.where(["name = ? AND state = ?", campus, universityState]).first
-      elsif (campus?)
-        self.school = TargetArea.where(["name = ?", campus]).first
-      else
-        self.school = nil
+    return school if school.present?
+
+    self.school =
+      case
+      when campus.present? && universityState.present?
+        TargetArea.get(name: campus, state: universityState)
+      when campus.present?
+        TargetArea.get(name: campus)
       end
-    end
   end
 
   def validate_blogfeed
