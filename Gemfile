@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
 gem 'rails', '~> 4.0.0'
+gem 'unicorn'
 
 gem 'mysql2'#, '~> 0.2.7'
 
@@ -64,7 +65,6 @@ group :development, :test do
   gem 'meta_request'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'unicorn'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'
