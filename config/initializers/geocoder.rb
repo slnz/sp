@@ -1,4 +1,4 @@
 Geocoder.configure(
-  api_key: APP_CONFIG['geocode_key'],
+  api_key: ENV['geocode_key'],
   lookup: :mapquest
 )
