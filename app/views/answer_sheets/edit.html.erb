@@ -1,32 +1,43 @@
-<div id="controls">
-  <div id="projectlogo">
-	  <% if @project && @project.logo_file_name.present? %>
-    	<!-- Max size 270w x 100h -->
-    	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
-		<% end %>
-		<% if @reference_sheet %>
-		  Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
-		<% end %>
-  </div>
-  <div id="panel">
-    <%= render :partial => 'answer_sheets/pages_list' %>
-  </div>
-  <div id="legend">
-    <%= image_tag('qe/icons/question-balloon.png') %> Rolling over this symbol gives you help<br/>
-    <%= image_tag('qe/icons/star-small.png') %> Marks a required field<br/>
-    <%= image_tag('icons/flag.png') %> Some required questions need answers
+<div class="page-title row">
+    <div class="col-md-12">
+      <% if @project %>
+        <%= link_to('Apply for a Different Project', '/projects', :class => 'btn btn-default pull-right') %>
+        <span class="text-muted">You're applying for</span>
+        <h3><%= "#{@project.name} #{@project.year}" %></h3>
+      <% end %>
   </div>
 </div>
-
-<div id="preview">
-    <% if @project %>
-      <div id="projecttitle">
-				<%= @project.name %>
-				<%= link_to('click here to apply to a different project', '/projects', :class => 'applydiff') %>
-			</div>
-    <% end %>
-    <%= render :partial => 'answer_sheets/title' %>
-    <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
+<div class="row qe">
+  <div id="page_ajax_spinner">
+    <div>
+    <img alt="Ajax loader" src="/assets/qe/ajax-loader.gif"> Loading...
+    </div>
+  </div>
+  <div id="preview" class="col-md-8">
+      <%= render :partial => 'answer_sheets/title' %>
+      <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
+  </div>
+  <div class="col-md-4">
+    <div id="controls" data-spy="affix" data-offset-top="400">
+      <div id="projectlogo">
+    	  <% if @project && @project.logo_file_name.present? %>
+        	<!-- Max size 270w x 100h -->
+        	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+    		<% end %>
+    		<% if @reference_sheet %>
+    		  Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
+    		<% end %>
+      </div>
+      <div id="panel" class="hidden-xs hidden-sm">
+        <%= render :partial => 'answer_sheets/pages_list' %>
+      </div>
+      <div id="legend">
+        <%= image_tag('qe/icons/question-balloon.png') %> Rolling over this symbol gives you help<br/>
+        <%= image_tag('qe/icons/star-small.png') %> Marks a required field<br/>
+        <%= image_tag('icons/flag.png') %> Some required questions need answers
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -34,7 +45,7 @@
     page_handler = $.qe.pageHandler;
     page_handler.initialize('<%= @presenter.active_page_link.dom_id %>');
     // Event.observe(window, 'unload', page_handler.savePage);
-        
+
     // Validation.add('validate-phone', 'Please enter a valid phone number +1-800-555-1234 x102', {
     //   pattern: /((\(\d{3}\)?)|(\d{3}))((\s|-|\.|\/)?)(\d{3})((\s|-|\.|\/)?)(\d{4})\s*([xX]|[eE][xX][tT])?\.?\s*\d*$/
     // });
@@ -45,7 +56,7 @@
     //    return $F(elm);
     //  });
     // })
-    
+
     // global responders for all Ajax requests
     $(function() {
     	$('body').bind('ajax:loading', function() {
@@ -58,7 +69,7 @@
   });
   function updateTotals() {
         // Set up js for all question grids with totals
-    <% @page.question_sheet.pages.collect(&:question_grid_with_totals).flatten.each do |question_grid_with_total| 
+    <% @page.question_sheet.pages.collect(&:question_grid_with_totals).flatten.each do |question_grid_with_total|
         question_grid_with_total.total_cols.split(',').collect(&:to_i).each do |col| -%>
           try {
             updateTotal('<%= "#{question_grid_with_total.id}_#{col - 1}" %>')

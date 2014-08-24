@@ -17,18 +17,8 @@
       </div>
 
       <div class="field required">
-        <%= f.label :show_on_website, 'Show On Public Website' %>
-        <%= f.select :show_on_website, [['No',false],['Yes',true]] %>
-      </div>
-
-      <div class="field required">
-        <%= f.label :job, 'Can students get a job?' %>
-        <%= f.select :job, [['No',false],['Yes',true]] %>
-      </div>
-
-      <div class="field required">
         <%= f.label(:display_location) do
-          raw 'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
+          raw 'Location: City, Country ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
           end %>
         <%= f.text_field :display_location %>
       </div>
@@ -45,18 +35,8 @@
         <%= f.text_field :city %>
       </div>
       <div class="field required">
-        <%= f.label :state do
-          raw 'State' + tip('Required if your project is in the US or Canada. Leave it blank for other international projects.')
-        end %>
-        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
-      </div>
-      <div class="field required">
         <%= f.label :country %>
-        <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
-      </div>
-      <div class="field required">
-        <%= f.label :world_region, 'Region of the World' %>
-        <%= f.select :world_region, SpWorldRegion.all.collect {|a| [a.name]}, :include_blank => true %>
+        <%= f.select :country, @countries.map {|c| [c.country]}, :include_blank => true %>
       </div>
 
       <div class="multifield">
@@ -73,37 +53,6 @@
           <p>Please see important date information on the Risk Management Tab since it has financial implications related to insurance.</p>
         </div>
         <div class="clear"></div>
-      </div>
-
-      <div class="field select">
-        <%= f.label(:primary_ministry_focus_id) do
-          raw 'Primary Ministry Focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
-          end %>
-        <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
-      </div>
-
-      <div class="field checkvertical">
-        <label>Other Ministry Foci:</label>
-        <div class="checkboxes">
-          <% SpMinistryFocus.all.each do |sf| %>
-            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if !@project.new_record? && @project.ministry_focuses.to_a.include?(sf) %>">
-              <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= !@project.new_record? && @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
-              <%= f.label "ministry_focus_ids_#{sf.id}", sf.name %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="field checkvertical">
-        <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
-        <div class="checkboxes">
-        <% SpGospelInAction.all.each do |ga| %>
-          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.to_a.include?(ga) %>">
-            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
-            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
-          </div>
-        <% end %>
-        </div>
       </div>
 
       <hr />

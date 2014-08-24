@@ -5,12 +5,32 @@ $global-bg: #00626D;
 $white: #fff;
 $black: #000;
 $clouds: #ecf0f1;
-$text: #ecf0f1;
-$light-green: #00b057;
+$text: #000;
+$light-green: #e51937;
 
 
 body {margin: 0; padding: 0; font-size: 14px; font-family: $global-font; background: $global-bg; color: $text;}
-a {text-decoration: none; outline: none; color: $light-green;}
+body {
+  background: url(https://www.studentlife.org.nz/wp-content/uploads/2014/02/body-background-a71039fc4c60d7d7258da1c275b3b75a.jpg) repeat-y center;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABdMAAAABCAYAAAA1pje/AAAAl0lEQVRYw+2TwQ2AMAwDmw8TMRT7v5HCBkBrO02q9uncOQoSdl/n0d6fAXOVawFOb5cJ90ayCj9L9vc2Zv9sLxuzyh2rfFemV6kLzSr5lXK2g8xQF+1nMz1cLzvCox7Lz7Ij6/MCOzzIcwHrQQza4SJ3ZMZ0MuUom9FnZqt1Kb3N7Dtmeup/bmYW6TNYVjdzL9v5mind9gAtQ3ugg6BFzQAAAABJRU5ErkJggg=="), url(https://www.studentlife.org.nz/wp-content/uploads/2014/02/body-background-a71039fc4c60d7d7258da1c275b3b75a.jpg);
+  background-position: center top, left top;
+  background-repeat: repeat-y, repeat;
+  line-height: 1.5em;
+}
+#content.container {
+  background: #fff;
+  margin-top: 39px;
+  padding:0;
+}
+a {
+  text-decoration: none;
+  outline: none;
+  color: #e51937;
+  &:hover {
+    color: #c3142e;
+    text-decoration: none;
+  }
+}
 img {border: none; vertical-align: middle;}
 h3,h2 {margin: 0; padding: 10px 0 5px}
 
@@ -26,41 +46,6 @@ h3,h2 {margin: 0; padding: 10px 0 5px}
 
 #application-closed #body {
   border-top: 3px solid $black;
-}
-
-#body {
-	background-color: $global-bg;
-	width: $page-width;
-	height: auto;	
-	border-top: 1px solid $black;
-	padding-bottom: 100px;
-	}
-	
-.content {
-	width: 85%;
-	margin: 0 auto;
-	margin-top: 100px;
-	background: url("<%= asset_path('frontend/bg.png') %>") #fbf9ed;
-	-moz-box-shadow: 0px 0px 3px #000;
-	-webkit-box-shadow: 0px 0px 3px #000;
-	box-shadow: 0px 0px 3px #000;
-	padding: 20px 0;
-    color: #333333;
-	
-	h3, p {
-		padding-left: 20px;
-		padding-right: 20px;
-		}
-}
-
-.project-box {
-  display: inline-block;
-  width: 960px;
-  padding: 20px;
-  background-color: #fbf9ed;
-  -moz-box-shadow: 0px 0px 3px #000;
-  -webkit-box-shadow: 0px 0px 3px #000;
-  box-shadow: 0px 0px 3px #000;
 }
 
 div#outer {
@@ -80,28 +65,140 @@ ul.contacts {
 		padding-left: 0px;
 		text-indent: 30px;
 		}
-	
+
 	li.mail {
 		background: url("<%= asset_path('frontend/mail.png') %>") no-repeat 0 50%;
-		}	
+		}
 
 	li.phone {
 		background: url("<%= asset_path('frontend/phone.png') %>") no-repeat 0 50%;
-		}	
-		
+		}
+
 	}
 
-#application-closed #footer {
-  width: 85%;
-}
-
-#footer {
-	font-size: 11px;
-	padding: 10px 0;
-    color: #eeeeee;
-    width: 100%;
-    margin: 20px auto 0;
-	}
 
 
 .ui-helper-hidden-accessible {display:none;}
+.btn-primary {
+  background: #e51937;
+  border:0;
+  &:hover {
+    background: #c3142e;
+  }
+}
+.header {
+  padding:20px;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #dadada, 0 0 15px rgba(0, 0, 0, 0.07);
+  img {
+    width: 100%;
+  }
+}
+.main-content {
+  > .row {
+    margin: 0;
+    padding: 20px;
+  }
+}
+.footer {
+  color: #fff;
+  padding: 20px 0;
+  a {
+    color: #9d9d9d;
+    &:hover {
+      color: #f4f4f4;
+    }
+  }
+}
+.page-title {
+  background-color: #333;
+  color: #fff;
+  -webkit-box-shadow: inset 0 5px 81px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset 0 5px 81px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0 5px 81px rgba(0, 0, 0, 0.75);
+  text-transform: uppercase;
+  h1, h2, h3, h4, h5 {
+    padding:0;
+    line-height: 34px;
+  }
+  .btn {
+    text-transform: none;
+    margin: 10px 0;
+  }
+}
+.affix-top,.affix{
+    position: static;
+}
+#page_ajax_spinner {
+  display: none;
+  position: absolute;
+  top:0 !important;
+  right:0;
+  left:0;
+  bottom:0;
+  background-color: #fff;
+  background-color: rgba(255,255,255,0.8);
+  color: #e51937;
+  text-align: center;
+  z-index: 10;
+  padding-top: 100px;
+  font-size: 30px;
+  text-transform: uppercase;
+  img {
+    display: none;
+  }
+}
+.qe {
+  ul.questions li.section {
+    border-top: 1px solid #ccc;
+    background: url("<%= asset_path('frontend/section.png') %>") top right no-repeat;
+    min-height: 60px;
+    padding-right: 90px;
+    margin-bottom: 0;
+    h4 {
+      margin: 15px 0;
+      color: #777;
+    }
+  }
+  #page-name {
+    border-bottom: 1px solid #ccc;
+    background: url("<%= asset_path('frontend/page-name.png') %>") top left no-repeat;
+    min-height: 40px;
+    padding: 10px 0 0 90px;
+    line-height: 40px;
+    color: #777;
+    margin-bottom: 10px;
+  }
+}
+.project-quick {
+  h5 {
+    color: #e51937;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+    margin-top:20px;
+  }
+}
+.project-detailed {
+  margin-top: 15px;
+}
+.project-title {
+  border-bottom: 1px solid #ccc;
+  background: url("<%= asset_path('frontend/page-name.png') %>") top left no-repeat;
+  min-height: 40px;
+  padding: 10px 0 0 90px;
+  line-height: 40px;
+  color: #777;
+  margin-bottom: 10px;
+}
+@media (min-width: 992px) {
+
+  #controls.affix {
+    margin: 0 auto;
+    top:0;
+    position: fixed;
+    width: 336.65625px;
+  }
+
+  #controls.affix-top {
+  position: static;
+  }
+}

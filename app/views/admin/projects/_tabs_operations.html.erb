@@ -5,34 +5,21 @@ Fields with the <%= image_tag('required.png') %> are required.
 
 <hr />
 <div class="field required">
-  <%= f.label :primary_partner, 'Primary Partner' %>
-  <%= partnership_select(:project, :primary_partner, [:regions, :ministries]) %>
+  <%= f.label :primary_partner, 'Ministry' %>
+  <%= partnership_select(:project, :primary_partner, [:ministries]) %>
 </div>
-<div class="field">
-  <%= f.label :secondary_partner, 'Secondary Partner' %>
-  <%= partnership_select(:project, :secondary_partner, [:regions, :ministries]) %>
-</div>
-<div class="field">
-  <%= f.label :tertiary_partner, 'Tertiary Partner' %>
-  <%= partnership_select(:project, :tertiary_partner, [:regions, :ministries]) %>
+<div class="field required">
+  <%= f.label :secondary_partner, 'Region' %>
+  <%= partnership_select(:project, :secondary_partner, [:regions]) %>
 </div>
 <div class="field required">
   <%= f.label :report_stats_to, 'Report evangelism stats to' %>
-  <%= f.select(:report_stats_to, ['Campus Ministry - US summer project','Campus Ministry - Global Missions summer project','Other Cru ministry'], { :include_blank => true }) %>
+  <%= f.select(:report_stats_to, ['Student Life National Project','Student Life International Project','Athletes in Action'], { :include_blank => true }) %>
 </div>
 <div class="field">
   <%= f.label :staff_cost, 'Staff Cost' %>
   <%= f.text_field :staff_cost %>
 </div>
-<div class="field">
-  <%= f.label :intern_cost, 'Student Staff Cost' %>
-  <%= f.text_field :intern_cost %>
-</div>
-<% if sp_user.can_waive_fee? %>
-  <div class="field">
-  <%= f.check_box :high_school %> High Schoolers go on this project
-</div>
-      <% end %>
 <div class="field required">
   <%= f.label :background_checks_required, 'Students will be ministering/interacting with children/minors at some point on this project' %>
   <%= f.radio_button :background_checks_required, true %> Yes
@@ -42,7 +29,7 @@ Fields with the <%= image_tag('required.png') %> are required.
 
 <hr />
 
-<div class="col_left"> 
+<div class="col_left">
   <h3>Operating Account Information <%= tip('If you are unsure of your chartfields and are part of a campus ministry region of CCC, <a href="http://wiki.uscm.org/display/CMF/CM+Finance+Professionals">click here</a> to find who is your regional Financial Professional to help you with the chartfields.') %></h3>
 
   <div class="field">
@@ -67,7 +54,7 @@ Fields with the <%= image_tag('required.png') %> are required.
   </div>
 </div>
 
-<div class="col_right"> 
+<div class="col_right">
   <h3>Scholarship Account Information</h3>
 
   <div class="field">

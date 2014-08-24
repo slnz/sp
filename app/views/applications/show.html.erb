@@ -1,13 +1,13 @@
 <div class="pagepad status-page">
   <h2 class="green">Hello <%= @application.name %>,</h2>
-  
+
   <p>
-    You applied to <strong><%= @application.project.name %>!</strong> Here 
-    are some details about your application that will be updated as progress is made. 
-    If you have questions, you can reach your future project directors using their contact information 
+    You applied to <strong><%= @application.project.name %>!</strong> Here
+    are some details about your application that will be updated as progress is made.
+    If you have questions, you can reach your future project directors using their contact information
     below. We look forward to serving with you this summer!
   </p>
-  
+
   <div id="progressbox">
     <h2>Your Progress</h2>
     <table class="statuswait">
@@ -61,7 +61,7 @@
       </tbody>
     </table>
   </div>
-  
+
   <div id="projectsummary">
     <h2>Your Directors</h2>
     <table class="statuswait">
@@ -90,7 +90,7 @@
             <td class="value"><%= @application.project.coordinator.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.coordinator.email}") %></td>
           </tr>
         <% end %>
-        
+
         <tr>
           <td colspan="2" class="divide"></td>
         </tr>
@@ -110,11 +110,11 @@
           <td class="fieldname fieldbold">Project Overview:</td>
           <td class="value"><%= raw @application.project.description %></td>
         </tr>
-        
+
       </tbody>
     </table>
   </div>
-  
+
   <div class="clear"></div>
 
 </div>
