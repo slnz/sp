@@ -56,6 +56,9 @@ gem 'aasm'
 gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
+gem 'bootstrap-sass'
+gem 'font-awesome-rails'
+
 group :development, :test do
   gem 'rspec', '~> 3.0'
   gem 'quiet_assets'
