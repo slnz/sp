@@ -42,4 +42,6 @@ Sp2::Application.configure do
 
   config.cache_store = :dalli_store, '127.0.0.1'
 
+  BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
+
 end
