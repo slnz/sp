@@ -23,8 +23,7 @@ GIT
 
 GIT
   remote: https://github.com/CruGlobal/qe
-  revision: 0a8c8f90b99d3d3b4be4f23867e913bd299e7033
-  ref: 0a8c8f9
+  revision: 84fed3dcb9d40e1d8abf55ee91d304d6a69b5cf4
   specs:
     qe (0.0.2)
       aasm
@@ -45,12 +44,12 @@ GEM
     RubyInline (3.12.3)
       ZenTest (~> 4.3)
     ZenTest (4.10.1)
-    aasm (3.3.2)
-    actionmailer (4.0.5)
-      actionpack (= 4.0.5)
+    aasm (3.3.3)
+    actionmailer (4.0.9)
+      actionpack (= 4.0.9)
       mail (~> 2.5.4)
-    actionpack (4.0.5)
-      activesupport (= 4.0.5)
+    actionpack (4.0.9)
+      activesupport (= 4.0.9)
       builder (~> 3.1.0)
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
@@ -68,16 +67,16 @@ GEM
       json (>= 1.5.1)
       money
       nokogiri
-    activemodel (4.0.5)
-      activesupport (= 4.0.5)
+    activemodel (4.0.9)
+      activesupport (= 4.0.9)
       builder (~> 3.1.0)
-    activerecord (4.0.5)
-      activemodel (= 4.0.5)
+    activerecord (4.0.9)
+      activemodel (= 4.0.9)
       activerecord-deprecated_finders (~> 1.0.2)
-      activesupport (= 4.0.5)
+      activesupport (= 4.0.9)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
-    activesupport (4.0.5)
+    activesupport (4.0.9)
       i18n (~> 0.6, >= 0.6.9)
       minitest (~> 4.2)
       multi_json (~> 1.3)
@@ -271,17 +270,17 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails (4.0.5)
-      actionmailer (= 4.0.5)
-      actionpack (= 4.0.5)
-      activerecord (= 4.0.5)
-      activesupport (= 4.0.5)
+    rails (4.0.9)
+      actionmailer (= 4.0.9)
+      actionpack (= 4.0.9)
+      activerecord (= 4.0.9)
+      activesupport (= 4.0.9)
       bundler (>= 1.3.0, < 2.0)
-      railties (= 4.0.5)
-      sprockets-rails (~> 2.0.0)
-    railties (4.0.5)
-      actionpack (= 4.0.5)
-      activesupport (= 4.0.5)
+      railties (= 4.0.9)
+      sprockets-rails (~> 2.0)
+    railties (4.0.9)
+      actionpack (= 4.0.9)
+      activesupport (= 4.0.9)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
