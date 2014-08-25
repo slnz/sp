@@ -83,7 +83,7 @@ class Admin::ReportsController < ApplicationController
     @percentages = {'0-50' => [], '51-99' => [], '100' => []}
     SpProject.current.uses_application.order(:name).each do |project|
       case
-        when project.percent_full_women < 50
+        when project.percent_full_women < 51
           @percentages['0-50'] << project
         when project.percent_full_women < 100
           @percentages['51-99'] << project
@@ -219,24 +219,24 @@ class Admin::ReportsController < ApplicationController
       format.csv {
         csv = ""
         CSV.generate(csv) do |csv|
-          csv << ["Year", "Media Exposures", "Evangelistic One-One", "Evangelistic Group", "Decisions",
+          csv << ["Year", 'Spiritual Conversations', "Media Exposures", "Evangelistic One-One", "Evangelistic Group", "Decisions",
                   "Decisions Media", "Decisions One-One", "Decisions Group", "Holy Spirit Convo",
-                  "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised"]
+                  "Involved Students", "Students Leaders", "Dollars Raised"]
           @project.statistics.each do |stat|
             csv << [
-                stat.sp_year,
-                number_with_delimiter(stat.exposuresViaMedia.to_i),
-                number_with_delimiter(stat.evangelisticOneOnOne.to_i),
-                number_with_delimiter(stat.evangelisticGroup.to_i),
-                number_with_delimiter(stat.decisions.to_i),
-                number_with_delimiter(stat.decisionsHelpedByMedia.to_i),
-                number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
-                number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
-                number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i),
-                number_with_delimiter(stat.holySpiritConversations.to_i),
-                number_with_delimiter(stat.invldNewBlvrs.to_i),
-                number_with_delimiter(stat.invldStudents.to_i),
-                number_to_currency(stat.dollars_raised.to_i, precision: 0)
+                stat['sp_year'],
+                number_with_delimiter(stat['spiritual_conversations'].to_i),
+                number_with_delimiter(stat['media_exposures'].to_i),
+                number_with_delimiter(stat['personal_evangelism'].to_i),
+                number_with_delimiter(stat['group_evangelism'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i + stat['personal_decisions'].to_i + stat['group_decisions'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i),
+                number_with_delimiter(stat['personal_decisions'].to_i),
+                number_with_delimiter(stat['group_decisions'].to_i),
+                number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+                number_with_delimiter(stat['students_involved'].to_i),
+                number_with_delimiter(stat['student_leaders'].to_i),
+                number_to_currency(stat['dollars_raised'].to_i, precision: 0)
             ]
           end
         end
@@ -247,16 +247,7 @@ class Admin::ReportsController < ApplicationController
 
   def evangelism_combined
     if params[:partner].present?
-      @partners = [params[:partner]]
-      columns_we_care_about = %w[exposuresViaMedia evangelisticOneOnOne evangelisticGroup decisions decisionsHelpedByMedia decisionsHelpedByOneOnOne
-                                 decisionsHelpedByGroup decisionsHelpedByOngoingReln holySpiritConversations invldNewBlvrs invldStudents
-                                 dollars_raised]
-      @statistics = Statistic.find_by_sql("select YEAR(ministry_statistic.periodBegin) as `sp_year`, #{columns_we_care_about.collect { |cn| "sum(ministry_statistic.#{cn}) as #{cn}" }.join(',')} from sp_projects " +
-                                              "left join ministry_targetarea on sp_projects.id = ministry_targetarea.eventKeyID and eventType = 'SP' " +
-                                              "left join ministry_activity on ministry_activity.fk_targetAreaID = ministry_targetarea.`targetAreaID` " +
-                                              "left join ministry_statistic on ministry_statistic.`fk_Activity` = ministry_activity.`ActivityID` " +
-                                              "where sp_projects.primary_partner IN (#{@partners.collect { |p| "'#{p}'" }.join(',')}) group by YEAR(periodBegin) order by sp_year desc")
-      @statistics.select! { |s| s.sp_year.present? }
+      @statistics = Infobase::Statistic.request(:get, { partner: params[:partner] }, '/statistics/sp_evangelism_combined')
     elsif sp_user.is_a?(SpNationalCoordinator)
       partner
     elsif sp_user.is_a?(SpRegionalCoordinator) && sp_user.partnerships.present?
@@ -275,19 +266,19 @@ class Admin::ReportsController < ApplicationController
                     "Involved New Blvrs", "Involved Students", "Students Leaders", "Dollars Raised"]
             @statistics.each do |stat|
               csv << [
-                  stat.sp_year,
-                  number_with_delimiter(stat.exposuresViaMedia.to_i),
-                  number_with_delimiter(stat.evangelisticOneOnOne.to_i),
-                  number_with_delimiter(stat.evangelisticGroup.to_i),
-                  number_with_delimiter(stat.decisions.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByMedia.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByOngoingReln.to_i),
-                  number_with_delimiter(stat.holySpiritConversations.to_i),
-                  number_with_delimiter(stat.invldNewBlvrs.to_i),
-                  number_with_delimiter(stat.invldStudents.to_i),
-                  number_to_currency(stat.dollars_raised.to_i, precision: 0)
+                stat['sp_year'],
+                number_with_delimiter(stat['spiritual_conversations'].to_i),
+                number_with_delimiter(stat['media_exposures'].to_i),
+                number_with_delimiter(stat['personal_evangelism'].to_i),
+                number_with_delimiter(stat['group_evangelism'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i + stat['personal_decisions'].to_i + stat['group_decisions'].to_i),
+                number_with_delimiter(stat['media_decisions'].to_i),
+                number_with_delimiter(stat['personal_decisions'].to_i),
+                number_with_delimiter(stat['group_decisions'].to_i),
+                number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+                number_with_delimiter(stat['students_involved'].to_i),
+                number_with_delimiter(stat['student_leaders'].to_i),
+                number_to_currency(stat['dollars_raised'].to_i, precision: 0)
               ]
             end
           end
@@ -447,12 +438,12 @@ class Admin::ReportsController < ApplicationController
 
   def missional_team
     if params[:team].present?
-      @schools = TargetArea.joins(:activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
+      @schools = Infobase::TargetArea.get('filters[team_id]' => params[:team]).map(&:name)
       @applications = SpApplication.where("#{Person.table_name}.campus" => @schools, :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
-      @team = Team.find(params[:team])
+      @team = Infobase::Team.find(params[:team])
     else
-      schools = SpApplication.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year})")
-      @teams = Team.where("#{TargetArea.table_name}.name" => schools).includes(:target_areas).order("#{Team.table_name}.name")
+      schools = Person.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year})")
+      @teams = Infobase::Team.search(per_page: 1000, filters: { target_area_name: schools.join('+') })
     end
 
     respond_to do |format|
@@ -598,10 +589,10 @@ class Admin::ReportsController < ApplicationController
   def fee_by_staff
     respond_to do |format|
       format.html {
-        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+        @payments = SpPayment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
       }
       format.csv {
-        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+        @payments = SpPayment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
         csv = ""
         CSV.generate(csv) do |csv|
           csv << ["Account No", "Amount", "First Name", "Last Name", "Payment Status", "Date"]
@@ -620,7 +611,7 @@ class Admin::ReportsController < ApplicationController
   def cc_payments
     respond_to do |format|
       format.csv {
-        @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Credit Card'").order("sp_payments.created_at ASC")
+        @payments = SpPayment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Credit Card'").order("sp_payments.created_at ASC")
         csv = ""
         CSV.generate(csv) do |csv|
           csv << ["Last Name", "First Name", "Amount", "Date", "Auth Code"]
@@ -661,32 +652,38 @@ class Admin::ReportsController < ApplicationController
                 "Spiritual Convo", "Media Exposures", 'Evangelistic One-One', 'Evangelistic Group', 'Decisions Media', 'Decisions One-One',
                 'Decisions Group', 'Holy Spirit Convo', 'Student Attendees']
     @rows = []
+    stats = SpProject.statistics(@year)
+    counts = Hash[SpApplication.connection.select_all(
+      "SELECT project_id, count(*) from sp_applications where year = #{@year} AND status in('#{SpApplication.accepted_statuses.join("','")}')
+      group by project_id"
+    ).rows]
     SpProject.open.order('name').each do |project|
-      if stat = project.statistics.detect { |s| s.sp_year.to_i == @year.to_i }
-        @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
-                  case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then
-                                                 'Global Missions'; when 'Campus Ministry - US summer project' then
-                                                                      'US';
-                    else
-                      'Other';
-                  end,
-                  number_with_delimiter(stat.spiritual_conversations.to_i),
-                  number_with_delimiter(stat.exposuresViaMedia.to_i), number_with_delimiter(stat.evangelisticOneOnOne.to_i),
-                  number_with_delimiter(stat.evangelisticGroup.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByMedia.to_i), number_with_delimiter(stat.decisionsHelpedByOneOnOne.to_i),
-                  number_with_delimiter(stat.decisionsHelpedByGroup.to_i),
-                  number_with_delimiter(stat.holySpiritConversations.to_i),
-                  number_with_delimiter(stat.invldStudents.to_i)]
-      else #if project.open?
-        @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
-                  case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then
-                                                 'Global Missions'; when 'Campus Ministry - US summer project' then
-                                                                      'US';
-                    else
-                      'Other';
-                  end,
-                  0, 0, 0, 0, 0, 0, 0, 0, 0]
+      project_type = case project.report_stats_to
+                     when 'Campus Ministry - Global Missions summer project'
+                       'Global Missions'
+                     when 'Campus Ministry - US summer project' then
+                       'US'
+                     else
+                       'Other'
+                    end
+      row = [project.name, project.weeks, counts[project.id], project.primary_partner, project_type]
+
+      if stat = stats.detect { |s| s['event_id'] == project.id }
+        row +=
+          [number_with_delimiter(stat['spiritual_conversations'].to_i),
+           number_with_delimiter(stat['media_exposures'].to_i),
+           number_with_delimiter(stat['personal_evangelism'].to_i),
+           number_with_delimiter(stat['group_evangelism'].to_i),
+           number_with_delimiter(stat['media_decisions'].to_i),
+           number_with_delimiter(stat['personal_decisions'].to_i),
+           number_with_delimiter(stat['group_decisions'].to_i),
+           number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+           number_with_delimiter(stat['students_involved'].to_i)]
+      else
+        row += [0, 0, 0, 0, 0, 0, 0, 0, 0]
       end
+
+      @rows << row
     end
     respond_to do |format|
       format.html

@@ -31,7 +31,7 @@ class Admin::ApplicationsController < ApplicationController
       # rather than join the team stuff into the main query it's going to be
       # cleaner to query out the campuses associated with this team seperately.
       # I know that means an extra query, but trust me, it's better.
-      @schools = TargetArea.joins(:activities).where('ministry_activity.fk_teamID' => params[:team]).map(&:name)
+      @schools = TargetArea.get('filters[team_id]' => params[:team]).map(&:name)
       if @schools.empty?
         conditions[0] << " 1 <> 1 "
       else
@@ -109,9 +109,9 @@ class Admin::ApplicationsController < ApplicationController
 
   protected
     def set_up_search_form
-      @region_options = Region.order('region')
-      @team_options = Team.where("lane = 'FS'").order('name')
-      @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
+      @region_options = Region.all
+      @team_options = Infobase::Team.get('filters[lane]' => 'FS')
+      @school_options = Infobase::TargetArea.get('filters[country]' => 'USA').collect(&:name).uniq.sort
       @project_options = SpProject.current.order(:name)
     end
 

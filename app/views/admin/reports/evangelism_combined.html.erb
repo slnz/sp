@@ -12,7 +12,7 @@
   <%= link_to("<< Back to regional coordinator report list", regional_admin_reports_path) %>
   <br/>
   <%- if @statistics %>
-    <h1>Statistics for all <%= @partners.join(', ') %> Projects</h1>
+    <h1>Statistics for all <%= params[:partner] %> Projects</h1>
     <table>
       <%= render 'stat_header' %>
       <% if @statistics.present? %>

@@ -1,2 +1,0 @@
-class Campus < TargetArea
-end

@@ -44,7 +44,7 @@ gem 'gcx_api', git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client', git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'cru_lib', git: 'https://github.com/CruGlobal/cru_lib'
 # gem 'cru_lib', path: '/Users/josh/htdocs/cru_lib'
-gem 'qe', git: 'https://github.com/CruGlobal/qe', ref: '84fed3d'
+gem 'qe', git: 'https://github.com/CruGlobal/qe'
 gem 'sidekiq-pro'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
@@ -55,19 +55,24 @@ gem 'rubycas-client'
 gem 'aasm'
 gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'infobase'
 
 gem 'bootstrap-sass'
 gem 'font-awesome-rails'
 
 group :development, :test do
-  gem 'rspec', '~> 3.0'
   gem 'quiet_assets'
   gem 'awesome_print'
   gem 'mailcatcher'
-  gem 'guard-rspec'
   gem 'meta_request'
-  gem 'better_errors'
   gem 'binding_of_caller'
+  gem "spring"
+  gem "spring-commands-rspec"
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'webmock'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'

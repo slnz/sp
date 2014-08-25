@@ -12,7 +12,6 @@
       <th>1st Preference</th>
       <th>Email</th>
       <th>Phone</th>
-    </tr>
   </thead>
   <tbody>
     <% @applications.each do |application| %>
@@ -22,7 +21,7 @@
         <td><%= application.name %></td>
         <td><%= application.person.human_gender %></td>
         <td><%= application.person.region %></td>
-        <td><%= application.person.target_area.try(:teams).try(:first) %></td>
+        <td><%= application.person.target_area.team_name if application.person.target_area %></td>
         <td><%= application.person.campus %></td>
         <td><%= application.preference1 || application.project %></td>
         <td><%= mail_to(application.email) %></td>

@@ -21,10 +21,12 @@ describe SchoolPicker do
     end
     it "returns the campus state if the person of application do not have a universtyState record" do
       @person.update_column(:universityState, nil)
-      campus = create(:campus, name: 'Campus Name', state: 'CA')
-      expect(@school_picker).to receive(:response).with(@application).and_return(campus.name)
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=Campus%20Name").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "CA"}]}', :headers => {})
+      campus_name = 'Campus Name'
+      expect(@school_picker).to receive(:response).with(@application).and_return(campus_name)
       response = @school_picker.send(:state, @application)
-      expect(response).to eq(campus.state)
+      expect(response).to eq('CA')
     end
   end
   
@@ -39,10 +41,11 @@ describe SchoolPicker do
       expect(response).to eq([])
     end
     it "returns an array of campus names if the given application has a state record" do
-      campus = create(:campus, name: 'Campus Name', state: 'Campus State', type: 'College', isClosed: nil)
-      expect(@school_picker).to receive(:state).exactly(2).times.with(@application).and_return(campus.state)
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bstate%5D=Campus%20State&filters%5Btype%5D=College").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
+      expect(@school_picker).to receive(:state).exactly(2).times.with(@application).and_return('Campus State')
       response = @school_picker.send(:colleges, @application)
-      expect(response.first).to eq(campus.name)
+      expect(response.first).to eq('Campus Name')
     end
   end
   
@@ -57,10 +60,11 @@ describe SchoolPicker do
       expect(response).to eq([])
     end
     it "returns an array of campus names if the given application has a state record" do
-      campus = create(:campus, name: 'Campus Name', state: 'Campus State', type: 'HighSchool')
-      expect(@school_picker).to receive(:state).with(@application).and_return(campus.state)
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Btype%5D=HighSchool").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
+      expect(@school_picker).to receive(:state).with(@application).and_return('Campus State')
       response = @school_picker.send(:high_schools, @application)
-      expect(response.first).to eq(campus.name)
+      expect(response.first).to eq('Campus Name')
     end
   end
   

@@ -3,11 +3,17 @@ require 'spec_helper'
 describe ProjectsController do
   context '#show' do
     it 'responds to JSON with 200' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
       get :show, id: create(:sp_project).id, format: :json
       expect(response.status).to eq(200)
     end
 
     it 'responds to XML with 200' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
       get :show, id: create(:sp_project).id, format: :xml
       expect(response.status).to eq(200)
     end
@@ -39,6 +45,9 @@ describe ProjectsController do
                        start_date: Date.new(2013, 6, 1),
                        end_date: Date.new(2013, 8, 1)
       )
+
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
       get :index, year: '2013', start_month: '5', format: :json
       expect(assigns(:projects)).to eq([project])

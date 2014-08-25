@@ -1,23 +1,23 @@
-class Region < ActiveRecord::Base
-  include Sidekiq::Worker
-
-  self.table_name = "ministry_regionalteam"
-  self.primary_key = "teamID"
-  
-  default_scope -> { order(:region) }
-
+class Region
   cattr_reader :standard_region_codes, :campus_region_codes
   @@standard_region_codes = ["GL", "GP", "MA", "MS", "NE", "NW", "RR", "SE", "SW", "UM"]
   @@campus_region_codes = @@standard_region_codes.clone << "NC"
-  
+  attr_accessor :id, :name, :note, :region, :address1, :address2, :city, :state, :zip, :country, :phone,
+    :fax, :email, :url, :isActive, :startdate, :stopdate, :no, :abbrv, :hrd, :spPhone, :global_registry_id
+
+  def initialize(region)
+    region.keys.each { |k| self.send("#{k}=".to_sym, region[k]) }
+    self.region = self.abbrv
+  end
+
   def self.standard_regions
-    where(["region IN (?)", @@standard_region_codes])
+    all.select { |r| @@standard_region_codes.include?(r.region) }
   end
 
   def self.campus_regions
-    where(["region IN (?)", @@campus_region_codes])
+    all.select { |r| @@campus_region_codes.include?(r.region) }
   end
-  
+
   def self.standard_regions_hash
     result = {}
     standard_regions.each do |region|
@@ -25,22 +25,32 @@ class Region < ActiveRecord::Base
     end
     result
   end
-  
-  def self.full_name(code)
-    region = where("region = ?", code).first
+
+  def self.full_name(region)
+    region = find_by_region(region)
     if region
       region.name
-    elsif code == "nil"
+    elsif region == "nil"
       "Unspecified Region"
     else
       ""
     end
   end
-  
+
+  def self.all
+    Rails.cache.fetch(['all_regions', 'v1'], expires_in: 1.day) do
+      Infobase::Region.get().map { |r| Region.new(r) }
+    end
+  end
+
+  def self.find_by_region(region)
+    all.detect { |r| r.region == region }
+  end
+
   def sp_phone
     @sp_phone ||= spPhone.blank? ? phone : spPhone
   end
-  
+
   def to_s
     region
   end

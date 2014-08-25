@@ -1,6 +1,6 @@
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery-ui
 //= require tinymce-jquery
 //= require qe/qe.common.js
 //= require qe/qe.admin.js

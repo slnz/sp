@@ -5,7 +5,7 @@
     <h1>Applications for project parternships</h1>
     <ul>
       <% @teams.each do |team| %>
-        <li><%= link_to(team, missional_team_admin_reports_path(:team => team)) %> (<%= link_to('download', missional_team_admin_reports_path(:team => team, :format => 'csv')) %>)</li>
+        <li><%= link_to(team.name, missional_team_admin_reports_path(:team => team.id)) %> (<%= link_to('download', missional_team_admin_reports_path(:team => team.id, :format => 'csv')) %>)</li>
       <% end %>
     </ul>
   <% end %>
