@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603174337) do
+ActiveRecord::Schema.define(version: 20140825034121) do
 
   create_table "academic_departments", force: true do |t|
     t.string "name"
@@ -4166,6 +4166,7 @@ ActiveRecord::Schema.define(version: 20140603174337) do
     t.integer  "global_registry_id"
     t.text     "project_summary"
     t.text     "full_project_description"
+    t.string   "youtube_video_id"
   end
 
   add_index "sp_projects", ["global_registry_id"], name: "index_sp_projects_on_global_registry_id", using: :btree
