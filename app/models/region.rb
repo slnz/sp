@@ -39,7 +39,7 @@ class Region
 
   def self.all
     Rails.cache.fetch(['all_regions', 'v1'], expires_in: 1.day) do
-      Infobase::Region.get()['regions'].map { |r| Region.new(r) }
+      Infobase::Region.get().map { |r| Region.new(r) }
     end
   end
 
