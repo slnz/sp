@@ -9,7 +9,7 @@ class SchoolPicker < Question
       unless state.present?
         # get from the campus
         name = response(app)
-        campus = TargetArea.get(name: name)
+        campus = TargetArea.find_by(name: name)
         if campus.present?
           state = campus['state']
         end
@@ -20,14 +20,14 @@ class SchoolPicker < Question
   
   def colleges(app=nil)
     unless state(app) == ''
-      return Infobase::TargetArea.get(type: 'College', state: state(app))['target_areas'].collect { |t| t['name'] }
+      return Infobase::TargetArea.get('filters[type]' => 'College', 'filters[state]' => state(app)).collect(&:name)
     end
     []
   end
 
   def high_schools(app=nil)
     unless self.state(app) == ''
-      return Infobase::TargetArea.get(type: 'HighSchool')['target_areas'].collect { |t| t['name'] }
+      return Infobase::TargetArea.get('filters[type]' => 'HighSchool').collect(&:name)
     end
     []
   end

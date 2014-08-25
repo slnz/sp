@@ -98,9 +98,9 @@ class Person < ActiveRecord::Base
     self.school =
       case
       when campus.present? && universityState.present?
-        TargetArea.get(name: campus, state: universityState)
+        TargetArea.find_by(name: campus, state: universityState)
       when campus.present?
-        TargetArea.get(name: campus)
+        TargetArea.find_by(name: campus)
       end
   end
 
@@ -341,7 +341,7 @@ class Person < ActiveRecord::Base
 
   def all_team_members(remove_self = false)
     my_local_level_ids = teams.collect &:id
-    mmtm = TeamMember.where(:teamID => my_local_level_ids).joins(:person).order("lastName, firstName ASC")
+    mmtm = TeamMember.get('filters[team_id]' => my_local_level_ids) #order("lastName, firstName ASC")
     people = mmtm.collect(&:person).flatten.uniq
     people.delete(self) if remove_self
     return people

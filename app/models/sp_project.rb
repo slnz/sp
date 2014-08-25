@@ -65,7 +65,7 @@ class SpProject < ActiveRecord::Base
       'filters[event_id' => id,
       'filters[activity_type]' => 'SP',
       order: 'periodBegin desc'
-    )['statistics']
+    )
   end
 
   validates_presence_of :name, :display_location, :start_date, :end_date, :student_cost, :max_accepted_men, :max_accepted_women,

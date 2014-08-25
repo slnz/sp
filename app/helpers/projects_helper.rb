@@ -96,7 +96,7 @@ module ProjectsHelper
     end
     if !options || options.include?(:teams)
       team = PartnershipType.new('Team')
-      @teams ||= Team.order('name').where("lane IN('SC','CA') AND country = 'USA'")
+      @teams ||= Team.get('filters[lane]' => 'SC,CA', 'filters[country]' => 'USA')
       @teams.each {|t| team << PartnershipOption.new(t.name, t.name) unless t.name.empty?}
       collections << team
     end

@@ -179,7 +179,7 @@ GEM
       savon (~> 2.1.0)
     image_science (1.2.6)
       RubyInline (~> 3.9)
-    infobase (1.0.1)
+    infobase (1.1.0)
       activesupport
       oj (~> 2.1.0)
       rest-client (~> 1.6.7)

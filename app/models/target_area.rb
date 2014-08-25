@@ -1,14 +1,18 @@
 class TargetArea
   def initialize(target_area)
-    @target_area = target_area
+    @target_area = target_area || { 'id' => nil, 'name' => nil }
   end
 
   def teams
-    @target_area['teams']
+    @teams ||= Infobase::Team.get('filters[target_area_id]' => id) if id
   end
 
-  def self.get(params)
-    new(Infobase::TargetArea.get(params)['target_areas'].first)
+  def self.find_by(params)
+    filter_params = {}
+    params.each do |k, v|
+      filter_params["filters[#{k}]"] = v
+    end
+    new(Infobase::TargetArea.get(filter_params).first)
   end
 
   def [](key)
@@ -16,6 +20,14 @@ class TargetArea
   end
 
   def team_name
-    teams.first['name'] if teams.present?
+    @team_name ||= teams.first['name'] if teams.present?
+  end
+
+  def method_missing(symbol, &block)
+    key = symbol.to_s
+
+    return @target_area[key] if @target_area.keys.include?(key)
+
+    super
   end
 end
