@@ -62,7 +62,7 @@ class SpProject < ActiveRecord::Base
   def statistics(year = nil)
     Infobase::Statistic.get(
       'filters[sp_year]' => year,
-      'filters[event_id' => id,
+      'filters[event_id]' => id,
       'filters[activity_type]' => 'SP',
       order: 'periodBegin desc',
       limit: Project.count

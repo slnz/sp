@@ -653,34 +653,37 @@ class Admin::ReportsController < ApplicationController
                 'Decisions Group', 'Holy Spirit Convo', 'Student Attendees']
     @rows = []
     stats = SpProject.statistics(@year)
+    counts = Hash[SpApplication.connection.select_all(
+      "SELECT project_id, count(*) from sp_applications where year = #{@year} AND status in('#{SpApplication.accepted_statuses.join("','")}')
+      group by project_id"
+    ).rows]
     SpProject.open.order('name').each do |project|
+      project_type = case project.report_stats_to
+                     when 'Campus Ministry - Global Missions summer project'
+                       'Global Missions'
+                     when 'Campus Ministry - US summer project' then
+                       'US'
+                     else
+                       'Other'
+                    end
+      row = [project.name, project.weeks, counts[project.id], project.primary_partner, project_type]
+
       if stat = stats.detect { |s| s['event_id'] == project.id }
-        @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
-                  case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then
-                                                 'Global Missions'; when 'Campus Ministry - US summer project' then
-                                                                      'US';
-                    else
-                      'Other';
-                  end,
-                  number_with_delimiter(stat['spiritual_conversations'].to_i),
-                  number_with_delimiter(stat['media_exposures'].to_i),
-                  number_with_delimiter(stat['personal_evangelism'].to_i),
-                  number_with_delimiter(stat['group_evangelism'].to_i),
-                  number_with_delimiter(stat['media_decisions'].to_i),
-                  number_with_delimiter(stat['personal_decisions'].to_i),
-                  number_with_delimiter(stat['group_decisions'].to_i),
-                  number_with_delimiter(stat['holy_spirit_presentations'].to_i),
-                  number_with_delimiter(stat['students_involved'].to_i)]
-      else #if project.open?
-        @rows << [project.name, project.weeks, project.sp_applications.for_year(@year).accepted.count, project.primary_partner,
-                  case project.report_stats_to when 'Campus Ministry - Global Missions summer project' then
-                                                 'Global Missions'; when 'Campus Ministry - US summer project' then
-                                                                      'US';
-                    else
-                      'Other';
-                  end,
-                  0, 0, 0, 0, 0, 0, 0, 0, 0]
+        row +=
+          [number_with_delimiter(stat['spiritual_conversations'].to_i),
+           number_with_delimiter(stat['media_exposures'].to_i),
+           number_with_delimiter(stat['personal_evangelism'].to_i),
+           number_with_delimiter(stat['group_evangelism'].to_i),
+           number_with_delimiter(stat['media_decisions'].to_i),
+           number_with_delimiter(stat['personal_decisions'].to_i),
+           number_with_delimiter(stat['group_decisions'].to_i),
+           number_with_delimiter(stat['holy_spirit_presentations'].to_i),
+           number_with_delimiter(stat['students_involved'].to_i)]
+      else
+        row += [0, 0, 0, 0, 0, 0, 0, 0, 0]
       end
+
+      @rows << row
     end
     respond_to do |format|
       format.html
