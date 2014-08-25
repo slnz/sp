@@ -77,7 +77,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'fuubar'
   gem 'simplecov', :require => false
-  gem 'database_cleaner'
   gem 'spork-rails'#, '~> 3.2.0'
   gem 'guard-spork'
   gem 'dotenv'
