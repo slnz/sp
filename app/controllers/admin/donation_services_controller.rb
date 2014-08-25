@@ -99,7 +99,7 @@ class Admin::DonationServicesController < ApplicationController
 
             if !record.valid?
               @warning_messages << "Person #{person_id} or subsequent record is corrupted and cannot be updated; " +
-               "please contact help@cru.org"
+               "please contact projects@studentlife.org.nz"
             else
               project = SpProject.find(project_id)
               leaders = Hash.new
@@ -123,7 +123,7 @@ class Admin::DonationServicesController < ApplicationController
                 @warning_messages << "No leaders have been notified of person #{person_id}'s designation number assignment"
               else
                 Notifier.notification(recipients, # RECIPIENTS
-                                      "gosummerproject@cru.org", # FROM
+                                      "projects@studentlife.org.nz", # FROM
                                       "Designation Number Assigned", # LIQUID TEMPLATE NAME
                                       {'name' => person.try(:informal_full_name),
                                        'project_name' => project.name,

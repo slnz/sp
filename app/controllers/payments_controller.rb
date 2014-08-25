@@ -3,13 +3,13 @@ class PaymentsController < ApplicationController
   prepend_before_filter :ssm_login_required, :except => [:edit, :update]
   prepend_before_filter :cas_filter, :authentication_filter, :only => [:edit, :update]
   before_filter :setup, :except => [:edit, :update, :approve]
-  
+
   # Allow applicant to edit payment
   # /applications/1/payment_page/edit
   # js: provide a partial to replace the answer_sheets page area
   def edit
     @payment = SpPayment.find(params[:id])
-    @application = @payment.application    
+    @application = @payment.application
     # if this isn't a staff payment they shouldn't be here for this staff person
     unless 'Staff' == @payment.payment_type && current_person.isStaff?
       render('no_access') and return
@@ -31,7 +31,7 @@ class PaymentsController < ApplicationController
           case @payment.payment_type
           when "Credit Card"
             card_type = params[:payment][:card_type]
-          
+
             creditcard = ActiveMerchant::Billing::CreditCard.new(
               :type       => card_type,
               :number     => @payment.card_number,
@@ -40,11 +40,11 @@ class PaymentsController < ApplicationController
               :verification_value => @payment.security_code,
               :first_name => @payment.first_name,
               :last_name  => @payment.last_name
-            )   
-          
+            )
+
             if creditcard.valid?
               response = GATEWAY.purchase(@payment.amount * 100, creditcard)
-        
+
               if response.success?
                 @payment.approve!
                 # TODO: Send notification email
@@ -69,7 +69,7 @@ class PaymentsController < ApplicationController
       end
     end
   end
-  
+
   def update
     @payment = SpPayment.includes({:application => :person}).find(params[:id])
     @application = @payment.application
@@ -91,7 +91,7 @@ class PaymentsController < ApplicationController
       staff_payment_processed_email(@payment)
     when 'Mail'
       Notifier.notification(@application.email, # RECIPIENTS
-                            "gosummerproject@cru.org", # FROM
+                            "projects@studentlife.org.nz", # FROM
                             "Check Received", # LIQUID TEMPLATE NAME
                             {'name' => @application.name}).deliver
     end
@@ -107,7 +107,7 @@ class PaymentsController < ApplicationController
     @results = Staff.order('lastName, firstName')
                     .where(["(firstName like ? OR preferredName like ?) AND lastName like ? and removedFromPeopleSoft <> 'Y'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%'])
   end
-  
+
   def destroy
     @payment = @application.payments.find(params[:id])
     @payment.destroy
@@ -121,22 +121,22 @@ class PaymentsController < ApplicationController
         @application = current_person.sp_applications.find(params[:application_id])
       end
     end
-  
+
     def send_staff_payment_request(payment)
       @person = @application.person
       staff = Staff.find_by(accountNo: payment.payment_account_no)
       raise "Invalid staff payment request: " + payment.inspect if staff.nil?
       Notifier.notification(staff.email, # RECIPIENTS
-                                    "gosummerproject@cru.org", # FROM
+                                    "projects@studentlife.org.nz", # FROM
                                     "Staff Payment Request", # LIQUID TEMPLATE NAME
                                     {'staff_full_name' => staff.informal_full_name, # HASH OF VALUES FOR REPLACEMENT IN LIQUID TEMPLATE
-                                     'applicant_full_name' => @person.informal_full_name, 
-                                     'applicant_email' => @person.email, 
+                                     'applicant_full_name' => @person.informal_full_name,
+                                     'applicant_email' => @person.email,
                                      'applicant_home_phone' => @person.current_address.try(:homePhone),
                                      'payment_request_url' => url_for(:action => :edit, :application_id => @application.id, :id => @payment.id)},
                                      {:format => :html}).deliver
     end
-    
+
     def staff_approval
       @payment.auth_code = current_person.accountNo
       if @payment.status == "Other Account"
@@ -144,18 +144,18 @@ class PaymentsController < ApplicationController
         @payment.approve!
       end
     end
-    
+
     def staff_payment_processed_email(payment)
       # Send appropriate email
       if payment.approved?
         # Send receipt to applicant
         Notifier.notification(@application.email, # RECIPIENTS
-                              "gosummerproject@cru.org", # FROM
+                              "projects@studentlife.org.nz", # FROM
                               "Applicant Staff Payment Receipt", # LIQUID TEMPLATE NAME
                               {'applicant_full_name' => @application.name}).deliver
         # Send notice to Tool Owner
-        Notifier.notification("gosummerproject@cru.org", # RECIPIENTS - HARD CODED!
-                              "help@cru.org", # FROM
+        Notifier.notification("projects@studentlife.org.nz", # RECIPIENTS - HARD CODED!
+                              "projects@studentlife.org.nz", # FROM
                               "Tool Owner Payment Confirmation", # LIQUID TEMPLATE NAME
                               {'payment_amount' => "$" + @payment.amount.to_s,
                                'payment_account_no' => @payment.payment_account_no,
@@ -164,7 +164,7 @@ class PaymentsController < ApplicationController
       else
         # Sent notice to applicant that payment was declined
         Notifier.notification(@application.email, # RECIPIENTS
-                              "gosummerproject@cru.org", # FROM
+                              "projects@studentlife.org.nz", # FROM
                               "Payment Refusal", # LIQUID TEMPLATE NAME
                               {'applicant_full_name' => @application.name}).deliver
       end

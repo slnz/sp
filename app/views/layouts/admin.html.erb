@@ -7,18 +7,18 @@
   <%= stylesheet_link_tag 'admin_manifest' %>
   <!--[if IE 7]>
     <%= stylesheet_link_tag 'ie7-admin' %>
-  <![endif]--> 
+  <![endif]-->
   <%= csrf_meta_tag %>
   <%= embed_params %>
   <%#= tiny_mce_init %>
   <!-- <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> -->
-  
+
   <%= yield :head %>
 
 
-  <%= render :partial => 'layouts/ga' %>  
-  
-  
+  <%= render :partial => 'layouts/ga' %>
+
+
   <meta name="application-name" content="Summer Projects Admin"/>
 	<meta name="msapplication-tooltip" content="Go to Summer Project Admin"/>
 	<meta name="msapplication-starturl" content="/admin"/>
@@ -46,7 +46,7 @@
 
 <div id="status" style="display: none;"><%= image_tag('qe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
 
-<div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('gosummerproject@cru.org') %></div>
+<div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('projects@studentlife.org.nz') %></div>
 <%= tinymce %>
 </body>
 </html>

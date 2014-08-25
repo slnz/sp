@@ -55,7 +55,7 @@ Sp2::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.default_url_options= { :host => 'sp.stage.uscm.org' }
+  config.action_mailer.default_url_options= { :host => 'projects.stage.studentlife.org.nz' }
 
   config.cache_store = :dalli_store,
                     (ENV["MEMCACHIER_SERVERS"] || "").split(","),

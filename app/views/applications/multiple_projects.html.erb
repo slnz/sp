@@ -6,11 +6,11 @@
 	</ul>
 <% else %>
 	<p>
-		Your application to <%= @current_project.name %> has already been completed. If you need to change which project you're applying to, please 
+		Your application to <%= @current_project.name %> has already been completed. If you need to change which project you're applying to, please
 		<% if @current_project.contact %>
 			contact <%= @current_project.contact.informal_full_name %> at <%= @current_project.contact.email %>
 		<% else %>
-			send an email to gosummerproject@cru.org
+			send an email to projects@studentlife.org.nz
 		<% end %>
 	</p>
 	<p><%= link_to('Click here to go to your application status page.', application_path(@application), :class => 'successreturn') %></p>

@@ -642,9 +642,9 @@ class SpApplication < ActiveRecord::Base
       # Notify old and new directors
       old_pds = [old_project.pd, old_project.apd, old_project.opd]
       new_pds = [new_project.pd, new_project.apd, new_project.opd]
-      recipients = old_pds.compact.empty? ? ["summer.projects@cru.org"] : old_pds.compact.collect(&:email)
-      recipients += new_pds.compact.empty? ? ["summer.projects@cru.org"] : new_pds.compact.collect(&:email)
-      recipients << "summerprojectdonations@cru.org" if designation_number.present?
+      recipients = old_pds.compact.empty? ? ["projects@studentlife.org.nz"] : old_pds.compact.collect(&:email)
+      recipients += new_pds.compact.empty? ? ["projects@studentlife.org.nz"] : new_pds.compact.collect(&:email)
+      recipients << "projects@studentlife.org.nz" if designation_number.present?
           Notifier.notification(recipients.compact, # RECIPIENTS
                                 Qe.from_email, # FROM
                                 "Application Moved", # LIQUID TEMPLATE NAME

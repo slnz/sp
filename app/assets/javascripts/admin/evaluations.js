@@ -1,9 +1,9 @@
 function displayWarning() {
 	if ($('#event').val() == "decline") {
   	alert("WARNING: Are you sure you want to decline this student?\n\n" +
-    "• Declined = Applicant has been evaluated and found not acceptable to participate in ANY CCC project, not even a one-week project. Few if any students should ever be marked this way.\n\n" +
+    "• Declined = Applicant has been evaluated and found not acceptable to participate in ANY Student Life project, not even a one-week project. Few if any students should ever be marked this way.\n\n" +
     "• Withdrawn = Applicant has requested their application to be withdrawn because they are no longer going on project. Their application will still be in the SP Tool and can be un-withdrawn if need be.\n\n" +
-    "If you have questions about this, please email gosummerproject@cru.org or call 1-800-690-0911.");
+    "If you have questions about this, please email projects@studentlife.org.nz");
   }
 }
 
@@ -18,7 +18,7 @@ $(function() {
 		});
 		$('#total_score span').html(total);
 	});
-	
+
 	$(document).on('click', '.evaluation_page_link', function() {
 		$('#evalcontent').html('<img src="/images/spinner.gif" class="spinner" />');
 	});
