@@ -6,7 +6,7 @@ class Region
     :fax, :email, :url, :isActive, :startdate, :stopdate, :no, :abbrv, :hrd, :spPhone, :global_registry_id
 
   def initialize(region)
-    region.each { |k, v| self.send("#{k}=".to_sym, v) }
+    region.keys.each { |k| self.send("#{k}=".to_sym, region[k]) }
     self.region = self.abbrv
   end
 
