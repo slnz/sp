@@ -467,7 +467,7 @@ describe Admin::ReportsController do
     context '#evangelism_combined' do
       it 'list applications by evangelism summary via HTML with params[:partner present]' do
         stub_request(:get, "https://infobase.uscm.org/api/v1//statistics/sp_evangelism_combined?partner=NW").
-          to_return(:status => 200, :body => "", :headers => {})
+          to_return(:status => 200, :body => '{"statistics":[]}', :headers => {})
 
         session[:cas_user] = 'foo@example.com'
         session[:user_id] = user.id

@@ -13,8 +13,10 @@ describe Admin::ApplicationsController do
     it 'sets up a search form' do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?country=USA").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA").
         to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
+      stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
+        to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
       get 'search'
       expect(response).to render_template('search')
@@ -25,8 +27,10 @@ describe Admin::ApplicationsController do
     it 'returns results' do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?country=USA").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA").
         to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
+      stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
+        to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
       application = create(:sp_application, project_id: 1)
       post 'search_results', preference: 1

@@ -21,7 +21,7 @@ describe SchoolPicker do
     end
     it "returns the campus state if the person of application do not have a universtyState record" do
       @person.update_column(:universityState, nil)
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?name=Campus%20Name").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=Campus%20Name").
         to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "CA"}]}', :headers => {})
       campus_name = 'Campus Name'
       expect(@school_picker).to receive(:response).with(@application).and_return(campus_name)
@@ -41,7 +41,7 @@ describe SchoolPicker do
       expect(response).to eq([])
     end
     it "returns an array of campus names if the given application has a state record" do
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?state=Campus%20State&type=College").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bstate%5D=Campus%20State&filters%5Btype%5D=College").
         to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
       expect(@school_picker).to receive(:state).exactly(2).times.with(@application).and_return('Campus State')
       response = @school_picker.send(:colleges, @application)
@@ -60,7 +60,7 @@ describe SchoolPicker do
       expect(response).to eq([])
     end
     it "returns an array of campus names if the given application has a state record" do
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?type=HighSchool").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Btype%5D=HighSchool").
         to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
       expect(@school_picker).to receive(:state).with(@application).and_return('Campus State')
       response = @school_picker.send(:high_schools, @application)

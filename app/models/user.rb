@@ -42,7 +42,6 @@ class User < ActiveRecord::Base
       end
     end
     # Update the password to match their gcx password too. This will save a round-trip later
-    # u.plain_password = params[:plain_password]
     u.save(:validate => false) if secure
 
     # make sure we have a person
@@ -140,7 +139,6 @@ class User < ActiveRecord::Base
       end
     end
     # Update the password to match their gcx password too. This will save a round-trip later
-    # u.plain_password = params[:plain_password]
     u.save(:validate => false)
     # make sure we have a person
     unless u.person
