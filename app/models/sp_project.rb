@@ -64,8 +64,7 @@ class SpProject < ActiveRecord::Base
       'filters[sp_year]' => year,
       'filters[event_id]' => id,
       'filters[activity_type]' => 'SP',
-      order: 'periodBegin desc',
-      limit: Project.count
+      per_page: SpProject.count
     )
   end
 
@@ -73,7 +72,7 @@ class SpProject < ActiveRecord::Base
     Infobase::Statistic.get(
       'filters[sp_year]' => year,
       'filters[activity_type]' => 'SP',
-      order: 'periodBegin desc'
+      per_page: SpProject.count
     )
   end
 
