@@ -31,6 +31,10 @@ Sp2::Application.configure do
   # Do not compress assets
   config.assets.compress = false
 
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger.const_get(
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
+  )
 
 # Expands the lines which load the assets
   config.assets.debug = true
@@ -38,10 +42,18 @@ Sp2::Application.configure do
   config.action_mailer.default_url_options= { :host => 'localhost:3000' }
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :host => "localhost", :port => 1025 }
 
   config.cache_store = :dalli_store, '127.0.0.1'
 
   BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
 
+  ActionMailer::Base.smtp_settings = {
+    :address        => 'smtp.sendgrid.net',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => 'heroku.com',
+    :enable_starttls_auto => true
+  }
 end
