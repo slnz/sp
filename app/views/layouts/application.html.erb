@@ -21,10 +21,14 @@
 <body id="<%= params[:controller]%>" class="<%= params[:action] %>">
 <%= render :partial => 'layouts/ga' %>
 <%- if @authentications || logged_in? %>
-  <div class="container">
-    <div id="globalactions">
+  <div id="globalactions">
+    <div class="container">
       <ul>
-        <li><%= link_to("Log Out", "/logout") %></li>
+        <li class="pull-right"><%= link_to("Log Out", "/logout") %></li>
+        <%- if sp_user.can_see_dashboard? %>
+          <li class="pull-right"><%= link_to("Admin", "/admin") %></li>
+        <% end -%>
+        <li><%= link_to("← Back to Student Life", "https://www.studentlife.org.nz") %></li>
       </ul>
     </div>
   </div>
