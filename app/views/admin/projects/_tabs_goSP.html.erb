@@ -104,31 +104,16 @@
 
       <div class="field required">
         <%= f.label :description, 'Project Description' %>
-        <div class="inlinetip">
-          <div id="explain1" class="explanation">
-
-            <b>Remember students will want to know what it is like to be on your
-      			project help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description. Do not use the "%" symbol in your description or it will not display your text.</b><br /><br />
-      			<b><u>Things to include in your description:</u></b><br>
-      			<ul><li>Introduce the project and build vision.</li></ul>
-      			<span class="sub">Daytona Beach Summer Project is located right on the "World's Most Famous Beach." It is a destination spot for thousands over the Summer and Spring Break and it's about an hour's drive from all the attractions in Orlando. Cru has had a long history at Daytona Beach. The Summer Project has been active there for over 30 summers. (Daytona)
-      			<br /><br />
-      			The country we are going to is the largest unreached nation in the world according to Operation World. Their are 73 million people and only an estimated 2,000 believers. (4th Journey)
-      			<br /><br /></span>
-      			<ul><li>Mention various training students will receive on this project, ways they will be invested in, or how they will return to campus equipped for ministry.</li></ul>
-      			<span class="sub">We will also train you in how to reach internationals from many different people groups and religions in your own settings. (New York Tribeca  Bridges)
-      			<br /><br />
-      			We will do lots of evangelism and follow-up, along with plenty of relationship building and encouraging of local Aussie students. Project participants will be able to take the training and experience directly back to their campuses in the US. Join us down under as we reach out to Australian students and help to establish campus ministries. (Australia  Melbourne)
-      			<br /><br /></span>
-      			<ul><li>Ministry Focus Details  help them experience what the outreach they will be doing looks like.</li></ul>
-      			<span class="sub">One of the strategic aspects of our outreaches is that each summer graduating seniors from the surrounding states come to Ocean City, so we find ourselves talking to next year's freshman class! (Ocean City)
-      			<br /><br />
-      			We will be taking some Russian Class, building relationships with students on campus,and inviting them to learn English with us. Through these relationships, we'll have an opportunity to share our faith.  (Russia, RR)
-      			</span>
-          </div>
-          <span id="readmoreless" rel="explain1">Read More</span>
-        </div>
         <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'tinymce') %>
+      </div>
+
+
+      <div class="multifield">
+        <div class="field">
+          <%= f.label :youtube_video_id, 'Youtube Video ID' %>
+          <%= f.text_field :youtube_video_id %>
+        </div>
+        <div class="clear"></div>
       </div>
 
       <% @project.student_quotes.each_with_index do |quote, i| %>
@@ -153,7 +138,7 @@
       <% end %>
 
 
-      <div class="multifield" style="margin-top: 20px;">
+      <!--div class="multifield" style="margin-top: 20px;">
 
         <div class="field">
           <label for="sp_project_picture">Project Picture</label>
@@ -178,7 +163,7 @@
           <%#= f.file_field(:logo, :size => "2") %>
         </div>
         <div class="clear"></div>
-      </div>
+      </div-->
 
       <button type="submit" class="save"><span>Save</span></button>
       <button type="button" class="save" onclick="$('.tabs li a').get(1).click();window.scrollTo(0,0)"><span>Next >></span></button>
