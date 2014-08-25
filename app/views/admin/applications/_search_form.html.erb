@@ -18,7 +18,7 @@
         <%= text_field_tag 'last_name', params[:last_name] %>
 
         <label for="school">School</label>
-        <%= select_tag 'school', options_for_select(@school_options.map(&:name).insert(0,''), params[:school])%>
+        <%= select_tag 'school', options_for_select(@school_options.insert(0,''), params[:school])%>
       </div>
 
       <div class="fieldgroup">
