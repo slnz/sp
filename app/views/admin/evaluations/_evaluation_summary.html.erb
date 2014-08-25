@@ -5,7 +5,7 @@
   <td>
     <table class="summarytable">
       <tr>
-        <td class="title">Status:</td><td><%= @application.status.titleize %></td>	
+        <td class="title">Status:</td><td><%= @application.status.titleize %></td>
       </tr>
       <tr>
         <td class="title">Started:</td><td><%= l(@application.created_at) if @application.created_at %></td>
@@ -13,28 +13,19 @@
       <tr>
         <td class="title">Completed:</td><td><%= l(@application.completed_at) if @application.completed_at %></td>
       </tr>
-      <tr>
-        <td class="title">Fee Paid?</td>
-        <td>
-          <font color="#<% if @application.has_paid? %>008000<%else%>FF0000<%end%>"><%= @application.has_paid? ? "Yes" : "No" %></font>
-          <% if sp_user.can_waive_fee? && !@application.has_paid? %>
-            <%= link_to('waive fee', waive_fee_admin_application_path(@application), data: {confirm:"Are you sure you want to waive #{@person.to_s}'s application fee?"}) %>
-          <% end %> 
-        </td>
-      </tr>
     </table>
   </td>
   <td>
-    <table class="summarytable">    
-        
-       
+    <table class="summarytable">
+
+
       <% if @application.reference_sheets.present? -%>
         <% @application.reference_sheets.each do |reference| -%>
           <% if reference.name.present? %>
             <tr>
               <td class="title"><%= reference.display_type %></td>
               <td class="<% if reference.completed? %>complete<%else%>incomplete<%end%>"><%= reference.status.titleize %></td>
-            </tr> 
+            </tr>
           <% end %>
         <% end %>
       <% end -%>
@@ -58,7 +49,7 @@
 
 <div class="actionwrap">
   <input type="submit" value="Save" class="savebut">
-</div>  
+</div>
 <table class="datatable col2">
   <tr>
     <td class="title">Applicant</td><td><%= @person.informal_full_name %></td>
@@ -81,12 +72,8 @@
     <td class="title">Applicant Notified (Sends an email to an accepted applicant to get them started with MPD)</td>
     <td><%= radio_button :application, :applicant_notified, true %>Yes  <%= radio_button :application, :applicant_notified, false %>No</td>
   </tr>
-  <tr>
-      <td class="title">RM Liability Forms (Indicates if all liability forms have being submitted)</td>
-      <td><%= radio_button :application, :rm_liability_signed, true %>Yes  <%= radio_button :application, :rm_liability_signed, false %>No</td>
-  </tr>
 </table>
-  
+
 <hr />
 <h2>Optional Evaluation Helpers</h2>
 <p>The notes and adjustments you make to the scales below will all transfer when you move an application to a different project.</p>
@@ -94,7 +81,7 @@
 <div class="field">
   <div class="question"><h3>Notes:</h3></div>
   <%= text_area :evaluation, :comments, :cols => 80, :rows => 10 %>
-</div>  
+</div>
 
 
 <table class="datatable">
@@ -138,7 +125,7 @@
           <td><%= radio_button :evaluation, :teachability, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::TEACHABILITY %></td>
     <td class="score"><%= @evaluation.teachability_score %></td>
@@ -158,7 +145,7 @@
           <td><%= radio_button :evaluation, :leadership, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::LEADERSHIP %></td>
     <td class="score"><%= @evaluation.leadership_score %></td>
@@ -178,7 +165,7 @@
           <td><%= radio_button :evaluation, :stability, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::STABILITY %></td>
     <td class="score"><%= @evaluation.stability_score %></td>
@@ -198,7 +185,7 @@
           <td><%= radio_button :evaluation, :good_evangelism, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::GOOD_EVANGELISM %></td>
     <td class="score"><%= @evaluation.good_evangelism_score %></td>
@@ -218,7 +205,7 @@
           <td><%= radio_button :evaluation, :reason, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::REASON %></td>
     <td class="score"><%= @evaluation.reason_score %></td>
@@ -238,7 +225,7 @@
           <td><%= radio_button :evaluation, :social_maturity, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::SOCIAL_MATURITY %></td>
     <td class="score"><%= @evaluation.social_maturity_score %></td>
@@ -258,7 +245,7 @@
           <td><%= radio_button :evaluation, :ccc_involvement, 7 %><label>7</label></td>
           <td class="great">Great</td>
         </tr>
-      </table>  
+      </table>
     </td>
     <td class="weight"><%= SpEvaluation::CCC_INVOLVEMENT %></td>
     <td class="score"><%= @evaluation.ccc_involvement_score %></td>
@@ -267,9 +254,9 @@
     <td>TOTAL SCORE (out of 420)</td>
     <td></td>
     <td id="total_score"><span><%= @evaluation.total_score %></span></td>
-  </tr>                
+  </tr>
 </table>
-  
+
 
 
 <table class="datatable">
@@ -311,11 +298,11 @@
       <td><%= radio_button :evaluation, :eating, false %><label>No</label></td>
     </tr>
   </tbody>
-</table>  
+</table>
 
 <div class="actionwrap">
 <input type="submit" value="Save" class="savebut">
-</div>    
+</div>
 
 
 <% end %>

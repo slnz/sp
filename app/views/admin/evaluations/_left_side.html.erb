@@ -8,7 +8,7 @@
     <br />
     <span class="schoolleft">School: <%= @person.campus %></span>
   <% end %>
-  
+
   <%= link_to('Print Application', '#', :class => 'print_button') %>
   <div id="print_options" style="display:none;" title="Print Options">
     <%= form_tag(print_admin_evaluation_path(@evaluation), :method => :get, :id => 'print-options-form') do %>
@@ -23,7 +23,7 @@
     </p>
     <% end %>
   </div>
-  
+
   <ul id="pagename">
     <li><%= link_to("Evaluator's Summary", evaluate_admin_evaluations_path(:application_id => @application.id, :format => :js), :remote => true, :class => 'evaluation_page_link') %></li>
     <% @presenter.pages[0..-2].each_with_index do |page, i| %>
@@ -32,8 +32,5 @@
       <% end %>
     <% end %>
     <li><%= link_to("References", references_admin_evaluation_path(@evaluation), :remote => true, :class => 'evaluation_page_link') %></li>
-    <% if sp_user.can_edit_payments? %>
-      <li><%= link_to("Payments", payments_admin_evaluation_path(@evaluation), :remote => true, :class => 'evaluation_page_link') %></li>
-    <% end %>
   </ul>
 </div>
