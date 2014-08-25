@@ -1,6 +1,8 @@
 class TargetArea
-  def initialize(target_area)
-    @target_area = target_area || { 'id' => nil, 'name' => nil }
+  ATTRIBUTES = %w(id name type longitude latitude enrollment region state)
+
+  def initialize(target_area = {})
+    @target_area = target_area || {}
   end
 
   def teams
@@ -26,7 +28,7 @@ class TargetArea
   def method_missing(symbol, &block)
     key = symbol.to_s
 
-    return @target_area[key] if @target_area.keys.include?(key)
+    return @target_area[key] if ATTRIBUTES.include?(key)
 
     super
   end
