@@ -1,6 +1,8 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+
 /* Variables */
 $page-width: 1000px;
-$global-font: Arial, Helvetica, Verdana;
+$global-font: 'Open Sans', Arial, Helvetica, Verdana;
 $global-bg: #00626D;
 $white: #fff;
 $black: #000;
@@ -8,7 +10,7 @@ $clouds: #ecf0f1;
 $text: #000;
 $light-green: #e51937;
 
-
+* { text-rendering: optimizeLegibility; }
 body {margin: 0; padding: 0; font-size: 14px; font-family: $global-font; background: $global-bg; color: $text;}
 body {
   background: url(https://www.studentlife.org.nz/wp-content/uploads/2014/02/body-background-a71039fc4c60d7d7258da1c275b3b75a.jpg) repeat-y center;
@@ -16,6 +18,11 @@ body {
   background-position: center top, left top;
   background-repeat: repeat-y, repeat;
   line-height: 1.5em;
+  padding-top: 30px;
+}
+.savestatus {
+  float:right;
+  color: #777;
 }
 #content.container {
   background: #fff;
@@ -33,6 +40,8 @@ a {
 }
 img {border: none; vertical-align: middle;}
 h3,h2 {margin: 0; padding: 10px 0 5px}
+
+h1, h2, h3, h4, h5 {font-weight: lighter;}
 
 #outer {
 	background: $white;
@@ -189,11 +198,67 @@ ul.contacts {
   color: #777;
   margin-bottom: 10px;
 }
+.js-video {
+  height: 0;
+  padding-top: 25px;
+  padding-bottom: 67.5%;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.js-video.widescreen {
+  padding-bottom: 57.25%;
+}
+
+.js-video.vimeo {
+  padding-top: 0;
+}
+.js-video embed, .js-video iframe, .js-video object, .js-video video {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+blockquote {
+  background-color: #f7f7f9;
+  line-height: 30px;
+  font-family: "Georgia", Serif;
+}
+.box {
+  padding: 20px;
+  -webkit-box-shadow: 3px 3px 0px 0px rgba(50, 50, 50, 0.13);
+  -moz-box-shadow:    3px 3px 0px 0px rgba(50, 50, 50, 0.13);
+  box-shadow:         3px 3px 0px 0px rgba(50, 50, 50, 0.13);
+  .box-title {
+    border-bottom: 1px solid #000;
+    margin: 0 -20px;
+    padding: 0 20px 10px;
+    text-transform: uppercase;
+    text-align: right;
+  }
+}
+.box-orange {
+  background: #e97453; /* Old browsers */
+  background: -moz-linear-gradient(top, #e97453 0%, #e96e4f 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e97453), color-stop(100%,#e96e4f)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #e97453 0%,#e96e4f 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #e97453 0%,#e96e4f 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #e97453 0%,#e96e4f 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #e97453 0%,#e96e4f 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e97453', endColorstr='#e96e4f',GradientType=0 ); /* IE6-9 */
+  color: #fff;
+  .box-title {
+    border-bottom-color: #e8b0a1;
+    color: #e8b0a1;
+  }
+}
 @media (min-width: 992px) {
 
   #controls.affix {
     margin: 0 auto;
-    top:0;
+    top:10px;
     position: fixed;
     width: 336.65625px;
   }

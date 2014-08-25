@@ -250,13 +250,12 @@
     }
   }
 
-  .choice_field.error label {
-    color: red;
-    font-weight: bold;
-    width: 50px;
-    background: #FFEAEA;
-    border: 1px solid red;
-    &.error {
+  .choice_field.error  {
+    padding: 3px 10px;
+    border: 1px solid #ffc5c2;
+    border-radius: 5px;
+    background: #ffe6e5;
+    label .error {
       display: none;
     }
   }
@@ -521,8 +520,33 @@
   }
 
   .submission_errors {
-    border: 1px solid red;
-    padding: 5px;
+    &:before {
+      font-family: FontAwesome;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 100%;
+      content: "\f071";
+      color: #ffc5c2;
+      position: absolute;
+      bottom: -.18em;right:-.18em;
+      font-size: 4.5em;
+      width: auto;
+      -webkit-transform: rotate(-20deg);
+      -moz-transform: rotate(-20deg);
+      -ms-transform: rotate(-20deg);
+      -o-transform: rotate(-20deg);
+      transform: rotate(-20deg);
+      zoom: 1;
+    }
+    margin: 0 0 1.758em;
+    padding: 20px;
+    border: 1px solid #ffc5c2;
+    color: #424242;
+    text-shadow: 0 1px 0 #fff;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: #ffe6e5;
+    position: relative; overflow: hidden;
     ul {
       color: red;
       font-weight: bold;

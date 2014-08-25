@@ -176,12 +176,13 @@ select {
 
 input.error[type=text],
 input.error[type=password] {
-  border-color: #a94442;
+  border: 1px solid #ffc5c2;
+  background: #ffe6e5;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 
   &:focus {
-    border-color: #843534;
+    background: #ffffff;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483
   }
@@ -202,13 +203,12 @@ input.radio {
 
 label.choice {
   margin-left: 25px;
-  min-height: 25px;
-  border: 1px solid #fff8e0;
 }
 
 .yesno {
   float: left;
   width: 60px;
+  margin-bottom: 0 !important;
 }
 
 .yesno label {
@@ -399,18 +399,28 @@ li.questiongrid div.row {
 }
 
 #globalactions {
-  float: right;
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index: 100;
+  background: #000;
+  background-color: rgba(0,0,0,0.6);
 }
 
 #globalactions ul {
-  float: right;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
+#globalactions ul li.pull-right {
+  margin-left: 10px;
+}
 #globalactions ul li a {
-  padding: 5px 8px;
-  background: #000;
   display: block;
+  color: #fff;
+  line-height: 30px;
 }
 
 

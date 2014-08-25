@@ -1,1 +1,20 @@
-Thank you for completing this reference. Your input is so valuable to us. If you are not familiar with Student Life or our summer projects, why not visit our summer project website to learn more? <%= link_to('projects.studentlife.org.nz') %> If you have any questions or concerns, email us at projects@studentlife.org.nz.
+<div class="page-title row">
+    <div class="col-md-12">
+      <h3>Your Reference</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>Thank you for completing this reference</h3>
+    <p>Your input is so valuable to us. If you are not familiar with Student Life or our summer projects, why not visit our website to learn more? <%= link_to('Our Website', 'https://www.studentlife.org.nz') %>. If you have any questions or concerns, email us at <%= link_to 'projects@studentlife.org.nz', 'mailto:projects@studentlife.org.nz' %>.</p>
+
+    <h3>Who are we?</h3>
+    <p>Student Life is a Christian organisation on university campuses throughout New Zealand, seeking to change the world by loving others and sharing with students the amazing journey that is found in following Christ. We do this because we’ve found that a relationship with God is exciting, relevant and life changing! We’d love every student to have the chance to look into and respond to a life changing message about God and this journey.<br />
+    <%= link_to('More Info', 'https://www.studentlife.org.nz/about', class: 'btn btn-primary') %></p>
+  </div>
+  <div class="col-md-6 text-center">
+    <div class="js-video widescreen">
+      <iframe src="https://www.youtube.com/embed/alIMUvHrQZg?modestbranding=1&iv_load_policy=3&rel=0&showinfo=0&theme=light" frameborder="0"></iframe>
+    </div>
+  </div>
+</div>

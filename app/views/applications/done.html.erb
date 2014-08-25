@@ -1,14 +1,25 @@
-<h1>Congratulations! You have successfully completed your part of the application!</h1>
+<div class="page-title row">
+    <div class="col-md-12">
+      <a href="http://www.facebook.com/sharer.php?u=http://projects.studentlife.org.nz/" class="btn btn-social btn-facebook pull-right">
+        <%= fa_icon 'facebook' %> Share on Facebook
+      </a>
+      <span class="text-muted">Current Status of</span>
+      <h3>My Application</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h1>Congratulations. You have successfully completed your part of the application!</h1>
 
-<p>Thanks for your faithfulness in finishing this step. </p>
+    <p>Thanks for your faithfulness in finishing this step. Please remember, in order to meet the different deadlines, you need all your references submitted by the deadline date. You can check the status of each of these references on your application status page. Simply return to gosummerproject.com and click the My Application Status in upper right hand corner.</p>
 
-<p>Please remember, in order to meet the different deadlines, you need all your references submitted by the deadline date.</p>
+    <p>We look forward to trusting God alongside of you the rest of this process. </p>
 
-<p>You can check the status of each of these references on your application status page. Simply return to gosummerproject.com and click the My Application Status in upper right hand corner.</p>
-
-<p>We look forward to trusting God alongside of you the rest of this process. </p>
-
-<p><br/><%= link_to('Click here to go to your application status page.', application_path(@application), :class => 'successreturn') %></p>
-
-
-<a href="http://www.facebook.com/sharer.php?u=http://www.gosummerproject.com/"><img src="<%= asset_path('frontend/facebook_share.gif') %>" alt="Share on Facebook" border="0" /></a>
+    <p><%= link_to('See my Application Status', application_path(@application), :class => 'btn btn-primary') %></p>
+    <br />
+  <blockquote>
+    <p>Then Jesus came to them and said, "All authority in heaven and on earth has been given to me. Therefore go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, and teaching them to obey everything I have commanded you. And surely I am with you always, to the very end of the age."</p>
+    <footer>Jesus in <cite title="Matthew 28:18-20">Matthew 28:18-20</cite></footer>
+  </blockquote>
+  </div>
+</div>
