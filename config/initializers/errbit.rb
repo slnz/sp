@@ -1,6 +1,6 @@
 Airbrake.configure do |config|
-  config.api_key     = '01d3074d4c069dbd48baec3c1ed8c7fe'
-  config.host        = 'errors.uscm.org'
-  config.port        = 443
-  config.secure      = config.port == 443
+  config.api_key = '8726d2d77ac8fbc4c0dc7cd72de11184'
+  config.host    = 'errors.studentlife.org.nz'
+  config.port    = 80
+  config.secure  = config.port == 443
 end
