@@ -65,6 +65,7 @@ group :development, :test do
   gem 'awesome_print'
   gem 'mailcatcher'
   gem 'meta_request'
+  gem 'better_errors'
   gem 'binding_of_caller'
   gem "spring"
   gem "spring-commands-rspec"

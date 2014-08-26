@@ -95,6 +95,9 @@ GEM
     aws-sdk (1.51.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
+    better_errors (1.1.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.2.0.1)
@@ -452,6 +455,7 @@ DEPENDENCIES
   auto_strip_attributes
   awesome_print
   aws-sdk
+  better_errors
   binding_of_caller
   bootstrap-sass
   carmen (~> 0.2.12)
