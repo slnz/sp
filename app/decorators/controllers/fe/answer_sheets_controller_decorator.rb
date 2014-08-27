@@ -1,5 +1,4 @@
-class AnswerSheetsController < ApplicationController
-  include Fe::AnswerSheetsControllerConcern
+Fe::AnswerSheetsController.class_eval do
 
   prepend_before_filter :login
 

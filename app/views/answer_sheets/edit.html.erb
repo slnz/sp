@@ -31,7 +31,7 @@
 
 <script type="text/javascript">
   $(function() {
-    page_handler = $.qe.pageHandler;
+    page_handler = $.fe.pageHandler;
     page_handler.initialize('<%= @presenter.active_page_link.dom_id %>');
     // Event.observe(window, 'unload', page_handler.savePage);
         

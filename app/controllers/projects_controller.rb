@@ -131,7 +131,7 @@ class ProjectsController < ApplicationController
       end
       respond_to do |format|
         format.html do
-          @projects.reject! {|p| !p.use_provided_application?} if @projects
+          @projects = @projects.to_a.reject! {|p| !p.use_provided_application?} if @projects
         end
         format.xml
         format.json {

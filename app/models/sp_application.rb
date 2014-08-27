@@ -19,7 +19,7 @@ class SpApplication < ActiveRecord::Base
     state :submitted, :enter => Proc.new { |app|
       Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Submitted"
       ).deliver if app.email.present? # LIQUID TEMPLATE NAME
       app.submitted_at = Time.now
@@ -30,7 +30,7 @@ class SpApplication < ActiveRecord::Base
       app.completed_at ||= Time.now
       Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Completed"
       ).deliver if app.email.present?
       app.previous_status = app.status
@@ -39,7 +39,7 @@ class SpApplication < ActiveRecord::Base
     state :unsubmitted, :enter => Proc.new { |app|
       Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Unsubmitted"
       ).deliver if app.email.present?
       app.previous_status = app.status
@@ -48,7 +48,7 @@ class SpApplication < ActiveRecord::Base
     state :withdrawn, :enter => Proc.new { |app|
       Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Withdrawn"
       ).deliver if app.email.present?
       app.withdrawn_at = Time.now
@@ -265,7 +265,7 @@ class SpApplication < ActiveRecord::Base
             push_content_to_give_site
 
             Notifier.notification(person.email_address, # RECIPIENTS
-                                  Qe.from_email, # FROM
+                                  Fe.from_email, # FROM
                                   "Giving site created", # LIQUID TEMPLATE NAME
                                   {'first_name' => person.nickname,
                                    'site_url' => "#{APP_CONFIG['spgive_url']}/#{person.sp_gcx_site}/",
@@ -645,7 +645,7 @@ class SpApplication < ActiveRecord::Base
       recipients += new_pds.compact.empty? ? ["summer.projects@cru.org"] : new_pds.compact.collect(&:email)
       recipients << "summerprojectdonations@cru.org" if designation_number.present?
           Notifier.notification(recipients.compact, # RECIPIENTS
-                                Qe.from_email, # FROM
+                                Fe.from_email, # FROM
                                 "Application Moved", # LIQUID TEMPLATE NAME
                                 {'applicant_name' => name,
                                  'moved_by' => current_person.informal_full_name,
@@ -709,7 +709,7 @@ class SpApplication < ActiveRecord::Base
   def send_acceptance_email
     if changed.include?('applicant_notified') and applicant_notified? && status.starts_with?('accept')
       Notifier.notification(email_address, # RECIPIENTS
-                            Qe.from_email, # FROM
+                            Fe.from_email, # FROM
                             'Application Accepted', # LIQUID TEMPLATE NAME
                             {'project_name' => project.try(:name)}).deliver
     end
