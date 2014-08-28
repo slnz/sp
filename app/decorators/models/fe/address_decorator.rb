@@ -4,19 +4,14 @@ Fe::Address.class_eval do
 
   self.table_name = "ministry_newaddress"
 
-	validates_presence_of :addressType
+	validates_presence_of :address_type
 
-	belongs_to :person, :foreign_key => "fk_PersonID"
+	belongs_to :person
 
 	before_save :stamp
 
-  def updated_at() dateChanged end
-  def created_at() dateCreated end
-
-  #set dateChanged and changedBy
   def stamp
-    self.dateChanged = Time.now
-    self.changedBy = ApplicationController.application_name
+    self.changed_by = ApplicationController.application_name
   end
 
 	def display_html
@@ -33,7 +28,7 @@ Fe::Address.class_eval do
 
 	def phone_number
     phone = (self.home_phone && !self.home_phone.empty?) ? self.home_phone : self.cell_phone
-    phone = (phone && !phone.empty?) ? phone : self.workPhone
+    phone = (phone && !phone.empty?) ? phone : self.work_phone
     phone
 	end
 

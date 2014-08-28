@@ -156,7 +156,7 @@ class SpApplication < ActiveRecord::Base
   has_one :evaluation, :class_name => 'SpEvaluation', :foreign_key => :application_id
 
   scope :for_year, proc { |year| where(:year => year) }
-  scope :preferrenced_project, proc { |project_id| {:conditions => ["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]} }
+  scope :preferrenced_project, proc { |project_id| where(["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]) }
 
   scope :preferred_project, proc { |project_id| {:conditions => ["project_id = ?", project_id],
                                                  :include => :person} }
@@ -206,6 +206,8 @@ class SpApplication < ActiveRecord::Base
   end
 
   def create_relay_account_if_needed
+    return if Rails.env.test? # TODO figure out how to properly test this
+
     unless person.user.globallyUniqueID.present?
       password = SecureRandom.hex(5) + 'a'
       person.user.password_plain = password
@@ -644,7 +646,7 @@ class SpApplication < ActiveRecord::Base
       recipients = old_pds.compact.empty? ? ["summer.projects@cru.org"] : old_pds.compact.collect(&:email)
       recipients += new_pds.compact.empty? ? ["summer.projects@cru.org"] : new_pds.compact.collect(&:email)
       recipients << "summerprojectdonations@cru.org" if designation_number.present?
-          Notifier.notification(recipients.compact, # RECIPIENTS
+          Fe::Notifier.notification(recipients.compact, # RECIPIENTS
                                 Fe.from_email, # FROM
                                 "Application Moved", # LIQUID TEMPLATE NAME
                                 {'applicant_name' => name,

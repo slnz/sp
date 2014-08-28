@@ -56,7 +56,7 @@ describe Admin::LeadersController do
 
     it 'creates a new person' do
       expect {
-        xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {firstName: 'Foo', lastName: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', homePhone: '555-555-5555', addressType: 'current'}}
+        xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {firstName: 'Foo', lastName: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current'}}
         expect(assigns(:errors)).to be_nil
         expect(response).to render_template('create')
       }.to change(Person, :count)

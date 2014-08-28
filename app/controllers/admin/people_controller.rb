@@ -44,6 +44,6 @@ class Admin::PeopleController < ApplicationController
   end
   
   def person_params
-    params.fetch(:person, {}).permit(:start_date, :end_date, :firstName, :lastName, :preferredName, current_address_attributes: [:homePhone, :cellPhone, :workPhone, :email, :address1, :address2, :city, :state, :zip, :country, :id]) # :current_application
+    params.fetch(:person, {}).permit(:start_date, :end_date, :firstName, :lastName, :preferredName, current_address_attributes: [:home_phone, :cell_phone, :work_phone, :email, :address1, :address2, :city, :state, :zip, :country, :id]) # :current_application
   end
 end

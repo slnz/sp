@@ -487,8 +487,8 @@ class Admin::ProjectsController < ApplicationController
       values["City"] = person.current_address.city
       values["State"] = person.current_address.state
       values["Zip"] = person.current_address.zip
-      values["Phone"] = person.current_address.homePhone
-      values["Cell"] = person.current_address.cellPhone
+      values["Phone"] = person.current_address.home_phone
+      values["Cell"] = person.current_address.cell_phone
     end
     values["Campus"] = person.campus
     values["AccountNo"] = person.accountNo
@@ -501,8 +501,8 @@ class Admin::ProjectsController < ApplicationController
       values["Emergency City"] = person.emergency_address.city
       values["Emergency State"] = person.emergency_address.state
       values["Emergency Zip"] = person.emergency_address.zip
-      values["Emergency Phone"] = person.emergency_address.homePhone
-      values["Emergency Work Phone"] = person.emergency_address.workPhone
+      values["Emergency Phone"] = person.emergency_address.home_phone
+      values["Emergency Work Phone"] = person.emergency_address.work_phone
       values["Emergency Email"] = person.emergency_address.email
     end
     values["Participant's Campus Region"] = person.region
@@ -622,7 +622,7 @@ class Admin::ProjectsController < ApplicationController
     @custom_page = @project.initialize_project_specific_question_sheet.pages.first
     @questions = @custom_page.elements.to_a
     (5 - @questions.length).times do
-      @questions << TextField.new
+      @questions << Fe::TextField.new
     end
   end
 

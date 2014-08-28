@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
       # the one who's logged in most recently
       address = ::CurrentAddress.joins(:person => :user)
                                 .where(:email => email)
-                                .order("lastLogin DESC")
+                                .order("#{User.table_name}.lastLogin DESC")
                                 .first
       person = address.try(:person)
 
@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
       u.person.fk_ssmUserId = u.id
 
       # Create a current address record if we don't already have one.
-      u.person.current_address ||= ::CurrentAddress.create!(:fk_PersonID => u.person.id, :email => email)
+      u.person.current_address ||= ::CurrentAddress.create!(id: u.person.id, email: email)
       u.person.save(:validate => false)
     end
     u
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
   	  person.user = self
       person.save!
       address = Address.new(new_hash.merge({:email => self.username,
-                                             :addressType => 'current'}))
+                                             :address_type => 'current'}))
       address.person = person
       address.save!
     end
@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
   	  person.user = self
       person.save!
       address = Address.new(new_hash.merge({:email => self.username,
-                                             :addressType => 'current'}))
+                                             :address_type => 'current'}))
       address.person = person
       address.save!
     end

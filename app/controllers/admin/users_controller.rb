@@ -22,7 +22,7 @@ class Admin::UsersController < ApplicationController
               end
     @users = @users.joins(:person).includes(:person).order('ministry_person.lastName, ministry_person.firstName')
     @addresses = {}
-    Address.where(:addressType => 'current', :fk_PersonID => @users.collect(&:person_id)).map {|a| @addresses[a.fk_PersonID] = a}
+    Address.where(address_type: 'current', id: @users.collect(&:person_id)).map {|a| @addresses[a.id] = a}
     respond_with(@users) do |format|
       if params[:type] != 'national'
         format.html {render :partial => 'users', :locals => {:users => @users}}

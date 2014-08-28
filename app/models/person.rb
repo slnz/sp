@@ -56,15 +56,15 @@ class Person < Fe::Person
   end
 
   def create_emergency_address
-    Address.create(:fk_PersonID => self.id, :addressType => 'emergency1')
+    Address.create(:person_id => self.id, :address_type => 'emergency1')
   end
 
   def create_current_address
-    Address.create(:fk_PersonID => self.id, :addressType => 'current')
+    Address.create(:person_id => self.id, :address_type => 'current')
   end
 
   def create_permanent_address
-    Address.create(:fk_PersonID => self.id, :addressType => 'permanent')
+    Address.create(:person_id => self.id, :address_type => 'permanent')
   end
 
   def region(try_target_area = true)
@@ -354,9 +354,9 @@ class Person < Fe::Person
 
   def phone
     if current_address
-      return current_address.cellPhone if current_address.cellPhone.present?
-      return current_address.homePhone if current_address.homePhone.present?
-      return current_address.workPhone if current_address.workPhone.present?
+      return current_address.cell_phone if current_address.cell_phone.present?
+      return current_address.home_phone if current_address.home_phone.present?
+      return current_address.work_phone if current_address.work_phone.present?
     else
       ''
     end

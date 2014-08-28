@@ -1,2 +1,2 @@
-class CurrentAddress < Address
+class CurrentAddress < Fe::CurrentAddress
 end

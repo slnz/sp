@@ -35,13 +35,13 @@ class Admin::LeadersController < ApplicationController
   end
 
   def add_person
-    #@current_address = CurrentAddress.new(params[:person].delete(:current_address).merge({:addressType => 'current'}))
+    #@current_address = CurrentAddress.new(params[:person].delete(:current_address).merge({:address_type => 'current'}))
     @person = Person.new(person_params)
-    @person.current_address ||= CurrentAddress.new(addressType: 'current')
+    @person.current_address ||= CurrentAddress.new(address_type: 'current')
     @current_address = @person.current_address
     #@person.current_address = @current_address
     required_fields = [@person.firstName, @person.lastName, @person.gender]
-    required_fields += [@current_address.homePhone, @current_address.email] unless params[:leader] == 'kid'
+    required_fields += [@current_address.home_phone, @current_address.email] unless params[:leader] == 'kid'
     unless required_fields.all?(&:present?) && @person.valid? && @current_address.valid?
       flash[:error] = "Please fill in all fields"
       @errors = @person.errors.full_messages + @current_address.errors.full_messages
@@ -59,6 +59,6 @@ class Admin::LeadersController < ApplicationController
   end
 
   def person_params
-    params.fetch(:person, {}).permit(:firstName, :lastName, :gender, current_address_attributes: [:email, :homePhone, :addressType])
+    params.fetch(:person, {}).permit(:firstName, :lastName, :gender, current_address_attributes: [:email, :home_phone, :address_type])
   end
 end

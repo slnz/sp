@@ -26,14 +26,14 @@
     </td>
   </tr>
   <%= pf.fields_for :current_address do |af| %>
-    <%= af.hidden_field :addressType, value: 'current' %>
+    <%= af.hidden_field :address_type, value: 'current' %>
     <tr>
       <td class="left">Email:</td>
       <td><%= af.text_field :email %></td>
     </tr>
     <tr>
       <td class="left">Phone:</td>
-      <td><%= af.text_field :homePhone %></td>
+      <td><%= af.text_field :home_phone %></td>
     </tr>
   <% end %>
   </table>

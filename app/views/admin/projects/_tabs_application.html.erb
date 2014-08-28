@@ -69,11 +69,11 @@
         
       <h3>Basic information <%= tip('This includes name, address, contact information, emergency contact information, etc. The international version asks additional questions related to passport information.] (automatically populate US or international, but make it editable') %></h3>
       
-      <%= f.select :basic_info_question_sheet_id, QuestionSheet.active.where("label like '%Basic%'").order('label').collect {|qs| [qs.label, qs.id]} %>
+      <%= f.select :basic_info_question_sheet_id, Fe::QuestionSheet.active.where("label like '%Basic%'").order('label').collect {|qs| [qs.label, qs.id]} %>
           
       <h3>Application questions <%= tip('Choose the template that best matches your type of project. While most questions are the same, there are variations based on different types of projects. If there is a need to create a new template  email gosummerproject@cru.org') %> </h3>
       
-      <%= f.select :template_question_sheet_id, QuestionSheet.active.where("label like '%Template%'").order('label').collect {|qs| [qs.label, qs.id]} %>
+      <%= f.select :template_question_sheet_id, Fe::QuestionSheet.active.where("label like '%Template%'").order('label').collect {|qs| [qs.label, qs.id]} %>
       
       <h3>Customizable project-specific questions <%= tip('You can add up to five customizable questions to the application that are specific only for your summer project. A few thoughts: Clarify if the question is for acceptance (required by all), or is just for further information – for example: “Optional: Do you have lifeguard certification?” Please remember that questions need to not be biased or discriminatory. If you have any questions, ask your regional or ministry summer project coordinator or email gosummerproject@cru.org') %></h3>
       <% if @project.new_record? %>

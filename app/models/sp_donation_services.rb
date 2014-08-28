@@ -40,7 +40,7 @@ class SpDonationServices < SpUser
           currentAddress.city AS currentCity,
           currentAddress.state AS currentState,
           currentAddress.zip AS currentZip,
-          currentAddress.homePhone AS currentTelephone,
+          currentAddress.home_phone AS currentTelephone,
           currentAddress.email AS currentEmail,
           permanentAddress.address1 AS permanentAddress,
           project.name AS projectName,
@@ -60,11 +60,11 @@ class SpDonationServices < SpUser
         JOIN sp_projects project
           ON (app.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
-          ON (currentAddress.addressType = 'current'
-            AND currentAddress.fk_personId = person.personID)
+          ON (currentAddress.address_type = 'current'
+            AND currentAddress.id = person.personID)
         LEFT JOIN ministry_newaddress permanentAddress
-          ON (permanentAddress.addressType = 'permanent'
-            AND permanentAddress.fk_personId = person.personID)
+          ON (permanentAddress.address_type = 'permanent'
+            AND permanentAddress.id = person.personID)
         LEFT JOIN ministry_person spouse
           ON (person.fk_spouseID = spouse.personID)
         LEFT JOIN sp_designation_numbers designation
@@ -92,11 +92,11 @@ class SpDonationServices < SpUser
         JOIN sp_projects project
           ON (staff.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
-          ON (currentAddress.addressType = 'current'
-            AND currentAddress.fk_personId = person.personID)
+          ON (currentAddress.address_type = 'current'
+            AND currentAddress.id = person.personID)
         LEFT JOIN ministry_newaddress permanentAddress
-          ON (permanentAddress.addressType = 'permanent'
-            AND permanentAddress.fk_personId = person.personID)
+          ON (permanentAddress.address_type = 'permanent'
+            AND permanentAddress.id = person.personID)
         LEFT JOIN ministry_person spouse
           ON (person.fk_spouseID = spouse.personID)
         LEFT JOIN sp_designation_numbers designation

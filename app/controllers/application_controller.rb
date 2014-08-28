@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_person
 
   # set up access control
-  def sp_user
+  def app_user
     return SpUser.new unless current_user
     @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
     if @sp_user.nil? && current_person.isStaff?
@@ -106,6 +106,8 @@ class ApplicationController < ActionController::Base
     end
     @sp_user ||= SpUser.new
   end
+  alias_method :sp_user, :app_user
+  helper_method :app_user
   helper_method :sp_user
 
   def check_valid_user

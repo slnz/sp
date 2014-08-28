@@ -20,7 +20,11 @@ class SpDesignationNumber < ActiveRecord::Base
   end
 
   def async_set_up_give_site
-    sp_application.async(:set_up_give_site) if sp_application
+    if Rails.env.test?
+      sp_application.set_up_give_site if sp_application
+    else
+      sp_application.async(:set_up_give_site) if sp_application
+    end
   end
 
   private
