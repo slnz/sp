@@ -165,7 +165,7 @@ class SpApplication < ActiveRecord::Base
   after_save :unsubmit_on_project_change, :complete, :send_acceptance_email, :log_changed_project, :update_project_counts
 
   def next_states_for_events
-    self.class.aasm_events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
+    self.class.aasm.events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
         |e| [e.transitions_from_state(status.to_sym).first.to.to_s.humanize, e.name] }
   end
 

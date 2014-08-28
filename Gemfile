@@ -29,7 +29,7 @@ gem 'newrelic_rpm', '>= 3.5.3.25'
 gem 'omniauth', '~> 1.1.1'
 gem 'omniauth-cas', '~> 1.0.2'
 gem 'omniauth-facebook', '~> 1.6.0'
-gem 'paperclip', '~> 3.5.1'
+gem 'paperclip', '~> 4.2.0'
 gem 'rack-contrib', '~> 1.1.0' # 100ms
 gem 'rb-fsevent', '~> 0.9'
 gem 'retryable-rb', '~> 1.1.0'
