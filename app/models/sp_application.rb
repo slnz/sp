@@ -1,8 +1,8 @@
 require 'aasm'
 
 require 'digest/md5'
-class SpApplication < ActiveRecord::Base
-  include Fe::AnswerSheetConcern
+class SpApplication < Fe::Application
+  #include Fe::AnswerSheetConcern
   include CruLib::GlobalRegistryRelationshipMethods
   include Sidekiq::Worker
   include AASM
@@ -17,7 +17,7 @@ class SpApplication < ActiveRecord::Base
     # State machine stuff
     state :started
     state :submitted, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
           "Application Submitted"
@@ -28,7 +28,7 @@ class SpApplication < ActiveRecord::Base
 
     state :ready, :enter => Proc.new { |app|
       app.completed_at ||= Time.now
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
           "Application Completed"
@@ -37,7 +37,7 @@ class SpApplication < ActiveRecord::Base
     }
 
     state :unsubmitted, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
           "Application Unsubmitted"
@@ -46,7 +46,7 @@ class SpApplication < ActiveRecord::Base
     }
 
     state :withdrawn, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
           "Application Withdrawn"
@@ -130,14 +130,14 @@ class SpApplication < ActiveRecord::Base
   end
 
   belongs_to :person
+  alias_method :applicant, :person # Fe expects applicant
+
   belongs_to :project, :class_name => 'SpProject', :foreign_key => :project_id
-  has_many :sp_references, :class_name => 'ReferenceSheet', :foreign_key => :applicant_answer_sheet_id, :dependent => :destroy
   # has_one :sp_peer_reference, :class_name => 'SpPeerReference', :foreign_key => :application_id
   # has_one :sp_spiritual_reference1, :class_name => 'SpSpiritualReference1', :foreign_key => :application_id
   # has_one :sp_spiritual_reference2, :class_name => 'SpSpiritualReference2', :foreign_key => :application_id
   # has_one :sp_parent_reference, :class_name => 'SpParentReference', :foreign_key => :application_id
-  has_many :payments, :class_name => "SpPayment", :foreign_key => "application_id"
-  has_many :answers, :class_name => 'Answer', :foreign_key => 'answer_sheet_id', :dependent => :destroy
+  #has_many :answers, :class_name => 'Answer', :foreign_key => 'answer_sheet_id', :dependent => :destroy
 
 
   #has_many :sp_designation_numbers
@@ -266,7 +266,7 @@ class SpApplication < ActiveRecord::Base
 
             push_content_to_give_site
 
-            Notifier.notification(person.email_address, # RECIPIENTS
+            Fe::Notifier.notification(person.email_address, # RECIPIENTS
                                   Fe.from_email, # FROM
                                   "Giving site created", # LIQUID TEMPLATE NAME
                                   {'first_name' => person.nickname,
@@ -456,7 +456,7 @@ class SpApplication < ActiveRecord::Base
 
   def has_paid?
     return true if self.payments.detect(&:approved?)
-    return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(PaymentQuestion) && q.required? }
+    return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(Fe::PaymentQuestion) && q.required? }
     return false
   end
 
@@ -483,7 +483,7 @@ class SpApplication < ActiveRecord::Base
   def complete(ref = nil)
     return false unless self.submitted?
     # Make sure all required references are copmleted
-    sp_references.each do |reference|
+    references.each do |reference|
       if reference.required?
         return false unless reference.completed? || reference == ref
       end
@@ -741,8 +741,8 @@ class SpApplication < ActiveRecord::Base
     if project
       logger.debug('has project')
       reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(ReferenceQuestion) }
-      if sp_references.length > reference_questions.length
-        sp_references.each do |reference|
+      if references.length > reference_questions.length
+        references.each do |reference|
           # See if this reference's question_id matches any of the questions for the new project
           if question = reference_questions.detect { |rq| rq.id == reference.question_id }
             logger.debug('matched question: ' + question.id.to_s)
@@ -752,7 +752,7 @@ class SpApplication < ActiveRecord::Base
           # AND we don't already have a reference for that question
           # update the reference with the new question_id
           if (reference_question = reference_questions.detect { |rq| rq.related_question_sheet_id == reference.question.related_question_sheet_id }) &&
-              !sp_references.detect { |r| r.question_id == reference_question.id }
+              !references.detect { |r| r.question_id == reference_question.id }
             reference.update_attribute(:question_id, reference_question.id)
             next
           end

@@ -17,7 +17,7 @@ Fe::AnswerSheetsController.class_eval do
     when 'SpApplication'
       @answer_sheet.submit!
       # send references 
-      @answer_sheet.sp_references.each do |reference| 
+      @answer_sheet.references.each do |reference| 
         reference.send_invite unless reference.email_sent?
       end
       render 'applications/submitted'
@@ -32,7 +32,7 @@ Fe::AnswerSheetsController.class_eval do
   
   def edit
     @project = @answer_sheet.project
-    @presenter = AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
+    @presenter = Fe::AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
   end
@@ -40,7 +40,7 @@ Fe::AnswerSheetsController.class_eval do
   protected
     # Add some security to this method
     def get_answer_sheet
-      @answer_sheet = answer_sheet_type.find(params[:id])
+      @application = @answer_sheet = answer_sheet_type.find(params[:id])
       case @answer_sheet.class.to_s
       when 'SpApplication'
         unless @answer_sheet.person == current_person || (sp_user && sp_user.can_su_application?)

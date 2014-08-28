@@ -180,7 +180,7 @@ class Run
   end
 
   def self.move_birthdates
-    answers = SpAnswer.find_all_by_question_id(404)
+    answers = Fe::Answer.find_all_by_question_id(404)
     answers.each do |answer|
       if !answer.answer.blank?
         app = SpApplication.find(answer.instance_id)

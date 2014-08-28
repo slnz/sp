@@ -16,6 +16,7 @@ class Person < Fe::Person
 
   # Summer Project
   has_many                :sp_applications
+  alias_method            :applications, :sp_applications # form engine expects applications association
 
   has_one                 :current_application, -> { where("year = '#{SpApplication.year}'") }, :class_name => '::SpApplication'
   has_many                :sp_staff, :class_name => "SpStaff", :foreign_key => "person_id"

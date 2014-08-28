@@ -79,7 +79,9 @@ group :test do
   gem 'factory_girl_rails'
   gem 'fuubar'
   gem 'simplecov', :require => false
-  gem 'guard-rspec'
-  gem 'rspec', '~> 3.0'
+  gem 'spork-rails'#, '~> 3.2.0'
+  gem 'guard-spork'
+  gem 'xray-rails'
+  gem 'thin'
 end
 

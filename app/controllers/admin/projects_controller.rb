@@ -162,8 +162,8 @@ class Admin::ProjectsController < ApplicationController
       values = set_values_from_person(app.person)
       values["Applied for leadership"] = app.apply_for_leadership.to_s
 
-      values["Passport Number"] = SpAnswer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
-      values["T-Shirt Size"] = SpAnswer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
+      values["Passport Number"] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
+      values["T-Shirt Size"] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
 
       row = []
       applicant_column_headers.each do |header|
