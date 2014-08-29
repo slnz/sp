@@ -31,6 +31,10 @@
 	<meta name="msapplication-task" content="name=Emails;action-uri=/admin/email_templates;icon-uri=/assets/email.ico"/>
 	<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
+  <%= javascript_include_tag "fe/admin.js" %>
+  <%= stylesheet_link_tag "fe/fe.screen.css", :media => "all" %>
+  <%= stylesheet_link_tag "spfe.admin", :media => "all" %>
+
 </head>
 <body id="<%= params[:controller].gsub('/','_')%>" class="<%= params[:action] %>">
 <%= render :partial => 'layouts/tabs' %>

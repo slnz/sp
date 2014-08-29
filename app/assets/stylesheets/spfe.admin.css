@@ -95,7 +95,7 @@ body {
   background: #fff;  
 }
 
-#main #content {
+.pagewidth #content {
   background:none repeat scroll 0 0 #FFFFFF;
   border-color:#0B486B #4D4D4D #4D4D4D;
   border-right:1px solid #4D4D4D;
@@ -103,6 +103,10 @@ body {
   border-width:4px 1px 1px;
   background: #fff;
   padding: 15px;
+}
+
+#controls {
+  width: 257px;
 }
 
 .unarchive {

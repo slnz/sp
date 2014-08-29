@@ -17,6 +17,7 @@
     <%= raw Rack::TimeZone::Javascript %>
     setTimezoneCookie()
   </script>
+
 </head>
 <body id="<%= params[:controller]%>" class="<%= params[:action] %>">
 <%= render :partial => 'layouts/ga' %>
