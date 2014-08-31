@@ -37,11 +37,6 @@ class AuthenticationFilter
         end
         #stamp user login
         user.lastLogin = Time.now
-        #set password if it is blank
-        if user.password.blank?
-          user.password = User.encrypt(Time.now.to_s)
-        end
-        #set the global unique ID if it's blank
         if user.globallyUniqueID.nil?
           user.globallyUniqueID = guid
         end

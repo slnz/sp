@@ -31,7 +31,7 @@ class Admin::ApplicationsController < ApplicationController
       # rather than join the team stuff into the main query it's going to be
       # cleaner to query out the campuses associated with this team seperately.
       # I know that means an extra query, but trust me, it's better.
-      @schools = TargetArea.get('filters[team_id]' => params[:team]).map(&:name)
+      @schools = Infobase::TargetArea.get('filters[team_id]' => params[:team]).map(&:name)
       if @schools.empty?
         conditions[0] << " 1 <> 1 "
       else
