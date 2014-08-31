@@ -1,8 +1,6 @@
 require 'sidekiq/web'
 Sp2::Application.routes.draw do
 
-  get "welcome/privacy"
-
   match '/auth/:provider/callback' => 'authentications#create', via: :get
   match '/auth/failure' => 'authentications#failed', via: :get
   match '/sos' => 'admin/projects#sos', via: [:get, :post]
