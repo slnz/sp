@@ -5,6 +5,10 @@
         <span class="text-muted">You're applying for</span>
         <h3><%= "#{@project.name} #{@project.year}" %></h3>
       <% end %>
+      <% if @reference_sheet %>
+        <span class="text-muted">Your Reference for</span>
+        <h3><%= @reference_sheet.applicant_answer_sheet.name %></h3>
+      <% end %>
   </div>
 </div>
 <div class="row qe">
@@ -23,9 +27,6 @@
     	  <% if @project && @project.logo_file_name.present? %>
         	<!-- Max size 270w x 100h -->
         	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
-    		<% end %>
-    		<% if @reference_sheet %>
-    		  Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
     		<% end %>
       </div>
       <div id="panel" class="hidden-xs hidden-sm">
