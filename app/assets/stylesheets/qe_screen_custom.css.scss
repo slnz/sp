@@ -63,7 +63,7 @@
 
   #list-pages li {
     a {
-      background: url("/assets/qe/icons/document--pencil.png") no-repeat 4px 50%;
+      background: image-url("/assets/qe/icons/document--pencil.png") no-repeat 4px 50%;
       padding: 8px 0 8px 24px;
       border-bottom: 1px dashed #ccc;
       display: block;
@@ -79,7 +79,7 @@
   }
 
   #link-page-add {
-    background: #f0f0f0 url("/assets/qe/icons/add.png") no-repeat 4px 50%;
+    background: #f0f0f0 image-url("/assets/qe/icons/add.png") no-repeat 4px 50%;
     padding: 5px 0 5px 24px;
     display: block;
     margin-right: 8px;
@@ -138,43 +138,43 @@
       width: 107px;
     }
     #qg a, #qgt a {
-      background-image: url("/assets/qe/icons/table.png");
+      background-image: image-url("/assets/qe/icons/table.png");
     }
     #sl a, #ml a {
-      background-image: url("/assets/qe/icons/textfield.png");
+      background-image: image-url("/assets/qe/icons/textfield.png");
     }
     #co a {
-      background-image: url("/assets/qe/icons/radio.png");
+      background-image: image-url("/assets/qe/icons/radio.png");
     }
     #cm a {
-      background-image: url("/assets/qe/icons/checkbox.png");
+      background-image: image-url("/assets/qe/icons/checkbox.png");
     }
     #dt a {
-      background-image: url("/assets/qe/icons/calendar_view_day.png");
+      background-image: image-url("/assets/qe/icons/calendar_view_day.png");
     }
     #fu a {
-      background-image: url("/assets/qe/icons/disk.png");
+      background-image: image-url("/assets/qe/icons/disk.png");
     }
     #pa a {
-      background-image: url("/assets/qe/icons/text_align_left.png");
+      background-image: image-url("/assets/qe/icons/text_align_left.png");
     }
     #sp a {
-      background-image: url("/assets/qe/icons/text_horizontalrule.png");
+      background-image: image-url("/assets/qe/icons/text_horizontalrule.png");
     }
     #sk a {
-      background-image: url("/assets/qe/icons/book_open.png");
+      background-image: image-url("/assets/qe/icons/book_open.png");
     }
     #pp a {
-      background-image: url("/assets/qe/icons/asterisk_yellow.png");
+      background-image: image-url("/assets/qe/icons/asterisk_yellow.png");
     }
     #sc a {
-      background-image: url("/assets/qe/icons/map_magnify.png");
+      background-image: image-url("/assets/qe/icons/map_magnify.png");
     }
     #at a {
-      background-image: url("/assets/qe/icons/paper-clip.png");
+      background-image: image-url("/assets/qe/icons/paper-clip.png");
     }
     #ref a {
-      background-image: url("/assets/qe/icons/book-open-list.png");
+      background-image: image-url("/assets/qe/icons/book-open-list.png");
     }
   }
 
@@ -213,7 +213,7 @@
   }
 
   span.required {
-    background: url("/assets/qe/icons/star-small.png") no-repeat 50% 50%;
+    background: image-url("/assets/qe/icons/star-small.png") no-repeat 50% 50%;
     display: inline-block;
     height: 16px;
     text-indent: -10000px;
@@ -333,16 +333,16 @@
       margin-left: 5px;
     }
     .edit {
-      background: url("/assets/qe/icons/document--pencil.png") no-repeat 50% 50%;
+      background: image-url("/assets/qe/icons/document--pencil.png") no-repeat 50% 50%;
     }
     .duplicate {
-      background: url("/assets/qe/icons/document-copy.png") no-repeat 50% 50%;
+      background: image-url("/assets/qe/icons/document-copy.png") no-repeat 50% 50%;
     }
     .handle {
-      background: url("/assets/qe/icons/arrow-move.png") no-repeat 50% 50%;
+      background: image-url("/assets/qe/icons/arrow-move.png") no-repeat 50% 50%;
     }
     .remove {
-      background: url("/assets/qe/icons/arrow_out.png") no-repeat 50% 50%;
+      background: image-url("/assets/qe/icons/arrow_out.png") no-repeat 50% 50%;
     }
   }
 
@@ -395,7 +395,7 @@
     -moz-border-radius: 4px 4px 4px 4px;
     -webkit-border-radius: 4px 4px 4px 4px;
     border-radius: 4px 4px 4px 4px;
-    background: url("/assets/qe/butgrad.png") repeat-x scroll 100% 50% transparent;
+    background: image-url("/assets/qe/butgrad.png") repeat-x scroll 100% 50% transparent;
     color: #0B486B;
     display: inline-block;
     font-size: 14px;
@@ -412,7 +412,7 @@
   }
 
   .add-link {
-    background: url("/assets/qe/icons/add.png") no-repeat scroll 4px 50% #f0f0f0;
+    background: image-url("/assets/qe/icons/add.png") no-repeat scroll 4px 50% #f0f0f0;
     display: inline;
     font-size: 11px;
     font-weight: bold;
@@ -459,15 +459,15 @@
   }
 
   .duplicate {
-    background: url("/assets/qe/icons/document-copy.png") no-repeat 0% 50%;
+    background: image-url("/assets/qe/icons/document-copy.png") no-repeat 0% 50%;
   }
 
   .archive {
-    background: url("/assets/qe/icons/briefcase.png") no-repeat 0% 50%;
+    background: image-url("/assets/qe/icons/briefcase.png") no-repeat 0% 50%;
   }
 
   .delete {
-    background: url("/assets/qe/icons/minus-button.png") no-repeat 0% 50%;
+    background: image-url("/assets/qe/icons/minus-button.png") no-repeat 0% 50%;
   }
 
   #header {
