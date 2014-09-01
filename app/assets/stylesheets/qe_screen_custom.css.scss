@@ -451,6 +451,13 @@
     }
   }
 
+  table.rating {
+    text-align: center;
+    td {
+      min-width: 50px;
+    }
+  }
+
   .duplicate {
     background: url("/assets/qe/icons/document-copy.png") no-repeat 0% 50%;
   }
