@@ -34,15 +34,15 @@
           <%= image_tag "twitter_64.png", :size => "64x64", :alt => "Twitter" %>
           Twitter
         </a> -->
-        <a href="<%= CASClient::Frameworks::Rails::Filter.login_url(controller) %>" class="btn btn-lg btn-social btn-github btn-block">
-        <%= fa_icon 'key' %>
-          Sign in with The Key
-          <!--%= image_tag "relay-sign-in.png", :alt => "Relay" %-->
-        </a>
         <a href="/auth/facebook" class="btn btn-lg btn-social btn-facebook btn-block">
         <%= fa_icon 'facebook' %>
           Sign in with Facebook
           <!--%= image_tag "facebook-sign-in.png", :alt => "Facebook" %-->
+        </a>
+        <a href="<%= CASClient::Frameworks::Rails::Filter.login_url(controller) %>" class="btn btn-lg btn-social btn-github btn-block">
+        <%= fa_icon 'key' %>
+          Sign in with The Key
+          <!--%= image_tag "relay-sign-in.png", :alt => "Relay" %-->
         </a>
         <!-- ><a href="/auth/google_apps" class="auth_provider">
           <%= image_tag "google_apps_64.png", :size => "64x64", :alt => "Google" %>
@@ -50,16 +50,26 @@
         </a> -->
         </div>
       </div>
-    </div>
+    </div><br/>
+    <%= image_tag('text-dots.png', class: 'img-responsive') %>
+    <h1>Apply for a Project</h1>
+    <p class="text-justify">To apply for a project, or continue your application, you need to log in! We recommend you use the Facebook option. If you don't have a Facebook please sign up for a Key Account.</p>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-4">
     <% unless logged_in? %>
-      <strong>Have you applied for a Summer Project or STINT or signed up for a Cru Conference before?</strong>
-      <p>That username and login has been moved to our Relay Sign-In System. The Relay button will take you to it's Sign-In screen.</p>
-      <strong>Haven't registered yet? Pick a button.</strong>
-      <p>Create a new Relay account or sign in with Facebook.</p>
-      <p>If you know you logged in before but don't remember your password, the 'forgot password' link has been moved to the Relay login system as well.
-      Please recover your password instead of creating a new account.</p>
+      <h1>Thanks for your interest in our projects!</h1>
+      <p class="text-justify">Projects are a great way to grow in your faith, learn new skills and see what God is doing outside of the university campus!
+      <a href="https://www.studentlife.org.nz/about-projects/">Find more info about our projects here.</a></p>
+      <%= image_tag('text-dots.png', class: 'img-responsive') %>
+      <h1>Experience a new Adventure</h1>
+      <p class="text-justify">It all begins with a step of faith. Get started by applying for a summer mission project! Get ready to discover God’s heart for the people of the world. The possibilities are endless, and the adventure awaits!</p>
     <% end %>
+  </div>
+  <div class="col-md-4">
+    <%= image_tag('textblock1.png', class: 'img-responsive') %>
+    <%= image_tag('text-dots.png', class: 'img-responsive') %><br/>
+    <%= image_tag('textblock2.png', class: 'img-responsive') %>
+    <%= image_tag('text-dots.png', class: 'img-responsive') %><br/>
+    <%= image_tag('textblock3.png', class: 'img-responsive') %>
   </div>
 </div>
