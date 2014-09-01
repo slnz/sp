@@ -1,5 +1,28 @@
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-3"><br/>
+    <%= image_tag('textblock1.png', class: 'img-responsive') %>
+    <%= image_tag('text-dots.png', class: 'img-responsive') %><br/>
+    <%= image_tag('textblock2.png', class: 'img-responsive') %><br/>
+    <%= image_tag('text-dots.png', class: 'img-responsive') %><br/>
+    <%= image_tag('textblock3.png', class: 'img-responsive') %>
+  </div>
+  <div class="col-md-5">
+    <% unless logged_in? %>
+      <h1>Thanks for your interest in our summer projects!</h1>
+      <p class="text-justify">Summer Projects are a great way to grow in your faith, learn new skills and see what God is doing outside of the university campus!
+      <a href="https://www.studentlife.org.nz/about-projects/">Find more info about our projects here.</a></p>
+      <%= image_tag('text-dots.png', class: 'img-responsive') %>
+      <h1>Experience a new Adventure</h1>
+      <p class="text-justify">It all begins with a step of faith. Get started by applying for a summer mission project! Get ready to discover God’s heart for the people of the world. The possibilities are endless, and the adventure awaits!</p>
+    <% end %>
+  </div>
+  <div class="col-md-4 box box-orange">
+      <h1 class="box-title">Apply for a Project</h1>
+      <br/>
+      <p class="text-justify">To apply for a project, or continue your application, you need to log in! We recommend you use the Facebook option. If you don't have a Facebook please sign up for a Key Account.</p>
+      <br/>
+      <%= image_tag('text-dots.png', class: 'img-responsive') %>
+      <br/>
       <% if @authentications || logged_in? %>
       <% unless @authentications.empty? && current_user.globallyUniqueID.blank?  %>
         <div id="currentservices">
@@ -50,26 +73,6 @@
         </a> -->
         </div>
       </div>
-    </div><br/>
-    <%= image_tag('text-dots.png', class: 'img-responsive') %>
-    <h1>Apply for a Project</h1>
-    <p class="text-justify">To apply for a project, or continue your application, you need to log in! We recommend you use the Facebook option. If you don't have a Facebook please sign up for a Key Account.</p>
-  </div>
-  <div class="col-md-4">
-    <% unless logged_in? %>
-      <h1>Thanks for your interest in our projects!</h1>
-      <p class="text-justify">Projects are a great way to grow in your faith, learn new skills and see what God is doing outside of the university campus!
-      <a href="https://www.studentlife.org.nz/about-projects/">Find more info about our projects here.</a></p>
-      <%= image_tag('text-dots.png', class: 'img-responsive') %>
-      <h1>Experience a new Adventure</h1>
-      <p class="text-justify">It all begins with a step of faith. Get started by applying for a summer mission project! Get ready to discover God’s heart for the people of the world. The possibilities are endless, and the adventure awaits!</p>
-    <% end %>
-  </div>
-  <div class="col-md-4">
-    <%= image_tag('textblock1.png', class: 'img-responsive') %>
-    <%= image_tag('text-dots.png', class: 'img-responsive') %><br/>
-    <%= image_tag('textblock2.png', class: 'img-responsive') %>
-    <%= image_tag('text-dots.png', class: 'img-responsive') %><br/>
-    <%= image_tag('textblock3.png', class: 'img-responsive') %>
+    </div>
   </div>
 </div>
