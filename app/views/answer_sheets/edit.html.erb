@@ -3,7 +3,7 @@
       <% if @project %>
         <%= link_to('Apply for a Different Project', '/projects', :class => 'btn btn-default pull-right') %>
         <span class="text-muted">You're applying for</span>
-        <h3><%= "#{@project.name} #{@project.year}" %></h3>
+        <h3><%= @project.name %></h3>
       <% end %>
       <% if @reference_sheet %>
         <span class="text-muted">Your Reference for</span>
