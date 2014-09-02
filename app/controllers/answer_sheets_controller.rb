@@ -23,7 +23,6 @@ class AnswerSheetsController < ApplicationController
       end
       render 'applications/submitted'
     when 'ReferenceSheet'
-      binding.pry
       @answer_sheet.submit! unless @answer_sheet.completed?
       render 'reference_sheets/submitted'
     else
