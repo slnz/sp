@@ -96,7 +96,8 @@ describe ProjectsController do
           country: 'United States',
           project_type: 'US',
           job: 1,
-          city: 'Orlando'
+          city: 'Orlando',
+          year: Date.today.year
 
       expect(assigns(:projects)).to eq([project])
     end

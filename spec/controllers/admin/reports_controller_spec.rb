@@ -20,17 +20,18 @@ describe Admin::ReportsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      project = create(:sp_project)
+      project = create(:sp_project, year: Date.today.year)
       staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
       applicant = create(:person)
       application = create(:sp_application,
                            person_id: applicant.id,
-                           project_id: project.id
+                           project_id: project.id,
+                           year: Date.today.year
       )
 
       get :preference
-      expect(assigns(:applications)[project]).to eq([application])
+      expect(assigns(:applications)[project]).to eq([application].to_a)
     end
   end
 
@@ -362,13 +363,14 @@ describe Admin::ReportsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      project = create(:sp_project)
-      year = project.year
+      year = SpApplication.year
+      project = create(:sp_project, year: year)
 
       applicant = create(:person)
       application = create(:sp_application,
                            person_id: applicant.id,
-                           project_id: project.id
+                           project_id: project.id,
+                           year: year
       )
       application.update_attribute('status', 'accepted_as_participant')
 
