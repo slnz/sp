@@ -56,9 +56,9 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
 
 gem 'fe',
-  path: '/Users/andrewroth/Development/fe'
+  #path: '/Users/andrewroth/Development/fe'
   #path: '/Users/josh/htdocs/qe'
-  #github: 'CruGlobal/qe', branch: 'fe'
+  github: 'CruGlobal/qe', branch: 'fe'
 
 group :development, :test do
   gem 'quiet_assets'
