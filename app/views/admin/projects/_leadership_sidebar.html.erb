@@ -28,20 +28,20 @@
     <div class="module">
       <h3><span>Project Leadership Team <%= tip('The first PD listed generally evaluates male applications and the second PD listed generally evaluates female applications. OPD stands for Operations Project Director.') %></span></h3>
       <table>
-        <% [:pd, :apd, :opd, :coordinator].each do |leader| -%>
+        <% [:pd, :apd, :coordinator].each do |leader| -%>
           <tr>
             <!-- APD is now displayed as PD -->
-            <td><%= [:pd, :apd, :opd].include?(leader) ? [:apd].include?(leader) ? 'PD' : leader.upcase : leader.to_s.titleize %></td>
+            <td><%= [:pd, :apd].include?(leader) ? [:apd].include?(leader) ? 'PD' : leader.upcase : leader.to_s.titleize %></td>
             <td class="name sidebar"><%= render 'leader', :project => project, :leader => leader, :year => @year %></td>
           </tr>
         <% end %>
       </table>
     </div>
 
-    <% %w{staff volunteers kids evaluators non_app_participants}.each do |level| %>
+    <% %w{staff volunteers evaluators non_app_participants}.each do |level| %>
       <div class="module <%= level %>">
         <h3>
-          <span><%= level.gsub('evaluators','reviewers').gsub('volunteers','volunteers & faculty').titleize %> (<%= project.send(level.to_sym, @year).length %>) <%= tip("Add students here who, for some reason, will not be applying through the on-line application, but need a designation number and enrollment into project insurance/SOS. In the box that appears, click the blue cross and add the student information. Their names and information will then appear in the \"Other\" tab. Be sure to click on the student's name after it has been created and complete all the extra fields, except designation number (leave it blank).") if level == "non_app_participants" %> <%= tip("Staff have a 6-digit ministry account number. Staff are full-time supported staff, Part Time Field Staff, Associate Staff, Interns and STINTers. Not all of these people receive a paycheck or have insurance through Cru, but are all staff-qualified.") if level == "staff" %> <%= tip("A Cru volunteer is someone who works with a Cru team in a short term or an ongoing role, without pay. A volunteer partner or volunteer affiliate staff may or may not have a 6 digit account number. Some volunteers have applied and been accepted for a Cru role on a Cru team.") if level == "volunteers" %></span>
+          <span><%= level.titleize %> (<%= project.send(level.to_sym, @year).length %>) <%= tip("Add students here who, for some reason, will not be applying through the on-line application, but need a designation number. In the box that appears, click the blue cross and add the student information. Their names and information will then appear in the \"Other\" tab. Be sure to click on the student's name after it has been created and complete all the extra fields, except designation number (leave it blank).") if level == "non_app_participants" %>  <%= tip("A Student Life volunteer is someone who works with a Student Life team in a short term or an ongoing role, without pay. A volunteer partner or volunteer affiliate staff may or may not have an account number.") if level == "volunteers" %></span>
           <% if sp_user.can_edit_project?(project) %>
             <span class="controls"><%= link_to('Add', '#', :class => 'add edit-leader', 'data-name' => "Add a #{level.gsub('evaluators','reviewers').singularize.titleize}", 'data-id' => project.id, 'data-leader' => level.singularize) %></span>
           <% end %>

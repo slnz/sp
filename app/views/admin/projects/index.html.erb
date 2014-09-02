@@ -41,9 +41,9 @@
       <tr>
         <th class="th_count"></th>
         <th class="th_project capitalize"><%= sort_by('name', 'Project') %></th>
-        <th class="th_pd"><%= sort_by('pd', 'PD (Male)') %></th>
-        <th class="th_apd"><%= sort_by('APD', 'PD (Female)') %></th>
-        <th class="th_opd"><%= sort_by('OPD') %></th>
+        <th class="th_pd"><%= sort_by('pd', 'PD') %></th>
+        <th class="th_apd"><%= sort_by('APD', 'PD') %></th>
+        <!-- <th class="th_opd"><%= sort_by('OPD') %></th> -->
         <th></th>
         <th></th>
       </tr>
@@ -54,7 +54,7 @@
           <th><%= text_field_tag :search, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search') %></th>
           <th><%= text_field_tag :search_pd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_pd') %></th>
           <th><%= text_field_tag :search_apd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_apd') %></th>
-          <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th>
+          <!-- <th><%= text_field_tag :search_opd, '', :class => 'search', :rel => admin_projects_path, :autocomplete => 'off' %> <%= spinner('search_opd') %></th> -->
           <th></th>
           <th></th>
         </tr>

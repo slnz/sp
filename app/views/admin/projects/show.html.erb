@@ -14,7 +14,7 @@
       <li><%= link_to('Edit Project', edit_admin_project_path(@project), :class => 'edit withicon') %></li>
       <li><%= link_to('Download Team DB', download_admin_project_path(@project, :year => @year), :class => 'excel withicon') %></li>
       <li><%= link_to('Send Email', email_admin_project_path(@project, :year => @year), :class => 'email withicon', :id => 'sendemailopen') %></li>
-      <li><%= stat_link(@project, @project, 'Enter Stats', :class => 'stats withicon') %></li>
+      <!-- <li><%= stat_link(@project, @project, 'Enter Stats', :class => 'stats withicon') %></li> -->
       <!-- <li><%= link_to('Add an Applicant', new_admin_application_path, :class => 'person withicon') %></li> -->
     </ul>
     <div class="clear"></div>
@@ -58,7 +58,8 @@
         </div>
         <div class="tabcontent" id="other">
           <p>
-            This is where students and volunteers, who did not complete an application, will show up. You MUST click on their name and click “edit information”. Please fill in all the blanks, except the designation number blank. IF THIS IS NOT COMPLETE THEY WILL BE UNABLE TO RECEIVE A DESIGNATION NUMBER.
+            This is where students and volunteers, who did not complete an application, will show up. You MUST click on their name and click “edit information”. Please fill in all the blanks, except the designation number blank. <br />
+            <strong>IF THIS IS NOT COMPLETE THEY WILL BE UNABLE TO RECEIVE A DESIGNATION NUMBER.</strong>
           </p>
           <table class="people">
             <%= render :partial => 'other_header' %>
@@ -72,7 +73,7 @@
 
 
         <div class="tabcontent" id="ready">
-          (Application submitted, paid, and all references submitted)
+          (Application and all references submitted)
           <table class="people">
             <tr>
               <th class="gender"></th>

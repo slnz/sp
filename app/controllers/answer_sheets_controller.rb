@@ -17,12 +17,13 @@ class AnswerSheetsController < ApplicationController
     case @answer_sheet.class.to_s
     when 'SpApplication'
       @answer_sheet.submit!
-      # send references 
-      @answer_sheet.sp_references.each do |reference| 
+      # send references
+      @answer_sheet.sp_references.each do |reference|
         reference.send_invite unless reference.email_sent?
       end
       render 'applications/submitted'
     when 'ReferenceSheet'
+      binding.pry
       @answer_sheet.submit! unless @answer_sheet.completed?
       render 'reference_sheets/submitted'
     else
@@ -30,14 +31,14 @@ class AnswerSheetsController < ApplicationController
     end
     return false
   end
-  
+
   def edit
     @project = @answer_sheet.project
     @presenter = AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
   end
-  
+
   protected
     # Add some security to this method
     def get_answer_sheet
@@ -49,14 +50,14 @@ class AnswerSheetsController < ApplicationController
           return false
         end
       when 'ReferenceSheet'
-        
+
       else
         redirect_to root_path
         return false
       end
-          
+
     end
-    
+
     def login
       ssm_login_required unless answer_sheet_type.to_s == 'ReferenceSheet'
     end

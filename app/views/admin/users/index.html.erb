@@ -1,31 +1,31 @@
 <div class="pagepad">
-  
+
   <h1>Manage Users</h1>
-  
+
   <div class="projectedit">
-    
+
     <div class="fullpage">
       <div id="tabs">
         <ul class="tabs">
-          <li><%= link_to('#national') do %> National Coordinators <span class="spinner"></span><% end %></li> 
-          <li><%= link_to(admin_users_path(:type => 'regional')) do %> Regional Coordinators <span class="spinner"></span><% end %></li> 
-          <li><%= link_to(admin_users_path(:type => 'donation_services')) do %> Donation Services <span class="spinner"></span><% end %></li> 
+          <li><%= link_to('#national') do %> National Coordinators <span class="spinner"></span><% end %></li>
+          <!-- <li><%= link_to(admin_users_path(:type => 'regional')) do %> Regional Coordinators <span class="spinner"></span><% end %></li> -->
+          <li><%= link_to(admin_users_path(:type => 'donation_services')) do %> Donation Services <span class="spinner"></span><% end %></li>
           <!-- <li><%= link_to(admin_users_path(:type => 'directors')) do %> Directors <span class="spinner"></span><% end %></li> -->
         </ul>
-        
-            
+
+
         <div class="tabcontent" id="national">
 	 	      <%= render 'users', :users => @users %>
 				</div>
 
       </div>
-    </div><!-- left -->  
-  
+    </div><!-- left -->
 
-  
-  
+
+
+
   </div>
-  
+
   <div class="projectfooter">
     <div class="clear"></div>
   </div>
@@ -41,10 +41,10 @@
     <%= spinner('user_search') %>
   <% end %>
   <div id="user_search_results">
-    
+
   </div>
-  
+
   <div id="add_user_form">
-    
+
   </div>
 </div>
