@@ -1,6 +1,6 @@
 /* ...
 *= require_self
-*= require qe/qe.screen
-*= require spqe.admin
+*= require fe/fe.screen
+*= require spfe.admin
 *= require jquery-ui-1.8.2.custom
 */
