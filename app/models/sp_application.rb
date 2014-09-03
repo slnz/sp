@@ -740,7 +740,7 @@ class SpApplication < Fe::Application
     # Do any necessary cleanup of references to match new project's requirements
     if project
       logger.debug('has project')
-      reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(ReferenceQuestion) }
+      reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(Fe::ReferenceQuestion) }
       if references.length > reference_questions.length
         references.each do |reference|
           # See if this reference's question_id matches any of the questions for the new project
