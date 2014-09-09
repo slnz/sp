@@ -26,8 +26,7 @@ describe Admin::ReportsController do
       applicant = create(:person)
       application = create(:sp_application,
                            person_id: applicant.id,
-                           project_id: project.id,
-                           year: Date.today.year
+                           project_id: project.id
       )
 
       get :preference
@@ -40,6 +39,9 @@ describe Admin::ReportsController do
       create(:sp_director, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
+      create(:sp_project)
+      create(:sp_project)
+      create(:sp_project)
 
       get :male_openings, format: :csv
       expect(response.content_type).to eq('text/csv')
@@ -69,6 +71,9 @@ describe Admin::ReportsController do
       )
       application.update_attributes(status: 'accepted_as_participant')
 
+      create(:sp_project)
+      create(:sp_project)
+      create(:sp_project)
 
       get :male_openings
       expect(assigns(:percentages)['0-50']).to include(project)
@@ -105,6 +110,9 @@ describe Admin::ReportsController do
       application1.update_attributes(status: 'accepted_as_participant')
       application2.update_attributes(status: 'accepted_as_participant')
 
+      create(:sp_project)
+      create(:sp_project)
+      create(:sp_project)
 
       get :male_openings
       expect(assigns(:percentages)['51-99']).to include(project)
@@ -135,6 +143,9 @@ describe Admin::ReportsController do
       )
       application.update_attribute('status', 'accepted_as_participant')
 
+      create(:sp_project)
+      create(:sp_project)
+      create(:sp_project)
 
       get :male_openings
       expect(assigns(:percentages)['100']).to include(project)
@@ -147,6 +158,9 @@ describe Admin::ReportsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
+      create(:sp_project)
+      create(:sp_project)
+      create(:sp_project)
       get :female_openings, format: :csv
       expect(response.content_type).to eq('text/csv')
     end
@@ -241,7 +255,6 @@ describe Admin::ReportsController do
       )
       application.update_attributes(status: 'accepted_as_participant')
 
-
       get :female_openings
       expect(assigns(:percentages)['100']).to include(project)
     end
@@ -254,6 +267,9 @@ describe Admin::ReportsController do
       session[:user_id] = user.id
 
       focus = SpMinistryFocus.create(name: 'String')
+      create(:sp_project_ministry_focus, ministry_focus: focus)
+      create(:sp_project_ministry_focus, ministry_focus: focus)
+      create(:sp_project_ministry_focus, ministry_focus: focus)
 
       get :ministry_focus, focus_id: focus.id, format: :csv
       expect(response.content_type).to eq('text/csv')
@@ -286,9 +302,9 @@ describe Admin::ReportsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      open_application_date = Date.today - 30
-      start_date = Date.today + 30
-      end_date = Date.today + 60
+      open_application_date = 30.days.ago
+      start_date = 30.days.from_now
+      end_date = 60.days.from_now
       partnerships = 'NW'
 
       project = create(:sp_project,
@@ -305,7 +321,7 @@ describe Admin::ReportsController do
                            project_id: project.id
       )
 
-      get :partner, partner: 'NW'
+      get :partner, partner: 'NW', format: 'csv'
       expect(assigns(:projects)).to eq([project])
     end
 
@@ -350,8 +366,11 @@ describe Admin::ReportsController do
       applicant = create(:person)
       application = create(:sp_application,
                            person_id: applicant.id,
-                           project_id: project.id
+                           project_id: project.id,
+                           year: year
       )
+      designation_number = create(:sp_designation_number, person: applicant, project: project)
+      create(:sp_donation, designation_number: designation_number.designation_number, donation_date: Time.new(year - 1, 10, 2))
       application.update_attribute('status', 'accepted_as_participant')
 
       get :mpd_summary, project_id: project.id, format: :csv
@@ -466,10 +485,36 @@ describe Admin::ReportsController do
       expect(assigns(:project)).to eq(project)
     end
 
+    context '#evangelism' do
+      it 'list applications by evangelism via CSV with params[:project_id]' do
+        session[:cas_user] = 'foo@example.com'
+        session[:user_id] = user.id
+
+        open_application_date = Date.today - 30
+        start_date = Date.today + 30
+        end_date = Date.today + 60
+        partnerships = 'NW'
+
+        project = create(:sp_project,
+                         start_date: start_date,
+                         end_date: end_date,
+                         open_application_date: open_application_date,
+                         primary_partner: partnerships,
+                         secondary_partner: partnerships
+        )
+        year = project.year
+        staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
+
+        stub_request(:get, "https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bevent_id%5D=#{project.id}&filters%5Bsp_year%5D=&per_page=1").
+          to_return(:status => 200, :body => '{"statistics":[{"sp_year":"year"}]}', :headers => {})
+
+        get :evangelism, project_id: project.id, format: 'csv'
+      end
+    end
     context '#evangelism_combined' do
       it 'list applications by evangelism summary via HTML with params[:partner present]' do
         stub_request(:get, "https://infobase.uscm.org/api/v1//statistics/sp_evangelism_combined?partner=NW").
-          to_return(:status => 200, :body => '{"statistics":[]}', :headers => {})
+          to_return(:status => 200, :body => '{"statistics":[{"sp_year":"year"}]}', :headers => {})
 
         session[:cas_user] = 'foo@example.com'
         session[:user_id] = user.id
@@ -489,12 +534,223 @@ describe Admin::ReportsController do
         year = project.year
         staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
-
-        get :evangelism_combined, partner: 'NW'
-        # need to create an activity and statistic
-        # expect that @statistic equals statistic (in spec)
-        # maybe '200' is good enough, not sure
+        get :evangelism_combined, partner: 'NW', format: 'csv'
       end
+    end
+  end
+
+  context "#emergency_contact" do
+    it 'lists all emergency contacts' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      year = project.year
+      sp_staff_pd = create(:sp_staff_pd, year: year, sp_project: project, person: create(:person))
+
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id
+      )
+      application.update_attribute('status', 'accepted_as_participant')
+
+      get :emergency_contact, format: 'csv'
+      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+    end
+  end
+
+  context "#ready_after_deadline" do
+    it 'for a national coordinator, it lists all applications ready after the deadlines' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      year = project.year
+      sp_staff_pd = create(:sp_staff_pd, year: year, sp_project: project, person: create(:person))
+
+      d1 = Date.parse("Dec 11, #{SpApplication.year - 1}")
+      d2 = Date.parse("Jan 25, #{SpApplication.year}")
+      d3 = Date.parse("Feb 25, #{SpApplication.year}")
+      # match first deadline
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready',
+                           completed_at: d1
+      )
+      # match second deadline
+      project2 = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      applicant1 = create(:person)
+      application1 = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project2.id,
+                           status: 'ready',
+                           completed_at: d2
+      )
+      # match third deadline
+      project3 = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      applicant2 = create(:person)
+      application2 = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project3.id,
+                           status: 'ready',
+                           completed_at: d3
+      )
+
+
+
+      get :ready_after_deadline, format: 'csv'
+      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+    end
+  end
+
+  context "#applications_by_status" do
+    it 'should show applications by status' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      year = project.year
+      sp_staff_pd = create(:sp_staff_pd, year: year, sp_project: project, person: create(:person))
+
+      d1 = Date.parse("Dec 11, #{SpApplication.year - 1}")
+      d2 = Date.parse("Jan 25, #{SpApplication.year}")
+      d3 = Date.parse("Feb 25, #{SpApplication.year}")
+      # match first deadline
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready',
+                           completed_at: d1
+      )
+      # match second deadline
+      project2 = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      applicant2 = create(:person)
+      application2 = create(:sp_application,
+                           person_id: applicant2.id,
+                           project_id: project2.id,
+                           status: 'accepted_as_participant',
+                           completed_at: d2
+      )
+      # match third deadline
+      project3 = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      applicant3 = create(:person)
+      application3 = create(:sp_application,
+                           person_id: applicant3.id,
+                           project_id: project3.id,
+                           status: 'accepted_as_student_staff',
+                           completed_at: d3
+      )
+
+      get :applications_by_status, format: 'csv'
+      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+    end
+  end
+
+  context "#region" do
+    it 'should report applications by region' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      year = project.year
+      sp_staff_pd = create(:sp_staff_pd, year: year, sp_project: project, person: create(:person))
+
+      d1 = Date.parse("Dec 11, #{SpApplication.year - 1}")
+      d2 = Date.parse("Jan 25, #{SpApplication.year}")
+      d3 = Date.parse("Feb 25, #{SpApplication.year}")
+      # match first deadline
+      applicant = create(:person, region: "GL")
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready',
+                           completed_at: d1
+      )
+      # match second deadline
+      project2 = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      applicant2 = create(:person, region: "GP")
+      application2 = create(:sp_application,
+                           person_id: applicant2.id,
+                           project_id: project2.id,
+                           status: 'accepted_as_participant',
+                           completed_at: d2
+      )
+      # match third deadline
+      project3 = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+      applicant3 = create(:person, region: "GL")
+      application3 = create(:sp_application,
+                           person_id: applicant3.id,
+                           project_id: project3.id,
+                           status: 'accepted_as_student_staff',
+                           completed_at: d3
+      )
+
+      get :region, region: 'GL', format: 'csv'
+      expect(assigns(:applications)).to eq([application, application3])
     end
   end
 end
