@@ -21,8 +21,8 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    #@key = Digest::SHA1.hexdigest(params.collect {|k,v| [k,v]}.flatten.join('/') + '/' + request.format)
-    #unless fragment_exist?(@key)
+    @key = Digest::SHA1.hexdigest(params.collect {|k,v| [k,v]}.flatten.join('/') + '/' + request.format)
+    unless fragment_exist?(@key)
       unless params.size == 2
         year = params[:year].present? ? params[:year].to_i : SpApplication.year
         conditions = [[],[]]
@@ -128,7 +128,7 @@ class ProjectsController < ApplicationController
                                .includes(:primary_ministry_focus, :ministry_focuses)
                                .order('sp_projects.name, sp_projects.year')
         end
-      #end
+      end
       respond_to do |format|
         format.html do
           @projects.reject! {|p| !p.use_provided_application?} if @projects
