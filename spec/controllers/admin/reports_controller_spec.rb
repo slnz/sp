@@ -753,4 +753,136 @@ describe Admin::ReportsController do
       expect(assigns(:applications)).to eq([application, application3])
     end
   end
+
+  context "#missional_team" do
+    it 'should render all applications for a specific team into csv' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      # called from first applicant (person) create below
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=UW").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
+      # called from second applicant (person) create below
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=ABC").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"ABC"}]}', :headers => {})
+      # called from Infobase::TargetArea.get in reports
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bteam_id%5D=UW").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
+      # called from Infobase::Team.find in reports
+      stub_request(:get, "https://infobase.uscm.org/api/v1/teams/UW").
+        to_return(:status => 200, :body => '{"teams":[{"name":"UW"}]}', :headers => {})
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+
+      # match applicant based on campus
+      applicant = create(:person, campus: "UW")
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready'
+      )
+
+      # match applicant based on campus
+      applicant2 = create(:person, campus: "ABC")
+      application2 = create(:sp_application,
+                            person_id: applicant2.id,
+                            project_id: project.id,
+                            status: 'ready'
+      )
+
+      get :missional_team, team: "UW", format: 'csv'
+      expect(assigns(:applications)).to eq([application])
+    end
+  end
+
+  context "#school" do
+    it 'should render all applications for a specific school into csv' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      # called from first applicant (person) create below
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=UW").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
+      # called from second applicant (person) create below
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=ABC").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"ABC"}]}', :headers => {})
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+
+      # match applicant based on campus
+      applicant = create(:person, campus: "UW")
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready'
+      )
+
+      # match applicant based on campus
+      applicant2 = create(:person, campus: "ABC")
+      application2 = create(:sp_application,
+                            person_id: applicant2.id,
+                            project_id: project.id,
+                            status: 'ready'
+      )
+
+      get :school, school: "UW", format: 'csv'
+      expect(assigns(:applications)).to eq([application])
+    end
+  end
+
+  context "#applicants" do
+    it 'should render all applications for a specific school into csv' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       year: Date.today.year,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+
+      # match applicant based on campus
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready'
+      )
+
+      # match applicant based on campus
+      applicant2 = create(:person)
+      application2 = create(:sp_application,
+                            person_id: applicant2.id,
+                            project_id: project.id,
+                            status: 'ready'
+      )
+
+      get :applicants, format: 'csv'
+      expect(assigns(:applications)).to eq([application, application2])
+    end
+  end
 end
