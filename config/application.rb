@@ -53,6 +53,10 @@ module Sp2
       config.cache_store = :dalli_store, '127.0.0.1'
     end
 
+    config.action_dispatch.default_headers = {
+        'X-XSS-Protection' => '1; mode=block',
+    }
+
   end
 end
 ActionController::Base.config.relative_url_root = ''

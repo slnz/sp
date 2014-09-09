@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  before_filter :cors_preflight_check
+  after_filter :cors_set_access_control_headers
   COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
   def show
@@ -11,7 +13,10 @@ class ProjectsController < ApplicationController
           render :xml => "<sp-project/>"
         end
        }
-       format.json { render json: @project.to_json(serialization_attributes.merge(:root => 'project')) }
+       format.json {
+         render json: @project.to_json(serialization_attributes.merge(:root => 'project')),
+                callback: params[:callback]
+       }
      end
   end
 
@@ -129,7 +134,10 @@ class ProjectsController < ApplicationController
           @projects.reject! {|p| !p.use_provided_application?} if @projects
         end
         format.xml
-        format.json { render json: cache(@key, :expires_in => 1.hour) { @projects.to_json(serialization_attributes.merge(:root => 'project')) } }
+        format.json {
+          render json: cache(@key, :expires_in => 1.hour) { @projects.to_json(serialization_attributes.merge(:root => 'project')) },
+                 callback: params[:callback]
+        }
       end
     end
   end
