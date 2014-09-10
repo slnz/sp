@@ -225,7 +225,6 @@ GEM
       i18n (~> 0.6.4)
     multi_json (1.10.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.16)
     net-http-persistent (1.9)
     newrelic_rpm (3.9.1.236)
     nokogiri (1.6.3.1)
@@ -256,6 +255,7 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    pg (0.17.1)
     polyglot (0.3.5)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -296,6 +296,9 @@ GEM
     redis (3.1.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
+    redis-session-store (0.8.0)
+      actionpack (>= 3, < 5)
+      redis
     ref (1.0.5)
     rest-client (1.6.8)
       mime-types (~> 1.16)
@@ -347,8 +350,6 @@ GEM
       redis-namespace (>= 1.3.1)
     sidekiq-failures (0.4.3)
       sidekiq (>= 2.16.0)
-    sidekiq-pro (1.7.1)
-      sidekiq (>= 3)
     sidekiq-unique-jobs (3.0.2)
       mock_redis
       sidekiq (>= 2.6)
@@ -460,25 +461,26 @@ DEPENDENCIES
   liquid (~> 2.4.1)
   mailcatcher
   meta_request
-  mysql2
   newrelic_rpm (>= 3.5.3.25)
   omniauth (~> 1.1.1)
   omniauth-cas (~> 1.0.2)
   omniauth-facebook (~> 1.6.0)
   paperclip (~> 3.5.1)
+  pg
   qe!
   quiet_assets
   rack-contrib (~> 1.1.0)
   rails (~> 4.0.0)
   rb-fsevent (~> 0.9)
+  redis-session-store
   relay_api_client!
   retryable-rb (~> 1.1.0)
   rspec (~> 3.0)
   rspec-rails
   rubycas-client
   sass-rails
+  sidekiq
   sidekiq-failures
-  sidekiq-pro
   sidekiq-unique-jobs
   siebel_donations (~> 1.0.4)
   simplecov
