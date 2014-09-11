@@ -62,7 +62,7 @@ class Address < ActiveRecord::Base
     attributes_to_push['line2'] = address2
     attributes_to_push['line3'] = address3
     attributes_to_push['line4'] = address4
-    attributes_to_push['postal_code'] = zip
+    attributes_to_push['zip'] = zip
     super(parent_id, parent_type, person)
   end
 
@@ -79,7 +79,7 @@ class Address < ActiveRecord::Base
                         { name: 'line2', type: 'string' },
                         { name: 'line3', type: 'string' },
                         { name: 'line4', type: 'string' },
-                        { name: 'postal_code', type: 'string' }]
+                        { name: 'zip', type: 'string' }]
   end
 
   def self.skip_fields_for_gr
