@@ -17,4 +17,3 @@ before_script:
   - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 email:
   - josh.starcher@cru.org
-  - elikem.adadevoh@cru.org
