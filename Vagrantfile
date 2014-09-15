@@ -16,7 +16,7 @@ docker run --name redis -d redis redis-server --appendonly yes
 docker run -d -p 3000:3000 -v /app:/app --link redis:redis --link postgres:db --name rails twinge/ruby_pg
 cp -n /app/config/database.example.yml /app/config/database.yml
 cp -n /app/config/redis.example.yml /app/config/redis.yml
-docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm twinge/ruby_pg bash -c "cd /app && bundle exec rake db:create db:schema:load"
+docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm twinge/ruby_pg bash -c "pg_restore -d summer_missions -U docker -W db/summer_missions.dmp "
 SCRIPT
 
 # Commands required to ensure correct docker containers
