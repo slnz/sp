@@ -4,7 +4,7 @@ class Admin::LeadersController < ApplicationController
 
   def new
     names = params[:name].to_s.split(' ')
-    @person = Person.new(:firstName => names[0], :lastName => names[1..-1].join(' '))
+    @person = Person.new(:first_name => names[0], :last_name => names[1..-1].join(' '))
     @person.current_address = CurrentAddress.new
   end
 
@@ -40,7 +40,7 @@ class Admin::LeadersController < ApplicationController
     @person.current_address ||= CurrentAddress.new(address_type: 'current')
     @current_address = @person.current_address
     #@person.current_address = @current_address
-    required_fields = [@person.firstName, @person.lastName, @person.gender]
+    required_fields = [@person.first_name, @person.last_name, @person.gender]
     required_fields += [@current_address.home_phone, @current_address.email] unless params[:leader] == 'kid'
     unless required_fields.all?(&:present?) && @person.valid? && @current_address.valid?
       flash[:error] = "Please fill in all fields"
@@ -59,6 +59,6 @@ class Admin::LeadersController < ApplicationController
   end
 
   def person_params
-    params.fetch(:person, {}).permit(:firstName, :lastName, :gender, current_address_attributes: [:email, :home_phone, :address_type])
+    params.fetch(:person, {}).permit(:first_name, :last_name, :gender, current_address_attributes: [:email, :home_phone, :address_type])
   end
 end

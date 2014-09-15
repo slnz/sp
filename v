@@ -31,7 +31,7 @@ rebuild) echo  "Rebuilding Docker Rails Container"
     vagrant ssh -c "sh /app/docker/scripts/rebuild.sh"
    ;;
 cmd) echo "running '$2' in docker container in /app"
-  vagrant ssh -c "/app/docker/scripts/cmd.sh '$2'"
+  vagrant ssh -c "/app/docker/scripts/cmd.sh '$2 $3 $4 $5 $6'"
     ;;
 s) echo "Running vagrant ssh"
   vagrant ssh

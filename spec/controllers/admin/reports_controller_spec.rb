@@ -394,7 +394,7 @@ describe Admin::ReportsController do
       application.update_attribute('status', 'accepted_as_participant')
 
       get :mpd_summary, project_id: project.id
-      expect(assigns(:applications)).to eq(project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year))
+      expect(assigns(:applications)).to eq(project.sp_applications.joins(:person).includes(:person).order('last_name, first_name').accepted.for_year(year))
     end
 
     it 'list applications by mpd summary via HTML -- SpNationalCoordinator' do

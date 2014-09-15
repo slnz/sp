@@ -71,7 +71,7 @@ class Staff < ActiveRecord::Base
   end
   
   scope :specialty_roles, -> { where(:jobStatus => "Staff Full Time").where(:ministry => "Campus Ministry").
-      where(:removedFromPeopleSoft => "N").where("jobTitle NOT IN (?)", field_roles).order(:jobTitle).order(:lastName) }
+      where(:removedFromPeopleSoft => "N").where("jobTitle NOT IN (?)", field_roles).order(:jobTitle).order(:last_name) }
 
   def self.get_roles(region)
     result = {}
@@ -87,15 +87,15 @@ class Staff < ActiveRecord::Base
 
   # "first_name last_name"
   def full_name
-    firstName.to_s  + " " + lastName.to_s
+    first_name.to_s  + " " + last_name.to_s
   end
 
   def informal_full_name
-    nickname.to_s  + " " + lastName.to_s
+    nickname.to_s  + " " + last_name.to_s
   end
   
   def nickname
-    (!preferredName.to_s.strip.empty?) ? preferredName : firstName
+    (!preferredName.to_s.strip.empty?) ? preferredName : first_name
   end
   
   def is_active?

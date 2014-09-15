@@ -22,11 +22,11 @@ class PersonFilter
     end
 
     if @filters[:first_name_like]
-      filtered_people = filtered_people.where("firstName like ? ", "#{@filters[:first_name_like]}%")
+      filtered_people = filtered_people.where("first_name like ? ", "#{@filters[:first_name_like]}%")
     end
 
     if @filters[:last_name_like]
-      filtered_people = filtered_people.where("lastName like ? ", "#{@filters[:last_name_like]}%")
+      filtered_people = filtered_people.where("last_name like ? ", "#{@filters[:last_name_like]}%")
     end
 
     if @filters[:name_or_email_like]
@@ -39,8 +39,8 @@ class PersonFilter
           @filters[:email_like] = @filters.delete(:name_or_email_like)
         else
           filtered_people = filtered_people.includes(:email_addresses)
-          .where("concat(firstName,' ',lastName) LIKE :search OR
-                                                  firstName LIKE :search OR lastName LIKE :search OR
+          .where("concat(first_name,' ',last_name) LIKE :search OR
+                                                  first_name LIKE :search OR last_name LIKE :search OR
                                                   email_addresses.email LIKE :search",
                  {:search => "#{filters[:name_or_email_like]}%"})
       end
@@ -49,9 +49,9 @@ class PersonFilter
     if @filters[:name_like]
       # See if they've typed a first and last name
       if @filters[:name_like].split(/\s+/).length > 1
-        filtered_people = filtered_people.where("concat(firstName,' ',lastName) like ? ", "%#{@filters[:name_like]}%")
+        filtered_people = filtered_people.where("concat(first_name,' ',last_name) like ? ", "%#{@filters[:name_like]}%")
       else
-        filtered_people = filtered_people.where("firstName like :search OR lastName like :search",
+        filtered_people = filtered_people.where("first_name like :search OR last_name like :search",
                                                 {search: "#{@filters[:name_like]}%"})
       end
     end

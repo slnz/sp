@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   def self.find_or_create_from_cas(atts)
     # Look for a user with this guid
     guid = att_from_receipt(atts, 'ssoGuid')
-    first_name = att_from_receipt(atts, 'firstName')
+    first_name = att_from_receipt(atts, 'first_name')
     last_name = att_from_receipt(atts, 'lastName')
     email = atts['username']
     find_or_create_from_guid_or_email(guid, email, first_name, last_name)
@@ -55,8 +55,8 @@ class User < ActiveRecord::Base
       person = address.try(:person)
 
       # Attach the found person to the user, or create a new person
-      u.person = person || ::Person.create!(:firstName => first_name,
-                                          :lastName => last_name)
+      u.person = person || ::Person.create!(:first_name => first_name,
+                                          :last_name => last_name)
       u.person.fk_ssmUserId = u.id
 
       # Create a current address record if we don't already have one.
@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
       new_hash = {:dateCreated => Time.now, :dateChanged => Time.now,
                   :createdBy => ApplicationController.application_name,
                   :changedBy => ApplicationController.application_name}
-  	  person = Person.new(new_hash.merge({:firstName => omniauth['first_name'], :lastName => omniauth['last_name']}))
+  	  person = Person.new(new_hash.merge({:first_name => omniauth['first_name'], :last_name => omniauth['last_name']}))
   	  person.user = self
       person.save!
       address = Address.new(new_hash.merge({:email => self.username,
@@ -142,7 +142,7 @@ class User < ActiveRecord::Base
     u.save(:validate => false)
     # make sure we have a person
     unless u.person
-      u.create_person_and_address(firstName: first_name, lastName: last_name)
+      u.create_person_and_address(first_name: first_name, last_name: last_name)
     end
     u
   end

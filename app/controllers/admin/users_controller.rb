@@ -20,7 +20,7 @@ class Admin::UsersController < ApplicationController
                 @role = 'Director'
                 SpUser.where(:type => 'SpDirector')
               end
-    @users = @users.joins(:person).includes(:person).order('ministry_person.lastName, ministry_person.firstName')
+    @users = @users.joins(:person).includes(:person).order('ministry_person.last_name, ministry_person.first_name')
     @addresses = {}
     Address.where(address_type: 'current', id: @users.collect(&:person_id)).map {|a| @addresses[a.id] = a}
     respond_with(@users) do |format|

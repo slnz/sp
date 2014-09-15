@@ -4,10 +4,9 @@ class Person < Fe::Person
   include Sidekiq::Worker
   include CruLib::GlobalRegistryMethods
 
-  auto_strip_attributes :firstName, :lastName, :preferredName, :accountNo, :title
+  auto_strip_attributes :first_name, :last_name, :preferredName, :account_no, :title
 
   self.table_name = "ministry_person"
-  self.primary_key = "personID"
 
   # SP-298
   has_many                :sp_designation_numbers, dependent: :destroy
@@ -41,8 +40,6 @@ class Person < Fe::Person
 
   scope :not_secure, -> { where("isSecure != 'T' or isSecure IS NULL") }
 
-  alias_attribute :account_no, :accountNo
-  alias_attribute :preferred_name, :preferredName
   alias_attribute :university_state, :universityState
   alias_attribute :year_in_school, :yearInSchool
   alias_attribute :is_child, :isChild
@@ -139,11 +136,11 @@ class Person < Fe::Person
   end
 
   def name_with_nick
-    name = firstName.to_s
-    if preferredName.present? && preferredName.strip != firstName.strip
+    name = first_name.to_s
+    if preferredName.present? && preferredName.strip != first_name.strip
       name += " (#{preferredName.strip}) "
     end
-    name + ' ' + lastName.to_s
+    name + ' ' + last_name.to_s
   end
 
   # "first_name middle_name last_name"
@@ -153,36 +150,9 @@ class Person < Fe::Person
     l + last_name.to_s
   end
 
-  # an alias for firstName using standard ruby/rails conventions
-  def first_name
-    firstName
-  end
-
-  def first_name=(f)
-    write_attribute("firstName", f)
-  end
-
-  # an alias for middleName using standard ruby/rails conventions
-  def middle_name
-    middleName
-  end
-
-  def middle_name=(m)
-    write_attribute("middleName", m)
-  end
-
-  # an alias for lastName using standard ruby/rails conventions
-  def last_name
-    lastName
-  end
-
-  def last_name=(l)
-    write_attribute("lastName", l)
-  end
-
   #a little more than an alias.  Nickname is the preferredName if one is listed.  Otherwise it is first name
   def nickname
-    (preferredName and not preferredName.strip.empty?) ? preferredName : firstName
+    (preferredName and not preferredName.strip.empty?) ? preferredName : first_name
   end
 
   #nickname is an alias for preferredName
@@ -331,7 +301,7 @@ class Person < Fe::Person
 
   def all_team_members(remove_self = false)
     my_local_level_ids = teams.collect &:id
-    mmtm = TeamMember.get('filters[team_id]' => my_local_level_ids) #order("lastName, firstName ASC")
+    mmtm = TeamMember.get('filters[team_id]' => my_local_level_ids) #order("last_name, first_name ASC")
     people = mmtm.collect(&:person).flatten.uniq
     people.delete(self) if remove_self
     return people
@@ -342,8 +312,8 @@ class Person < Fe::Person
   end
 
   def apply_omniauth(omniauth)
-    self.firstName ||= omniauth['first_name']
-    self.lastName ||= omniauth['last_name']
+    self.first_name ||= omniauth['first_name']
+    self.last_name ||= omniauth['last_name']
   end
 
   def check_region

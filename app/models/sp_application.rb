@@ -211,7 +211,7 @@ class SpApplication < Fe::Application
     unless person.user.globallyUniqueID.present?
       password = SecureRandom.hex(5) + 'a'
       person.user.password_plain = password
-      person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address.strip, password, person.nickname, person.lastName)
+      person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address.strip, password, person.nickname, person.last_name)
       begin
         person.user.save(validate: false)
       rescue ActiveRecord::RecordNotUnique
@@ -425,8 +425,8 @@ class SpApplication < Fe::Application
   scope :descend_by_submitted, -> { order("sp_applications.submitted_at desc") }
   scope :ascend_by_started, -> { order("sp_applications.created_at") }
   scope :descend_by_started, -> { order("sp_applications.created_at desc") }
-  scope :ascend_by_name, -> { joins(:person).order("lastName, firstName") }
-  scope :descend_by_name, -> { joins(:person).order("lastName desc, firstName desc") }
+  scope :ascend_by_name, -> { joins(:person).order("last_name, first_name") }
+  scope :descend_by_name, -> { joins(:person).order("last_name desc, first_name desc") }
   scope :accepted, -> { where('sp_applications.status' => SpApplication.accepted_statuses) }
   scope :accepted_participants, -> { where('sp_applications.status' => 'accepted_as_participant') }
   scope :accepted_student_staff, -> { where('sp_applications.status' => 'accepted_as_student_staff') }

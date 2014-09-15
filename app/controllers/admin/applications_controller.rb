@@ -16,11 +16,11 @@ class Admin::ApplicationsController < ApplicationController
     set_up_search_form
     conditions = [[],[]]
     if params[:first_name] && !params[:first_name].empty?
-      conditions[0] << "#{Person.table_name}.firstName like ?"
+      conditions[0] << "#{Person.table_name}.first_name like ?"
       conditions[1] << "%#{params[:first_name]}%"
     end
     if params[:last_name] && !params[:last_name].empty?
-      conditions[0] << "#{Person.table_name}.lastName like ?"
+      conditions[0] << "#{Person.table_name}.last_name like ?"
       conditions[1] << "%#{params[:last_name]}%"
     end
     if params[:school] && !params[:school].empty?
@@ -77,7 +77,7 @@ class Admin::ApplicationsController < ApplicationController
     else
       search = SpApplication.where(conditions)
                             .includes([:project, {:person => :current_address}])
-                            .order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName")
+                            .order("#{SpApplication.table_name}.year desc, ministry_person.last_name, ministry_person.first_name")
                             .references([:project, {:person => :current_address}])
       if params[:page] == "all"
         @applications = search.paginate(:page => 1)

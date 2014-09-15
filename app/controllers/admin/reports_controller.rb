@@ -173,7 +173,7 @@ class Admin::ReportsController < ApplicationController
       end
     end
 
-    @applications = @project.sp_applications.joins(:person).includes(:person).order('lastName, firstName').accepted.for_year(year) if @project
+    @applications = @project.sp_applications.joins(:person).includes(:person).order('last_name, first_name').accepted.for_year(year) if @project
 
     respond_to do |format|
       format.html
@@ -412,7 +412,7 @@ class Admin::ReportsController < ApplicationController
 
   def region
     if params[:region].present?
-      @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+      @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
     else
       @regions = Region.standard_region_codes
     end
@@ -420,7 +420,7 @@ class Admin::ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+        @applications = SpApplication.where('ministry_person.region' => params[:region], :year => year).order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address})
         csv = ""
         CSV.generate(csv) do |csv|
           csv << ["Accepted To", "Status", "Name", "Gender", "School", "Missional Team",
@@ -439,10 +439,10 @@ class Admin::ReportsController < ApplicationController
   def missional_team
     if params[:team].present?
       @schools = Infobase::TargetArea.get('filters[team_id]' => params[:team]).map(&:name)
-      @applications = SpApplication.where("#{Person.table_name}.campus" => @schools, :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+      @applications = SpApplication.where("#{Person.table_name}.campus" => @schools, :year => year).order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address})
       @team = Infobase::Team.find(params[:team])
     else
-      schools = Person.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year})")
+      schools = Person.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.id = sp_applications.person_id WHERE (sp_applications.year = #{year})")
       @teams = Infobase::Team.search(per_page: 1000, filters: { target_area_name: schools.join('+') })
     end
 
@@ -466,9 +466,9 @@ class Admin::ReportsController < ApplicationController
 
   def school
     if params[:school].present?
-      @applications = SpApplication.where("#{Person.table_name}.campus" => params[:school], :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+      @applications = SpApplication.where("#{Person.table_name}.campus" => params[:school], :year => year).order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address})
     else
-      @schools = SpApplication.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.personID = sp_applications.person_id WHERE (sp_applications.year = #{year}) order by campus").reject(&:blank?)
+      @schools = SpApplication.connection.select_values("select distinct(#{Person.table_name}.campus) FROM sp_applications LEFT OUTER JOIN ministry_person ON ministry_person.id = sp_applications.person_id WHERE (sp_applications.year = #{year}) order by campus").reject(&:blank?)
     end
 
     respond_to do |format|
@@ -491,10 +491,10 @@ class Admin::ReportsController < ApplicationController
   def applicants
     respond_to do |format|
       format.html {
-        @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+        @applications = SpApplication.where(:year => year).where("ministry_person.last_name <> ''").order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
       }
       format.csv {
-        @applications = SpApplication.where(:year => year).where("ministry_person.lastName <> ''").order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address})
+        @applications = SpApplication.where(:year => year).where("ministry_person.last_name <> ''").order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address})
         csv = ""
         CSV.generate(csv) do |csv|
           csv << ["Accepted To", "Status", "Name", "Gender", "Region", "Missional Team", "School", "1st Preference",
@@ -513,25 +513,25 @@ class Admin::ReportsController < ApplicationController
   end
 
   def pd_emails
-    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).year(year)
+    base = SpStaff.order("#{Person.table_name}.last_name, #{Person.table_name}.last_name").includes(:person => :current_address).year(year)
     @pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
     @apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
     @opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
     @all = (@pds + @apds + @opds).uniq.sort
 
-    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - US summer project'").year(year)
+    base = SpStaff.order("#{Person.table_name}.last_name, #{Person.table_name}.last_name").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - US summer project'").year(year)
     @us_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
     @us_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
     @us_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
     @us_all = (@us_pds + @us_apds + @us_opds).uniq.sort
 
-    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - Global Missions summer project'").year(year)
+    base = SpStaff.order("#{Person.table_name}.last_name, #{Person.table_name}.last_name").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Campus Ministry - Global Missions summer project'").year(year)
     @wsn_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
     @wsn_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
     @wsn_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
     @wsn_all = (@wsn_pds + @wsn_apds + @wsn_opds).uniq.sort
 
-    base = SpStaff.order("#{Person.table_name}.lastName, #{Person.table_name}.lastName").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Other CCC Ministry'").year(year)
+    base = SpStaff.order("#{Person.table_name}.last_name, #{Person.table_name}.last_name").includes(:person => :current_address).includes(:sp_project).where("report_stats_to = 'Other CCC Ministry'").year(year)
     @other_pds = base.pd.collect(&:email).reject(&:blank?).uniq.sort
     @other_apds = base.apd.collect(&:email).reject(&:blank?).uniq.sort
     @other_opds = base.opd.collect(&:email).reject(&:blank?).uniq.sort
@@ -598,7 +598,7 @@ class Admin::ReportsController < ApplicationController
           csv << ["Account No", "Amount", "First Name", "Last Name", "Payment Status", "Date"]
           @payments.each do |payment|
             csv << [payment.payment_account_no,
-                    payment.amount, payment.application.person.firstName, payment.application.person.lastName,
+                    payment.amount, payment.application.person.first_name, payment.application.person.last_name,
                     payment.status, payment.created_at
             ]
           end
@@ -616,7 +616,7 @@ class Admin::ReportsController < ApplicationController
         CSV.generate(csv) do |csv|
           csv << ["Last Name", "First Name", "Amount", "Date", "Auth Code"]
           @payments.each do |payment|
-            csv << [payment.application.person.lastName, payment.application.person.firstName,
+            csv << [payment.application.person.last_name, payment.application.person.first_name,
                     payment.amount, payment.created_at, payment.auth_code
             ]
           end
@@ -729,7 +729,7 @@ class Admin::ReportsController < ApplicationController
             csv << ["Project Name", "Project Start", "Project End", "Male PD Email", "Female PD Email", "OPD Email"]
             @payments.each do |payment|
               csv << [payment.payment_account_no,
-                      payment.amount, payment.application.person.firstName, payment.application.person.lastName,
+                      payment.amount, payment.application.person.first_name, payment.application.person.last_name,
                       payment.status, payment.created_at
               ]
             end
@@ -1408,7 +1408,7 @@ class Admin::ReportsController < ApplicationController
   end
 
   def get_applications(project)
-    SpApplication.preferrenced_project(project.id).for_year(project.year).order('ministry_person.lastName, ministry_person.firstName').includes(:person => :current_address)
+    SpApplication.preferrenced_project(project.id).for_year(project.year).order('ministry_person.last_name, ministry_person.first_name').includes(:person => :current_address)
   end
 
   def check_access
@@ -1447,7 +1447,7 @@ class Admin::ReportsController < ApplicationController
     if params[:partner].present?
       @projects = SpProject.current.with_partner(params[:partner]).select("id, year")
       year = @projects.maximum(:year)
-      @applications = SpApplication.where(:project_id => @projects.collect(&:id), :year => year).order('ministry_person.lastName, ministry_person.firstName').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
+      @applications = SpApplication.where(:project_id => @projects.collect(&:id), :year => year).order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
     else
       @partners = SpProject.connection.select_values('select distinct primary_partner from sp_projects order by primary_partner').reject!(&:blank?)
     end

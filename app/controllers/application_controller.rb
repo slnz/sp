@@ -85,8 +85,8 @@ class ApplicationController < ActionController::Base
       # Get their user, or create a new one if theirs doesn't exist
       @current_person = current_user.person
       if @current_person.nil? && session[:cas_extra_attributes]
-        @current_person = current_user.create_person_and_address(firstName: session[:cas_extra_attributes]['firstName'],
-                                                                 lastName: session[:cas_extra_attributes]['lastName'])
+        @current_person = current_user.create_person_and_address(first_name: session[:cas_extra_attributes]['firstName'],
+                                                                 last_name: session[:cas_extra_attributes]['lastName'])
       end
     end
     @current_person
@@ -142,12 +142,12 @@ class ApplicationController < ActionController::Base
       query = params[:name].strip.split(' ')
       first, last = query[0].to_s + '%', query[1].to_s + '%'
       if last == '%'
-        conditions = ["preferredName like ? OR firstName like ? OR lastName like ?", first, first, first]
+        conditions = ["preferred_name like ? OR first_name like ? OR last_name like ?", first, first, first]
       else
-        conditions = ["(preferredName like ? OR firstName like ?) AND lastName like ?", first, first, last]
+        conditions = ["(preferred_name like ? OR first_name like ?) AND last_name like ?", first, first, last]
       end
 
-      @people = Person.where(conditions).includes(:user).order("isStaff desc").order("accountNo desc")
+      @people = Person.where(conditions).includes(:user).order("is_staff desc").order("account_now desc")
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
 
       # Put staff at the top of the list

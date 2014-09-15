@@ -334,7 +334,7 @@ class Admin::ProjectsController < ApplicationController
               end
             end
             if p
-              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, staff.type]).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
               writer << row
@@ -343,7 +343,7 @@ class Admin::ProjectsController < ApplicationController
                 row = []
                 date_start = l((project.pd_close_start_date || project.staff_start_date || project.start_date), :format => :ps)
                 date_end = l((project.pd_close_end_date || project.staff_end_date || project.end_date), :format => :ps)
-                (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+                (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, staff.type]).each do |val|
                   row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
                 end
                 writer << row
@@ -364,7 +364,7 @@ class Admin::ProjectsController < ApplicationController
                   date_end = l(project.end_date, :format => :ps)
                 end
               end
-              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, 'Applicant']).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
             end
@@ -473,8 +473,8 @@ class Admin::ProjectsController < ApplicationController
 
   def set_values_from_person(person)
     values = Hash.new
-    values["First Name"] = person.firstName
-    values["Last Name"] = person.lastName
+    values["First Name"] = person.first_name
+    values["Last Name"] = person.last_name
     values["Preferred Name"] = person.preferredName
     values["Gender"] = person.gender == "1" ? "M" : "F"
     values["Birthday"] = person.birth_date.present? ? l(person.birth_date) : ''
@@ -491,7 +491,7 @@ class Admin::ProjectsController < ApplicationController
       values["Cell"] = person.current_address.cell_phone
     end
     values["Campus"] = person.campus
-    values["AccountNo"] = person.accountNo
+    values["AccountNo"] = person.account_no
     values["Designation No"] = person.current_application.try(:designation_number)
     values["Marital Status"] = person.maritalStatus
     if (person.emergency_address)
