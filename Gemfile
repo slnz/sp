@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.1.5'
 
-gem 'mysql2'#, '~> 0.2.7'
+gem 'pg'
 
 # Needed for the new asset pipeline
 gem 'sass-rails'#,   '~> 3.2.3'
@@ -43,7 +43,7 @@ gem 'relay_api_client', git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'cru_lib', git: 'https://github.com/CruGlobal/cru_lib'
 # gem 'cru_lib', path: '/Users/josh/htdocs/cru_lib'
 gem 'image_science', '~> 1.2.5'
-gem 'sidekiq-pro'
+gem 'sidekiq'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
 gem 'geocoder'
@@ -56,8 +56,6 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
 
 gem 'fe',
-  #path: '/Users/andrewroth/Development/fe'
-  #path: '/Users/josh/htdocs/qe'
   github: 'CruGlobal/qe', branch: 'fe'
 
 group :development, :test do

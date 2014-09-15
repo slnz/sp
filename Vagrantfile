@@ -13,7 +13,6 @@ docker build -t twinge/ruby_pg /app
 docker run -d -v /var/lib/postgresql --name dbdata postgres:latest echo Data-only container for postgres
 docker run -d -p 5432:5432 --volumes-from dbdata --name postgres -e POSTGRESQL_USER=docker -e POSTGRESQL_PASS=docker postgres
 docker run --name redis -d redis redis-server --appendonly yes
-docker pull twinge/ruby_pg
 docker run -d -p 3000:3000 -v /app:/app --link redis:redis --link postgres:db --name rails twinge/ruby_pg
 cp -n /app/config/database.example.yml /app/config/database.yml
 cp -n /app/config/redis.example.yml /app/config/redis.yml
