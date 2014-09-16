@@ -15,8 +15,4 @@ class Api::V1::ProjectsController < Api::V1::BaseController
   def available_includes
     []
   end
-
-  def available_methods
-    [:pd, :apd, :opd, :coordinator, :applicants, :staff, :volunteers]
-  end
 end

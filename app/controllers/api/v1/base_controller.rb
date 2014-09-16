@@ -59,7 +59,6 @@ class Api::V1::BaseController < ApplicationController
 
   # Each controller should override this method
   def available_includes
-    []
   end
 
   def render_options(collection, order = nil)

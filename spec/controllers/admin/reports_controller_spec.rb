@@ -849,10 +849,12 @@ describe Admin::ReportsController do
   end
 
   context "#applicants" do
-    it 'should render all applications for a specific school into csv' do
+    it 'should render all applications into csv' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
+
+      SpApplication.delete_all
 
       open_application_date = Date.today - 30
       start_date = 1.month.from_now

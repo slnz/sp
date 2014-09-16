@@ -36,6 +36,24 @@ describe Admin::ApplicationsController do
       post 'search_results', preference: 1
       expect(assigns(:applications).first).to eq(application)
     end
+
+    it 'should set all the filters' do
+       stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
+         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
+         to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
+
+      get :search,
+        first_name: 'fn', 
+        last_name: 'ln',
+        school: 'UW',
+        team: 'team',
+        region: 'GL',
+        state: 'MN',
+        designation: 'DN',
+        project_type: 'PT',
+        status: 'open',
+        year: SpApplication.year
+    end
   end
 
   context '#donations' do

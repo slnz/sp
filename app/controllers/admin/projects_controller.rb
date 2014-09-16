@@ -154,9 +154,9 @@ class Admin::ProjectsController < ApplicationController
      "GraduationDate", "Applied for leadership", "Passport Number", "T-Shirt Size"]
 
     sheet1.row(r += 1).concat(applicant_column_headers)
-    applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
-    question_passport_id = Element.where(slug: 'passport').pluck(:id)
-    question_tshirt_id = Element.where(slug: 'tshirt').pluck(:id)
+    applications = SpApplication.where("status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year).includes(:person)
+    question_passport_id = Fe::Element.where(slug: 'passport').pluck(:id)
+    question_tshirt_id = Fe::Element.where(slug: 'tshirt').pluck(:id)
 
     applications.each do |app|
       values = set_values_from_person(app.person)
@@ -560,7 +560,7 @@ class Admin::ProjectsController < ApplicationController
       end
       people = []
       if include_applicants
-        accepted_applications = SpApplication.find(:all, :conditions => ["#{applicant_conditions} and (project_id = ? OR (preference1_id = ? AND (project_id IS NULL OR project_id = ?))) and year = ?", @project.id, @project.id, @project.id, @year], :include => :person)
+        accepted_applications = SpApplication.where("#{applicant_conditions} and (project_id = ? OR (preference1_id = ? AND (project_id IS NULL OR project_id = ?))) and year = ?", @project.id, @project.id, @project.id, @year).joins(:person)
         accepted_applications.each do |app|
           people << app.person
         end
@@ -586,7 +586,7 @@ class Admin::ProjectsController < ApplicationController
       end
 
       if parent_refs
-        addresses = ReferenceSheet.where('sp_applications.project_id' => @project.id, 'sp_elements.style' => 'parent').includes(:applicant_answer_sheet, :question).collect(&:email)
+        addresses = Fe::ReferenceSheet.where('sp_applications.project_id' => @project.id, 'sp_elements.style' => 'parent').includes(:applicant_answer_sheet, :question).collect(&:email)
         addresses.reject!(&:blank?)
         addresses.uniq!
       else
