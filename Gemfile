@@ -57,6 +57,7 @@ gem 'infobase'
 
 gem 'fe',
   github: 'CruGlobal/qe', branch: 'fe'
+  #path: '/Users/andrewroth/Development/fe'
 
 group :development, :test do
   gem 'quiet_assets'
