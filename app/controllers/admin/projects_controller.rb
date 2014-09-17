@@ -475,7 +475,7 @@ class Admin::ProjectsController < ApplicationController
     values = Hash.new
     values["First Name"] = person.first_name
     values["Last Name"] = person.last_name
-    values["Preferred Name"] = person.preferredName
+    values["Preferred Name"] = person.preferred_name
     values["Gender"] = person.gender == "1" ? "M" : "F"
     values["Birthday"] = person.birth_date.present? ? l(person.birth_date) : ''
     values["Age"] = person.birth_date.present? ? ((Date.today.to_time - person.birth_date.to_time) / 1.year).floor : ''
@@ -532,21 +532,21 @@ class Admin::ProjectsController < ApplicationController
         applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant')"
         include_applicants = true
       when 'accepted_men'
-        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 1"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = '1'"
         include_applicants = true
       when 'accepted_women'
-        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 0"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = '0'"
         include_applicants = true
       when 'staff_and_interns'
         applicant_conditions = "status IN ('accepted_as_student_staff')"
         include_applicants = true
         include_staff = true
       when 'men_staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = 1"
+        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = '1'"
         include_applicants = true
         include_staff = true
       when 'women_staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = 0"
+        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = '0'"
         include_applicants = true
         include_staff = true
       when 'parent_refs'
@@ -572,14 +572,14 @@ class Admin::ProjectsController < ApplicationController
           people += [@project.pd(@year)] if @project.pd(@year).is_male?
           people += [@project.apd(@year)] if @project.apd(@year).is_male?
           people += [@project.opd(@year)] if @project.opd(@year).is_male?
-          people += @project.staff(@year).where(:gender => 1)
-          people += @project.volunteers(@year).where(:gender => 1)
+          people += @project.staff(@year).where(gender: '1')
+          people += @project.volunteers(@year).where(gender: '1')
         when 'women_staff_and_interns'
           people += [@project.pd(@year)] if !@project.pd(@year).is_male?
           people += [@project.apd(@year)] if !@project.apd(@year).is_male?
           people += [@project.opd(@year)] if !@project.opd(@year).is_male?
-          people += @project.staff(@year).where(:gender => 0)
-          people += @project.volunteers(@year).where(:gender => 0)
+          people += @project.staff(@year).where(gender: '0')
+          people += @project.volunteers(@year).where(gender: '0')
         else
           people += [@project.pd(@year)] + [@project.apd(@year)] + [@project.opd(@year)] + @project.staff(@year) + @project.volunteers(@year)
         end

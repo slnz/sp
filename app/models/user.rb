@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
       # the one who's logged in most recently
       address = ::CurrentAddress.joins(:person => :user)
                                 .where(:email => email)
-                                .order("#{User.table_name}.lastLogin DESC")
+                                .order("#{User.table_name}.\"lastLogin\" DESC")
                                 .first
       person = address.try(:person)
 

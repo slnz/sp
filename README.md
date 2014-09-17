@@ -47,6 +47,9 @@ Rails app to track Summer Project Application process.
 
 ## Test Environment
 
-## Production Environment  
+Run a specific test:
 
+ruby -I$GEM_HOME/gems/rspec-core-3.0.4/lib:$GEM_HOME/gems/rspec-support-3.0.4/lib -S $GEM_HOME/gems/rspec-core-3.0.4/exe/rspec ./spec/controllers/admin/applications_controller_spec.rb
+
+## Production Environment  
 

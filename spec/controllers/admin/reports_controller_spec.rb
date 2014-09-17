@@ -26,7 +26,8 @@ describe Admin::ReportsController do
       applicant = create(:person)
       application = create(:sp_application,
                            person_id: applicant.id,
-                           project_id: project.id
+                           project_id: project.id,
+                           year: project.year
       )
 
       get :preference
@@ -872,7 +873,8 @@ describe Admin::ReportsController do
       application = create(:sp_application,
                            person_id: applicant.id,
                            project_id: project.id,
-                           status: 'ready'
+                           status: 'ready',
+                           year: project.year
       )
 
       # match applicant based on campus
@@ -880,7 +882,8 @@ describe Admin::ReportsController do
       application2 = create(:sp_application,
                             person_id: applicant2.id,
                             project_id: project.id,
-                            status: 'ready'
+                            status: 'ready',
+                            year: project.year
       )
 
       get :applicants, format: 'csv'

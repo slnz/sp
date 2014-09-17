@@ -4,7 +4,7 @@ class Person < Fe::Person
   include Sidekiq::Worker
   include CruLib::GlobalRegistryMethods
 
-  auto_strip_attributes :first_name, :last_name, :preferredName, :account_no, :title
+  auto_strip_attributes :first_name, :last_name, :preferred_name, :account_no, :title
 
   self.table_name = "ministry_person"
 
@@ -38,7 +38,7 @@ class Person < Fe::Person
   before_save :check_region, :stamp_changed
   before_create :stamp_created
 
-  scope :not_secure, -> { where("isSecure != 'T' or isSecure IS NULL") }
+  scope :not_secure, -> { where("\"isSecure\" != 'T' or \"isSecure\" IS NULL") }
 
   alias_attribute :university_state, :universityState
   alias_attribute :year_in_school, :yearInSchool
@@ -137,8 +137,8 @@ class Person < Fe::Person
 
   def name_with_nick
     name = first_name.to_s
-    if preferredName.present? && preferredName.strip != first_name.strip
-      name += " (#{preferredName.strip}) "
+    if preferred_name.present? && preferred_name.strip != first_name.strip
+      name += " (#{preferred_name.strip}) "
     end
     name + ' ' + last_name.to_s
   end
@@ -150,14 +150,14 @@ class Person < Fe::Person
     l + last_name.to_s
   end
 
-  #a little more than an alias.  Nickname is the preferredName if one is listed.  Otherwise it is first name
+  #a little more than an alias.  Nickname is the preferred_name if one is listed.  Otherwise it is first name
   def nickname
-    (preferredName and not preferredName.strip.empty?) ? preferredName : first_name
+    (preferred_name and not preferred_name.strip.empty?) ? preferred_name : first_name
   end
 
-  #nickname is an alias for preferredName
+  #nickname is an alias for preferred_name
   def nickname=(name)
-    write_attribute("preferredName", name)
+    write_attribute("preferred_name", name)
   end
 
   # an alias for yearInSchool

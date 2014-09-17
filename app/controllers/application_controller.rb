@@ -147,7 +147,7 @@ class ApplicationController < ActionController::Base
         conditions = ["(preferred_name like ? OR first_name like ?) AND last_name like ?", first, first, last]
       end
 
-      @people = Person.where(conditions).includes(:user).order("is_staff desc").order("account_now desc")
+      @people = Person.where(conditions).includes(:user).order("\"isStaff\" desc").order("account_no desc")
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
 
       # Put staff at the top of the list
