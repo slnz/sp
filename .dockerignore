@@ -1,3 +1,4 @@
 log
 vendor/cache
 vendor/ruby
+tmp
