@@ -225,6 +225,7 @@ GEM
       i18n (~> 0.6.4)
     multi_json (1.10.1)
     multipart-post (2.0.0)
+    mysql2 (0.3.16)
     net-http-persistent (1.9)
     newrelic_rpm (3.9.1.236)
     nokogiri (1.6.3.1)
@@ -255,7 +256,6 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
-    pg (0.17.1)
     polyglot (0.3.5)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -461,12 +461,12 @@ DEPENDENCIES
   liquid (~> 2.4.1)
   mailcatcher
   meta_request
+  mysql2
   newrelic_rpm (>= 3.5.3.25)
   omniauth (~> 1.1.1)
   omniauth-cas (~> 1.0.2)
   omniauth-facebook (~> 1.6.0)
   paperclip (~> 3.5.1)
-  pg
   qe!
   quiet_assets
   rack-contrib (~> 1.1.0)

@@ -3,7 +3,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.0.0'
 
-gem 'pg'
+#gem 'pg'
+gem 'mysql2'
 
 # Needed for the new asset pipeline
 gem 'sass-rails'#,   '~> 3.2.3'
