@@ -4,6 +4,7 @@ source 'http://rubygems.org'
 gem 'rails', '~> 4.1.5'
 
 gem 'pg'
+#gem 'mysql2'
 
 # Needed for the new asset pipeline
 gem 'sass-rails'#,   '~> 3.2.3'
@@ -67,8 +68,12 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'unicorn'
-  gem "spring"
-  gem "spring-commands-rspec"
+  gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do
