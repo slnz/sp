@@ -71,6 +71,7 @@ class SpDonation < ActiveRecord::Base
           next
         end
 
+        binding.pry
         donors = Hash[SiebelDonations::Donor.find(having_given_to_designations: dn.designation_number).collect {|sd| [sd.id, sd] }]
 
         donations.each do |donation|

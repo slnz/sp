@@ -66,14 +66,14 @@ class SpDonationServices < SpUser
           ON (permanentAddress.address_type = 'permanent'
             AND permanentAddress.id = person.id)
         LEFT JOIN ministry_person spouse
-          ON (person.fk_spouseID = spouse.id)
+          ON (person.\"fk_spouseID\" = spouse.id)
         LEFT JOIN sp_designation_numbers designation
           ON (person.id = designation.person_id
             AND project.id = designation.project_id)
             AND designation.year = app.year
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
           AND app.year >= '#{SpApplication.year}'
-          AND (person.isStaff = 0 OR person.isStaff IS NULL)
+          AND (person.\"isStaff\" IS FALSE OR person.\"isStaff\" IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '0000000'
           AND project.scholarship_designation < '3000000'
@@ -98,14 +98,14 @@ class SpDonationServices < SpUser
           ON (permanentAddress.address_type = 'permanent'
             AND permanentAddress.id = person.id)
         LEFT JOIN ministry_person spouse
-          ON (person.fk_spouseID = spouse.id)
+          ON (person.\"fk_spouseID\" = spouse.id)
         LEFT JOIN sp_designation_numbers designation
           ON (person.id = designation.person_id
             AND project.id = designation.project_id)
             AND designation.year = staff.year
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
           AND staff.year = '#{SpApplication.year}'
-          AND (person.isStaff = 0 OR person.isStaff IS NULL)
+          AND (person.\"isStaff\" IS FALSE OR person.\"isStaff\" IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '0000000'
           AND project.scholarship_designation < '3000000'

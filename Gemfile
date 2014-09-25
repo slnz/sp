@@ -67,8 +67,12 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'unicorn'
-  gem "spring"
-  gem "spring-commands-rspec"
+  gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do
