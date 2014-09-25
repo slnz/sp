@@ -38,4 +38,18 @@ describe SpDonationServices do
     response = sp_donation_services.send(:role)
     expect(response).to eq 'Donation Services'
   end
+
+  it "should generate file" do
+    # match this in rows
+    project = create(:sp_project, scholarship_designation: '0000001', scholarship_operating_unit: '123')
+    create(:sp_application, project: project, person: create(:person, gender: '0'), status: "accepted_as_participant", year: SpApplication.year)
+    %w(Mr. Ms. Mrs. Dr).each do |title|
+      create(:sp_application, project: project, person: create(:person, title: title), status: "accepted_as_participant", year: SpApplication.year)
+    end
+
+    # match this in rows2
+    create(:sp_staff, year: SpApplication.year, project_id: project.id)
+    
+    SpDonationServices.generate_file(sp_user.person)
+  end
 end
