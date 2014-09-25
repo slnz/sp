@@ -142,6 +142,18 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def markers
+    conditions = [[],[]]
+    conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
+    conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_student_men_applicants + #{SpProject.table_name}.max_student_women_applicants)"
+    conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
+    conditions[0] << "#{SpProject.table_name}.apply_by_date >= ?"
+    conditions[1] << Date.today
+    conditions
+    @projects = SpProject.open.where(conditions[0].flatten.join(" AND "), conditions[1])
+    render :layout => false
+  end
+
   protected
     def build_focus_conditions(focus, conditions)
       if focus

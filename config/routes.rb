@@ -124,7 +124,12 @@ Sp2::Application.routes.draw do
     end
   end
 
-  resources :projects
+  resources :projects do
+    collection do
+      get :markers
+    end
+  end
+
   resources :applications do
     member do
       get :multiple_projects

@@ -516,11 +516,14 @@ class SpProject < ActiveRecord::Base
       self.latitude = nil
       self.longitude = nil
     else
+      return if longitude.present? && latitude.present?
       q = self.city || ''
       q += ','+self.state if self.state
       q += ','+self.country
       begin
-        self.latitude, self.longitude = Geocoder.coordinates(q)
+        coordinates = Geocoder.coordinates(q)
+        return unless coordinates && coordinates.first.present?
+        self.latitude, self.longitude = coordinates
         # We need to make sure that that no 2 projects have exactly the same
         # coordinates. If they do, they will overlap on the flash map and
         # you won't be able to click on one of them.
