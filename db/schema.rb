@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140915151450) do
+ActiveRecord::Schema.define(version: 20140917195224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,31 +107,31 @@ ActiveRecord::Schema.define(version: 20140915151450) do
 
   add_index "ministry_locallevel", ["global_registry_id"], name: "index_ministry_locallevel_on_global_registry_id", using: :btree
 
-  create_table "ministry_newaddress", primary_key: "addressID", force: true do |t|
+  create_table "ministry_newaddress", force: true do |t|
     t.string   "address1"
     t.string   "address2"
-    t.string   "address3",            limit: 55
-    t.string   "address4",            limit: 55
-    t.string   "city",                limit: 50
-    t.string   "state",               limit: 50
-    t.string   "zip",                 limit: 15
-    t.string   "country",             limit: 64
-    t.string   "homePhone",           limit: 26
-    t.string   "workPhone",           limit: 250
-    t.string   "cellPhone",           limit: 25
-    t.string   "fax",                 limit: 25
+    t.string   "address3",             limit: 55
+    t.string   "address4",             limit: 55
+    t.string   "city",                 limit: 50
+    t.string   "state",                limit: 50
+    t.string   "zip",                  limit: 15
+    t.string   "country",              limit: 64
+    t.string   "home_phone",           limit: 26
+    t.string   "work_phone",           limit: 250
+    t.string   "cell_phone",           limit: 25
+    t.string   "fax",                  limit: 25
     t.string   "skype"
-    t.string   "email",               limit: 200
-    t.string   "url",                 limit: 100
-    t.string   "contactName"
-    t.string   "contactRelationship", limit: 50
-    t.string   "address_type",        limit: 20
-    t.datetime "dateCreated"
-    t.datetime "dateChanged"
-    t.string   "createdBy",           limit: 50
-    t.string   "changedBy",           limit: 50
+    t.string   "email",                limit: 200
+    t.string   "url",                  limit: 100
+    t.string   "contact_name"
+    t.string   "contact_relationship", limit: 50
+    t.string   "address_type",         limit: 20
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "created_by",           limit: 50
+    t.string   "changed_by",           limit: 50
     t.integer  "person_id"
-    t.string   "email2",              limit: 200
+    t.string   "email2",               limit: 200
     t.datetime "start_date"
     t.datetime "end_date"
     t.string   "facebook_link"
@@ -139,11 +139,11 @@ ActiveRecord::Schema.define(version: 20140915151450) do
     t.string   "title"
     t.string   "dorm"
     t.string   "room"
-    t.string   "preferredPhone",      limit: 25
-    t.string   "phone1_type",                     default: "cell"
-    t.string   "phone2_type",                     default: "home"
-    t.string   "phone3_type",                     default: "work"
-    t.string   "global_registry_id",  limit: 40
+    t.string   "preferred_phone",      limit: 25
+    t.string   "phone1_type",                      default: "cell"
+    t.string   "phone2_type",                      default: "home"
+    t.string   "phone3_type",                      default: "work"
+    t.string   "global_registry_id",   limit: 40
   end
 
   add_index "ministry_newaddress", ["address_type", "person_id"], name: "unique_person_addressType", unique: true, using: :btree
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 20140915151450) do
     t.boolean  "workInUS",                                                            default: true,  null: false
     t.boolean  "usCitizen",                                                           default: true,  null: false
     t.string   "citizenship",                   limit: 50
-    t.boolean  "is_staff"
+    t.boolean  "isStaff"
     t.string   "title",                         limit: 5
     t.string   "campus",                        limit: 128
     t.string   "universityState",               limit: 5
@@ -244,7 +244,7 @@ ActiveRecord::Schema.define(version: 20140915151450) do
   end
 
   create_table "ministry_staff", force: true do |t|
-    t.string   "accountNo",                limit: 15,                                                         null: false
+    t.string   "accountNo",                limit: 15,                                         null: false
     t.string   "firstName",                limit: 30
     t.string   "middleInitial",            limit: 1
     t.string   "lastName",                 limit: 30
@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(version: 20140915151450) do
     t.integer  "fk_teamID"
     t.string   "isSecure",                 limit: 1
     t.string   "isSupported",              limit: 1
-    t.string   "removedFromPeopleSoft",    limit: 1,                            default: "'N'::character(1)"
+    t.string   "removedFromPeopleSoft",                                         default: "N"
     t.string   "isNonUSStaff",             limit: 1
     t.integer  "person_id"
     t.string   "middleName",               limit: 30

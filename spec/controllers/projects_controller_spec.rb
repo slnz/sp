@@ -68,6 +68,9 @@ describe ProjectsController do
       start_date = Date.today + 30
       end_date = Date.today + 60
 
+      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false").
+        to_return(:status => 200, :body => @geocode_body, :headers => {})
+
       project = create(:sp_project,
                        open_application_date: open_application_date,
                        start_date: start_date,

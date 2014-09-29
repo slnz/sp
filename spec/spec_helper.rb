@@ -61,6 +61,70 @@
 
     config.before(:each) do
       DatabaseCleaner.start
+      @geocode_body = %|
+{
+   "results" : [
+      {
+         "address_components" : [
+            {
+               "long_name" : "String",
+               "short_name" : "String",
+               "types" : [ "neighborhood", "political" ]
+            },
+            {
+               "long_name" : "Cork",
+               "short_name" : "Cork",
+               "types" : [ "administrative_area_level_2", "political" ]
+            },
+            {
+               "long_name" : "Cork",
+               "short_name" : "Cork",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "Ireland",
+               "short_name" : "IE",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "String, Co. Cork, Ireland",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 52.2006701,
+                  "lng" : -8.3786194
+               },
+               "southwest" : {
+                  "lat" : 52.1887815,
+                  "lng" : -8.4010359
+               }
+            },
+            "location" : {
+               "lat" : 52.19418289999999,
+               "lng" : -8.386761099999999
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 52.2006701,
+                  "lng" : -8.3786194
+               },
+               "southwest" : {
+                  "lat" : 52.1887815,
+                  "lng" : -8.4010359
+               }
+            }
+         },
+         "partial_match" : true,
+         "types" : [ "neighborhood", "political" ]
+      }
+   ],
+   "status" : "OK"
+}
+|
+      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,String&language=en&sensor=false").
+        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => @geocode_body, :headers => {})
     end
 
     config.after(:each) do

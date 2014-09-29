@@ -121,6 +121,10 @@ describe Admin::ProjectsController do
       session[:user_id] = user.id
 
       year = SpApplication.year
+
+      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,MN,United%20States&language=en&sensor=false").
+        to_return(:status => 200, :body => @geocode_body, :headers => {})
+
       project = create(:sp_project,
                        country: 'United States',
                        state: 'MN',
@@ -253,6 +257,10 @@ describe Admin::ProjectsController do
   context '#sos_exceptions' do
     it 'should render' do
       year = SpApplication.year
+
+      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,MN,United%20States&language=en&sensor=false").
+        to_return(:status => 200, :body => @geocode_body, :headers => {})
+
       project = create(:sp_project,
                        country: 'United States',
                        state: 'MN',

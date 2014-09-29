@@ -14,7 +14,7 @@ describe SpDonation do
       d = create(:sp_donation, designation_number: dn.designation_number)
       donation_json_body = '[ { "id": "XGF5T", "amount": "10.00", "designation": "0588176", "donorId": "000457337", "donationDate": "2007-10-21", "paymentMethod": "Credit Card", "paymentType": "Visa", "channel": "Recurring", "campaignCode": "CCWBST" } ]'
 
-      stub_request(:get, "https://wsapi.ccci.org/wsapi/rest/donations?designations=0588176&end_date=2014-09-18&response_timeout=60000&start_date=2012-09-18").
+      stub_request(:get, "https://wsapi.ccci.org/wsapi/rest/donations?designations=0588176&end_date=#{Time.now.strftime("%Y-%m-%d")}&response_timeout=60000&start_date=#{2.years.ago.strftime("%Y-%m-%d")}").
         to_return(status: 200, body: donation_json_body, :headers => {})
 
 
