@@ -213,6 +213,8 @@ describe Admin::ProjectsController do
 
   context '#new' do
     it 'should make a new project' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+        to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
       post :new
       expect(assigns(:project))
     end

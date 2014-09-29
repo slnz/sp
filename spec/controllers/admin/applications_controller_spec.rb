@@ -56,6 +56,9 @@ describe Admin::ApplicationsController do
          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
+       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
        post :search_results,
          first_name: 'fn', 
          last_name: 'ln',
@@ -85,6 +88,9 @@ describe Admin::ApplicationsController do
          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
 
+       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
        get :search_results,
          first_name: 'fn', 
          last_name: 'ln',
@@ -104,8 +110,12 @@ describe Admin::ApplicationsController do
       stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
+
       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA").
         to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
+
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
       get :search_results
       expect(flash[:notice]).to match(/You must use at least one search criteria/)

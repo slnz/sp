@@ -61,6 +61,7 @@
 
     config.before(:each) do
       DatabaseCleaner.start
+      Rails.cache.clear
       @geocode_body = %|
 {
    "results" : [
