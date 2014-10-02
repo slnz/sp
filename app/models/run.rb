@@ -37,7 +37,7 @@ class Run
 
   #This method changes the year of projects in their archive process, but SpApplication.year determines the current year for applications.
   def self.change_sp_year
-    last_years = SpProject.where(archive_project_date: Date.today)
+    last_years = SpProject.where("archive_project_date <= ?", Date.today)
     last_years.each do |new_project|
       new_project.save(:validate => false)
       new_project.year = Date.today.year + 1   #set year to next year (check if this will be a problem for semester projects) 
