@@ -7,16 +7,16 @@ docker rm $(docker ps -a -q)
 
 # Build containers from Dockerfiles
 docker build -t postgres /app/docker/postgres
-docker build -t twinge/ruby_pg /app
+docker build -t rails /app
 
 # Run and link the containers
 docker run -d -v /var/lib/postgresql --name dbdata postgres:latest echo Data-only container for postgres
 docker run -d -p 5432:5432 --volumes-from dbdata --name postgres -e POSTGRESQL_USER=docker -e POSTGRESQL_PASS=docker postgres
 docker run --name redis -d redis redis-server --appendonly yes
-docker run -d -p 3000:3000 -v /app:/app --link redis:redis --link postgres:db --name rails twinge/ruby_pg
+docker run -d -p 3000:3000 -v /app:/app --link redis:redis --link postgres:db --name rails rails
 cp -n /app/config/database.example.yml /app/config/database.yml
 cp -n /app/config/redis.example.yml /app/config/redis.yml
-docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm twinge/ruby_pg bash -c "pg_restore -d summer_missions -U docker -W db/summer_missions.dmp "
+docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm rails bash -c "pg_restore -d summer_missions -U docker -W db/summer_missions.dmp "
 SCRIPT
 
 # Commands required to ensure correct docker containers
@@ -24,7 +24,7 @@ SCRIPT
 $start = <<SCRIPT
 docker start postgres
 docker start redis
-docker start twinge/global_registry
+docker start rails
 SCRIPT
 
 VAGRANTFILE_API_VERSION = '2'
