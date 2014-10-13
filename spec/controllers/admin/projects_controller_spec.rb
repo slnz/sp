@@ -303,4 +303,39 @@ describe Admin::ProjectsController do
       expect(response.status).to eq(200)
     end
   end
+
+  context "#send_email" do
+    it "should send email successfully" do
+      # include one invalid email to cover more code
+      p = create(:sp_project)
+      post :send_email, id: p.id, from: "test@cru.org", to: "a@b.com,c@d.com,invalid@email:com"
+    end
+    it "should handle a failed email send" do
+      # include one invalid email to cover more code
+      p = create(:sp_project)
+      #ProjectMailer.stub(:team_email) { throw("Exception") }
+      allow(ProjectMailer).to receive(:team_email) { throw("Exception") }
+      post :send_email, id: p.id, from: "test@cru.org", to: "a@b.com,c@d.com,invalid@email:com"
+    end
+    it "should handle an email with a from address that doesn't end with @cru.org" do
+      # include one invalid email to cover more code
+      p = create(:sp_project)
+      #ProjectMailer.stub(:team_email) { throw("Exception") }
+      allow(ProjectMailer).to receive(:team_email) { throw("Exception") }
+      request.env["HTTP_REFERER"] = '/admin'
+      post :send_email, id: p.id, from: "test@asdf.org", to: "a@b.com,c@d.com,invalid@email:com"
+      expect(flash[:notice]).to eq('You must specify a "From" address that ends with @cru.org')
+      expect(response).to redirect_to('/admin')
+    end
+    it "should handle no to address given" do
+      # include one invalid email to cover more code
+      p = create(:sp_project)
+      #ProjectMailer.stub(:team_email) { throw("Exception") }
+      allow(ProjectMailer).to receive(:team_email) { throw("Exception") }
+      request.env["HTTP_REFERER"] = '/admin'
+      post :send_email, id: p.id, from: "test@cru.org", to: ""
+      expect(flash[:notice]).to eq('You must specify a "To" address')
+      expect(response).to redirect_to('/admin')
+    end
+  end
 end

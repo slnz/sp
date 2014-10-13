@@ -24,6 +24,8 @@ class Person < Fe::Person
   has_many                :staffed_projects, :through => :sp_staff, :source => :sp_project
   has_many                :current_staffed_projects, -> { where("sp_staff.year = #{SpApplication.year}").select("sp_projects.*") }, :through => :sp_staff, :source => :sp_project
 
+  belongs_to :user, :foreign_key => "fk_ssmUserId" # TODO need to migrate person columns to be more rails-like
+
   # General
   attr_accessor           :school
 
@@ -91,23 +93,6 @@ class Person < Fe::Person
       end
   end
 
-  def validate_blogfeed
-    errors.add(:blogfeed, "is invalid") if invalid_feed?
-  end
-
-  # empty_feed? checks to see if blogfeed has any characters that could be a feed
-  def empty_feed?
-    blogfeed ? blogfeed.strip.empty? : true
-  end
-
-  def invalid_feed?
-    FeedTools::Feed.open(blogfeed) unless empty_feed?
-  rescue FeedTools::FeedAccessError
-    flash[:notice] = "Invalid feed" if @my_entry
-  rescue
-    flash[:notice] = "Not well formed XML" if @my_entry and not empty_feed?
-  end
-
   def human_gender
     return '' if gender.to_s.empty?
     return is_male? ? 'Male' : 'Female'
@@ -136,11 +121,13 @@ class Person < Fe::Person
   end
 
   def name_with_nick
-    name = first_name.to_s
+    name = []
+    name << first_name.to_s
     if preferred_name.present? && preferred_name.strip != first_name.strip
-      name += " (#{preferred_name.strip}) "
+      name << "(#{preferred_name.strip})"
     end
-    name + ' ' + last_name.to_s
+    name << last_name.to_s
+    name.join(' ')
   end
 
   # "first_name middle_name last_name"
@@ -188,29 +175,6 @@ class Person < Fe::Person
   def stamp_created
     self.dateCreated = Time.now
     self.createdBy = ApplicationController.application_name
-  end
-
-  # include FileColumnHelper
-
-  # file_column picture
-  def pic(size = "mini")
-    if image.nil?
-      "/images/nophoto_" + size + ".gif"
-    else
-      url_for_file_column(self, "image", size)
-    end
-  end
-
-  def mini_pic
-    pic("mini")
-  end
-
-  def thumb_pic
-    pic("thumb")
-  end
-
-  def med_pic
-    pic("medium")
   end
 
   def email
@@ -278,7 +242,7 @@ class Person < Fe::Person
 
   # Find an exact match by email
   def self.find_exact(person, address)
-    # try by address first
+    # try by email address first
     person = Person.where("#{Address.table_name}.email = ?", address.email).includes(:current_address).references(:current_address).first
     # then try by username
     person ||= Person.where("#{User.table_name}.username = ?", address.email).includes(:user).references(:user).first
@@ -299,6 +263,7 @@ class Person < Fe::Person
     result
   end
 
+=begin
   def all_team_members(remove_self = false)
     my_local_level_ids = teams.collect &:id
     mmtm = TeamMember.get('filters[team_id]' => my_local_level_ids) #order("last_name, first_name ASC")
@@ -306,6 +271,7 @@ class Person < Fe::Person
     people.delete(self) if remove_self
     return people
   end
+=end
 
   def to_s
     informal_full_name
@@ -333,6 +299,8 @@ class Person < Fe::Person
     end
   end
 
+  # TODO: determine if we need this.. user has no balance_bookmark defined
+=begin
   def account_balance
     result = nil
     if user && user.balance_bookmark
@@ -340,6 +308,7 @@ class Person < Fe::Person
     end
     result
   end
+=end
 
   def updated_at() dateChanged end
   def updated_by() changedBy end
@@ -385,15 +354,19 @@ class Person < Fe::Person
 
   def self.columns_to_push
     super
-    @columns_to_push += [{name: 'account_number', type: :string},
-                         {name: 'username', type: :string},
-                         {name: 'birth_year', type: :integer},
-                         {name: 'birth_month', type: :integer},
-                         {name: 'birth_day', type: :integer}
-                        ]
-    @columns_to_push.each do |column|
-      column[:type] = 'boolean' if column[:name] == 'is_secure'
+    unless @extended_columns_to_push
+      @columns_to_push += [{name: 'account_number', type: :string},
+                           {name: 'username', type: :string},
+                           {name: 'birth_year', type: :integer},
+                           {name: 'birth_month', type: :integer},
+                           {name: 'birth_day', type: :integer}
+                          ]
+      @extended_columns_to_push = true
+      @columns_to_push.each do |column|
+        column[:type] = 'boolean' if column[:name] == 'is_secure'
+      end
     end
+    return @columns_to_push
   end
 
   def self.global_registry_entity_type_name

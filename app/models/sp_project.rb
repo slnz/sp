@@ -185,7 +185,7 @@ class SpProject < ActiveRecord::Base
     !!SpProject.current.find_by_id(id)
   end
 
-  def gospel_in_aciton_ids=(ids)
+  def gospel_in_action_ids=(ids)
     self.gospel_in_actions = SpGospelInAction.find(ids)
   end
 
@@ -482,7 +482,7 @@ class SpProject < ActiveRecord::Base
                         .group("project.id")
     projects.each do |project|
       if (project.pd || project.apd)
-        SpProjectMailer.deliver_leader_reminder(project)
+        ProjectMailer.deliver_leader_reminder(project)
       end
     end
   end
@@ -498,7 +498,7 @@ class SpProject < ActiveRecord::Base
       date_to_start = Time.parse('8/15/' + project.year.to_s)
       if (Time.now > date_to_start && project.stat_id.nil?)
         if (project.pd && project.pd.email_address)
-          SpProjectMailer.deliver_stats_reminder(project)
+          ProjectMailer.deliver_stats_reminder(project)
         end
       end
     end

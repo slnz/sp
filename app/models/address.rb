@@ -6,7 +6,7 @@ class Address < Fe::Address
 
 	validates_presence_of :address_type
 
-	belongs_to :person, :foreign_key => "fk_PersonID"
+	belongs_to :person, :foreign_key => "person_id"
 
 	before_save :stamp
 

@@ -260,7 +260,7 @@ class Admin::ProjectsController < ApplicationController
               ProjectMailer.team_email(recipient, params[:from], params[:reply_to], '', files.compact, params[:subject], params[:body]).deliver
               email_success << recipient
             rescue => e
-              raise e.inspect
+              #raise e.inspect
               email_failed << recipient
             end
           end
