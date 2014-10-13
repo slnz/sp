@@ -46,17 +46,9 @@ class User < ActiveRecord::Base
 
     # make sure we have a person
     unless u.person
-      # Try to find a person with the same email address.  If multiple people are found, use
-      # the one who's logged in most recently
-      address = ::CurrentAddress.joins(:person => :user)
-                                .where(:email => email)
-                                .order("#{User.table_name}.\"lastLogin\" DESC")
-                                .first
-      person = address.try(:person)
-
       # Attach the found person to the user, or create a new person
-      u.person = person || ::Person.create!(:first_name => first_name,
-                                          :last_name => last_name)
+      u.person = ::Person.create!(:first_name => first_name,
+                                  :last_name => last_name)
       u.person.fk_ssmUserId = u.id
 
       # Create a current address record if we don't already have one.
