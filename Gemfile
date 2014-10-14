@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.0.10'
 
 #gem 'pg'
 gem 'mysql2'
