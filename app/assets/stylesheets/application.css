@@ -6,4 +6,8 @@
 *= require message_block
 *= require frontend
 *= require theme
+
+*= require normalize
+*= require foundation
+*= require cru-style
 */

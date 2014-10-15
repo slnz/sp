@@ -22,3 +22,6 @@
 //= require qe/jquery.uploadify.v2.1.0
 //= require rails.extra
 //= require sp
+
+//= require foundation.min
+$(document).foundation();
