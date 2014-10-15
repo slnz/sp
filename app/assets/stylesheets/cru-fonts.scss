@@ -1,0 +1,53 @@
+a:focus {
+  outline: 0;
+  color: #007cb1;
+  text-decoration: none;
+}
+
+a:active, a:hover {
+  outline: 0;
+  color: #006a98;
+  text-decoration: underline;
+}
+
+p {
+  font-family: "freight-sans-pro", "Trebuchet MS", "Verdana", sans-serif;
+  font-size: 18px;
+  line-height: 31px;
+  letter-spacing: .01rem;
+}
+
+h1, .h1 {
+  font-size: 75.9541px;
+  line-height: 1.14543;
+}
+
+h2, .h2, .post-title {
+  font-size: 53.71577px;
+  line-height: 1.07976;
+}
+
+h3, .h3 {
+  font-size: 37.98852px;
+  line-height: 1.52678;
+}
+
+h4, .h4 {
+  font-size: 26.866px;
+  line-height: 1.07943;
+  border: none;
+}
+
+h5, .h5 {
+  font-size: 19px;
+  line-height: 1.52632;
+}
+
+h6, .h6 {
+  font-size: 15.2px;
+  line-height: 1.90789;
+}
+
+ol li {
+  list-style: decimal;
+}

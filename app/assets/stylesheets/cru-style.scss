@@ -1,5 +1,29 @@
+@import "cru-fonts";
+
 body {
   width: 1000px;
   max-width: none;
   margin: 0 auto;
+  font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #f7f7f7;
+}
+
+// Sidebar or Control Styles
+#controls {
+  padding: 15px;
+  border: none;
+  background-color: #FFFFFF;
+
+  -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  -ms-box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  -o-box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+}
+
+#list-pages li a {
+  background: none;
+  border: none;
+  padding: 5px 0;
 }
