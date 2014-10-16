@@ -4,7 +4,7 @@ require_dependency 'authentication_filter'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
-  force_ssl(if: :ssl_configured??, except: :lb)
+  force_ssl(if: :ssl_configured?, except: :lb)
   around_filter :do_with_current_user
   before_filter :set_time_zone
   protect_from_forgery
