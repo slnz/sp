@@ -22,21 +22,20 @@ GIT
       global_registry
 
 GIT
-  remote: https://github.com/CruGlobal/qe
-  revision: 84fed3dcb9d40e1d8abf55ee91d304d6a69b5cf4
+  remote: https://github.com/technoweenie/acts_as_versioned.git
+  revision: 63b1fc8529d028fae632fe80ec0cb25df56cd76b
+  specs:
+    acts_as_versioned (0.6.0)
+      activerecord (>= 3.0.9)
+
+PATH
+  remote: /Users/Octopus/Git/qe
   specs:
     qe (0.0.2)
       aasm
       acts_as_list
       mail
       rails (>= 3.1.0)
-
-GIT
-  remote: https://github.com/technoweenie/acts_as_versioned.git
-  revision: 63b1fc8529d028fae632fe80ec0cb25df56cd76b
-  specs:
-    acts_as_versioned (0.6.0)
-      activerecord (>= 3.0.9)
 
 GEM
   remote: http://rubygems.org/
@@ -174,7 +173,7 @@ GEM
       rake (>= 0.8, < 11.0)
     httpi (2.0.2)
       rack
-    i18n (0.6.11)
+    i18n (0.7.0.beta1)
     identity_linker (1.0.0)
       savon (~> 2.1.0)
     image_science (1.2.6)

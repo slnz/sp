@@ -18,11 +18,11 @@
   </div>
 </div>
 
-<div id="preview">
+<div id="preview" class="panel">
   <% if @project %>
       <div id="projecttitle">
-        <%= @project.name %>
-        <%= link_to('click here to apply to a different project', '/projects', :class => 'applydiff') %>
+        <h1><%= @project.name %></h1><br/>
+        <p><%= link_to('Apply To A Different Project', '/projects', :class => 'button right cru-gray') %></p>
       </div>
   <% end %>
   <%= render :partial => 'answer_sheets/title' %>

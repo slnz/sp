@@ -9,17 +9,45 @@ body {
   background-color: #f7f7f7;
 }
 
-// Sidebar or Control Styles
+a.cru-gold {
+  background-color: #f9b625;
+  border: 1px solid #f8ae0c;
+  color: #FFFFFF;
+}
+
+a:hover.cru-gold {
+  background-color: #efa507;
+  border: 1px solid #c28605;
+  color: #FFFFFF;
+}
+
+a.cru-gray {
+  background-color: #666062;
+  border: 1px solid #595455;
+  color: #FFFFFF;
+}
+
+a:hover.cru-gray {
+  background-color: #514c4e;
+  border: 1px solid #393637;
+  color: #FFFFFF;
+}
+
+@mixin tile($color) {
+  border: none;
+  -webkit-box-shadow: 0 0 6px $color;
+  -moz-box-shadow: 0 0 6px $color;
+  -ms-box-shadow: 0 0 6px $color;
+  -o-box-shadow: 0 0 6px $color;
+  box-shadow: 0 0 6px $color;
+}
+
+// Sidebar Container
 #controls {
   padding: 15px;
   border: none;
   background-color: #FFFFFF;
-
-  -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 0 6px rgba(0,0,0,0.2);
-  -ms-box-shadow: 0 0 6px rgba(0,0,0,0.2);
-  -o-box-shadow: 0 0 6px rgba(0,0,0,0.2);
-  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  @include tile(rgba(0,0,0,0.2));
 }
 
 #list-pages li a {
@@ -27,3 +55,10 @@ body {
   border: none;
   padding: 5px 0;
 }
+
+// Main Container
+#preview {
+  padding: 15px;
+  @include tile(rgba(0,0,0,0.2))
+}
+
