@@ -22,7 +22,7 @@
   <% if @project %>
       <div id="projecttitle">
         <h1><%= @project.name %></h1><br/>
-        <p><%= link_to('Apply To A Different Project', '/projects', :class => 'button right cru-gray') %></p>
+        <p><%= link_to('Apply To A Different Project', '/projects', :class => 'button cru-gray') %></p>
       </div>
   <% end %>
   <%= render :partial => 'answer_sheets/title' %>

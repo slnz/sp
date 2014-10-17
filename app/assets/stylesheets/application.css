@@ -9,5 +9,5 @@
 
 *= require normalize
 *= require foundation
-*= require cru-style
+*= require style.scss
 */
