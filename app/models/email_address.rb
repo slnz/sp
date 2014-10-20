@@ -9,7 +9,7 @@ class EmailAddress < Fe::EmailAddress
     person.async_push_to_global_registry unless person.global_registry_id.present?
     parent_id = person.global_registry_id unless parent_id
 
-    super(parent_id, parent_type)
+    super(parent_id, parent_type, person)
   end
 
   def self.columns_to_push
