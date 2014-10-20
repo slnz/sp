@@ -5,7 +5,7 @@ class SpStudentQuote < ActiveRecord::Base
   belongs_to :project, :class_name => "SpProject", :foreign_key => "project_id"
 
   def async_push_to_global_registry
-    super(project.global_registry_id)
+    super(project.global_registry_id, 'summer_project', project)
   end
 
   def self.push_structure_to_global_registry

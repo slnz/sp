@@ -10,6 +10,7 @@ before_install:
 before_script:
   - mysql -e 'create database sp_test;'
   - cp config/travis/database.yml config/database.yml
+  - cp config/travis/redis.yml config/redis.yml
   - cp config/travis/config.yml config/config.yml
   - cp config/travis/amazon_s3.yml config/amazon_s3.yml
   - cp config/travis/facebook.yml config/facebook.yml

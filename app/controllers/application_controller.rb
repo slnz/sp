@@ -4,6 +4,7 @@ require_dependency 'authentication_filter'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
+  force_ssl(if: :ssl_configured?, except: :lb)
   around_filter :do_with_current_user
   before_filter :set_time_zone
   protect_from_forgery
@@ -169,6 +170,10 @@ class ApplicationController < ActionController::Base
     else
       render :nothing => true
     end
+  end
+
+  def ssl_configured?
+    !Rails.env.development? && !Rails.env.test?
   end
 
   def do_with_current_user

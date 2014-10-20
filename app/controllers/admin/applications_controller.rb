@@ -111,7 +111,7 @@ class Admin::ApplicationsController < ApplicationController
     def set_up_search_form
       @region_options = Region.all
       @team_options = Infobase::Team.get('filters[lane]' => 'FS')
-      @school_options = Infobase::TargetArea.get('filters[country]' => 'USA').collect(&:name).uniq.sort
+      @school_options = Infobase::TargetArea.get('filters[country]' => 'USA','per_page' => '30000').collect(&:name).uniq.sort
       @project_options = SpProject.current.order(:name)
     end
 
