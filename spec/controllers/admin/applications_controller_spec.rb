@@ -13,7 +13,7 @@ describe Admin::ApplicationsController do
     it 'sets up a search form' do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA&per_page=30000").
         to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
       stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
         to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
@@ -33,7 +33,7 @@ describe Admin::ApplicationsController do
     it 'returns results' do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA&per_page=30000").
         to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
       stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
         to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
@@ -48,7 +48,7 @@ describe Admin::ApplicationsController do
          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
-       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bcountry%5D=USA").
+       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bcountry%5D=USA&per_page=30000").
          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
@@ -80,7 +80,7 @@ describe Admin::ApplicationsController do
          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
-       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bcountry%5D=USA").
+       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bcountry%5D=USA&per_page=30000").
          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
@@ -111,7 +111,7 @@ describe Admin::ApplicationsController do
         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA").
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA&per_page=30000").
         to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
