@@ -837,8 +837,8 @@ ActiveRecord::Schema.define(version: 20140917195224) do
     t.integer  "coordinator_id"
     t.integer  "old_id"
     t.string   "project_status"
-    t.decimal  "latitude",                                  precision: 65, scale: 0
-    t.decimal  "longitude",                                 precision: 65, scale: 0
+    t.decimal  "latitude",                                  precision: 255, scale: 0
+    t.decimal  "longitude",                                 precision: 255, scale: 0
     t.string   "url",                          limit: 1024
     t.string   "url_title"
     t.string   "ds_project_code",              limit: 50
