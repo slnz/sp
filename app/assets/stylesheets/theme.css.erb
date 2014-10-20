@@ -17,7 +17,6 @@ a {
     border-radius: 0px;
     background: none;
     margin-top: 0px;
-    border-bottom: 3px solid #000;
 }
 
 #preview {
@@ -330,16 +329,11 @@ ul.level1 li {
 }
 
 h4 {
-    border-top: 1px solid gray;
     color: #411E08;
     display: block;
     font-size: 14px;
     margin: 0.5em 0 1em;
     padding-top: 13px;
-}
-
-.row h4 {
-    width: 690px;
 }
 
 table.grid .col {
@@ -593,11 +587,14 @@ button {
 }
 
 #globalactions {
-    border-top: 3px solid #000;
+    position: relative;
 }
 
 #globalactions ul {
+    position: absolute;
     float: right;
+    margin: 0;
+    right: 0;
 }
 
 #globalactions ul li a {
