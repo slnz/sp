@@ -12,27 +12,67 @@ body {
 h4 {
   font-family: "freight-sans-pro","Helvetica Neue",Arial,Helvetica,sans-serif;
   -webkit-font-smoothing: antialiased;
+  margin-bottom: 0;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 7px;
+  font-size: 1.414rem;
+  line-height: 1.07943;
 }
 
-a.cru-gold {
+@mixin button {
+  margin-bottom: 15px;
+  margin-left: 15px;
+  box-shadow: 0 0 1px rgba(0,0,0,0.3);
+  border: 2px solid;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: .02em;
+  vertical-align: middle;
+  padding: 10px 20px;
+  border-radius: .10526rem;
+  overflow: visible;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  background-color: #f1f1f1;
+  background-image: none;
+  border-color: #d7d7d7;
+  color: #6d6e71;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+  font-family: freight-sans-pro, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #d7d7d7;
+    box-shadow: 0 0 1px rgba(0,0,0,0.3);
+  }
+}
+
+.button {
+  @include button
+}
+
+a.cru-gold, button.cru-gold {
   background-color: #f9b625;
-  border: 1px solid #f8ae0c;
-  color: #FFFFFF;
+  border: 2px solid #f8ae0c;
+  color: white !important;
 }
 
-a:hover.cru-gold {
+a:hover.cru-gold, button:hover.cru-gold {
   background-color: #efa507;
-  border: 1px solid #c28605;
-  color: #FFFFFF;
+  border: 2px solid #c28605;
+  color: #FFFFFF !important;
 }
 
-a.cru-gray {
+a.cru-dark-gray {
   background-color: #666062;
   border: 1px solid #595455;
   color: #FFFFFF;
 }
 
-a:hover.cru-gray {
+a:hover.cru-dark-gray {
   background-color: #514c4e;
   border: 1px solid #393637;
   color: #FFFFFF;
@@ -150,4 +190,13 @@ a:hover.cru-gray {
 #preview {
   padding: 15px;
   @include tile(rgba(0,0,0,0.2))
+}
+
+#projecttitle {
+  color: #333333;
+
+  .button {
+    @include button;
+    margin-left: 0;
+  }
 }

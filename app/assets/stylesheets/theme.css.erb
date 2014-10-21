@@ -293,30 +293,11 @@ table.grid tr.error label.error {
     display: none;
 }
 
-#preview button {
-    background: none repeat scroll 0 0 transparent;
-    border: medium none;
-    cursor: pointer;
-    font-family: Arial;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-    background: url("<%= asset_path('buttonbg.png') %>") repeat-x scroll 0 0 transparent;
-    border: 1px solid #999999;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 13px;
-    margin-bottom: 10px;
-}
+#preview button {}
 
-#preview button:hover {
-    -moz-box-shadow: 0 0 5px #999;
-    -webkit-box-shadow: 0 0 5px #999;
-    box-shadow: 0 0 5px #999;
-}
+#preview button:hover {}
 
-#preview button span {
-}
+#preview button span {}
 
 .level1 {
     margin-left: 30px
@@ -390,8 +371,14 @@ li.questiongrid div.row {
 }
 
 #page-name {
-    font-size: 20px;
-    margin-top: .5em;
+    font-family: "freight-sans-pro","Helvetica Neue",Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 0;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-bottom: 7px;
+    font-size: 1.414rem;
+    line-height: 1.07943;
 }
 
 #page_ajax_spinner {
@@ -568,23 +555,9 @@ span.servicename {
     border-color: red;
 }
 
-button span {
-    font-family: Arial;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 8px;
-    display: block;
-    cursor: pointer;
-}
+button span {}
 
-button {
-    padding: 0;
-    background: url("<%= asset_path('buttonbg.png') %>") repeat-x scroll 0 0 transparent;
-    border: 1px solid gray;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
+button {}
 
 #globalactions {
     position: relative;

@@ -6,6 +6,7 @@
     <% else %>
         <!-- Max size 290w x 150h -->
         <div id="no-mission-logo"><%= image_tag("frontend/no-mission-logo/JSSPJune4-3331143813-OSM308.jpg") %></div>
+        <!-- TODO: randomly select an image from the no mission folder -->
     <% end %>
     <% if @reference_sheet %>
         Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
@@ -25,7 +26,7 @@
   <% if @project %>
       <div id="projecttitle">
         <h1><%= @project.name %></h1><br/>
-        <p><%= link_to('Apply To A Different Project', '/projects', :class => 'button cru-gray') %></p>
+        <p><%= link_to('Apply To A Different Project', '/projects', :class => 'button') %></p>
       </div>
   <% end %>
   <%= render :partial => 'answer_sheets/title' %>
