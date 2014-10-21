@@ -61,7 +61,7 @@ a:hover.cru-gray {
 
 // Sidebar Container
 #controls {
-  padding: 15px;
+  padding: 165px 15px 15px 15px;
   background-color: #FFFFFF;
   @include tile(rgba(0,0,0,0.2));
 
@@ -107,6 +107,40 @@ a:hover.cru-gray {
         color: #006a98;
         text-decoration: underline;
       }
+    }
+  }
+
+  #projectlogo {
+    position: relative;
+  }
+
+  #mission-logo {
+    position: absolute;
+    left: -5px;
+    top: -120px;
+    width: 270px;
+    height: 100px;
+    padding: 0;
+
+    img {
+      max-width: 270px;
+      max-height: 100px;
+    }
+  }
+
+  #no-mission-logo {
+    position: absolute;
+    left: -15px;
+    top: -165px;
+    width: 290px;
+    height: 150px;
+    padding: 0;
+
+    img {
+      width: 290px;
+      max-width: 290px;
+      height: 150px;
+      max-height: 150px;
     }
   }
 }

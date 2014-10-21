@@ -2,7 +2,10 @@
   <div id="projectlogo">
     <% if @project && @project.logo_file_name.present? %>
         <!-- Max size 270w x 100h -->
-        <div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+        <div id="mission-logo"><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+    <% else %>
+        <!-- Max size 290w x 150h -->
+        <div id="no-mission-logo"><%= image_tag("frontend/no-mission-logo/JSSPJune4-3331143813-OSM308.jpg") %></div>
     <% end %>
     <% if @reference_sheet %>
         Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
