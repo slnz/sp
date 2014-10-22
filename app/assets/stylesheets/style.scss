@@ -44,9 +44,55 @@ h4 {
   font-family: freight-sans-pro, 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 16px;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: #d7d7d7;
     box-shadow: 0 0 1px rgba(0,0,0,0.3);
+  }
+
+  &:focus {
+    outline: thin dotted;
+  }
+}
+
+.no-left-margin-or-padding {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.no-left-margin {
+  margin-left: 0 !important;
+}
+
+.no-left-padding {
+  padding-left: 0 !important;
+}
+
+.section-divider {
+  border-color: #f9b625;
+}
+
+#footerwrap {
+  ul {
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+    display: block;
+    width: 1000px;
+    text-align: center;
+
+    li {
+      display: inline-block;
+      float: none;
+
+      a, a:hover {
+        color: #353535;
+      }
+    }
+  }
+
+  .copy {
+    text-align: center;
+    padding-bottom: 29px;
   }
 }
 
@@ -60,7 +106,7 @@ a.cru-gold, button.cru-gold {
   color: white !important;
 }
 
-a:hover.cru-gold, button:hover.cru-gold {
+a:hover.cru-gold, button:hover.cru-gold, a:focus.cru-gold, button:focus.cru-gold {
   background-color: #efa507;
   border: 2px solid #c28605;
   color: #FFFFFF !important;
@@ -72,10 +118,15 @@ a.cru-dark-gray {
   color: #FFFFFF;
 }
 
-a:hover.cru-dark-gray {
+a:hover.cru-dark-gray, button:hover.cru-dark-gray, button:focus.cru-dark-gray, a:focus.cru-dark-gray {
   background-color: #514c4e;
   border: 1px solid #393637;
   color: #FFFFFF;
+}
+
+.choice_field.error label {
+  border: none;
+  background: none;
 }
 
 .community-title {
