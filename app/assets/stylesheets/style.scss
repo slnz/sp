@@ -318,7 +318,22 @@ select.ui-datepicker-year[data-handler="selectYear"] {
 }
 
 // Closed Project
-#application-closed {
+body#application-closed {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+}
+
+// Welcome / Privacy
+body#welcome.privacy {
+  .panel {
+    background-color: white;
+  }
+}
+
+// Multiple Projects
+body#applications.multiple_projects {
   .panel {
     background-color: white;
   }
