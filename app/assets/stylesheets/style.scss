@@ -315,8 +315,11 @@ select.ui-datepicker-year[data-handler="selectYear"] {
       }
     }
   }
+}
 
-  h4 {
-    font-weight: bold;
+// Closed Project
+#application-closed {
+  .panel {
+    background-color: white;
   }
 }
