@@ -439,11 +439,11 @@ class Admin::ProjectsController < ApplicationController
     when params[:search].present?
       @base = @base.where("name like ?", "%#{params[:search]}%")
     when params[:search_pd].present?
-      @base = @base.includes(:sp_staff => :person).pd_like(params[:search_pd])
+      @base = @base.joins(:sp_staff => :person).pd_like(params[:search_pd])
     when params[:search_apd].present?
-      @base = @base.includes(:sp_staff => :person).apd_like(params[:search_apd])
+      @base = @base.joins(:sp_staff => :person).apd_like(params[:search_apd])
     when params[:search_opd].present?
-      @base = @base.includes(:sp_staff => :person).opd_like(params[:search_opd])
+      @base = @base.joins(:sp_staff => :person).opd_like(params[:search_opd])
     end
 
     # Filter based on the user type
@@ -495,8 +495,8 @@ class Admin::ProjectsController < ApplicationController
     values["Designation No"] = person.current_application.try(:designation_number)
     values["Marital Status"] = person.maritalStatus
     if (person.emergency_address)
-      values["Emergency Contact"] = person.emergency_address.contactName
-      values["Emergency Relationship"] = person.emergency_address.contactRelationship
+      values["Emergency Contact"] = person.emergency_address.contact_name
+      values["Emergency Relationship"] = person.emergency_address.contact_relationship
       values["Emergency Address"] = person.emergency_address.address1
       values["Emergency City"] = person.emergency_address.city
       values["Emergency State"] = person.emergency_address.state
@@ -630,7 +630,7 @@ class Admin::ProjectsController < ApplicationController
     if params[:questions].present?
       initialize_questions
       params[:questions].each do |i, attribs|
-        if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
+        if attribs[:id].present? && question = Fe::Element.find_by_id(attribs[:id])
           if attribs[:label].present?
             question.update_attribute(:label, attribs[:label])
           else
@@ -638,8 +638,8 @@ class Admin::ProjectsController < ApplicationController
           end
         else
           if attribs[:label].present?
-            e = TextField.create!(:label => attribs[:label])
-            PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
+            e = Fe::TextField.create!(:label => attribs[:label])
+            Fe::PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
           end
         end
       end

@@ -70,8 +70,8 @@ class Staff < ActiveRecord::Base
     ]
   end
   
-  scope :specialty_roles, -> { where(:jobStatus => "Staff Full Time").where(:ministry => "Campus Ministry").
-      where(:removedFromPeopleSoft => "N").where("jobTitle NOT IN (?)", field_roles).order(:jobTitle).order(:last_name) }
+  scope :specialty_roles, -> { where('jobStatus' => 'Staff Full Time', 'ministry' => 'Campus Ministry').
+      where('removedFromPeopleSoft' => 'N').where('"jobTitle" NOT IN (?)', field_roles).order('"jobTitle"').order('"lastName"') }
 
   def self.get_roles(region)
     result = {}

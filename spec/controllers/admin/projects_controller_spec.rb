@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe Admin::ProjectsController do
   let(:user) { create(:user, person: create(:person)) }
+  let(:person) { create(:person) }
 
   before do
-    create(:sp_national_coordinator, user: user)
+    @sp_user = create(:sp_national_coordinator, user: user, person: person)
     session[:cas_user] = 'foo@example.com'
     session[:user_id] = user.id
   end
@@ -17,11 +18,70 @@ describe Admin::ProjectsController do
       get :index
       expect(response).to render_template('index')
     end
+
+    it 'should use all of set_up_filters' do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
+      get :index, :partners => [ 'US Campus', 'Non-USCM SPs', 'PRIMARY PARTNER' ], search: 'search'
+      expect(response).to render_template('index')
+    end
+
+    context 'SpProjectStaff and search_pd' do
+      it 'should use all of set_up_filters' do
+        stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+           to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
+        @sp_user[:type] = "SpProjectStaff"
+        @sp_user.save!
+        get :index, :partners => [ 'US Campus', 'Non-USCM SPs', 'PRIMARY PARTNER' ], search_pd: 'search_pd'
+        expect(response).to render_template('index')
+      end
+    end
+
+    context 'SpRegionalCoordinator and search_apd' do
+      it 'should use all of set_up_filters' do
+        stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+           to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
+        @sp_user[:type] = "SpRegionalCoordinator"
+        @sp_user.save!
+        get :index, :partners => [ 'US Campus', 'Non-USCM SPs', 'PRIMARY PARTNER' ], search_apd: 'search_apd'
+        expect(response).to render_template('index')
+      end
+    end
+
+    context 'SpNationalCoordinator and search_opd' do
+      it 'should use all of set_up_filters' do
+        stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+           to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
+        @sp_user[:type] = "SpNationalCoordinator"
+        @sp_user.save!
+        get :index, :partners => [ 'US Campus', 'Non-USCM SPs', 'PRIMARY PARTNER' ], search_opd: 'search_opd'
+        expect(response).to render_template('index')
+      end
+    end
+
+    context 'other user type' do
+      it 'should use all of set_up_filters' do
+        stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+           to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
+        @sp_user[:type] = "SpGeneralStaff"
+        @sp_user.save!
+        get :index, :partners => [ 'US Campus', 'Non-USCM SPs', 'PRIMARY PARTNER' ], search: 'search'
+        expect(response).to render_template('index')
+      end
+    end
   end
 
   context '#show' do
     it 'shows project details' do
-      get :show, id: create(:sp_project).id
+      project = create(:sp_project)
+      pd_person = create(:person, isStaff: false)
+      pd_staff = create(:sp_staff, person: pd_person, year: project.year, type: 'PD', sp_project: project)
+      get :show, id: project.id
       expect(response).to render_template('show')
     end
   end
@@ -48,9 +108,24 @@ describe Admin::ProjectsController do
   context '#update' do
     let(:project) { create(:sp_project) }
 
-    it 'updates a project' do
-      put :update, id: project.id, sp_project: {name: 'Foobar10'}
+    it 'updates a project while creating a new textfield/page' do
+      put :update, id: project.id, sp_project: {name: 'Foobar10'}, questions: {'1' => { label: 'test' }}
       expect(project.reload.name).to eq('Foobar10')
+    end
+
+    it 'updates a project while updating an existing element' do
+      e = Fe::TextField.create!(:label => "some_question")
+      put :update, id: project.id, sp_project: {name: 'Foobar10'}, questions: {'1' => { id: e.id, label: 'test' }}
+      expect(project.reload.name).to eq('Foobar10')
+      e.reload
+      expect(e.label).to eq('test')
+    end
+
+    it 'updates a project while destroying an existing question' do
+      e = Fe::TextField.create!(:label => "some_question")
+      put :update, id: project.id, sp_project: {name: 'Foobar10'}, questions: {'1' => { id: e.id }}
+      expect(project.reload.name).to eq('Foobar10')
+      expect(Fe::TextField.where(id: e.id).first).to be nil
     end
 
     it "doesn't throw an exception if you add spaces to the project name" do
@@ -64,6 +139,15 @@ describe Admin::ProjectsController do
       expect {
         post :create, sp_project: build(:sp_project).attributes
       }.to change(SpProject, :count).by(1)
+    end
+
+    it "creates render new if the project doesn't save" do
+      attributes = build(:sp_project).attributes
+      attributes.delete("name")
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+        to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+      post :create, sp_project: attributes
+      expect(response).to render_template(:new)
     end
   end
 
@@ -86,6 +170,12 @@ describe Admin::ProjectsController do
 
       # staff
       staff_person = create(:person)
+      staff_address = create(:fe_address, person: staff_person, address_type: 'current')
+      staff_staff = create(:sp_staff, person: staff_person, year: year, type: 'Staff', sp_project: project)
+      
+      # staff
+      staff_person = create(:person)
+      staff_address = create(:fe_address, person: staff_person, address_type: 'emergency1')
       staff_staff = create(:sp_staff, person: staff_person, year: year, type: 'Staff', sp_project: project)
 
       # volunteers
@@ -308,7 +398,7 @@ describe Admin::ProjectsController do
     it "should send email successfully" do
       # include one invalid email to cover more code
       p = create(:sp_project)
-      post :send_email, id: p.id, from: "test@cru.org", to: "a@b.com,c@d.com,invalid@email:com"
+      post :send_email, id: p.id, from: "test@cru.org", to: "<a@b.com,c@d.com> A B, invalid@email:com"
     end
     it "should handle a failed email send" do
       # include one invalid email to cover more code

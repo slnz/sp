@@ -75,4 +75,43 @@ describe SpStaff do
       expect(atts.class).to be(Hash)
     end
   end
+
+  context '#field_roles' do
+    it 'should return an array of strings' do
+      expect(Staff.field_roles.class).to be Array
+      expect(Staff.field_roles.collect(&:class).uniq).to eq([String])
+    end
+  end
+
+  context '#strategy_order' do
+    it 'should return an array of strings' do
+      expect(Staff.strategy_order.class).to be Array
+      expect(Staff.strategy_order.collect(&:class).uniq).to eq([String])
+    end
+  end
+
+  context '#strategies' do
+    it 'should return a hash of strings to strings' do
+      strategies = Staff.strategies
+      expect(strategies.class).to be Hash
+      expect(strategies.keys.collect(&:class).uniq).to eq([String])
+      expect(strategies.values.collect(&:class).uniq).to eq([String])
+    end
+  end
+
+  context '#staff_positions' do
+    it 'should return a hash of strings to strings' do
+      staff_positions = Staff.staff_positions
+      expect(staff_positions.class).to be Array
+      expect(staff_positions.collect(&:class).uniq).to eq([String])
+    end
+  end
+
+  context '#specialty_roles' do
+    it 'should work' do
+      s = create(:staff, jobStatus: "Staff Full Time", ministry: "Campus Ministry", removedFromPeopleSoft: "N", jobTitle: "Specialty Title")
+      expect(Staff.specialty_roles.length).to eq(1)
+      expect(Staff.specialty_roles.first).to eq(s)
+    end
+  end
 end
