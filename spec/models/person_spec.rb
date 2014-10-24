@@ -437,4 +437,10 @@ describe Person do
       p.async_push_to_global_registry
     end
   end
+
+  context 'Person#global_registry_entity_type_name' do
+    it 'should return a string' do
+      expect(Person.global_registry_entity_type_name.class).to be String
+    end
+  end
 end

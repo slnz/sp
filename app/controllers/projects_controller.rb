@@ -115,19 +115,15 @@ class ProjectsController < ApplicationController
         conditions[0] = conditions[0].join(' AND ')
         conditions.flatten!
 
-        if conditions[0].empty?
-          @projects = []
+        @searched = true
+        if params[:all] == 'true'
+          @projects = SpProject.current
         else
-          @searched = true
-          if params[:all] == 'true'
-            @projects = SpProject.current
-          else
-            @projects = SpProject.open
-          end
-          @projects = @projects.where(conditions)
-                               .includes(:primary_ministry_focus, :ministry_focuses)
-                               .order('sp_projects.name, sp_projects.year')
+          @projects = SpProject.open
         end
+        @projects = @projects.where(conditions)
+                             .includes(:primary_ministry_focus, :ministry_focuses)
+                             .order('sp_projects.name, sp_projects.year')
       end
       respond_to do |format|
         format.html do
@@ -144,7 +140,7 @@ class ProjectsController < ApplicationController
 
   def markers
     conditions = [[],[]]
-    conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
+    conditions[0] << "#{SpProject.table_name}.show_on_website = true"
     conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_student_men_applicants + #{SpProject.table_name}.max_student_women_applicants)"
     conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
     conditions[0] << "#{SpProject.table_name}.apply_by_date >= ?"
@@ -166,10 +162,6 @@ class ProjectsController < ApplicationController
         conditions[0] << condition
         conditions[1] << focus.id
       end
-    end
-
-    def get_regions
-      @region_options = Region.all.map(&:region)
     end
 
     def get_project_type_condition

@@ -91,9 +91,14 @@ describe ApplicationsController do
       session[:user_id] = user.id
 
       basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
-      create(:page, question_sheet: basic_info_qs)
+      create(:page, question_sheet: basic_info_qs, label: 'Questions')
+      create(:page, question_sheet: basic_info_qs, label: 'Instructions')
       template_info_qs = create(:question_sheet, label: "template_question_sheet")
       create(:page, question_sheet: template_info_qs)
+      pp_qs = create(:question_sheet, label: "project_specific_question_sheet")
+      pp_qs_page = create(:page, question_sheet: pp_qs)
+      pp_qs_element = create(:text_field_element)
+      create(:page_element, page: pp_qs_page, element: pp_qs_element)
 
       project = create(:sp_project,
                        year: Date.today.year,
@@ -103,7 +108,8 @@ describe ApplicationsController do
                        use_provided_application: true,
                        project_status: 'closed',
                        basic_info_question_sheet: basic_info_qs,
-                       template_question_sheet: template_info_qs
+                       template_question_sheet: template_info_qs,
+                       project_specific_question_sheet: pp_qs
       )
 
       application = create(:sp_application,
@@ -120,6 +126,44 @@ describe ApplicationsController do
       expect(r.status).to eq(200)
     end
 
+    it 'should resume an application and handle an IndexError at AnswerPagesPresenter#initialize_pages' do
+      applicant = create(:person)
+      user = create(:user, person: applicant)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      pp_qs = create(:question_sheet, label: "project_specific_question_sheet")
+      pp_qs_page = create(:page, question_sheet: pp_qs)
+      pp_qs_element = create(:text_field_element)
+      create(:page_element, page: pp_qs_page, element: pp_qs_element)
+
+      project = create(:sp_project,
+                       year: Date.today.year,
+                       start_date: 1.month.from_now,
+                       end_date: 2.months.from_now,
+                       open_application_date: 30.days.ago,
+                       use_provided_application: true,
+                       project_status: 'closed',
+                       basic_info_question_sheet: basic_info_qs,
+                       template_question_sheet: template_info_qs,
+                       project_specific_question_sheet: pp_qs
+      )
+
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'started'
+      )
+
+      qs_as1 = create(:answer_sheet_question_sheet, answer_sheet: application, question_sheet: basic_info_qs)
+      qs_as2 = create(:answer_sheet_question_sheet, answer_sheet: application, question_sheet: template_info_qs)
+
+      get(:apply)
+      r = get(:apply, p: project.id)
+      expect(r.status).to eq(200)
+    end
     it 'should fix the question sheets on an improperly configured application' do
       applicant = create(:person)
       user = create(:user, person: applicant)

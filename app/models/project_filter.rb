@@ -28,7 +28,7 @@ class ProjectFilter
     end
 
     if @filters[:status]
-      filtered_projects = filtered_projects.where("#{SpProject.table_name}.status" => @filters[:status].split(',').collect(&:strip))
+      filtered_projects = filtered_projects.where("#{SpProject.table_name}.project_status" => @filters[:status].split(',').collect(&:strip))
     end
 
     if @filters[:year]
