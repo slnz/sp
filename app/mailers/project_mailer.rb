@@ -1,5 +1,5 @@
 class ProjectMailer < ActionMailer::Base
-  default :from => "Summer Projects <gosummerproject@cru.org>"
+  default :from => "Summer Projects <summer.missions@cru.org>"
   
   def team_email(to, from, reply_to, cc, files, subject, body)
     files.each do |file|

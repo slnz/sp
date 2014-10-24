@@ -91,7 +91,7 @@ class PaymentsController < ApplicationController
       staff_payment_processed_email(@payment)
     when 'Mail'
       Notifier.notification(@application.email, # RECIPIENTS
-                            "gosummerproject@cru.org", # FROM
+                            "summer.missions@cru.org", # FROM
                             "Check Received", # LIQUID TEMPLATE NAME
                             {'name' => @application.name}).deliver
     end
@@ -127,7 +127,7 @@ class PaymentsController < ApplicationController
       staff = Staff.find_by(accountNo: payment.payment_account_no)
       raise "Invalid staff payment request: " + payment.inspect if staff.nil?
       Notifier.notification(staff.email, # RECIPIENTS
-                                    "gosummerproject@cru.org", # FROM
+                                    "summer.missions@cru.org", # FROM
                                     "Staff Payment Request", # LIQUID TEMPLATE NAME
                                     {'staff_full_name' => staff.informal_full_name, # HASH OF VALUES FOR REPLACEMENT IN LIQUID TEMPLATE
                                      'applicant_full_name' => @person.informal_full_name, 
@@ -150,11 +150,11 @@ class PaymentsController < ApplicationController
       if payment.approved?
         # Send receipt to applicant
         Notifier.notification(@application.email, # RECIPIENTS
-                              "gosummerproject@cru.org", # FROM
+                              "summer.missions@cru.org", # FROM
                               "Applicant Staff Payment Receipt", # LIQUID TEMPLATE NAME
                               {'applicant_full_name' => @application.name}).deliver
         # Send notice to Tool Owner
-        Notifier.notification("gosummerproject@cru.org", # RECIPIENTS - HARD CODED!
+        Notifier.notification("summer.missions@cru.org", # RECIPIENTS - HARD CODED!
                               "help@cru.org", # FROM
                               "Tool Owner Payment Confirmation", # LIQUID TEMPLATE NAME
                               {'payment_amount' => "$" + @payment.amount.to_s,
@@ -164,7 +164,7 @@ class PaymentsController < ApplicationController
       else
         # Sent notice to applicant that payment was declined
         Notifier.notification(@application.email, # RECIPIENTS
-                              "gosummerproject@cru.org", # FROM
+                              "summer.missions@cru.org", # FROM
                               "Payment Refusal", # LIQUID TEMPLATE NAME
                               {'applicant_full_name' => @application.name}).deliver
       end
