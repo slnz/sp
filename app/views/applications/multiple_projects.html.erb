@@ -9,7 +9,7 @@
       </ul>
   <% else %>
       <p>
-        Your application to <%= @current_project.name %> has already been completed. If you need to change which project you're applying to, please
+        Your application to <%= @current_project.name %> has already been completed. If you need to change which mission you're applying to, please
         <% if @current_project.contact %>
             contact <%= @current_project.contact.informal_full_name %> at <%= @current_project.contact.email %>
         <% else %>
