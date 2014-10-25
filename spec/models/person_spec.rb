@@ -380,20 +380,6 @@ describe Person do
     end
   end
 
-=begin
-  context '#account_balance' do
-    it "should return nil if no user" do
-      p = create(:person)
-      expect(p.account_balance).to be nil
-    end
-    it "should return nil if no balance_bookmark" do
-      p = create(:person)
-      u = create(:user, person: p)
-      expect(p.account_balance).to be nil
-    end
-  end
-=end
-
   context '#async_push_to_global_registry' do
     it 'should work' do
       GlobalRegistry.access_token = 'access_token'

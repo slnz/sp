@@ -59,10 +59,69 @@
       #DatabaseCleaner.clean_with(:truncation)
     end
 
+    config.before(:all) do
+      # this is much easier than stub_request for all the global registry calls
+      # and mocks/stubs aren't working because the calls in the methods are super
+      
+      CruLib::GlobalRegistryMethods.class_eval do
+        def async_push_to_global_registry(*args)
+          $async_push_to_global_registry_reached = true
+          $async_push_to_global_registry_args = *args
+        end
+      end
+
+      CruLib::GlobalRegistryMethods::ClassMethods.class_eval do
+        def push_structure_to_global_registry(*args)
+          $push_structure_to_global_registry_reached = true
+          $push_structure_to_global_registry_args = *args
+        end
+      end
+      CruLib::GlobalRegistryRelationshipMethods::ClassMethods.class_eval do
+        def push_structure_to_global_registry(*args)
+          $push_structure_to_global_registry_reached = true
+          $push_structure_to_global_registry_args = *args
+        end
+      end
+      CruLib::GlobalRegistryRelationshipMethods.class_eval do
+        def attributes_to_push(*args)
+          $attributes_to_push_reached = true
+          $attributes_to_push_args = args
+          $attributes_to_push_response ||= {}
+        end
+      end
+      CruLib::GlobalRegistryMethods.class_eval do
+        def attributes_to_push(*args)
+          $attributes_to_push_reached = true
+          $attributes_to_push_args = args
+          $attributes_to_push_response ||= {}
+        end
+      end
+      CruLib::GlobalRegistryRelationshipMethods.class_eval do
+        def create_in_global_registry(*args)
+          $created_in_global_registry_reached = true
+          $created_in_global_registry_args = args
+        end
+      end
+      CruLib::GlobalRegistryRelationshipMethods::ClassMethods.class_eval do
+        def create_in_global_registry(*args)
+          $created_in_global_registry_reached = true
+          $created_in_global_registry_args = args
+        end
+      end
+    end
+
     config.before(:each) do
+      # reset global registry reached vars
+      $async_push_to_global_registry_reached = false
+      $async_push_to_global_registry_args = nil
+      $push_structure_to_global_registry_reached = false
+      $push_structure_to_global_registry_args = nil
+      $attributes_to_push_reached = false
+      $attributes_to_push_args = nil
+
       DatabaseCleaner.start
       Rails.cache.clear
-      @geocode_body = %|
+      @geocode_body ||= %|
 {
    "results" : [
       {

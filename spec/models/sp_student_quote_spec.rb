@@ -12,53 +12,21 @@ describe SpStudentQuote do
   end
 
   context '#async_push_to_global_registry' do
-    before(:each) do
-      $super_reached = false
-      # this is easier than stub_request for all the global registry calls
-      CruLib::GlobalRegistryMethods.class_eval do
-        def async_push_to_global_registry(a, b, c)
-          $a = a
-          $b = b
-          $c = c
-        end
-      end
-    end
-
     it 'should work' do
-      $a = $b = $c = nil
       @sp_student_quote.async_push_to_global_registry
-      expect($a).to eq(@project.global_registry_id)
-      expect($b).to eq('summer_project')
-      expect($c).to eq(@project)
+      expect($async_push_to_global_registry_args.first).to eq(@project.global_registry_id)
+      expect($async_push_to_global_registry_args.second).to eq('summer_project')
+      expect($async_push_to_global_registry_args.third).to eq(@project)
     end
   end
 
   context '#push_structure_to_global_registry' do
-    before(:each) do
-      CruLib::GlobalRegistryMethods::ClassMethods.class_eval do
-        def push_structure_to_global_registry(parent_id = nil)
-          $super_reached = true
-        end
-      end
-    end
     it 'should work' do
       $super_reached = false
       stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=summer_project").
         to_return(:status => 200, :body => '{ "entity_types": [ { "fields": [ { "id": "id123" } ] } ] }', :headers => {})
       SpStudentQuote.push_structure_to_global_registry
-      expect($super_reached).to be true
-    end
-  end
-
-  context '#attributes_to_push' do
-    before(:each) do
-      CruLib::GlobalRegistryMethods.class_eval do
-        def attributes_to_push(*args)
-          $super_reached = true
-          $args = args
-          {}
-        end
-      end
+      expect($push_structure_to_global_registry_reached).to be true
     end
   end
 

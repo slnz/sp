@@ -26,23 +26,13 @@ describe SpStaff do
   end
 
   context '#async_push_to_global_registry' do
-    before(:each) do
-      $super_reached = false
-      # this is easier than stub_request for all the global registry calls
-      CruLib::GlobalRegistryMethods.class_eval do
-        def async_push_to_global_registry
-          $super_reached = true
-        end
-      end
-    end
-
     it 'should push person and sp_project if neither already have a global_registry_id' do
       allow(@staff).to receive(:person).and_return(@person)
       expect(@person).to receive(:async_push_to_global_registry)
       allow(@staff).to receive(:sp_project).and_return(@project)
       expect(@project).to receive(:async_push_to_global_registry)
       @staff.async_push_to_global_registry
-      expect($super_reached).to be true
+      expect($async_push_to_global_registry_reached).to be true
     end
     it 'should not push person if there is already a global_registry_id for it' do
       @person.update_column(:global_registry_id, '12345')
@@ -51,7 +41,7 @@ describe SpStaff do
       allow(@staff).to receive(:sp_project).and_return(@project)
       expect(@project).to receive(:async_push_to_global_registry)
       @staff.async_push_to_global_registry
-      expect($super_reached).to be true
+      expect($async_push_to_global_registry_reached).to be true
     end
     it 'should not push person if there is already a global_registry_id for it' do
       @project.update_column(:global_registry_id, '12345')
@@ -60,7 +50,7 @@ describe SpStaff do
       allow(@staff).to receive(:sp_project).and_return(@project)
       expect(@project).to_not receive(:async_push_to_global_registry)
       @staff.async_push_to_global_registry
-      expect($super_reached).to be true
+      expect($async_push_to_global_registry_reached).to be true
     end
   end
 

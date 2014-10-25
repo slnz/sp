@@ -12,33 +12,16 @@ describe PhoneNumber do
   end
 
   context '#async_push_to_global_registry' do
-    before(:each) do
-      $super_reached = false
-      # this is easier than stub_request for all the global registry calls
-      CruLib::GlobalRegistryMethods.class_eval do
-        def async_push_to_global_registry(parent_id = nil, parent_type = 'person')
-          $super_reached = true
-        end
-      end
-    end
-
     it 'should push ministry_focus and project if neither already have a global_registry_id' do
       allow(@phone_number).to receive(:person).and_return(@person)
       expect(@person).to receive(:async_push_to_global_registry)
       $super_reached = false
       @phone_number.async_push_to_global_registry
-      expect($super_reached).to be true
+      expect($async_push_to_global_registry_reached).to be true
     end
   end
 
   context '#push_structure_to_global_registry' do
-    before(:each) do
-      CruLib::GlobalRegistryMethods::ClassMethods.class_eval do
-        def push_structure_to_global_registry(parent_id = nil)
-          $super_reached = true
-        end
-      end
-    end
     it 'should work' do
       $super_reached = false
       stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=person").
@@ -46,7 +29,7 @@ describe PhoneNumber do
       stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=phone_number&filters%5Bparent_id%5D=12345").
         to_return(:status => 200, :body => '{ "entity_types": [ { "fields": [ { "name": "something" } ] } ] }', :headers => {})
       PhoneNumber.push_structure_to_global_registry
-      expect($super_reached).to be true
+      expect($push_structure_to_global_registry_reached).to be true
     end
   end
 
