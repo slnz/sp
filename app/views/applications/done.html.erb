@@ -1,14 +1,17 @@
-<h1>Congratulations! You have successfully completed your part of the application!</h1>
+<div class="panel">
+  <h1>Congratulations! You have successfully completed your part of the application!</h1>
 
-<p>Thanks for your faithfulness in finishing this step. </p>
+  <p>Thanks for your faithfulness in finishing this step. </p>
 
-<p>Please remember, in order to meet the different deadlines, you need all your references submitted by the deadline date.</p>
+  <p>Please remember, in order to meet the different deadlines, you need all your references submitted by the deadline date.</p>
 
-<p>You can check the status of each of these references on your application status page. Simply return to gosummerproject.com and click the My Application Status in upper right hand corner.</p>
+  <p>You can check the status of each of these references on your application status page. Simply return to
+    <a href="http://cru.org/summer" target="_blank">www.cru.org/summer</a> and click the My Application Status in upper right hand corner.</p>
 
-<p>We look forward to trusting God alongside of you the rest of this process. </p>
+  <p>We look forward to trusting God alongside of you the rest of this process. </p>
 
-<p><br/><%= link_to('Click here to go to your application status page.', application_path(@application), :class => 'successreturn') %></p>
+  <p><br/><%= link_to('Click here to go to your application status page.', application_path(@application), :class => 'button cru-gold no-left-margin') %></p>
 
 
-<a href="http://www.facebook.com/sharer.php?u=http://www.gosummerproject.com/"><img src="<%= asset_path('frontend/facebook_share.gif') %>" alt="Share on Facebook" border="0" /></a>
+  <a href="http://www.facebook.com/sharer.php?u=http://www.gosummerproject.com/"><img src="<%= asset_path('frontend/facebook_share.gif') %>" alt="Share on Facebook" border="0" /></a>
+</div>

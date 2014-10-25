@@ -338,3 +338,44 @@ body#applications.multiple_projects {
     background-color: white;
   }
 }
+
+// Submission Errors
+.submission_errors {
+  ul li.incomplete {
+    display: inline-block;
+    padding-right: 30px;
+    background: url("/assets/icons/flag.png") no-repeat 100% 50%;
+  }
+}
+
+// Application Done
+body#applications.done {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+}
+
+// Application Section -- Basic Information
+body#applications.apply {
+  ul.questions#questions_list {
+    li .row[id^="element_"] {
+      margin: 0 auto;
+      max-width: auto;
+      padding-right: 15px;
+    }
+
+    li[id^="element_"] select + input.button[type="button"] {
+      margin-bottom: 5px;
+      padding: 9px 20px;
+    }
+
+    li[id^="element_"] [id^="choice_field_"] label {
+      display: inline;
+    }
+
+    li[id^="element_"] [id^="choice_field_"] input[type="radio"] {
+      float: none;
+    }
+  }
+}
