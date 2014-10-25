@@ -391,3 +391,41 @@ body#authentications.index {
     padding: 15px;
   }
 }
+
+// Application Status
+body#applications.show {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+
+  #progress-box {
+    padding: 15px;
+    background-color: #FFFFFF;
+    width: 290px;
+
+    table {
+      border: none;
+
+      tr:nth-of-type(even) {
+        background: transparent;
+      }
+    }
+  }
+
+  #projectsummary {
+    width: 689px;
+
+    table {
+      border: none;
+
+      tr {
+        padding: 15px 0 0 0 !important;
+
+        &:nth-of-type(even) {
+          background: transparent;
+        }
+      }
+    }
+  }
+}

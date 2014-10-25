@@ -1,120 +1,118 @@
-<div class="pagepad status-page">
-  <h2 class="green">Hello <%= @application.name %>,</h2>
-  
+<div class="panel tile">
+  <h4>Hello <%= @application.name %>,</h4>
+
   <p>
-    You applied to <strong><%= @application.project.name %>!</strong> Here 
-    are some details about your application that will be updated as progress is made. 
+    You applied to <strong><%= @application.project.name %>!</strong> Here
+    are some details about your application that will be updated as progress is made.
     If you have questions, you can reach your future mission directors using their contact information
     below. We look forward to serving with you this summer!
   </p>
-  
-  <div id="progressbox">
-    <h2>Your Progress</h2>
-    <table class="statuswait">
-      <tbody>
-        <tr>
-          <td class="fieldname fieldbold">Status:</td>
-          <td class="value"><%= @application.status.to_s.titleize %></td>
-        </tr>
-        <tr>
-          <td class="fieldname fieldbold">Paid:</td>
-          <td class="value"><%= @application.has_paid? ? 'Yes' : 'No' %></td>
-        </tr>
-        <tr>
-          <td colspan="2" class="divide"></td>
-        </tr>
-        <tr>
-          <td class="fieldname fieldbold">
-					</td>
-          <td class="value"></td>
-        </tr>
-        <% @application.sp_references.each do |reference| %>
-          <% if reference.name.present? %>
+</div>
+
+<div class="panel left tile" id="progress-box">
+  <h4>Your Progress</h4>
+  <table class="statuswait">
+    <tbody>
+    <tr>
+      <td class="fieldname fieldbold">Status:</td>
+      <td class="value"><%= @application.status.to_s.titleize %></td>
+    </tr>
+    <tr>
+      <td class="fieldname fieldbold">Paid:</td>
+      <td class="value"><%= @application.has_paid? ? 'Yes' : 'No' %></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="divide"></td>
+    </tr>
+    <tr>
+      <td class="fieldname fieldbold">
+      </td>
+      <td class="value"></td>
+    </tr>
+    <% @application.sp_references.each do |reference| %>
+        <% if reference.name.present? %>
             <tr>
               <td class="fieldname fieldbold"><%= reference.name %></td>
               <td class="value"><%= reference.status.to_s.titleize %></td>
             </tr>
-          <% end %>
         <% end %>
-				<% if @application.can_change_references? %>
-          <tr>
-            <td colspan="2">
-  						<%= link_to('Edit your references\' information', edit_application_path(@application)) %>
-  				  </td>
-  				</tr>
-				<% end %>
+    <% end %>
+    <% if @application.can_change_references? %>
         <tr>
-          <td colspan="2" class="divide"></td>
+          <td colspan="2">
+            <%= link_to('Edit your references\' information', edit_application_path(@application)) %>
+          </td>
         </tr>
-<!--        <tr>
-          <td class="fieldname fieldbold">Dollars Raised:</td>
-          <td class="value">VALUE HERE</td>
-        </tr> -->
-				<% if @application.can_change_references? %>
-					<tr>
-	          <td colspan="2">
-							<%= link_to('If you\'d like to change which mission you are applying for, click here.', '/projects') %>
-							<%= tip('If you decide you want to switch your mission preference, you may be required to fill out additional questions since not every project has the same exact application. Be aware of the timing in light of the deadlines, and that projects may fill up the later you finish this second application.') %>
-						</td>
-	        </tr>
-				<% end %>
-      </tbody>
-    </table>
-  </div>
-  
-  <div id="projectsummary">
-    <h2>Your Directors</h2>
-    <table class="statuswait">
-      <tbody>
-        <% if @application.project.pd.present? %>
-          <tr>
-            <td class="fieldname fieldbold">Mission Director:</td>
-            <td class="value"><%= @application.project.pd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.pd.email}") %></td>
-          </tr>
-        <% end %>
-        <% if @application.project.apd.present? %>
-          <tr>
-            <td class="fieldname fieldbold">Assistant Mission Director:</td>
-            <td class="value"><%= @application.project.apd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.apd.email}") %></td>
-          </tr>
-        <% end %>
-        <% if @application.project.opd.present? %>
-          <tr>
-            <td class="fieldname fieldbold">Operations Mission Director:</td>
-            <td class="value"><%= @application.project.opd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.opd.email}") %></td>
-          </tr>
-        <% end %>
-        <% if @application.project.coordinator.present? %>
-          <tr>
-            <td class="fieldname fieldbold">Coordinator:</td>
-            <td class="value"><%= @application.project.coordinator.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.coordinator.email}") %></td>
-          </tr>
-        <% end %>
-        
+    <% end %>
+    <tr>
+      <td colspan="2" class="divide"></td>
+    </tr>
+    <!--        <tr>
+              <td class="fieldname fieldbold">Dollars Raised:</td>
+              <td class="value">VALUE HERE</td>
+            </tr> -->
+    <% if @application.can_change_references? %>
         <tr>
-          <td colspan="2" class="divide"></td>
+          <td colspan="2">
+            <%= link_to('If you\'d like to change which mission you are applying for, click here.', '/projects') %>
+            <%= tip('If you decide you want to switch your mission preference, you may be required to fill out additional questions since not every project has the same exact application. Be aware of the timing in light of the deadlines, and that projects may fill up the later you finish this second application.') %>
+          </td>
         </tr>
-        <% if @application.project.student_cost.to_i > 0 %>
-          <tr>
-            <td class="fieldname fieldbold">Mission Cost:</td>
-            <td class="value"><%= number_to_currency(@application.project.student_cost, :precision => 0) %></td>
-          </tr>
-        <% end %>
-        <% if @application.project.start_date && @application.project.end_date %>
-          <tr>
-            <td class="fieldname fieldbold">Mission Dates:</td>
-            <td class="value"><%= l(@application.project.start_date) %> &mdash; <%= l(@application.project.end_date) %></td>
-          </tr>
-        <% end %>
-        <tr>
-          <td class="fieldname fieldbold">Mission Overview:</td>
-          <td class="value"><%= raw @application.project.description %></td>
-        </tr>
-        
-      </tbody>
-    </table>
-  </div>
-  
-  <div class="clear"></div>
-
+    <% end %>
+    </tbody>
+  </table>
 </div>
+
+<div class="panel right tile" id="projectsummary">
+  <h4>Your Directors</h4>
+  <table class="statuswait">
+    <tbody>
+    <% if @application.project.pd.present? %>
+        <tr>
+          <td class="fieldname fieldbold">Mission Director:</td>
+          <td class="value"><%= @application.project.pd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.pd.email}") %></td>
+        </tr>
+    <% end %>
+    <% if @application.project.apd.present? %>
+        <tr>
+          <td class="fieldname fieldbold">Assistant Mission Director:</td>
+          <td class="value"><%= @application.project.apd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.apd.email}") %></td>
+        </tr>
+    <% end %>
+    <% if @application.project.opd.present? %>
+        <tr>
+          <td class="fieldname fieldbold">Operations Mission Director:</td>
+          <td class="value"><%= @application.project.opd.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.opd.email}") %></td>
+        </tr>
+    <% end %>
+    <% if @application.project.coordinator.present? %>
+        <tr>
+          <td class="fieldname fieldbold">Coordinator:</td>
+          <td class="value"><%= @application.project.coordinator.to_s %> <%= link_to(image_tag("icons/mail.png"), "mailto:#{@application.project.coordinator.email}") %></td>
+        </tr>
+    <% end %>
+
+    <tr>
+      <td colspan="2" class="divide"></td>
+    </tr>
+    <% if @application.project.student_cost.to_i > 0 %>
+        <tr>
+          <td class="fieldname fieldbold">Mission Cost:</td>
+          <td class="value"><%= number_to_currency(@application.project.student_cost, :precision => 0) %></td>
+        </tr>
+    <% end %>
+    <% if @application.project.start_date && @application.project.end_date %>
+        <tr>
+          <td class="fieldname fieldbold">Mission Dates:</td>
+          <td class="value"><%= l(@application.project.start_date) %> &mdash; <%= l(@application.project.end_date) %></td>
+        </tr>
+    <% end %>
+    <tr>
+      <td class="fieldname fieldbold">Mission Overview:</td>
+      <td class="value"><%= raw @application.project.description %></td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+
