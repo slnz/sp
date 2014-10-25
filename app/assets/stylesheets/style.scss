@@ -379,3 +379,11 @@ body#applications.apply {
     }
   }
 }
+
+// Application Login Page
+body#authentications.index {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+}
