@@ -16,16 +16,16 @@ class SpProject < ActiveRecord::Base
                         :project_contact_name, :project_contact_role, :project_contact_phone, :project_contact_email, :url, :url_title, :ds_project_code,
                         :facebook_url, :blog_url, :blog_title, :project_contact2_name, :project_contact2_role, :project_contact2_phone, :project_contact2_email
 
-  has_attached_file :picture, :styles => { :medium => "500x300>", :thumb => "100x100>" },
-    :storage => :s3,
-    :s3_credentials => Rails.root.join("config/amazon_s3.yml"),
-    :path => "sp/project/:attachment/:id/:filename"
+  has_attached_file :picture, :styles => { medium: '500x300>', thumb: '100x100>' },
+                    storage: :s3,
+                    s3_credentials: Rails.root.join('config/amazon_s3.yml'),
+                    path: 'sp/project/:attachment/:id/:filename'
 
-  has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" },
-    :storage => :s3,
-    :s3_protocol => 'https',
-    :s3_credentials => Rails.root.join("config/amazon_s3.yml"),
-    :path => "sp/project/:attachment/:id/:filename"
+  has_attached_file :logo, styles: { medium: '300x300>', thumb: '100x100>' },
+                    storage: :s3,
+                    s3_protocol: 'https',
+                    s3_credentials: Rails.root.join('config/amazon_s3.yml'),
+                    path: 'sp/project/:attachment/:id/:filename'
 
   validates_attachment_size :picture, :less_than => 1.megabyte, :message => "can't be more than 1MB"
   validates_attachment_size :logo, :less_than => 1.megabyte, :message => "can't be more than 1MB"
@@ -38,9 +38,9 @@ class SpProject < ActiveRecord::Base
   belongs_to :created_by, :class_name => "::Person", :foreign_key => "created_by_id"
   belongs_to :updated_by, :class_name => "::Person", :foreign_key => "updated_by_id"
 
-  belongs_to :basic_info_question_sheet, :class_name => "QuestionSheet", :foreign_key => "basic_info_question_sheet_id"
-  belongs_to :template_question_sheet, :class_name => "QuestionSheet", :foreign_key => "template_question_sheet_id"
-  belongs_to :project_specific_question_sheet, :class_name => "QuestionSheet", :foreign_key => "project_specific_question_sheet_id"
+  belongs_to :basic_info_question_sheet, :class_name => "Fe::QuestionSheet", :foreign_key => "basic_info_question_sheet_id"
+  belongs_to :template_question_sheet, :class_name => "Fe::QuestionSheet", :foreign_key => "template_question_sheet_id"
+  belongs_to :project_specific_question_sheet, :class_name => "Fe::QuestionSheet", :foreign_key => "project_specific_question_sheet_id"
 
   has_many   :stats, :class_name => "SpStat", :foreign_key => "project_id"
   belongs_to :primary_ministry_focus, :class_name => 'SpMinistryFocus', :foreign_key => :primary_ministry_focus_id
@@ -109,20 +109,20 @@ class SpProject < ActiveRecord::Base
   scope :open, -> { where("project_status = 'open'") }
   scope :ascend_by_name, -> { order(:name) }
   scope :descend_by_name, -> { order("name desc") }
-  scope :ascend_by_pd, -> { order(Person.table_name + '.lastName, ' + Person.table_name + '.firstName').where('sp_staff.type' => 'PD').joins({:sp_staff => :person}) }
-  scope :descend_by_pd, -> { order(Person.table_name + '.lastName desc, ' + Person.table_name + '.firstName desc').where('sp_staff.type' => 'PD').joins({:sp_staff => :person}) }
-  scope :ascend_by_apd, -> { order(Person.table_name + '.lastName, ' + Person.table_name + '.firstName').where('sp_staff.type' => 'APD').joins({:sp_staff => :person}) }
-  scope :descend_by_apd, -> { order(Person.table_name + '.lastName desc, ' + Person.table_name + '.firstName desc').where('sp_staff.type' => 'APD').joins({:sp_staff => :person}) }
-  scope :ascend_by_opd, -> { order(Person.table_name + '.lastName, ' + Person.table_name + '.firstName').where('sp_staff.type' => 'OPD').joins({:sp_staff => :person}) }
-  scope :descend_by_opd, -> { order(Person.table_name + '.lastName desc, ' + Person.table_name + '.firstName desc').where('sp_staff.type' => 'OPD').joins({:sp_staff => :person}) }
+  scope :ascend_by_pd, -> { order(Person.table_name + '.last_name, ' + Person.table_name + '.first_name').where('sp_staff.type' => 'PD').joins({:sp_staff => :person}) }
+  scope :descend_by_pd, -> { order(Person.table_name + '.last_name desc, ' + Person.table_name + '.first_name desc').where('sp_staff.type' => 'PD').joins({:sp_staff => :person}) }
+  scope :ascend_by_apd, -> { order(Person.table_name + '.last_name, ' + Person.table_name + '.first_name').where('sp_staff.type' => 'APD').joins({:sp_staff => :person}) }
+  scope :descend_by_apd, -> { order(Person.table_name + '.last_name desc, ' + Person.table_name + '.first_name desc').where('sp_staff.type' => 'APD').joins({:sp_staff => :person}) }
+  scope :ascend_by_opd, -> { order(Person.table_name + '.last_name, ' + Person.table_name + '.first_name').where('sp_staff.type' => 'OPD').joins({:sp_staff => :person}) }
+  scope :descend_by_opd, -> { order(Person.table_name + '.last_name desc, ' + Person.table_name + '.first_name desc').where('sp_staff.type' => 'OPD').joins({:sp_staff => :person}) }
   scope :not_full_men, -> { where("current_students_men < max_accepted_men AND max_student_men_applicants > current_applicants_men") }
   scope :not_full_women, -> { where("current_students_women < max_accepted_women AND max_student_women_applicants > current_applicants_women") }
   scope :has_chart_field, -> { where("operating_business_unit is not null AND operating_business_unit <> '' AND operating_operating_unit is not null AND operating_operating_unit <> '' AND operating_department is not null AND operating_department <> ''") }
   scope :missing_chart_field, -> { where("operating_business_unit is null OR operating_business_unit = '' OR operating_operating_unit is null OR operating_operating_unit = '' OR operating_department is null OR operating_department = ''") }
 
-  scope :pd_like, lambda {|name| where(Person.table_name + '.lastName LIKE ? OR ' + Person.table_name + '.firstName LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'PD').joins({:sp_staff => :person})}
-  scope :apd_like, lambda {|name| where(Person.table_name + '.lastName LIKE ? OR ' + Person.table_name + '.firstName LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'APD').joins({:sp_staff => :person})}
-  scope :opd_like, lambda {|name| where(Person.table_name + '.lastName LIKE ? OR ' + Person.table_name + '.firstName LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'OPD').joins(:sp_staff)}
+  scope :pd_like, lambda {|name| where(Person.table_name + '.last_name LIKE ? OR ' + Person.table_name + '.first_name LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'PD').joins({:sp_staff => :person})}
+  scope :apd_like, lambda {|name| where(Person.table_name + '.last_name LIKE ? OR ' + Person.table_name + '.first_name LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'APD').joins({:sp_staff => :person})}
+  scope :opd_like, lambda {|name| where(Person.table_name + '.last_name LIKE ? OR ' + Person.table_name + '.first_name LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'OPD').joins(:sp_staff)}
 
 
   before_create :set_to_open
@@ -185,15 +185,15 @@ class SpProject < ActiveRecord::Base
     !!SpProject.current.find_by_id(id)
   end
 
-  def gospel_in_aciton_ids=(ids)
+  def gospel_in_action_ids=(ids)
     self.gospel_in_actions = SpGospelInAction.find(ids)
   end
 
   def applicants(yr = nil)
     yr ||= year
     @applicants ||= {}
-    @applicants[yr] ||= Person.where(:personid => sp_applications.accepted.for_year(yr).collect(&:person_id)).
-      order('lastName, firstName')
+    @applicants[yr] ||= Person.where(:id => sp_applications.accepted.for_year(yr).collect(&:person_id)).
+      order('last_name, first_name')
   end
 
   # Leadership
@@ -220,46 +220,46 @@ class SpProject < ActiveRecord::Base
   def staff(yr = nil)
     yr ||= year
     @staff ||= {}
-    @staff[yr] ||= Person.where(:personid => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Staff'}.collect(&:person_id)).
+    @staff[yr] ||= Person.where(:id => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Staff'}.collect(&:person_id)).
       includes(:current_address).
-      order('lastName, firstName')
+      order('last_name, first_name')
   end
   def volunteers(yr = nil)
     yr ||= year
     @volunteers ||= {}
-    @volunteers[yr] ||= Person.where(:personid => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Volunteer'}.collect(&:person_id)).
+    @volunteers[yr] ||= Person.where(:id => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Volunteer'}.collect(&:person_id)).
       includes(:current_address).
-      order('lastName, firstName')
+      order('last_name, first_name')
   end
   def staff_and_volunteers(yr = nil)
     yr ||= year
     @volunteers ||= {}
-    @volunteers[yr] ||= Person.where(:personid => sp_staff.where('sp_staff.year' => yr).find_all {|s| ['Volunteer', 'Staff'].include?(s.type)}.collect(&:person_id))
+    @volunteers[yr] ||= Person.where(:id => sp_staff.where('sp_staff.year' => yr).find_all {|s| ['Volunteer', 'Staff'].include?(s.type)}.collect(&:person_id))
     .includes(:current_address)
-    .order('lastName, firstName')
+    .order('last_name, first_name')
   end
   def kids(yr = nil)
     yr ||= year
     @kids ||= {}
-    @kids[yr] ||= Person.where(:personid => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Kid'}.collect(&:person_id)).
+    @kids[yr] ||= Person.where(:id => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Kid'}.collect(&:person_id)).
       includes(:current_address).
-      order('lastName, firstName')
+      order('last_name, first_name')
   end
 
   def evaluators(yr = nil)
     yr ||= year
     @evaluators ||= {}
-    @evaluators[yr] ||= Person.where(:personid => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Evaluator'}.collect(&:person_id)).
+    @evaluators[yr] ||= Person.where(:id => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Evaluator'}.collect(&:person_id)).
       includes(:current_address).
-      order('lastName, firstName')
+      order('last_name, first_name')
   end
 
   def non_app_participants(yr = nil)
     yr ||= year
     @non_app_participants ||= {}
-    @non_app_participants[yr] ||= Person.where(:personid => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Non App Participant'}.collect(&:person_id)).
+    @non_app_participants[yr] ||= Person.where(:id => sp_staff.where('sp_staff.year' => yr).find_all {|s| s.type == 'Non App Participant'}.collect(&:person_id)).
       includes(:current_address).
-      order('lastName, firstName')
+      order('last_name, first_name')
   end
 
   def pd=(person_id, yr = nil)
@@ -458,13 +458,13 @@ class SpProject < ActiveRecord::Base
 
   def update_counts(person)
     if person.gender.present?
-      count = SpApplication.connection.select_value("SELECT count(*) from sp_applications a inner join ministry_person p on a.person_id = p.personID where year = #{year} AND status IN('#{SpApplication.ready_statuses.join("','")}') AND p.gender = #{person.gender} AND a.project_id = #{id}")
+      count = SpApplication.connection.select_value("SELECT count(*) from sp_applications a inner join ministry_person p on a.person_id = p.id where year = #{year} AND status IN('#{SpApplication.ready_statuses.join("','")}') AND p.gender = '#{person.gender}' AND a.project_id = #{id}")
       if person.is_male?
         self.current_applicants_men = count
       else
         self.current_applicants_women = count
       end
-      count = SpApplication.connection.select_value("SELECT count(*) from sp_applications a inner join ministry_person p on a.person_id = p.personID where year = #{year} AND status IN('#{SpApplication.accepted_statuses.join("','")}') AND p.gender = #{person.gender} AND a.project_id = #{id}")
+      count = SpApplication.connection.select_value("SELECT count(*) from sp_applications a inner join ministry_person p on a.person_id = p.id where year = #{year} AND status IN('#{SpApplication.accepted_statuses.join("','")}') AND p.gender = '#{person.gender}' AND a.project_id = #{id}")
       if person.is_male?
         self.current_students_men = count
       else
@@ -482,7 +482,7 @@ class SpProject < ActiveRecord::Base
                         .group("project.id")
     projects.each do |project|
       if (project.pd || project.apd)
-        SpProjectMailer.deliver_leader_reminder(project)
+        ProjectMailer.deliver_leader_reminder(project)
       end
     end
   end
@@ -498,7 +498,7 @@ class SpProject < ActiveRecord::Base
       date_to_start = Time.parse('8/15/' + project.year.to_s)
       if (Time.now > date_to_start && project.stat_id.nil?)
         if (project.pd && project.pd.email_address)
-          SpProjectMailer.deliver_stats_reminder(project)
+          ProjectMailer.deliver_stats_reminder(project)
         end
       end
     end
@@ -588,7 +588,7 @@ class SpProject < ActiveRecord::Base
 
   def initialize_project_specific_question_sheet
     unless project_specific_question_sheet
-      update_attribute(:project_specific_question_sheet_id, QuestionSheet.where(label: 'Project - ' + self.to_s).first_or_create.id)
+      update_attribute(:project_specific_question_sheet_id, Fe::QuestionSheet.where(label: 'Project - ' + self.to_s).first_or_create.id)
     end
     if project_specific_question_sheet.pages.length == 0
       project_specific_question_sheet.pages.create!(:label => 'Project Specific Questions', :number => 1)

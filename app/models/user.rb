@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   def self.find_or_create_from_cas(atts)
     # Look for a user with this guid
     guid = att_from_receipt(atts, 'ssoGuid')
-    first_name = att_from_receipt(atts, 'firstName')
+    first_name = att_from_receipt(atts, 'first_name')
     last_name = att_from_receipt(atts, 'lastName')
     email = atts['username']
     find_or_create_from_guid_or_email(guid, email, first_name, last_name)
@@ -46,21 +46,13 @@ class User < ActiveRecord::Base
 
     # make sure we have a person
     unless u.person
-      # Try to find a person with the same email address.  If multiple people are found, use
-      # the one who's logged in most recently
-      address = ::CurrentAddress.joins(:person => :user)
-                                .where(:email => email)
-                                .order("lastLogin DESC")
-                                .first
-      person = address.try(:person)
-
       # Attach the found person to the user, or create a new person
-      u.person = person || ::Person.create!(:firstName => first_name,
-                                          :lastName => last_name)
+      u.person = ::Person.create!(:first_name => first_name,
+                                  :last_name => last_name)
       u.person.fk_ssmUserId = u.id
 
       # Create a current address record if we don't already have one.
-      u.person.current_address ||= ::CurrentAddress.create!(:fk_PersonID => u.person.id, :email => email)
+      u.person.current_address ||= ::CurrentAddress.create!(id: u.person.id, email: email)
       u.person.save(:validate => false)
     end
     u
@@ -71,6 +63,7 @@ class User < ActiveRecord::Base
     unless Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
       authentication = authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
       authentication.token = omniauth['credentials']['token'] if omniauth['credentials']
+      authentication.save!
     end
   end
 
@@ -79,13 +72,13 @@ class User < ActiveRecord::Base
 	  save!
 	end
 
-	# A generic method for stamping a user has logged into a tool
-	def stamp_column(column)
-		if(person = self.person)
-			person[column] = Time.new.to_s
-			person.save!
-		end
-	end
+  # A generic method for stamping a user has logged into a tool
+  def stamp_column(column)
+    if person = self.person
+      person[column] = Time.new.to_s
+      person.save!
+    end
+  end
 
   def create_person_and_address(person_attributes = {})
     unless person
@@ -95,8 +88,10 @@ class User < ActiveRecord::Base
   	  person = Person.new(person_attributes.merge(new_hash))
   	  person.user = self
       person.save!
-      address = Address.new(new_hash.merge({:email => self.username,
-                                             :addressType => 'current'}))
+      address = Address.new({:created_by => ApplicationController.application_name, 
+                             :changed_by => ApplicationController.application_name, 
+                             :email => self.username, 
+                             :address_type => 'current'})
       address.person = person
       address.save!
     end
@@ -108,11 +103,13 @@ class User < ActiveRecord::Base
       new_hash = {:dateCreated => Time.now, :dateChanged => Time.now,
                   :createdBy => ApplicationController.application_name,
                   :changedBy => ApplicationController.application_name}
-  	  person = Person.new(new_hash.merge({:firstName => omniauth['first_name'], :lastName => omniauth['last_name']}))
+  	  person = Person.new(new_hash.merge({:first_name => omniauth['first_name'], :last_name => omniauth['last_name']}))
   	  person.user = self
       person.save!
-      address = Address.new(new_hash.merge({:email => self.username,
-                                             :addressType => 'current'}))
+      address = Address.new({:created_by => ApplicationController.application_name, 
+                             :changed_by => ApplicationController.application_name, 
+                             :email => self.username, 
+                             :address_type => 'current'})
       address.person = person
       address.save!
     end
@@ -124,13 +121,13 @@ class User < ActiveRecord::Base
     guid = cas_extra_attributes['ssoGuid']
     first_name = cas_extra_attributes['firstName']
     last_name = cas_extra_attributes['lastName']
-    u = User.find(:first, :conditions => ["globallyUniqueID = ?", guid])
+    u = User.where(globallyUniqueID: guid).first
     # if we have a user by this method, great! update the email address if it doesn't match
     if u
       u.username = username
     else
       # If we didn't find a user with the guid, do it by email address and stamp the guid
-      u = User.find(:first, :conditions => ["username = ?", username])
+      u = User.where(["username = ?", username]).first
       if u
         u.globallyUniqueID = guid
       else
@@ -142,18 +139,12 @@ class User < ActiveRecord::Base
     u.save(:validate => false)
     # make sure we have a person
     unless u.person
-      u.create_person_and_address(firstName: first_name, lastName: last_name)
+      u.create_person_and_address(first_name: first_name, last_name: last_name)
     end
     u
   end
 
   protected
-  	def stamp_created_on
-  	  begin
-    	  self.createdOn = Time.now
-    	rescue; end
-  	end
-
     # not sure why but cas sometimes sends the extra attributes as underscored
     def self.att_from_receipt(atts, key)
       atts[key] || atts[key.underscore]

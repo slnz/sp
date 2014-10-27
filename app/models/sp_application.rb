@@ -1,9 +1,8 @@
 require 'aasm'
-require_dependency 'answer_sheet_concern'
 
 require 'digest/md5'
-class SpApplication < ActiveRecord::Base
-  include AnswerSheetConcern
+class SpApplication < Fe::Application
+  #include Fe::AnswerSheetConcern
   include CruLib::GlobalRegistryRelationshipMethods
   include Sidekiq::Worker
   include AASM
@@ -18,9 +17,9 @@ class SpApplication < ActiveRecord::Base
     # State machine stuff
     state :started
     state :submitted, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Submitted"
       ).deliver if app.email.present? # LIQUID TEMPLATE NAME
       app.submitted_at = Time.now
@@ -29,27 +28,27 @@ class SpApplication < ActiveRecord::Base
 
     state :ready, :enter => Proc.new { |app|
       app.completed_at ||= Time.now
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Completed"
       ).deliver if app.email.present?
       app.previous_status = app.status
     }
 
     state :unsubmitted, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Unsubmitted"
       ).deliver if app.email.present?
       app.previous_status = app.status
     }
 
     state :withdrawn, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Withdrawn"
       ).deliver if app.email.present?
       app.withdrawn_at = Time.now
@@ -131,14 +130,14 @@ class SpApplication < ActiveRecord::Base
   end
 
   belongs_to :person
+  alias_method :applicant, :person # Fe expects applicant
+
   belongs_to :project, :class_name => 'SpProject', :foreign_key => :project_id
-  has_many :sp_references, :class_name => 'ReferenceSheet', :foreign_key => :applicant_answer_sheet_id, :dependent => :destroy
   # has_one :sp_peer_reference, :class_name => 'SpPeerReference', :foreign_key => :application_id
   # has_one :sp_spiritual_reference1, :class_name => 'SpSpiritualReference1', :foreign_key => :application_id
   # has_one :sp_spiritual_reference2, :class_name => 'SpSpiritualReference2', :foreign_key => :application_id
   # has_one :sp_parent_reference, :class_name => 'SpParentReference', :foreign_key => :application_id
-  has_many :payments, :class_name => "SpPayment", :foreign_key => "application_id"
-  has_many :answers, :class_name => 'Answer', :foreign_key => 'answer_sheet_id', :dependent => :destroy
+  #has_many :answers, :class_name => 'Answer', :foreign_key => 'answer_sheet_id', :dependent => :destroy
 
 
   #has_many :sp_designation_numbers
@@ -157,7 +156,7 @@ class SpApplication < ActiveRecord::Base
   has_one :evaluation, :class_name => 'SpEvaluation', :foreign_key => :application_id
 
   scope :for_year, proc { |year| where(:year => year) }
-  scope :preferrenced_project, proc { |project_id| {:conditions => ["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]} }
+  scope :preferrenced_project, proc { |project_id| where(["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]) }
 
   scope :preferred_project, proc { |project_id| {:conditions => ["project_id = ?", project_id],
                                                  :include => :person} }
@@ -166,7 +165,7 @@ class SpApplication < ActiveRecord::Base
   after_save :unsubmit_on_project_change, :complete, :send_acceptance_email, :log_changed_project, :update_project_counts
 
   def next_states_for_events
-    self.class.aasm_events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
+    self.class.aasm.events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
         |e| [e.transitions_from_state(status.to_sym).first.to.to_s.humanize, e.name] }
   end
 
@@ -207,10 +206,12 @@ class SpApplication < ActiveRecord::Base
   end
 
   def create_relay_account_if_needed
+    return if Rails.env.test? # TODO figure out how to properly test this
+
     unless person.user.globallyUniqueID.present?
       password = SecureRandom.hex(5) + 'a'
       person.user.password_plain = password
-      person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address.strip, password, person.nickname, person.lastName)
+      person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address.strip, password, person.nickname, person.last_name)
       begin
         person.user.save(validate: false)
       rescue ActiveRecord::RecordNotUnique
@@ -265,8 +266,8 @@ class SpApplication < ActiveRecord::Base
 
             push_content_to_give_site
 
-            Notifier.notification(person.email_address, # RECIPIENTS
-                                  Qe.from_email, # FROM
+            Fe::Notifier.notification(person.email_address, # RECIPIENTS
+                                  Fe.from_email, # FROM
                                   "Giving site created", # LIQUID TEMPLATE NAME
                                   {'first_name' => person.nickname,
                                    'site_url' => "#{APP_CONFIG['spgive_url']}/#{person.sp_gcx_site}/",
@@ -424,8 +425,8 @@ class SpApplication < ActiveRecord::Base
   scope :descend_by_submitted, -> { order("sp_applications.submitted_at desc") }
   scope :ascend_by_started, -> { order("sp_applications.created_at") }
   scope :descend_by_started, -> { order("sp_applications.created_at desc") }
-  scope :ascend_by_name, -> { joins(:person).order("lastName, firstName") }
-  scope :descend_by_name, -> { joins(:person).order("lastName desc, firstName desc") }
+  scope :ascend_by_name, -> { joins(:person).order("last_name, first_name") }
+  scope :descend_by_name, -> { joins(:person).order("last_name desc, first_name desc") }
   scope :accepted, -> { where('sp_applications.status' => SpApplication.accepted_statuses) }
   scope :accepted_participants, -> { where('sp_applications.status' => 'accepted_as_participant') }
   scope :accepted_student_staff, -> { where('sp_applications.status' => 'accepted_as_student_staff') }
@@ -455,7 +456,7 @@ class SpApplication < ActiveRecord::Base
 
   def has_paid?
     return true if self.payments.detect(&:approved?)
-    return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(PaymentQuestion) && q.required? }
+    return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(Fe::PaymentQuestion) && q.required? }
     return false
   end
 
@@ -482,7 +483,7 @@ class SpApplication < ActiveRecord::Base
   def complete(ref = nil)
     return false unless self.submitted?
     # Make sure all required references are copmleted
-    sp_references.each do |reference|
+    references.each do |reference|
       if reference.required?
         return false unless reference.completed? || reference == ref
       end
@@ -645,8 +646,8 @@ class SpApplication < ActiveRecord::Base
       recipients = old_pds.compact.empty? ? ["summer.projects@cru.org"] : old_pds.compact.collect(&:email)
       recipients += new_pds.compact.empty? ? ["summer.projects@cru.org"] : new_pds.compact.collect(&:email)
       recipients << "summerprojectdonations@cru.org" if designation_number.present?
-          Notifier.notification(recipients.compact, # RECIPIENTS
-                                Qe.from_email, # FROM
+          Fe::Notifier.notification(recipients.compact, # RECIPIENTS
+                                Fe.from_email, # FROM
                                 "Application Moved", # LIQUID TEMPLATE NAME
                                 {'applicant_name' => name,
                                  'moved_by' => current_person.informal_full_name,
@@ -709,8 +710,8 @@ class SpApplication < ActiveRecord::Base
 
   def send_acceptance_email
     if changed.include?('applicant_notified') and applicant_notified? && status.starts_with?('accept')
-      Notifier.notification(email_address, # RECIPIENTS
-                            Qe.from_email, # FROM
+      Fe::Notifier.notification(email_address, # RECIPIENTS
+                            Fe.from_email, # FROM
                             'Application Accepted', # LIQUID TEMPLATE NAME
                             {'project_name' => project.try(:name)}).deliver
     end
@@ -739,9 +740,9 @@ class SpApplication < ActiveRecord::Base
     # Do any necessary cleanup of references to match new project's requirements
     if project
       logger.debug('has project')
-      reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(ReferenceQuestion) }
-      if sp_references.length > reference_questions.length
-        sp_references.each do |reference|
+      reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(Fe::ReferenceQuestion) }
+      if references.length > reference_questions.length
+        references.each do |reference|
           # See if this reference's question_id matches any of the questions for the new project
           if question = reference_questions.detect { |rq| rq.id == reference.question_id }
             logger.debug('matched question: ' + question.id.to_s)
@@ -751,7 +752,7 @@ class SpApplication < ActiveRecord::Base
           # AND we don't already have a reference for that question
           # update the reference with the new question_id
           if (reference_question = reference_questions.detect { |rq| rq.related_question_sheet_id == reference.question.related_question_sheet_id }) &&
-              !sp_references.detect { |r| r.question_id == reference_question.id }
+              !references.detect { |r| r.question_id == reference_question.id }
             reference.update_attribute(:question_id, reference_question.id)
             next
           end

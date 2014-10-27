@@ -73,7 +73,7 @@ class Admin::EvaluationsController < ApplicationController
     @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
     @person = @application.person
     @answer_sheet = @application
-    @presenter = AnswerPagesPresenter.new(self, @application)
+    @presenter = Fe::AnswerPagesPresenter.new(self, @application)
   end
 
   def set_up_reference_elements

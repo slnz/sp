@@ -1,32 +1,21 @@
 require 'auto_strip_attributes'
 
-class Person < ActiveRecord::Base
+class Person < Fe::Person
   include Sidekiq::Worker
   include CruLib::GlobalRegistryMethods
 
-  auto_strip_attributes :firstName, :lastName, :preferredName, :accountNo, :title
+  auto_strip_attributes :first_name, :last_name, :preferred_name, :account_no, :title
 
   self.table_name = "ministry_person"
-  self.primary_key = "personID"
 
   # SP-298
   has_many                :sp_designation_numbers, dependent: :destroy
 
-  belongs_to              :user, :foreign_key => "fk_ssmUserId"  #Link it to SSM
-
   has_one                 :staff
-
-  # Addresses
-  has_many                :email_addresses, :foreign_key => "person_id", :class_name => '::EmailAddress', dependent: :destroy
-  has_many                :phone_numbers, :foreign_key => "person_id", :class_name => '::PhoneNumber', dependent: :destroy
-  has_one                 :current_address, -> { where("addressType = 'current'") }, :foreign_key => "fk_PersonID", :class_name => '::Address'
-  has_one                 :permanent_address, -> { where("addressType = 'permanent'") }, :foreign_key => "fk_PersonID", :class_name => '::Address'
-  has_one                 :emergency_address1, -> { where("addressType = 'emergency1'") }, :foreign_key => "fk_PersonID", :class_name => '::Address'
-  has_many                :addresses, :foreign_key => "fk_PersonID", dependent: :destroy
-
 
   # Summer Project
   has_many                :sp_applications
+  alias_method            :applications, :sp_applications # form engine expects applications association
 
   has_one                 :current_application, -> { where("year = '#{SpApplication.year}'") }, :class_name => '::SpApplication'
   has_many                :sp_staff, :class_name => "SpStaff", :foreign_key => "person_id"
@@ -34,6 +23,8 @@ class Person < ActiveRecord::Base
   has_many                :directed_projects, :through => :sp_directorships, :source => :sp_project
   has_many                :staffed_projects, :through => :sp_staff, :source => :sp_project
   has_many                :current_staffed_projects, -> { where("sp_staff.year = #{SpApplication.year}").select("sp_projects.*") }, :through => :sp_staff, :source => :sp_project
+
+  belongs_to :user, :foreign_key => "fk_ssmUserId" # TODO need to migrate person columns to be more rails-like
 
   # General
   attr_accessor           :school
@@ -49,10 +40,8 @@ class Person < ActiveRecord::Base
   before_save :check_region, :stamp_changed
   before_create :stamp_created
 
-  scope :not_secure, -> { where("isSecure != 'T' or isSecure IS NULL") }
+  scope :not_secure, -> { where("\"isSecure\" != 'T' or \"isSecure\" IS NULL") }
 
-  alias_attribute :account_no, :accountNo
-  alias_attribute :preferred_name, :preferredName
   alias_attribute :university_state, :universityState
   alias_attribute :year_in_school, :yearInSchool
   alias_attribute :is_child, :isChild
@@ -67,15 +56,15 @@ class Person < ActiveRecord::Base
   end
 
   def create_emergency_address
-    Address.create(:fk_PersonID => self.id, :addressType => 'emergency1')
+    Address.create(:person_id => self.id, :address_type => 'emergency1')
   end
 
   def create_current_address
-    Address.create(:fk_PersonID => self.id, :addressType => 'current')
+    Address.create(:person_id => self.id, :address_type => 'current')
   end
 
   def create_permanent_address
-    Address.create(:fk_PersonID => self.id, :addressType => 'permanent')
+    Address.create(:person_id => self.id, :address_type => 'permanent')
   end
 
   def region(try_target_area = true)
@@ -102,23 +91,6 @@ class Person < ActiveRecord::Base
       when campus.present?
         TargetArea.find_by(name: campus)
       end
-  end
-
-  def validate_blogfeed
-    errors.add(:blogfeed, "is invalid") if invalid_feed?
-  end
-
-  # empty_feed? checks to see if blogfeed has any characters that could be a feed
-  def empty_feed?
-    blogfeed ? blogfeed.strip.empty? : true
-  end
-
-  def invalid_feed?
-    FeedTools::Feed.open(blogfeed) unless empty_feed?
-  rescue FeedTools::FeedAccessError
-    flash[:notice] = "Invalid feed" if @my_entry
-  rescue
-    flash[:notice] = "Not well formed XML" if @my_entry and not empty_feed?
   end
 
   def human_gender
@@ -149,11 +121,13 @@ class Person < ActiveRecord::Base
   end
 
   def name_with_nick
-    name = firstName.to_s
-    if preferredName.present? && preferredName.strip != firstName.strip
-      name += " (#{preferredName.strip}) "
+    name = []
+    name << first_name.to_s
+    if preferred_name.present? && preferred_name.strip != first_name.strip
+      name << "(#{preferred_name.strip})"
     end
-    name + ' ' + lastName.to_s
+    name << last_name.to_s
+    name.join(' ')
   end
 
   # "first_name middle_name last_name"
@@ -163,41 +137,14 @@ class Person < ActiveRecord::Base
     l + last_name.to_s
   end
 
-  # an alias for firstName using standard ruby/rails conventions
-  def first_name
-    firstName
-  end
-
-  def first_name=(f)
-    write_attribute("firstName", f)
-  end
-
-  # an alias for middleName using standard ruby/rails conventions
-  def middle_name
-    middleName
-  end
-
-  def middle_name=(m)
-    write_attribute("middleName", m)
-  end
-
-  # an alias for lastName using standard ruby/rails conventions
-  def last_name
-    lastName
-  end
-
-  def last_name=(l)
-    write_attribute("lastName", l)
-  end
-
-  #a little more than an alias.  Nickname is the preferredName if one is listed.  Otherwise it is first name
+  #a little more than an alias.  Nickname is the preferred_name if one is listed.  Otherwise it is first name
   def nickname
-    (preferredName and not preferredName.strip.empty?) ? preferredName : firstName
+    (preferred_name and not preferred_name.strip.empty?) ? preferred_name : first_name
   end
 
-  #nickname is an alias for preferredName
+  #nickname is an alias for preferred_name
   def nickname=(name)
-    write_attribute("preferredName", name)
+    write_attribute("preferred_name", name)
   end
 
   # an alias for yearInSchool
@@ -228,29 +175,6 @@ class Person < ActiveRecord::Base
   def stamp_created
     self.dateCreated = Time.now
     self.createdBy = ApplicationController.application_name
-  end
-
-  # include FileColumnHelper
-
-  # file_column picture
-  def pic(size = "mini")
-    if image.nil?
-      "/images/nophoto_" + size + ".gif"
-    else
-      url_for_file_column(self, "image", size)
-    end
-  end
-
-  def mini_pic
-    pic("mini")
-  end
-
-  def thumb_pic
-    pic("thumb")
-  end
-
-  def med_pic
-    pic("medium")
   end
 
   def email
@@ -318,7 +242,7 @@ class Person < ActiveRecord::Base
 
   # Find an exact match by email
   def self.find_exact(person, address)
-    # try by address first
+    # try by email address first
     person = Person.where("#{Address.table_name}.email = ?", address.email).includes(:current_address).references(:current_address).first
     # then try by username
     person ||= Person.where("#{User.table_name}.username = ?", address.email).includes(:user).references(:user).first
@@ -339,21 +263,23 @@ class Person < ActiveRecord::Base
     result
   end
 
+=begin
   def all_team_members(remove_self = false)
     my_local_level_ids = teams.collect &:id
-    mmtm = TeamMember.get('filters[team_id]' => my_local_level_ids) #order("lastName, firstName ASC")
+    mmtm = TeamMember.get('filters[team_id]' => my_local_level_ids) #order("last_name, first_name ASC")
     people = mmtm.collect(&:person).flatten.uniq
     people.delete(self) if remove_self
     return people
   end
+=end
 
   def to_s
     informal_full_name
   end
 
   def apply_omniauth(omniauth)
-    self.firstName ||= omniauth['first_name']
-    self.lastName ||= omniauth['last_name']
+    self.first_name ||= omniauth['first_name']
+    self.last_name ||= omniauth['last_name']
   end
 
   def check_region
@@ -365,14 +291,16 @@ class Person < ActiveRecord::Base
 
   def phone
     if current_address
-      return current_address.cellPhone if current_address.cellPhone.present?
-      return current_address.homePhone if current_address.homePhone.present?
-      return current_address.workPhone if current_address.workPhone.present?
+      return current_address.cell_phone if current_address.cell_phone.present?
+      return current_address.home_phone if current_address.home_phone.present?
+      return current_address.work_phone if current_address.work_phone.present?
     else
       ''
     end
   end
 
+  # TODO: determine if we need this.. user has no balance_bookmark defined
+=begin
   def account_balance
     result = nil
     if user && user.balance_bookmark
@@ -380,6 +308,7 @@ class Person < ActiveRecord::Base
     end
     result
   end
+=end
 
   def updated_at() dateChanged end
   def updated_by() changedBy end
@@ -425,15 +354,19 @@ class Person < ActiveRecord::Base
 
   def self.columns_to_push
     super
-    @columns_to_push += [{name: 'account_number', type: :string},
-                         {name: 'username', type: :string},
-                         {name: 'birth_year', type: :integer},
-                         {name: 'birth_month', type: :integer},
-                         {name: 'birth_day', type: :integer}
-                        ]
-    @columns_to_push.each do |column|
-      column[:type] = 'boolean' if column[:name] == 'is_secure'
+    unless @extended_columns_to_push
+      @columns_to_push += [{name: 'account_number', type: :string},
+                           {name: 'username', type: :string},
+                           {name: 'birth_year', type: :integer},
+                           {name: 'birth_month', type: :integer},
+                           {name: 'birth_day', type: :integer}
+                          ]
+      @extended_columns_to_push = true
+      @columns_to_push.each do |column|
+        column[:type] = 'boolean' if column[:name] == 'is_secure'
+      end
     end
+    return @columns_to_push
   end
 
   def self.global_registry_entity_type_name

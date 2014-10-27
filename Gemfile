@@ -1,21 +1,19 @@
 source 'http://rubygems.org'
 # source 'http://gems.rubyonrails.org'
 
-gem 'rails', '~> 4.0.10'
+gem 'rails', '~> 4.1.5'
 
-#gem 'pg'
-gem 'mysql2'
+gem 'pg'
+#gem 'mysql2'
 
 # Needed for the new asset pipeline
 gem 'sass-rails'#,   '~> 3.2.3'
 gem 'coffee-rails'#, '~> 3.2.1'
 gem 'uglifier'#, '~> 1.3.0'
-gem 'jquery-ui-rails'#, '~> 4.0.1'
-gem 'therubyracer'
-
-# jQuery is the default JavaScript library in Rails 3.1
+gem 'execjs'
 gem 'jquery-rails'
-
+gem 'jquery-ui-rails'
+gem 'jquery-validation-rails'
 gem 'activemerchant', '~> 1.28.0'
 gem 'acts_as_versioned', git: 'https://github.com/technoweenie/acts_as_versioned.git'
 gem 'airbrake', '~> 3.1.5'
@@ -46,8 +44,6 @@ gem 'relay_api_client', git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'cru_lib', git: 'https://github.com/CruGlobal/cru_lib'
 # gem 'cru_lib', path: '/Users/josh/htdocs/cru_lib'
 gem 'image_science', '~> 1.2.5'
-gem 'qe', git: 'https://github.com/CruGlobal/qe'
-# gem 'qe', :path => '/Users/Octopus/Git/qe'
 gem 'sidekiq'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
@@ -60,15 +56,24 @@ gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
 
+gem 'fe',
+  github: 'CruGlobal/qe', branch: 'fe'
+  #path: '/Users/andrewroth/Development/fe'
+
 group :development, :test do
   gem 'quiet_assets'
   gem 'awesome_print'
   gem 'mailcatcher'
   gem 'meta_request'
+  gem 'better_errors'
   gem 'binding_of_caller'
   gem 'unicorn'
-  gem "spring"
-  gem "spring-commands-rspec"
+  gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do
@@ -78,7 +83,10 @@ group :test do
   gem 'factory_girl_rails'
   gem 'fuubar'
   gem 'simplecov', :require => false
+  gem 'spork-rails'#, '~> 3.2.0'
+  gem 'guard-spork'
   gem 'guard-rspec'
-  gem 'rspec', '~> 3.0'
+  gem 'xray-rails'
+  gem 'thin'
 end
 

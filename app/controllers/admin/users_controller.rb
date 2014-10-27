@@ -20,9 +20,9 @@ class Admin::UsersController < ApplicationController
                 @role = 'Director'
                 SpUser.where(:type => 'SpDirector')
               end
-    @users = @users.joins(:person).includes(:person).order('ministry_person.lastName, ministry_person.firstName')
+    @users = @users.joins(:person).includes(:person).order('ministry_person.last_name, ministry_person.first_name')
     @addresses = {}
-    Address.where(:addressType => 'current', :fk_PersonID => @users.collect(&:person_id)).map {|a| @addresses[a.fk_PersonID] = a}
+    Address.where(address_type: 'current', id: @users.collect(&:person_id)).map {|a| @addresses[a.id] = a}
     respond_with(@users) do |format|
       if params[:type] != 'national'
         format.html {render :partial => 'users', :locals => {:users => @users}}

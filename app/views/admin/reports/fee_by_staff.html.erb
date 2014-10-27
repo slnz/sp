@@ -16,8 +16,8 @@
     <tr>
       <td><%= payment.payment_account_no %></td>
       <td><%= number_to_currency payment.amount %></td>
-      <td><%= payment.application.person.firstName %></td>
-      <td><%= payment.application.person.lastName %></td>
+      <td><%= payment.application.person.first_name %></td>
+      <td><%= payment.application.person.last_name %></td>
       <td><%= payment.status %></td>
       <td><%= payment.created_at %></td>
     </tr>

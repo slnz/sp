@@ -2,9 +2,9 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require tinymce-jquery
-//= require qe/qe.common.js
-//= require qe/qe.admin.js
-//= require qe/jquery.scrollTo-min.js
+//= require fe/fe.common.js
+//= require fe/fe.admin.js
+//= require fe/jquery.scrollTo-min.js
 //= require rails.extra.js
 //= require admin/projects.js
 //= require admin/admin.js

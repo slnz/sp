@@ -24,23 +24,23 @@ class SpDonationServices < SpUser
 
       selects = "
         SELECT
-          person.personID,
-          person.firstName,
-          person.lastName,
+          person.id,
+          person.first_name,
+          person.last_name,
           person.gender,
           person.title,
-          person.accountNo,
+          person.account_no,
           person.donor_number,
-          spouse.personID AS spouseID,
-          spouse.firstName AS spouseFirstName,
-          spouse.lastName AS spouseLastName,
+          spouse.id AS spouseID,
+          spouse.first_name AS spouseFirstName,
+          spouse.last_name AS spouseLastName,
           spouse.title AS spouseTitle,
           spouse.gender AS spouseGender,
           currentAddress.address1 AS currentAddress,
           currentAddress.city AS currentCity,
           currentAddress.state AS currentState,
           currentAddress.zip AS currentZip,
-          currentAddress.homePhone AS currentTelephone,
+          currentAddress.home_phone AS currentTelephone,
           currentAddress.email AS currentEmail,
           permanentAddress.address1 AS permanentAddress,
           project.name AS projectName,
@@ -56,64 +56,64 @@ class SpDonationServices < SpUser
                                                       #{selects}
         FROM ministry_person person
         JOIN sp_applications app
-          ON (app.person_id = person.personID)
+          ON (app.person_id = person.id)
         JOIN sp_projects project
           ON (app.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
-          ON (currentAddress.addressType = 'current'
-            AND currentAddress.fk_personId = person.personID)
+          ON (currentAddress.address_type = 'current'
+            AND currentAddress.id = person.id)
         LEFT JOIN ministry_newaddress permanentAddress
-          ON (permanentAddress.addressType = 'permanent'
-            AND permanentAddress.fk_personId = person.personID)
+          ON (permanentAddress.address_type = 'permanent'
+            AND permanentAddress.id = person.id)
         LEFT JOIN ministry_person spouse
-          ON (person.fk_spouseID = spouse.personID)
+          ON (person.\"fk_spouseID\" = spouse.id)
         LEFT JOIN sp_designation_numbers designation
-          ON (person.personID = designation.person_id
+          ON (person.id = designation.person_id
             AND project.id = designation.project_id)
             AND designation.year = app.year
         WHERE app.status IN ('accepted_as_student_staff','accepted_as_participant')
           AND app.year >= '#{SpApplication.year}'
-          AND (person.isStaff = 0 OR person.isStaff IS NULL)
+          AND (person.\"isStaff\" IS FALSE OR person.\"isStaff\" IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '0000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
           AND project.scholarship_operating_unit != ''
         ORDER BY
-          person.lastName,
-          person.firstName;").to_a
+          person.last_name,
+          person.first_name;").to_a
 
       # People from "Other" tab (primarily non-staff that are in sp_staff table)
       rows2 = ActiveRecord::Base.connection.select_all("
                                                        #{selects}
         FROM ministry_person person
         JOIN sp_staff staff
-          ON (person.personID = staff.person_id)
+          ON (person.id = staff.person_id)
         JOIN sp_projects project
           ON (staff.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
-          ON (currentAddress.addressType = 'current'
-            AND currentAddress.fk_personId = person.personID)
+          ON (currentAddress.address_type = 'current'
+            AND currentAddress.id = person.id)
         LEFT JOIN ministry_newaddress permanentAddress
-          ON (permanentAddress.addressType = 'permanent'
-            AND permanentAddress.fk_personId = person.personID)
+          ON (permanentAddress.address_type = 'permanent'
+            AND permanentAddress.id = person.id)
         LEFT JOIN ministry_person spouse
-          ON (person.fk_spouseID = spouse.personID)
+          ON (person.\"fk_spouseID\" = spouse.id)
         LEFT JOIN sp_designation_numbers designation
-          ON (person.personID = designation.person_id
+          ON (person.id = designation.person_id
             AND project.id = designation.project_id)
             AND designation.year = staff.year
         WHERE staff.type NOT IN ('Kid','Evaluator','Coordinator','Staff')
           AND staff.year = '#{SpApplication.year}'
-          AND (person.isStaff = 0 OR person.isStaff IS NULL)
+          AND (person.\"isStaff\" IS FALSE OR person.\"isStaff\" IS NULL)
           AND (designation.designation_number IS NULL or designation.designation_number = '')
           AND project.scholarship_designation > '0000000'
           AND project.scholarship_designation < '3000000'
           AND project.scholarship_operating_unit IS NOT NULL
           AND project.scholarship_operating_unit != ''
         ORDER BY
-          person.lastName,
-          person.firstName;")
+          person.last_name,
+          person.first_name;")
 
       column_headers = ["OPER_NAME", "KEYED_DATE", "PEOPLE_ID", "DONOR_ID", "STATUS", "ORG_ID",
                         "PERSON_TYPE", "TITLE", "FIRST_NAME", "MIDDLE_NAME", "LAST_NAME_ORG", "SUFFIX",
@@ -144,14 +144,14 @@ class SpDonationServices < SpUser
         values["OPER_NAME"] = current_person.to_s
 
         values["KEYED_DATE"] = today
-        values["PEOPLE_ID"] = row["accountNo"]
+        values["PEOPLE_ID"] = row["account_no"]
         values["DONOR_ID"] = row["donor_number"]
         values["STATUS"] = ""
         values["ORG_ID"] = "CAMPUS"
         values["PERSON_TYPE"] = "P"
         values["TITLE"] = get_title(row["gender"], row["title"])
-        values["FIRST_NAME"] = row["firstName"]
-        values["LAST_NAME_ORG"] = row["lastName"]
+        values["FIRST_NAME"] = row["first_name"]
+        values["LAST_NAME_ORG"] = row["last_name"]
         values["SUFFIX"] = ""
         values["SPOUSE_TITLE"] = row["spouseID"].nil? ? "" : get_title(row["spouseGender"], row["spouseTitle"])
         values["SPOUSE_FIRST"] = row["spouseFirstName"]
@@ -188,7 +188,7 @@ class SpDonationServices < SpUser
         values["MIN_SVC_DESC"] = ""
         values["AMT_PAID"] = ""
         values["LIST_ID"] = ""
-        values["WSN_APPLICATION_ID"] = row["personID"]
+        values["WSN_APPLICATION_ID"] = row["id"]
         values["ASSIGNMENT_NAME"] = row["projectName"]
         values["SCHOLARSHIP_BUSINESS_UNIT"] = row["scholarship_business_unit"].to_s.upcase
         values["SCHOLARSHIP_OPERATING_UNIT"] = row["scholarship_operating_unit"].to_s.upcase

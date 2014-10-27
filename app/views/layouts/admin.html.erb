@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- <%= current_user.id %> -->
   <title>Sp2</title>
   <%= javascript_include_tag 'admin' %>
 
@@ -30,6 +31,10 @@
 	<meta name="msapplication-task" content="name=Emails;action-uri=/admin/email_templates;icon-uri=/assets/email.ico"/>
 	<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
+  <%= javascript_include_tag "fe/admin.js" %>
+  <%= stylesheet_link_tag "fe/fe.screen.css", :media => "all" %>
+  <%= stylesheet_link_tag "spfe.admin", :media => "all" %>
+
 </head>
 <body id="<%= params[:controller].gsub('/','_')%>" class="<%= params[:action] %>">
 <%= render :partial => 'layouts/tabs' %>
@@ -44,7 +49,7 @@
   </div>
 </div>
 
-<div id="status" style="display: none;"><%= image_tag('qe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
+<div id="status" style="display: none;"><%= image_tag('fe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
 
 <div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('summer.missions@cru.org') %></div>
 <%= tinymce %>

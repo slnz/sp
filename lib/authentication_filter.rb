@@ -48,8 +48,8 @@ class AuthenticationFilter
         if person.nil?
         	person = user.create_person_and_address({
         		:user => user,
-            :firstName => attributes["firstName"],
-            :lastName => attributes["lastName"],
+            :first_name => attributes["firstName"],
+            :last_name => attributes["lastName"],
             :fk_ssmUserId => user.userID
         	})
           if attributes["emplid"].present?

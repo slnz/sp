@@ -4,6 +4,7 @@ require_dependency 'authentication_filter'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
+  force_ssl(if: :ssl_configured?, except: :lb)
   around_filter :do_with_current_user
   before_filter :set_time_zone
   protect_from_forgery
@@ -85,8 +86,8 @@ class ApplicationController < ActionController::Base
       # Get their user, or create a new one if theirs doesn't exist
       @current_person = current_user.person
       if @current_person.nil? && session[:cas_extra_attributes]
-        @current_person = current_user.create_person_and_address(firstName: session[:cas_extra_attributes]['firstName'],
-                                                                 lastName: session[:cas_extra_attributes]['lastName'])
+        @current_person = current_user.create_person_and_address(first_name: session[:cas_extra_attributes]['firstName'],
+                                                                 last_name: session[:cas_extra_attributes]['lastName'])
       end
     end
     @current_person
@@ -94,7 +95,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_person
 
   # set up access control
-  def sp_user
+  def app_user
     return SpUser.new unless current_user
     @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
     if @sp_user.nil? && current_person.isStaff?
@@ -106,6 +107,8 @@ class ApplicationController < ActionController::Base
     end
     @sp_user ||= SpUser.new
   end
+  alias_method :sp_user, :app_user
+  helper_method :app_user
   helper_method :sp_user
 
   def check_valid_user
@@ -140,12 +143,12 @@ class ApplicationController < ActionController::Base
       query = params[:name].strip.split(' ')
       first, last = query[0].to_s + '%', query[1].to_s + '%'
       if last == '%'
-        conditions = ["preferredName like ? OR firstName like ? OR lastName like ?", first, first, first]
+        conditions = ["preferred_name like ? OR first_name like ? OR last_name like ?", first, first, first]
       else
-        conditions = ["(preferredName like ? OR firstName like ?) AND lastName like ?", first, first, last]
+        conditions = ["(preferred_name like ? OR first_name like ?) AND last_name like ?", first, first, last]
       end
 
-      @people = Person.where(conditions).includes(:user).order("isStaff desc").order("accountNo desc")
+      @people = Person.where(conditions).includes(:user).order("\"isStaff\" desc").order("account_no desc")
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
 
       # Put staff at the top of the list
@@ -167,6 +170,10 @@ class ApplicationController < ActionController::Base
     else
       render :nothing => true
     end
+  end
+
+  def ssl_configured?
+    !Rails.env.development? && !Rails.env.test?
   end
 
   def do_with_current_user

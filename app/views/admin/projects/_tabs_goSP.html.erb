@@ -99,7 +99,7 @@
         <div class="checkboxes">
         <% SpGospelInAction.all.each do |ga| %>
           <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.to_a.include?(ga) %>">
-            <input type="checkbox" name="sp_project[gospel_in_aciton_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <input type="checkbox" name="sp_project[gospel_in_action_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
             <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
           </div>
         <% end %>

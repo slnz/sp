@@ -2,7 +2,7 @@ namespace :gcx do
   task create: :environment do
     project = SpProject.find(ENV['PROJECT_ID'])
     year = ENV['YEAR'] || SpApplication.year
-    applications = project.sp_applications.for_year(year).joins(:person).includes({:person => :current_address}).order('lastName, firstName')
+    applications = project.sp_applications.for_year(year).joins(:person).includes({:person => :current_address}).order('last_name, first_name')
     (applications.accepted_participants + applications.accepted_student_staff).each do |application|
       person = application.person
 
@@ -10,7 +10,7 @@ namespace :gcx do
       unless person.user.globallyUniqueID.present?
         password = SecureRandom.hex(5)
         person.user.password_plain = password
-        person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address, password, person.nickname, person.lastName)
+        person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address, password, person.nickname, personlast_namee)
         person.user.save(validate: false)
         puts "Relay account created: #{person.user.globallyUniqueID}"
       end

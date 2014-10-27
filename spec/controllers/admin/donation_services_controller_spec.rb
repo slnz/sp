@@ -17,9 +17,9 @@ describe Admin::DonationServicesController do
   end
 
   context '#upload' do
-    let(:person) { create(:person) }
+    let(:person) { create(:person, user: user) }
     before do
-      person.update_column(:personID, 123456)
+      person.update_column(:id, 123456)
       @application = create(:sp_application, person: person, project: create(:sp_project), year: SpApplication.year)
     end
 

@@ -7,6 +7,7 @@ Sp2::Application.routes.draw do
   match '/auth/failure' => 'authentications#failed', via: :get
   match '/sos' => 'admin/projects#sos', via: [:get, :post]
   match '/admin/sos' => 'admin/projects#sos', via: [:get, :post]
+  #post '/fe/applications/:application_id/submit_page' => 'fe/submit_pages#submit'
   resources :authentications
 
   resources :campuses do

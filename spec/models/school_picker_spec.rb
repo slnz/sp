@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe SchoolPicker do
+describe Fe::SchoolPicker do
   let(:project) { create(:sp_project) }
 
   before(:all) do
     @person = create(:person)
     @application = create(:sp_application, person: @person, project: @project)
-    @school_picker = SchoolPicker.new
+    @school_picker = Fe::SchoolPicker.new
   end
   
   describe "when calling the 'state' function" do

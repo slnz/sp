@@ -17,7 +17,7 @@ class SpUser < ActiveRecord::Base
   def creatable_user_types() []; end
   def can_search?() false; end
   def creatable_user_types_array(types = nil)
-    types.nil? ? [] : SpRole.find(:all, :conditions => "user_class IN (#{types})", :order => 'role').map { |role| [role.role, role.user_class] }
+    types.nil? ? [] : SpRole.where("user_class IN (#{types})").order('role').map { |role| [role.role, role.user_class] }
   end
   def can_edit_project?(project)
     person.directed_projects.include?(project)

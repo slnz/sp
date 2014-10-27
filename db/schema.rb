@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620210430) do
+ActiveRecord::Schema.define(version: 20141027031744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,31 +107,31 @@ ActiveRecord::Schema.define(version: 20140620210430) do
 
   add_index "ministry_locallevel", ["global_registry_id"], name: "index_ministry_locallevel_on_global_registry_id", using: :btree
 
-  create_table "ministry_newaddress", primary_key: "addressID", force: true do |t|
+  create_table "ministry_newaddress", force: true do |t|
     t.string   "address1"
     t.string   "address2"
-    t.string   "address3",            limit: 55
-    t.string   "address4",            limit: 55
-    t.string   "city",                limit: 50
-    t.string   "state",               limit: 50
-    t.string   "zip",                 limit: 15
-    t.string   "country",             limit: 64
-    t.string   "homePhone",           limit: 26
-    t.string   "workPhone",           limit: 250
-    t.string   "cellPhone",           limit: 25
-    t.string   "fax",                 limit: 25
+    t.string   "address3",             limit: 55
+    t.string   "address4",             limit: 55
+    t.string   "city",                 limit: 50
+    t.string   "state",                limit: 50
+    t.string   "zip",                  limit: 15
+    t.string   "country",              limit: 64
+    t.string   "home_phone",           limit: 26
+    t.string   "work_phone",           limit: 250
+    t.string   "cell_phone",           limit: 25
+    t.string   "fax",                  limit: 25
     t.string   "skype"
-    t.string   "email",               limit: 200
-    t.string   "url",                 limit: 100
-    t.string   "contactName"
-    t.string   "contactRelationship", limit: 50
-    t.string   "addressType",         limit: 20
-    t.datetime "dateCreated"
-    t.datetime "dateChanged"
-    t.string   "createdBy",           limit: 50
-    t.string   "changedBy",           limit: 50
-    t.integer  "fk_PersonID"
-    t.string   "email2",              limit: 200
+    t.string   "email",                limit: 200
+    t.string   "url",                  limit: 100
+    t.string   "contact_name"
+    t.string   "contact_relationship", limit: 50
+    t.string   "address_type",         limit: 20
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "created_by",           limit: 50
+    t.string   "changed_by",           limit: 50
+    t.integer  "person_id"
+    t.string   "email2",               limit: 200
     t.datetime "start_date"
     t.datetime "end_date"
     t.string   "facebook_link"
@@ -139,24 +139,24 @@ ActiveRecord::Schema.define(version: 20140620210430) do
     t.string   "title"
     t.string   "dorm"
     t.string   "room"
-    t.string   "preferredPhone",      limit: 25
-    t.string   "phone1_type",                     default: "cell"
-    t.string   "phone2_type",                     default: "home"
-    t.string   "phone3_type",                     default: "work"
-    t.string   "global_registry_id",  limit: 40
+    t.string   "preferred_phone",      limit: 25
+    t.string   "phone1_type",                      default: "cell"
+    t.string   "phone2_type",                      default: "home"
+    t.string   "phone3_type",                      default: "work"
+    t.string   "global_registry_id",   limit: 40
   end
 
-  add_index "ministry_newaddress", ["addressType", "fk_PersonID"], name: "unique_person_addressType", unique: true, using: :btree
-  add_index "ministry_newaddress", ["addressType"], name: "index_ministry_newAddress_on_addressType", using: :btree
+  add_index "ministry_newaddress", ["address_type", "person_id"], name: "unique_person_addressType", unique: true, using: :btree
+  add_index "ministry_newaddress", ["address_type"], name: "index_ministry_newAddress_on_addressType", using: :btree
   add_index "ministry_newaddress", ["email"], name: "email", using: :btree
-  add_index "ministry_newaddress", ["fk_PersonID"], name: "fk_PersonID", using: :btree
+  add_index "ministry_newaddress", ["person_id"], name: "fk_PersonID", using: :btree
 
-  create_table "ministry_person", primary_key: "personID", force: true do |t|
-    t.string   "accountNo",                     limit: 11
-    t.string   "lastName",                      limit: 50
-    t.string   "firstName",                     limit: 50
-    t.string   "middleName",                    limit: 50
-    t.string   "preferredName",                 limit: 50
+  create_table "ministry_person", force: true do |t|
+    t.string   "account_no",                    limit: 11
+    t.string   "last_name",                     limit: 50
+    t.string   "first_name",                    limit: 50
+    t.string   "middle_name",                   limit: 50
+    t.string   "preferred_name",                limit: 50
     t.string   "gender",                        limit: 1
     t.string   "region",                        limit: 5
     t.boolean  "workInUS",                                                            default: true,  null: false
@@ -208,43 +208,19 @@ ActiveRecord::Schema.define(version: 20140620210430) do
     t.string   "global_registry_id"
   end
 
-  add_index "ministry_person", ["accountNo"], name: "accountNo_ministry_Person", using: :btree
+  add_index "ministry_person", ["account_no"], name: "accountNo_ministry_Person", using: :btree
   add_index "ministry_person", ["campus"], name: "campus", using: :btree
   add_index "ministry_person", ["fb_uid"], name: "index_ministry_person_on_fb_uid", using: :btree
-  add_index "ministry_person", ["firstName", "lastName"], name: "firstName_lastName", using: :btree
+  add_index "ministry_person", ["first_name", "last_name"], name: "firstName_lastName", using: :btree
   add_index "ministry_person", ["fk_spouseID"], name: "index_ministry_person_on_fk_spouseid", using: :btree
   add_index "ministry_person", ["fk_ssmUserId"], name: "fk_ssmUserId", using: :btree
   add_index "ministry_person", ["global_registry_id"], name: "index_ministry_person_on_global_registry_id", using: :btree
-  add_index "ministry_person", ["lastName"], name: "lastname_ministry_Person", using: :btree
+  add_index "ministry_person", ["last_name"], name: "lastname_ministry_Person", using: :btree
   add_index "ministry_person", ["region"], name: "region_ministry_Person", using: :btree
   add_index "ministry_person", ["siebel_contact_id"], name: "index_ministry_person_on_siebel_contact_id", using: :btree
 
-  create_table "ministry_regionalteam", primary_key: "teamID", force: true do |t|
-    t.string   "name",               limit: 100
-    t.string   "note"
-    t.string   "region",             limit: 2
-    t.string   "address1",           limit: 35
-    t.string   "address2",           limit: 35
-    t.string   "city",               limit: 30
-    t.string   "state",              limit: 6
-    t.string   "zip",                limit: 10
-    t.string   "country",            limit: 64
-    t.string   "phone",              limit: 24
-    t.string   "fax",                limit: 24
-    t.string   "email",              limit: 50
-    t.string   "url"
-    t.string   "isActive",           limit: 1
-    t.datetime "startdate"
-    t.datetime "stopdate"
-    t.string   "no",                 limit: 80
-    t.string   "abbrv",              limit: 80
-    t.string   "hrd",                limit: 50
-    t.string   "spPhone",            limit: 24
-    t.string   "global_registry_id"
-  end
-
   create_table "ministry_staff", force: true do |t|
-    t.string   "accountNo",                limit: 15,                                                         null: false
+    t.string   "accountNo",                limit: 15,                                         null: false
     t.string   "firstName",                limit: 30
     t.string   "middleInitial",            limit: 1
     t.string   "lastName",                 limit: 30
@@ -323,7 +299,7 @@ ActiveRecord::Schema.define(version: 20140620210430) do
     t.integer  "fk_teamID"
     t.string   "isSecure",                 limit: 1
     t.string   "isSupported",              limit: 1
-    t.string   "removedFromPeopleSoft",    limit: 1,                            default: "'N'::character(1)"
+    t.string   "removedFromPeopleSoft",                                         default: "N"
     t.string   "isNonUSStaff",             limit: 1
     t.integer  "person_id"
     t.string   "middleName",               limit: 30
@@ -675,6 +651,8 @@ ActiveRecord::Schema.define(version: 20140620210430) do
     t.boolean  "hide_label",                           default: false
     t.boolean  "hide_option_labels",                   default: false
     t.integer  "max_length"
+    t.string   "conditional_type"
+    t.text     "conditional_answer"
   end
 
   add_index "sp_elements", ["conditional_id"], name: "index_sp_elements_on_conditional_id", using: :btree
@@ -1038,7 +1016,7 @@ ActiveRecord::Schema.define(version: 20140620210430) do
     t.integer  "person_id",                                   null: false
     t.integer  "project_id",                                  null: false
     t.string   "type",               limit: 100, default: "", null: false
-    t.string   "year"
+    t.integer  "year"
     t.string   "global_registry_id"
     t.datetime "created_at"
     t.datetime "updated_at"

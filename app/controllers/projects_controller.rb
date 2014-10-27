@@ -1,6 +1,8 @@
 class ProjectsController < ApplicationController
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
+  skip_before_filter :verify_authenticity_token, only: [:markers]
+
   COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
   def show
@@ -14,7 +16,7 @@ class ProjectsController < ApplicationController
         end
        }
        format.json {
-         render json: @project.to_json(serialization_attributes.merge(:root => 'project')),
+         render json: @project,
                 callback: params[:callback]
        }
      end
@@ -26,12 +28,12 @@ class ProjectsController < ApplicationController
       unless params.size == 2
         year = params[:year].present? ? params[:year].to_i : SpApplication.year
         conditions = [[],[]]
-        conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
+        conditions[0] << "#{SpProject.table_name}.show_on_website = true"
         conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
         unless params[:all] == 'true'
           if params[:id] && params[:id].present?
-            conditions[0] << "#{SpProject.table_name}.id IN(?)"
-            conditions[1] << params[:id]
+            conditions[0] << "#{SpProject.table_name}.id IN (?)"
+            conditions[1] << params[:id].split(',')
           end
           if params[:name] && !params[:name].empty?
             conditions[0] << "#{SpProject.table_name}.name like ?"
@@ -113,25 +115,21 @@ class ProjectsController < ApplicationController
           end
         end
         conditions[0] = conditions[0].join(' AND ')
-        conditions.flatten!
+        conditions.flatten!(1)
 
-        if conditions[0].empty?
-          @projects = []
+        @searched = true
+        if params[:all] == 'true'
+          @projects = SpProject.current
         else
-          @searched = true
-          if params[:all] == 'true'
-            @projects = SpProject.current
-          else
-            @projects = SpProject.open
-          end
-          @projects = @projects.where(conditions)
-                               .includes(:primary_ministry_focus, :ministry_focuses)
-                               .order('sp_projects.name, sp_projects.year')
+          @projects = SpProject.open
         end
+        @projects = @projects.where(conditions)
+                             .includes(:primary_ministry_focus, :ministry_focuses)
+                             .order('sp_projects.name, sp_projects.year')
       end
       respond_to do |format|
         format.html do
-          @projects.reject! {|p| !p.use_provided_application?} if @projects
+          @projects = @projects.to_a.reject {|p| !p.use_provided_application?} if @projects
         end
         format.xml
         format.json {
@@ -144,7 +142,7 @@ class ProjectsController < ApplicationController
 
   def markers
     conditions = [[],[]]
-    conditions[0] << "#{SpProject.table_name}.show_on_website = 1"
+    conditions[0] << "#{SpProject.table_name}.show_on_website = true"
     conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women + #{SpProject.table_name}.current_applicants_men + #{SpProject.table_name}.current_applicants_women) < (#{SpProject.table_name}.max_student_men_applicants + #{SpProject.table_name}.max_student_women_applicants)"
     conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
     conditions[0] << "#{SpProject.table_name}.apply_by_date >= ?"
@@ -166,10 +164,6 @@ class ProjectsController < ApplicationController
         conditions[0] << condition
         conditions[1] << focus.id
       end
-    end
-
-    def get_regions
-      @region_options = Region.all.map(&:region)
     end
 
     def get_project_type_condition
