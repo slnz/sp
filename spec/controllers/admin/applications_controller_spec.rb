@@ -45,15 +45,12 @@ describe Admin::ApplicationsController do
 
     it 'should set all the filters' do
        stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
-         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
        stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bcountry%5D=USA&per_page=30000").
-         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
        stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bteam_id%5D=team").
-         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
        stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
@@ -77,15 +74,12 @@ describe Admin::ApplicationsController do
 
     it 'should set the other filters' do
        stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
-         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
        stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bcountry%5D=USA&per_page=30000").
-         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[]}', :headers => {})
 
        stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bteam_id%5D=team").
-         with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
          to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
 
        stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
@@ -108,7 +102,6 @@ describe Admin::ApplicationsController do
 
     it "should give a flash notice if there's no criteria" do
       stub_request(:get, "https://infobase.uscm.org/api/v1/teams?filters%5Blane%5D=FS").
-        with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer 7e78285443a4f2d8c7b88fb2a3e449a4', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => '{"teams":[]}', :headers => {})
 
       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters[country]=USA&per_page=30000").

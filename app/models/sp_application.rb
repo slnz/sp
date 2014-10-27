@@ -710,7 +710,7 @@ class SpApplication < Fe::Application
 
   def send_acceptance_email
     if changed.include?('applicant_notified') and applicant_notified? && status.starts_with?('accept')
-      Notifier.notification(email_address, # RECIPIENTS
+      Fe::Notifier.notification(email_address, # RECIPIENTS
                             Fe.from_email, # FROM
                             'Application Accepted', # LIQUID TEMPLATE NAME
                             {'project_name' => project.try(:name)}).deliver

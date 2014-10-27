@@ -911,10 +911,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}

@@ -1,6 +1,8 @@
 class ProjectsController < ApplicationController
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
+  skip_before_filter :verify_authenticity_token, only: [:markers]
+
   COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
   def show

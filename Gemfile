@@ -10,7 +10,7 @@ gem 'pg'
 gem 'sass-rails'#,   '~> 3.2.3'
 gem 'coffee-rails'#, '~> 3.2.1'
 gem 'uglifier'#, '~> 1.3.0'
-gem 'therubyracer'
+gem 'execjs'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-validation-rails'
@@ -85,6 +85,7 @@ group :test do
   gem 'simplecov', :require => false
   gem 'spork-rails'#, '~> 3.2.0'
   gem 'guard-spork'
+  gem 'guard-rspec'
   gem 'xray-rails'
   gem 'thin'
 end
