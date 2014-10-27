@@ -1,3 +1,5 @@
+# :nocov:
+
 require 'csv'
 
 class Admin::ReportsController < ApplicationController
@@ -1453,3 +1455,5 @@ class Admin::ReportsController < ApplicationController
     end
   end
 end
+
+# :nocov:
