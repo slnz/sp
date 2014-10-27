@@ -30,8 +30,8 @@ class ProjectsController < ApplicationController
         conditions[0] << "(#{SpProject.table_name}.current_students_men + #{SpProject.table_name}.current_students_women) < (#{SpProject.table_name}.max_accepted_men + #{SpProject.table_name}.max_accepted_women)"
         unless params[:all] == 'true'
           if params[:id] && params[:id].present?
-            conditions[0] << "#{SpProject.table_name}.id IN(?)"
-            conditions[1] << params[:id]
+            conditions[0] << "#{SpProject.table_name}.id IN (?)"
+            conditions[1] << params[:id].split(',')
           end
           if params[:name] && !params[:name].empty?
             conditions[0] << "#{SpProject.table_name}.name like ?"
@@ -113,7 +113,7 @@ class ProjectsController < ApplicationController
           end
         end
         conditions[0] = conditions[0].join(' AND ')
-        conditions.flatten!
+        conditions.flatten!(1)
 
         @searched = true
         if params[:all] == 'true'
