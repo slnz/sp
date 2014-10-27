@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917195224) do
+ActiveRecord::Schema.define(version: 20141027031744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -218,30 +218,6 @@ ActiveRecord::Schema.define(version: 20140917195224) do
   add_index "ministry_person", ["last_name"], name: "lastname_ministry_Person", using: :btree
   add_index "ministry_person", ["region"], name: "region_ministry_Person", using: :btree
   add_index "ministry_person", ["siebel_contact_id"], name: "index_ministry_person_on_siebel_contact_id", using: :btree
-
-  create_table "ministry_regionalteam", primary_key: "teamID", force: true do |t|
-    t.string   "name",               limit: 100
-    t.string   "note"
-    t.string   "region",             limit: 2
-    t.string   "address1",           limit: 35
-    t.string   "address2",           limit: 35
-    t.string   "city",               limit: 30
-    t.string   "state",              limit: 6
-    t.string   "zip",                limit: 10
-    t.string   "country",            limit: 64
-    t.string   "phone",              limit: 24
-    t.string   "fax",                limit: 24
-    t.string   "email",              limit: 50
-    t.string   "url"
-    t.string   "isActive",           limit: 1
-    t.datetime "startdate"
-    t.datetime "stopdate"
-    t.string   "no",                 limit: 80
-    t.string   "abbrv",              limit: 80
-    t.string   "hrd",                limit: 50
-    t.string   "spPhone",            limit: 24
-    t.string   "global_registry_id"
-  end
 
   create_table "ministry_staff", force: true do |t|
     t.string   "accountNo",                limit: 15,                                         null: false
