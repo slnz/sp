@@ -436,8 +436,8 @@ class SpApplication < Fe::Application
   scope :not_going, -> { where('sp_applications.status' => SpApplication.not_going_statuses) }
   scope :applicant, -> { where('sp_applications.status' => SpApplication.applied_statuses) }
 
-  scope :male, -> { where('ministry_person.gender = 1').includes(:person) }
-  scope :female, -> { where('ministry_person.gender <> 1').includes(:person) }
+  scope :male, -> { where("ministry_person.gender = '1'").joins(:person) }
+  scope :female, -> { where("ministry_person.gender <> '1'").joins(:person) }
 
   delegate :campus, :to => :person
 
