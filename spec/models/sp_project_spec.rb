@@ -451,4 +451,25 @@ describe SpProject do
       SpProject.send_leader_reminder_emails
     end
   end
+
+  context '#male_applicants_count' do
+    it 'should work for the current year' do
+      year = SpApplication.year
+      project = create(:sp_project, year: year, current_applicants_men: 5)
+      expect(project.male_applicants_count).to eq(5)
+    end
+    it 'should work for a different year' do
+      year = SpApplication.year
+      project = create(:sp_project)
+      app1 = create(:sp_application, project: project, person_id: create(:person, gender: '1').id)
+      app2 = create(:sp_application, project: project, person_id: create(:person, gender: '1').id)
+      app3 = create(:sp_application, project: project, person_id: create(:person, gender: '1').id)
+      app4 = create(:sp_application, project: project, person_id: create(:person, gender: '1').id)
+      app5 = create(:sp_application, project: project, person_id: create(:person, gender: '1').id)
+      SpApplication.where(id: [app1.id, app2.id, app3.id, app4.id, app5.id]).update_all(year: year - 1, status: 'accepted_as_participant')
+      project.year = year
+
+      expect(project.male_applicants_count(year - 1)).to eq(5)
+    end
+  end
 end

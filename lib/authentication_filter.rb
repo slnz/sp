@@ -53,10 +53,10 @@ class AuthenticationFilter
             :fk_ssmUserId => user.userID
         	})
           if attributes["emplid"].present?
-            person.accountNo = attributes["emplid"]
+            person.account_no = attributes["emplid"]
             person.staff = Staff.find_by_accountNo(attributes["emplid"])
             person.isStaff = true
-            if staff = Staff.find_by_accountNo(person.accountNo)
+            if staff = Staff.find_by_accountNo(person.account_no)
               staff.person = person
               staff.save!
             end

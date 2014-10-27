@@ -20,7 +20,7 @@ class SpUser < ActiveRecord::Base
     types.nil? ? [] : SpRole.where("user_class IN (#{types})").order('role').map { |role| [role.role, role.user_class] }
   end
   def can_edit_project?(project)
-    person.directed_projects.include?(project)
+    person && person.directed_projects.include?(project)
   end
   def can_merge_projects?() false; end
   def can_su_application?() false; end
