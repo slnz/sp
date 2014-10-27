@@ -6,7 +6,7 @@ describe ProjectsController do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
-      get :show, id: create(:sp_project).id, format: :json
+      get :show, id: create(:sp_project).id.to_s, format: :json
       expect(response.status).to eq(200)
     end
 
@@ -14,7 +14,7 @@ describe ProjectsController do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
-      get :show, id: create(:sp_project).id, format: :xml
+      get :show, id: create(:sp_project).id.to_s, format: :xml
       expect(response.status).to eq(200)
     end
 
@@ -22,7 +22,7 @@ describe ProjectsController do
       project = create(:sp_project)
       project.update_attributes(project_status: 'closed', show_on_website: false)
 
-      get :show, id: project.id, format: :xml
+      get :show, id: project.id.to_s, format: :xml
       expect(response.body).to eq('<sp-project/>')
     end
   end
@@ -36,6 +36,22 @@ describe ProjectsController do
     it "should list all the projects when a parameter is passed that isn't one of the filters" do
       get :index, :a => 1
       should render_template('index')
+    end
+
+    it 'should handle being passed a comma-separated list of ids into id param' do
+      create(:sp_project,
+             start_date: Date.new(2014, 1, 1),
+             end_date: Date.new(2014, 2, 1)
+      )
+
+      project = create(:sp_project, start_date: Date.new(2013, 6, 1), end_date: Date.new(2013, 8, 1))
+      project2 = create(:sp_project, start_date: Date.new(2013, 6, 1), end_date: Date.new(2013, 8, 1))
+
+      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
+         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+
+      get :index, id: "#{project.id},#{project2.id}", format: :json
+      expect(assigns(:projects)).to eq([project, project2])
     end
 
     it 'should test for params[:year]' do
@@ -52,7 +68,7 @@ describe ProjectsController do
       stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
          to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
-      get :index, year: '2013', start_month: '5', id: project.id, format: :json
+      get :index, year: '2013', start_month: '5', id: project.id.to_s, format: :json
       expect(assigns(:projects)).to eq([project])
     end
 
@@ -199,7 +215,7 @@ describe ProjectsController do
           name: 'Orl Ruby Dojo',
           to_weeks: 4,
           focus_name: focus.name,
-          focus: focus.id,
+          focus: focus.id.to_s,
           world_region: 'USA/Canada',
           country: 'United States',
           project_type: 'US',
