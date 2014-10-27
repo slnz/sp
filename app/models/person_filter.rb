@@ -38,7 +38,7 @@ class PersonFilter
           # Names don't typically have @ signs
           @filters[:email_like] = @filters.delete(:name_or_email_like)
         else
-          filtered_people = filtered_people.includes(:email_addresses)
+          filtered_people = filtered_people.joins(%|LEFT OUTER JOIN "email_addresses" ON "email_addresses"."person_id" = "ministry_person"."id"|)
           .where("concat(first_name,' ',last_name) LIKE :search OR
                                                   first_name LIKE :search OR last_name LIKE :search OR
                                                   email_addresses.email LIKE :search",
@@ -57,22 +57,13 @@ class PersonFilter
     end
 
     if @filters[:email_like]
-      filtered_people = filtered_people.includes(:email_addresses)
+      filtered_people = filtered_people.joins(%|LEFT OUTER JOIN "email_addresses" ON "email_addresses"."person_id" = "ministry_person"."id" |)
       .where("email_addresses.email LIKE :search",
              {:search => "#{filters[:name_or_email_like]}%"})
     end
 
     if @filters[:gender]
-      gender = case
-                 when @filters[:gender].first.downcase == 'm'
-                   1
-                 when @filters[:gender].first.downcase == 'f'
-                   0
-                 else
-                   @filters[:gender]
-               end
-
-      filtered_people = filtered_people.where(gender: gender)
+      filtered_people = filtered_people.where(gender: @filters[:gender].to_s)
     end
 
     if @filters[:strategy]
