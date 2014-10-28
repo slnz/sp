@@ -37,7 +37,7 @@ class Admin::EvaluationsController < ApplicationController
     @person = @application.person
     @answer_sheet = @application
     if params[:application] == 'true'
-      @presenter = AnswerPagesPresenter.new(self, @application)
+      @presenter = Fe::AnswerPagesPresenter.new(self, @application)
     end
     if params[:references] == 'true'
       set_up_reference_elements
@@ -78,7 +78,7 @@ class Admin::EvaluationsController < ApplicationController
 
   def set_up_reference_elements
     @elements = []
-    @references = @application.reference_sheets
+    @references = @application.reference_sheets.to_a
     @references.reject! {|r| !r.question_sheet}
     @references.each do |reference|
       @elements = @elements | reference.question_sheet.elements

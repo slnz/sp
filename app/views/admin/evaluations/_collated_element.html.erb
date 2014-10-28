@@ -28,7 +28,7 @@
   <% if element.question? -%>
     <% answer = element.display_response(answer_sheet) %>
     <span class="answer"><%= answer %></span>
-    <% if element.is_a?(ChoiceField) && answer == 'Yes' && element.elements.present? %>
+    <% if element.is_a?(Fe::ChoiceField) && answer == 'Yes' && element.elements.present? %>
       - 
       <% element.elements.each do |conditional| %>
         <%= render('collated_element', :element => conditional, :answer_sheet => answer_sheet) %>

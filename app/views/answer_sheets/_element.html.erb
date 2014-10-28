@@ -4,7 +4,7 @@
   	<table class="grid">
   	<tr>
       <% element.elements.each do |grid_element| -%>
-        <% unless %w(Paragraph).include?(grid_element.kind) -%>
+        <% unless %w(Fe::Paragraph).include?(grid_element.kind) -%>
           <td id="element_<%= element.id %>">
             <%= grid_element.label + ': ' if grid_element.label.present? %>
           </td>
@@ -30,7 +30,7 @@
               <% end %>
             </span>
           </td>
-          <% if grid_element.kind == 'ChoiceField' && grid_element.elements.present? %>
+          <% if grid_element.kind == 'Fe::ChoiceField' && grid_element.elements.present? %>
             <%= render :partial => 'answer_sheets/element', :collection => grid_element.elements, :locals => {:elements => grid_element.elements, :answer_sheet => @answer_sheet} %>
           <% end %>
         <% end %>
@@ -45,11 +45,11 @@
       <% if ['essay', 'checkbox'].include?(element.style) %><br/><% end %>
       <% answer = element.display_response(answer_sheet) %>
       <% if answer.present? %>
-        <% if element.kind == 'AttachmentField' %>
+        <% if element.kind == 'Fe::AttachmentField' %>
           <span class="answer"><%= link_to(answer, element.responses(answer_sheet).first.try(:attachment).try(:url), :target => '_blank') %></span>
         <% else %>
           <span class="answer"><%= answer %></span>
-          <% if element.kind == 'ChoiceField' && answer == 'Yes' && element.elements.present? %>
+          <% if element.kind == 'Fe::ChoiceField' && answer == 'Yes' && element.elements.present? %>
             <ul>
               <%= render :partial => 'answer_sheets/element', :collection => element.elements, :locals => {:elements => element.elements, :answer_sheet => @answer_sheet} %>
             </ul>

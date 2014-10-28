@@ -1,4 +1,4 @@
-ChoiceField.class_eval do
+Fe::ChoiceField.class_eval do
 
   def ptemplate
     if self.style == 'checkbox'
