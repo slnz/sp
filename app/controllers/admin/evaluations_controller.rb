@@ -18,7 +18,7 @@ class Admin::EvaluationsController < ApplicationController
   end
 
   def page
-    @page = Page.find(params[:page_id])
+    @page = Fe::Page.find(params[:page_id])
     @answer_sheet = @application
     @pages = @presenter.pages[0..-2]
     @next_page = @pages[@pages.index(@page) + 1]
