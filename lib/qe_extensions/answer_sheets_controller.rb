@@ -24,7 +24,7 @@ AnswerSheetsController.class_eval do
   
   def edit
     @project = @answer_sheet.project
-    @presenter = AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
+    @presenter = Fe::AnswerPagesPresenter.new(self, @answer_sheet, params[:a])
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
   end
