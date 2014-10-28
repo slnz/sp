@@ -31,19 +31,19 @@ class SpDonationServices < SpUser
           person.title,
           person.account_no,
           person.donor_number,
-          spouse.id AS spouseID,
-          spouse.first_name AS spouseFirstName,
-          spouse.last_name AS spouseLastName,
-          spouse.title AS spouseTitle,
-          spouse.gender AS spouseGender,
-          currentAddress.address1 AS currentAddress,
-          currentAddress.city AS currentCity,
-          currentAddress.state AS currentState,
-          currentAddress.zip AS currentZip,
-          currentAddress.home_phone AS currentTelephone,
-          currentAddress.email AS currentEmail,
-          permanentAddress.address1 AS permanentAddress,
-          project.name AS projectName,
+          spouse.id AS spouse_id,
+          spouse.first_name AS spouse_first_name,
+          spouse.last_name AS spouse_last_name,
+          spouse.title AS spouse_title,
+          spouse.gender AS spouse_gender,
+          currentAddress.address1 AS current_address,
+          currentAddress.city AS current_city,
+          currentAddress.state AS current_state,
+          currentAddress.zip AS current_zip,
+          currentAddress.home_phone AS current_telephone,
+          currentAddress.email AS current_email,
+          permanentAddress.address1 AS permanent_address,
+          project.name AS project_name,
           project.scholarship_designation,
           project.scholarship_business_unit,
           project.scholarship_operating_unit,
@@ -61,10 +61,10 @@ class SpDonationServices < SpUser
           ON (app.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
           ON (currentAddress.address_type = 'current'
-            AND currentAddress.id = person.id)
+            AND currentAddress.person_id = person.id)
         LEFT JOIN ministry_newaddress permanentAddress
           ON (permanentAddress.address_type = 'permanent'
-            AND permanentAddress.id = person.id)
+            AND permanentAddress.person_id = person.id)
         LEFT JOIN ministry_person spouse
           ON (person.\"fk_spouseID\" = spouse.id)
         LEFT JOIN sp_designation_numbers designation
@@ -93,10 +93,10 @@ class SpDonationServices < SpUser
           ON (staff.project_id = project.id)
         LEFT JOIN ministry_newaddress currentAddress
           ON (currentAddress.address_type = 'current'
-            AND currentAddress.id = person.id)
+            AND currentAddress.person_id = person.id)
         LEFT JOIN ministry_newaddress permanentAddress
           ON (permanentAddress.address_type = 'permanent'
-            AND permanentAddress.id = person.id)
+            AND permanentAddress.person_id = person.id)
         LEFT JOIN ministry_person spouse
           ON (person.\"fk_spouseID\" = spouse.id)
         LEFT JOIN sp_designation_numbers designation
@@ -153,17 +153,17 @@ class SpDonationServices < SpUser
         values["FIRST_NAME"] = row["first_name"]
         values["LAST_NAME_ORG"] = row["last_name"]
         values["SUFFIX"] = ""
-        values["SPOUSE_TITLE"] = row["spouseID"].nil? ? "" : get_title(row["spouseGender"], row["spouseTitle"])
-        values["SPOUSE_FIRST"] = row["spouseFirstName"]
+        values["SPOUSE_TITLE"] = row["spouse_id"].nil? ? "" : get_title(row["spouse_gender"], row["spouse_title"])
+        values["SPOUSE_FIRST"] = row["spouse_first_name"]
         values["SPOUSE_MIDDLE"] = ""
-        values["SPOUSE_LAST"] = row["spouseLastName"]
+        values["SPOUSE_LAST"] = row["spouse_last_name"]
         values["SPOUSE_SUFFIX"] = ""
-        values["ADDRESS1"] = row["currentAddress"]
+        values["ADDRESS1"] = row["current_address"]
         values["ADDRESS2"] = ""
         values["ADDRESS3"] = ""
-        values["CITY"] = row["currentCity"]
-        values["STATE"] = row["currentState"]
-        values["ZIP"] = row["currentZip"]
+        values["CITY"] = row["current_city"]
+        values["STATE"] = row["current_state"]
+        values["ZIP"] = row["current_zip"]
         values["TELEPHONE"] = ""
         values["TELE_TYPE"] = ""
         values["COUNTRY"] = "USA"
@@ -173,7 +173,7 @@ class SpDonationServices < SpUser
         values["ADDR_STOP"] = ""
         values["ADDR_NAME"] = ""
         values["SALUTATION"] = ""
-        values["EMAIL"] = row["currentEmail"]
+        values["EMAIL"] = row["current_email"]
         values["EMAIL_TYPE"] = "HM"
         values["PRIM_EMAIL"] = "Y"
         values["SVC_IND_MAIL"] = "0"
@@ -189,7 +189,7 @@ class SpDonationServices < SpUser
         values["AMT_PAID"] = ""
         values["LIST_ID"] = ""
         values["WSN_APPLICATION_ID"] = row["id"]
-        values["ASSIGNMENT_NAME"] = row["projectName"]
+        values["ASSIGNMENT_NAME"] = row["project_name"]
         values["SCHOLARSHIP_BUSINESS_UNIT"] = row["scholarship_business_unit"].to_s.upcase
         values["SCHOLARSHIP_OPERATING_UNIT"] = row["scholarship_operating_unit"].to_s.upcase
         values["SCHOLARSHIP_DEPT_ID"] = row["scholarship_department"].to_s.upcase
