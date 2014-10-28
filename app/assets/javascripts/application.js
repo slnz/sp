@@ -13,13 +13,13 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
-//= require qe/jquery.validate.pack.js
-//= require qe/jquery.metadata.js
-//= require qe/qe.common.js
-//= require qe/qe.public.js
-//= require qe/jquery.scrollTo-min.js
-//= require qe/swfobject
-//= require qe/jquery.uploadify.v2.1.0
+//= require fe/jquery.validate.pack.js
+//= require fe/jquery.metadata.js
+//= require fe/fe.common.js
+//= require fe/fe.public.js
+//= require fe/jquery.scrollTo-min.js
+//= require fe/swfobject
+//= require fe/jquery.uploadify.v2.1.0
 //= require rails.extra
 //= require sp
 
