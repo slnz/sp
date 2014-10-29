@@ -14,7 +14,7 @@
 <p><label for="payment_staff_first">First &amp; Last Name</label>
 	<%= text_field :payment, :staff_first, { :size => 10 }%>
 	<%= text_field :payment, :staff_last, { :size => 10 }%>
-	<%= submit_tag "Search", :id => 'staff_search', :class => 'submit_payment', 'data-url' => staff_search_application_payments_path(@application) %>
+	<%= submit_tag "Search", :id => 'staff_search', :class => 'submit_payment button no-left-margin', 'data-url' => staff_search_application_payments_path(@application) %>
 </p>
 
 <div id="staff_results"></div>
