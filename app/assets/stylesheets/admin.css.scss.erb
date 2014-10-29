@@ -113,6 +113,8 @@ h3.critical {
     position:absolute;
     width:36px;
     display: none;
+    padding: 0px;
+    border-top: 0px;
     }
   table {
     border-collapse: collapse;
@@ -166,8 +168,13 @@ h3.critical {
       margin-left: 5px;
       }
     }
+  .rollovershow_nostyle {
+  }
 
   .rollovershow:hover {
+    display: block;
+    }
+  .rollovershow_nostyle:hover {
     display: block;
     }
   }
@@ -473,7 +480,9 @@ div.module {
     div.buttons {
       float: right;
       margin-right: 7px;
-      a.delete {margin-left: 10px;}
+      a.delete {margin-left: 4px;}
+      padding: 0px;
+      border-top: 0px;
       }
 
     }
