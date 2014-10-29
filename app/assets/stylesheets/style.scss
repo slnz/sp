@@ -377,6 +377,19 @@ body#applications.apply {
     li[id^="element_"] [id^="choice_field_"] input[type="radio"] {
       float: none;
     }
+
+    li[id^="element_"] [id^="fe_choice_field_"] label.choice {
+      display: inline;
+    }
+
+    li[id^="element_"] [id^="fe_choice_field_"] input[type="radio"].radio {
+      float: none;
+    }
+
+    li[id^="element_"] .choice_field.error[id^="fe_choice_field_"] label.choice {
+      margin-left: 10px;
+    }
+
   }
 
   li table tr td:last {
