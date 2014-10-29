@@ -29,7 +29,7 @@
       </td>
       <td class="value"></td>
     </tr>
-    <% @application.sp_references.each do |reference| %>
+    <% @application.references.each do |reference| %>
         <% if reference.name.present? %>
             <tr>
               <td class="fieldname fieldbold"><%= reference.name %></td>
