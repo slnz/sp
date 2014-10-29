@@ -14,15 +14,17 @@ class User < ActiveRecord::Base
   def self.find_by_id(id) self.find_by_userID(id); end
 
   def self.find_or_create_from_cas(atts)
+    binding.pry
     # Look for a user with this guid
     guid = att_from_receipt(atts, 'ssoGuid')
-    first_name = att_from_receipt(atts, 'first_name')
+    first_name = att_from_receipt(atts, 'firstName')
     last_name = att_from_receipt(atts, 'lastName')
     email = atts['username']
     find_or_create_from_guid_or_email(guid, email, first_name, last_name)
   end
 
   def self.find_or_create_from_guid_or_email(guid, email, first_name, last_name, secure = true)
+    binding.pry
     if guid
       u = ::User.where(:globallyUniqueID => guid).first
     end
@@ -47,6 +49,7 @@ class User < ActiveRecord::Base
     # make sure we have a person
     unless u.person
       # Attach the found person to the user, or create a new person
+      binding.pry
       u.person = ::Person.create!(:first_name => first_name,
                                   :last_name => last_name)
       u.person.fk_ssmUserId = u.id
