@@ -29,13 +29,13 @@
         <p><%= link_to('Apply To A Different Mission', '/projects', :class => 'button') %></p>
       </div>
   <% end %>
-  <%= render :partial => 'answer_sheets/title' %>
-  <%= render :partial => 'answer_pages/answer_page', :locals => {:show_first => true} %>
+  <%= render :partial => 'fe/answer_sheets/title' %>
+  <%= render :partial => 'fe/answer_pages/answer_page', :locals => { :show_first => true } %>
 </div>
 
 <script type="text/javascript">
     $(function () {
-        page_handler = $.qe.pageHandler;
+        page_handler = $.fe.pageHandler;
         page_handler.initialize('<%= @presenter.active_page_link.dom_id %>');
         // Event.observe(window, 'unload', page_handler.savePage);
 
