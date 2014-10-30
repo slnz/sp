@@ -25,11 +25,10 @@
 <div id="preview" class="panel">
   <% if @project %>
       <div id="projecttitle">
-        <h1><%= @project.name %></h1><br/>
+        <h3><%= @project.name %></h3><br/>
         <p><%= link_to('Apply To A Different Mission', '/projects', :class => 'button') %></p>
       </div>
   <% end %>
-  <%= render :partial => 'fe/answer_sheets/title' %>
   <%= render :partial => 'fe/answer_pages/answer_page', :locals => { :show_first => true } %>
 </div>
 
