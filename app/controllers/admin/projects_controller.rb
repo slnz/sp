@@ -248,7 +248,7 @@ class Admin::ProjectsController < ApplicationController
       end
 
       files = (params[:file] || {}).values
-      recipients << params[:from] unless params[:from] == "gosummerproject@cru.org"
+      recipients << params[:from] unless params[:from] == "summer.missions@cru.org"
       recipients << params[:reply_to] if params[:reply_to]
       email_success = Array.new
       email_failed = Array.new
@@ -604,7 +604,7 @@ class Admin::ProjectsController < ApplicationController
 
     @from = params[:from] || current_person.email
     unless @from.end_with?("@cru.org")
-      @from = "gosummerproject@cru.org"
+      @from = "summer.missions@cru.org"
     end
   end
 

@@ -72,7 +72,7 @@
 	        <div class="field field_check">
   	        <%= radio_button :payment, :payment_type, "Staff", {:onclick => "swapPayment('staff');",
   	                            :disabled => @application.frozen?&&@reference.nil?,
-  	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_staff">Transfer from a Staff/Project/Scholarship Fund</label>
+  	                            :readonly => @application.frozen?&&@reference.nil?} %><label for="payment_payment_type_staff">Transfer from a Staff/Mission/Scholarship Fund</label>
   	        <div id="pay_staff" class="pay_view" <% unless @payment.payment_type == "Staff" -%> style="display: none;" <% end -%>>
   	          <%= render :partial => 'payments/staff' %>
   	        </div>

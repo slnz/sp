@@ -1,9 +1,8 @@
-<div class="project-box clear">
+<div class="project-box tile clear">
   <% if @searched && @projects.blank? %>
-      <h3 style="color:red">None of the projects meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h3>
+    <h4 style="color:red">None of the missions meeting the criteria you selected are currently accepting applications. Please try a different criteria.</h4>
   <% end %>
-  <h2 style="font-weight: normal">Please pick which project you'd like to apply for:</h2>
-  <br>
+  <h1>Please select a mission you'd like to apply for:</h1>
 
   <% if @projects.blank? %>
       <%= render :partial => 'all' %>
@@ -27,3 +26,5 @@
       </div>
   <% end %>
 </div>
+
+<!-- TODO: Put each listing category in a tile -->

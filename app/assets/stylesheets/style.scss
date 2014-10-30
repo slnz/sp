@@ -1,0 +1,444 @@
+@import "cru";
+
+body {
+  width: 1000px;
+  max-width: none;
+  margin: 0 auto;
+  font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #f7f7f7;
+}
+
+h4 {
+  font-family: "freight-sans-pro","Helvetica Neue",Arial,Helvetica,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  margin-bottom: 0;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 7px;
+  font-size: 1.414rem;
+  line-height: 1.07943;
+  color: rgb(53, 53, 53);
+}
+
+h1 {
+  font-family: "freight-sans-pro","Helvetica Neue",Arial,Helvetica,sans-serif;
+  font-size: 54px;
+  font-weight: 300;
+  color: rgb(53, 53, 53);
+}
+
+@mixin button {
+  margin-bottom: 15px;
+  margin-left: 15px;
+  box-shadow: 0 0 1px rgba(0,0,0,0.3);
+  border: 2px solid;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: .02em;
+  vertical-align: middle;
+  padding: 10px 20px;
+  border-radius: .10526rem;
+  overflow: visible;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  background-color: #f1f1f1;
+  background-image: none;
+  border-color: #d7d7d7;
+  color: #6d6e71;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+  font-family: freight-sans-pro, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+
+  &:hover, &:focus {
+    background-color: #d7d7d7;
+    box-shadow: 0 0 1px rgba(0,0,0,0.3);
+  }
+
+  &:focus {
+    outline: thin dotted;
+  }
+}
+
+.no-left-margin-or-padding {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.no-left-margin {
+  margin-left: 0 !important;
+}
+
+.no-left-padding {
+  padding-left: 0 !important;
+}
+
+.section-divider {
+  border-color: #f9b625;
+}
+
+#footerwrap {
+  ul {
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+    display: block;
+    width: 1000px;
+    text-align: center;
+
+    li {
+      display: inline-block;
+      float: none;
+
+      a, a:hover {
+        color: #353535;
+      }
+    }
+  }
+
+  .copy {
+    text-align: center;
+    padding-bottom: 29px;
+  }
+}
+
+.button {
+  @include button
+}
+
+a.cru-gold, button.cru-gold {
+  background-color: #f9b625;
+  border: 2px solid #f8ae0c;
+  color: white !important;
+}
+
+a:hover.cru-gold, button:hover.cru-gold, a:focus.cru-gold, button:focus.cru-gold {
+  background-color: #efa507;
+  border: 2px solid #c28605;
+  color: #FFFFFF !important;
+}
+
+a.cru-dark-gray {
+  background-color: #666062;
+  border: 1px solid #595455;
+  color: #FFFFFF;
+}
+
+a:hover.cru-dark-gray, button:hover.cru-dark-gray, button:focus.cru-dark-gray, a:focus.cru-dark-gray {
+  background-color: #514c4e;
+  border: 1px solid #393637;
+  color: #FFFFFF;
+}
+
+.choice_field.error label {
+  border: none;
+  background: none;
+}
+
+.community-title {
+  display: block;
+  text-align: center;
+  font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-size: 300;
+  margin-top: 50px;
+}
+
+@mixin tile($color) {
+  border: none;
+  -webkit-box-shadow: 0 0 6px $color;
+  -moz-box-shadow: 0 0 6px $color;
+  -ms-box-shadow: 0 0 6px $color;
+  -o-box-shadow: 0 0 6px $color;
+  box-shadow: 0 0 6px $color;
+}
+
+.tile {
+  @include tile(rgba(0,0,0,0.2))
+}
+
+select.ui-datepicker-year[data-handler="selectYear"] {
+  padding: 0 0 0 5px;
+}
+
+// Sidebar Container
+#controls {
+  padding: 165px 15px 15px 15px;
+  background-color: #FFFFFF;
+  @include tile(rgba(0,0,0,0.2));
+
+  ul.navigation-list {
+    margin: 0;
+    padding-top: 7px;
+    padding-bottom: 15px;
+    font-size: 90%;
+    list-style: none;
+    width: 260px;
+    display: table;
+  }
+
+  ul.navigation-list li {
+    width: 100%;
+    text-align: left;
+    border: none;
+    padding: 5px 0 5px 20px;
+    text-indent: 0em;
+    list-style-position: inside;
+    position: relative;
+
+    &:before {
+      content: "\002022";
+      color: #f9b625;
+      width: 20px;
+      margin-left: .1em;
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 6px 0 5px 0;
+    }
+
+    a {
+      color: #007cb1;
+      text-decoration: none;
+      width: 240px;
+      margin: 0;
+      display: inline-block;
+      text-align: left;
+
+      &:hover {
+        color: #006a98;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  #projectlogo {
+    position: relative;
+  }
+
+  #mission-logo {
+    position: absolute;
+    left: -5px;
+    top: -120px;
+    width: 270px;
+    height: 100px;
+    padding: 0;
+
+    img {
+      max-width: 270px;
+      max-height: 100px;
+    }
+  }
+
+  #no-mission-logo {
+    position: absolute;
+    left: -15px;
+    top: -165px;
+    width: 290px;
+    height: 150px;
+    padding: 0;
+
+    img {
+      width: 290px;
+      max-width: 290px;
+      height: 150px;
+      max-height: 150px;
+    }
+  }
+}
+
+
+// Main Container
+#preview {
+  padding: 15px;
+  @include tile(rgba(0,0,0,0.2))
+}
+
+#projecttitle {
+  color: #333333;
+
+  .button {
+    @include button;
+    margin-left: 0;
+  }
+}
+
+// Project Box
+
+.project-box {
+  width: 1000px;
+  background-color: white;
+  padding: 15px;
+}
+.project-listings {
+  ul.locations {
+    margin: 0;
+    padding-top: 7px;
+    padding-bottom: 15px;
+    font-size: 90%;
+    list-style: none;
+    display: table;
+
+    li {
+      width: 100%;
+      text-align: left;
+      border: none;
+      padding: 5px 0 5px 20px;
+      text-indent: 0em;
+      list-style-position: inside;
+      position: relative;
+
+      &:before {
+        content: "\002022";
+        color: #f9b625;
+        width: 20px;
+        margin-left: .1em;
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 4px 0 5px 0;
+      }
+
+      a {
+        color: #007cb1;
+        text-decoration: none;
+        width: 240px;
+        margin: 0;
+        display: inline-block;
+        text-align: left;
+
+        &:hover {
+          color: #006a98;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Closed Project
+body#application-closed {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+}
+
+// Welcome / Privacy
+body#welcome.privacy {
+  .panel {
+    background-color: white;
+  }
+}
+
+// Multiple Projects
+body#applications.multiple_projects {
+  .panel {
+    background-color: white;
+  }
+}
+
+// Submission Errors
+.submission_errors {
+  ul li.incomplete {
+    display: inline-block;
+    padding-right: 30px;
+    background: url("/assets/icons/flag.png") no-repeat 100% 50%;
+  }
+}
+
+// Application Done
+body#applications.done {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+}
+
+// Application Section -- Basic Information
+body#applications.apply {
+  ul.questions#questions_list {
+    li .row[id^="element_"] {
+      margin: 0 auto;
+      max-width: auto;
+      padding-right: 15px;
+    }
+
+    li[id^="element_"] select + input.button[type="button"] {
+      margin-bottom: 5px;
+      padding: 9px 20px;
+    }
+
+    li[id^="element_"] [id^="choice_field_"] label {
+      display: inline;
+    }
+
+    li[id^="element_"] [id^="choice_field_"] input[type="radio"] {
+      float: none;
+    }
+
+    li[id^="element_"] [id^="fe_choice_field_"] label.choice {
+      display: inline;
+    }
+
+    li[id^="element_"] [id^="fe_choice_field_"] input[type="radio"].radio {
+      float: none;
+    }
+
+    li[id^="element_"] .choice_field.error[id^="fe_choice_field_"] label.choice {
+      margin-left: 10px;
+    }
+
+  }
+
+  li table tr td:last {
+
+  }
+}
+
+// Application Login Page
+body#authentications.index {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+}
+
+// Application Status
+body#applications.show {
+  .panel {
+    background-color: white;
+    padding: 15px;
+  }
+
+  #progress-box {
+    padding: 15px;
+    background-color: #FFFFFF;
+    width: 290px;
+
+    table {
+      border: none;
+
+      tr:nth-of-type(even) {
+        background: transparent;
+      }
+    }
+  }
+
+  #projectsummary {
+    width: 689px;
+
+    table {
+      border: none;
+
+      tr {
+        padding: 15px 0 0 0 !important;
+
+        &:nth-of-type(even) {
+          background: transparent;
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,6 @@ module Fe
   self.answer_sheet_class = 'SpApplication'
   
   mattr_accessor :from_email
-  self.from_email = 'Summer Projects <gosummerproject@cru.org>'
+  self.from_email = 'Summer Projects <summer.missions@cru.org>'
   
 end
