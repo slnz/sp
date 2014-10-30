@@ -26,7 +26,7 @@ class Admin::LeadersController < ApplicationController
       @project.send(params[:leader] + '=', @person.id)
       @project.save(:validate => false)
     elsif ['staff','kid','evaluator', 'volunteer', 'non_app_participant'].include?(params[:leader])
-      @project.sp_staff.create(:type => params[:leader].upcase, :year => @year, :person_id => @person.id)
+      @project.sp_staff.create(:type => params[:leader].sub('_', ' ').titleize, :year => @year, :person_id => @person.id)
     end
     render :create
   end
