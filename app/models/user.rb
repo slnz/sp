@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   def self.find_or_create_from_cas(atts)
     # Look for a user with this guid
     guid = att_from_receipt(atts, 'ssoGuid')
-    first_name = att_from_receipt(atts, 'first_name')
+    first_name = att_from_receipt(atts, 'firstName')
     last_name = att_from_receipt(atts, 'lastName')
     email = atts['username']
     find_or_create_from_guid_or_email(guid, email, first_name, last_name)

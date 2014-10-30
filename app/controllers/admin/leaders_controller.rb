@@ -11,7 +11,8 @@ class Admin::LeadersController < ApplicationController
   def destroy
     @person = Person.find(params[:person_id])
     @year = params[:year].present? ? params[:year] : @project.year
-    staff = @project.sp_staff.where(:type => params[:leader].titleize, :year => @year, :person_id => params[:person_id]).first
+    type = %w(apd pd opd).include?(params[:leader]) ? params[:leader].upcase : params[:leader].titleize
+    staff = @project.sp_staff.where(:type => type, :year => @year, :person_id => params[:person_id]).first
     staff.destroy if staff
     respond_to do |wants|
       wants.js
@@ -25,7 +26,7 @@ class Admin::LeadersController < ApplicationController
       @project.send(params[:leader] + '=', @person.id)
       @project.save(:validate => false)
     elsif ['staff','kid','evaluator', 'volunteer', 'non_app_participant'].include?(params[:leader])
-      @project.sp_staff.create(:type => params[:leader].titleize, :year => @year, :person_id => @person.id)
+      @project.sp_staff.create(:type => params[:leader].upcase, :year => @year, :person_id => @person.id)
     end
     render :create
   end

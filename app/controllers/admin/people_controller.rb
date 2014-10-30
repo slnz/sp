@@ -2,6 +2,7 @@ class Admin::PeopleController < ApplicationController
   before_filter :cas_filter, :authentication_filter
   before_filter :get_person, :only => [:edit, :destroy, :update, :show]
   respond_to :html, :js
+
   def show
     @project_id = params[:project_id].to_i
     @year = params[:year].to_i
@@ -23,9 +24,9 @@ class Admin::PeopleController < ApplicationController
         @designation = @person.sp_designation_numbers.create(:project_id => @project_id, :designation_number => params[:designation_number], :year => SpApplication.year)
       end
     end
-    application_start_date = SpApplication.find(params[:sp_application]).start_date.to_s
-    application_end_date = SpApplication.find(params[:sp_application]).end_date.to_s
-    if params[:sp_application].present?
+    if params[:sp_application].present? && !(params[:sp_application].is_a?(Hash))
+      application_start_date = SpApplication.find(params[:sp_application]).start_date.to_s
+      application_end_date = SpApplication.find(params[:sp_application]).end_date.to_s
       start_date = Date.strptime(application_start_date, "%Y-%m-%d")
       end_date = Date.strptime(application_end_date, "%Y-%m-%d")
       @application.start_date = start_date
