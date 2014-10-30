@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: a153413034c284324601c1921cce6a0ff6c41f9c
+  revision: 69c195dda65913f0279bcb97f3ae5b80c5ef8b8a
   branch: fe
   specs:
     fe (0.0.3)
@@ -246,8 +246,8 @@ GEM
     mini_portile (0.6.0)
     minitest (5.4.2)
     mock_redis (0.13.2)
-    money (6.3.0)
-      i18n (>= 0.6.4, <= 0.7.0.dev)
+    money (6.4.0)
+      i18n (>= 0.6.4, <= 0.7.0.beta1)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
