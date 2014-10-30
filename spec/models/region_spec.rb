@@ -19,7 +19,6 @@ describe Region do
     it 'should work' do
       allow(Infobase::Region).to receive(:get).and_return([{"name" => "Great Lakes", "id" => "1", "abbrv" => "GL"}, {"name" => "A non-standard region", "id" => "2", "abbrv" => "AA"}])
       standard_regions_hash = Region.standard_regions_hash
-      puts standard_regions_hash.inspect
       expect(standard_regions_hash).to have_key("Great Lakes")
       expect(standard_regions_hash).to_not have_key("A non-standard region")
     end
