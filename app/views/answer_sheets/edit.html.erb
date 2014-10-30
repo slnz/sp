@@ -6,7 +6,6 @@
     <% else %>
         <!-- Max size 290w x 150h -->
         <div id="no-mission-logo"><%= image_tag("frontend/no-mission-logo.png") %></div>
-        <!-- TODO: randomly select an image from the no mission folder -->
     <% end %>
     <% if @reference_sheet %>
         Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
