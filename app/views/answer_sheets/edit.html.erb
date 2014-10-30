@@ -5,7 +5,7 @@
         <div id="mission-logo"><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
     <% else %>
         <!-- Max size 290w x 150h -->
-        <div id="no-mission-logo"><%= image_tag("frontend/no-mission-logo/JSSPJune14-3331494315-OSM316.jpg") %></div>
+        <div id="no-mission-logo"><%= image_tag("frontend/no-mission-logo.png") %></div>
         <!-- TODO: randomly select an image from the no mission folder -->
     <% end %>
     <% if @reference_sheet %>
