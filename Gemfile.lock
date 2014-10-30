@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: 69c195dda65913f0279bcb97f3ae5b80c5ef8b8a
+  revision: d371885abceb38fb055e408dc78f08b4ec823824
   branch: fe
   specs:
     fe (0.0.3)
@@ -218,7 +218,6 @@ GEM
     json (1.8.1)
     jwt (1.0.0)
     kgio (2.9.2)
-    libv8 (3.11.8.17)
     liquid (2.4.1)
     listen (2.7.11)
       celluloid (>= 0.15.2)
@@ -502,7 +501,6 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   jquery-validation-rails
-  libv8 (~> 3.11.8)
   liquid (~> 2.4.1)
   mailcatcher
   meta_request
