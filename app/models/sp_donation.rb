@@ -27,7 +27,7 @@ class SpDonation < ActiveRecord::Base
   # This may be backed by Peoplesoft/Oracle in the future.
   # For now, it is backed by a table that is synchronized with Oracle
   def self.get_balance(designation_number, year = nil)
-    return 0 unless designation_number
+    return 0 unless designation_number.present?
     if year
       (SpDonation.sum(:amount,
                       :conditions => ["designation_number = ? AND donation_date > ?",
