@@ -5,7 +5,7 @@ class CampusesController < ApplicationController
  
   def search
     current_person.update_attribute(:universityState, params[:state])
-    @application = SpApplication.find(params[:id])
+    @answer_sheet = @application = SpApplication.find(params[:id])
     @school_picker = Fe::SchoolPicker.find(params[:dom_id].split('_').last)
   end
 end
