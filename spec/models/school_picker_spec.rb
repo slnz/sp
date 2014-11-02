@@ -25,7 +25,7 @@ describe Fe::SchoolPicker do
         to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "CA"}]}', :headers => {})
       campus_name = 'Campus Name'
       expect(@school_picker).to receive(:response).with(@application).and_return(campus_name)
-      response = @school_picker.send(:state, @application)
+      response = @school_picker.state(@application)
       expect(response).to eq('CA')
     end
   end
@@ -59,12 +59,12 @@ describe Fe::SchoolPicker do
       response = @school_picker.send(:high_schools, @application)
       expect(response).to eq([])
     end
-    it "returns an array of campus names if the given application has a state record" do
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Btype%5D=HighSchool").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
+    it "returns an array of high school names if the given application has a state record" do
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Btype%5D=High%20School").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"High School Name", "state": "High School State"}]}', :headers => {})
       expect(@school_picker).to receive(:state).with(@application).and_return('Campus State')
       response = @school_picker.send(:high_schools, @application)
-      expect(response.first).to eq('Campus Name')
+      expect(response.first).to eq('High School Name')
     end
   end
   

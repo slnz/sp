@@ -15,8 +15,8 @@ describe CampusesController do
                            project_id: project.id,
                            status: 'ready')
 
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Btype%5D=HighSchool").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
+      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Btype%5D=High%20School").
+        to_return(:status => 200, :body => '{"target_areas":[{"name":"High School", "state": "High School State"}]}', :headers => {})
 
       stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bstate%5D=MN&filters%5Btype%5D=College").
         to_return(:status => 200, :body => '{"target_areas":[{"name":"Campus Name", "state": "Campus State"}]}', :headers => {})
