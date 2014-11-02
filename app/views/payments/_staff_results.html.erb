@@ -8,11 +8,11 @@
 	<ul style="margin-left: 35px;">
 	<% @results.each do |staff| -%>
 		<li style="margin: 0;"><%= radio_button :payment, :payment_account_no, staff.accountNo, :onclick => "$('#staff_submit').show()" -%>
-			<label for="payment_payment_account_no_<%=staff.accountNo%>" style="display: inline; float: none; font-weight: normal;"><%= staff.first_name %> <%= staff.last_name %> &lt;<i><%= staff.email %></i>&gt;</label></li>
+			<label for="payment_payment_account_no_<%=staff.accountNo%>" style="display: inline; float: none; font-weight: normal;"><%= staff.firstName %> <%= staff.lastName %> &lt;<i><%= staff.email %></i>&gt;</label></li>
 	<% end -%>
 	</ul>
 	
 	<p class="buttons">
-		<%= submit_tag "Submit Payment", :id => 'staff_submit', :class => 'submit_payment button no-left-margin', 'data-url' => application_payments_path(@application), :style => 'display:none' %>
+		<%= submit_tag "Submit Payment", :id => 'staff_submit', :class => 'submit_payment button no-left-margin', 'data-url' => application_payments_path(@answer_sheet), :style => 'display:none' %>
 	</p>
 <% end %>

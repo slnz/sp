@@ -6,8 +6,8 @@
 	  <% if (payment.payment_type == 'Staff' && payment.status == 'Pending') -%>(Request sent)<% end -%>
 	</td>
 	<td style="text-align: right;">
-	  <% if !payment.new_record? && payment.payment_type != "Credit Card" && !payment.approved? && !@application.frozen? %>
-	    <%= link_to("Delete", application_payment_path(@application, payment), :method => :delete, data: {confirm: "Are you sure?"}, :remote => true, :class => "destroy")%>
+	  <% if !payment.new_record? && payment.payment_type != "Credit Card" && !payment.approved? && !@answer_sheet.frozen? %>
+	    <%= link_to("Delete", application_payment_path(@answer_sheet, payment), :method => :delete, data: {confirm: "Are you sure?"}, :remote => true, :class => "destroy")%>
 	  <% end -%>
 	</td>
 </tr>
