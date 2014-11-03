@@ -35,7 +35,8 @@ class Admin::ApplicationsController < ApplicationController
       if @schools.empty?
         conditions[0] << " 1 <> 1 "
       else
-        conditions[0] << "#{Person.table_name}.campus IN (\'#{@schools.join("','")}\')"
+        conditions[0] << "#{Person.table_name}.campus IN (?)"
+        conditions[1] << @schools
       end
     end
     if params[:region] && !params[:region].empty?
@@ -70,7 +71,7 @@ class Admin::ApplicationsController < ApplicationController
       conditions[1] << params[:preference].to_i
     end
     conditions[0] = conditions[0].join(' AND ')
-    conditions.flatten!
+    conditions.flatten!(1)
     if conditions[0].empty?
       flash[:notice] = "You must use at least one search criteria."
       redirect_to search_admin_applications_path
