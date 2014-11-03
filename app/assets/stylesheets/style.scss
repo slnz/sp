@@ -402,6 +402,7 @@ body#applications.apply, body#applications.edit {
       
       label.choice {
         display: inline;
+        margin: 0 10px 0 15px;
       }
     }
 
@@ -461,6 +462,8 @@ body#applications.show {
 // Question list
 ul.questions#questions_list {
   li {
+  
+  
     input.radio {
       float: none;
     }
