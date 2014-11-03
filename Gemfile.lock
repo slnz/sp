@@ -7,6 +7,21 @@ GIT
       rest-client
 
 GIT
+  remote: git://github.com/CruGlobal/qe.git
+  revision: c933ebae3ca24906bba6a2dd56cbac3a03f497e6
+  branch: fe
+  specs:
+    fe (0.0.3)
+      aasm
+      activemerchant
+      acts_as_list (= 0.4.0)
+      carmen (~> 0.2.12)
+      dynamic_form
+      jquery-rails
+      jquery-ui-rails
+      rails (>= 3.1.0)
+
+GIT
   remote: git://github.com/CruGlobal/relay_api_client.git
   revision: f99ba58ca8e52c724d86dee13d4ca24129562983
   specs:
@@ -27,19 +42,6 @@ GIT
   specs:
     acts_as_versioned (0.6.0)
       activerecord (>= 3.0.9)
-
-PATH
-  remote: /Users/josh/htdocs/fe
-  specs:
-    fe (0.0.3)
-      aasm
-      activemerchant
-      acts_as_list (= 0.4.0)
-      carmen (~> 0.2.12)
-      dynamic_form
-      jquery-rails
-      jquery-ui-rails
-      rails (>= 3.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -216,7 +218,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     lumberjack (1.0.9)
-    mail (2.6.1)
+    mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mailcatcher (0.2.4)
       eventmachine
