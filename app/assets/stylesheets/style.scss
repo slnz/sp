@@ -186,6 +186,10 @@ select.ui-datepicker-year[data-handler="selectYear"] {
     text-indent: 0em;
     list-style-position: inside;
     position: relative;
+    
+    &.active a {
+      color: #404040;
+    }
 
     &:before {
       content: "\002022";
@@ -199,7 +203,7 @@ select.ui-datepicker-year[data-handler="selectYear"] {
     }
 
     a {
-      color: #007cb1;
+      color: rgba(0, 0, 0, 0.3);
       text-decoration: none;
       width: 240px;
       margin: 0;
@@ -207,7 +211,7 @@ select.ui-datepicker-year[data-handler="selectYear"] {
       text-align: left;
 
       &:hover {
-        color: #006a98;
+        color: #404040;
         text-decoration: underline;
       }
     }
@@ -259,6 +263,10 @@ select.ui-datepicker-year[data-handler="selectYear"] {
     @include button;
     margin-left: 0;
   }
+}
+
+#submit_message.validation-advice {
+  color: red;
 }
 
 // Project Box
@@ -354,7 +362,7 @@ body#applications.done {
 }
 
 // Application Section -- Basic Information
-body#applications.apply {
+body#applications.apply, body#applications.edit {
   ul.questions#questions_list {
     li .row[id^="element_"] {
       margin: 0 auto;
@@ -385,6 +393,16 @@ body#applications.apply {
 
     li[id^="element_"] .choice_field.error[id^="fe_choice_field_"] label.choice {
       margin-left: 10px;
+    }
+    
+    li.radio {
+      input.radio {
+        float: none;
+      }
+      
+      label.choice {
+        display: inline;
+      }
     }
 
   }
