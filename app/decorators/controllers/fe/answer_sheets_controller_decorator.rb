@@ -57,6 +57,6 @@ Fe::AnswerSheetsController.class_eval do
     end
     
     def login
-      ssm_login_required unless answer_sheet_type.to_s == 'ReferenceSheet'
+      ssm_login_required unless answer_sheet_type.to_s == 'Fe::ReferenceSheet'
     end
 end
