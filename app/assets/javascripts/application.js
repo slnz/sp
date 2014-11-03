@@ -24,4 +24,5 @@
 //= require sp
 
 //= require foundation.min
+//= require modernizr.js
 $(document).foundation();

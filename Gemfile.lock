@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: c933ebae3ca24906bba6a2dd56cbac3a03f497e6
+  revision: fc3b33a9a1e38cd38df6c82897dff5b1bece69f7
   branch: fe
   specs:
     fe (0.0.3)
@@ -218,7 +218,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     lumberjack (1.0.9)
-    mail (2.6.1)
+    mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mailcatcher (0.2.4)
       eventmachine

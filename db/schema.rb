@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141027031744) do
+ActiveRecord::Schema.define(version: 20141103204936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -515,7 +515,6 @@ ActiveRecord::Schema.define(version: 20141027031744) do
     t.integer  "answer_sheet_id",         null: false
     t.integer  "question_id",             null: false
     t.text     "value"
-    t.string   "short_value"
     t.integer  "attachment_file_size"
     t.string   "attachment_content_type"
     t.string   "attachment_file_name"
@@ -527,7 +526,6 @@ ActiveRecord::Schema.define(version: 20141027031744) do
   add_index "sp_answers", ["answer_sheet_id"], name: "index_sp_answers_on_answer_sheet_id", using: :btree
   add_index "sp_answers", ["question_id", "answer_sheet_id"], name: "index_on_as_and_q", using: :btree
   add_index "sp_answers", ["question_id"], name: "index_sp_answers_on_question_id", using: :btree
-  add_index "sp_answers", ["short_value"], name: "index_sp_answers_on_short_value", using: :btree
 
   create_table "sp_application_moves", force: true do |t|
     t.integer  "application_id"
