@@ -35,7 +35,7 @@ class Admin::ApplicationsController < ApplicationController
       if @schools.empty?
         conditions[0] << " 1 <> 1 "
       else
-        conditions[0] << "#{Person.table_name}.campus IN (\'#{@schools.join("\",\"")}\')"
+        conditions[0] << "#{Person.table_name}.campus IN (\'#{@schools.join("','")}\')"
       end
     end
     if params[:region] && !params[:region].empty?
