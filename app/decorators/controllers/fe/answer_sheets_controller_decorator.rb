@@ -21,7 +21,7 @@ Fe::AnswerSheetsController.class_eval do
         reference.send_invite unless reference.email_sent?
       end
       render 'applications/submitted'
-    when 'ReferenceSheet'
+    when 'Fe::ReferenceSheet'
       @answer_sheet.submit! unless @answer_sheet.completed?
       render 'reference_sheets/submitted'
     else
@@ -47,8 +47,8 @@ Fe::AnswerSheetsController.class_eval do
           redirect_to root_path
           return false
         end
-      when 'ReferenceSheet'
-        
+      when 'Fe::ReferenceSheet'
+        return true
       else
         redirect_to root_path
         return false
