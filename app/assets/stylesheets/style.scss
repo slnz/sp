@@ -457,3 +457,16 @@ body#applications.show {
     }
   }
 }
+
+// Question list
+ul.questions#questions_list {
+  li.radio {
+    input.radio {
+      float: none;
+    }
+    
+    label.choice {
+      display: inline;
+    }
+  }
+}
