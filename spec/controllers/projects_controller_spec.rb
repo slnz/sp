@@ -104,8 +104,8 @@ describe ProjectsController do
 
     it 'should work with a Canadian project' do
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
-      end_date = Date.today + 60
+      start_date = Date.parse("April 1, #{Date.today.year}")
+      end_date = Date.parse("May 1, #{Date.today.year}")
 
       stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,Canada&language=en&sensor=false").
         to_return(:status => 200, :body => @geocode_body, :headers => {})
@@ -145,8 +145,8 @@ describe ProjectsController do
 
     it 'should work with focus empty' do
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
-      end_date = Date.today + 60
+      start_date = Date.parse("April 1, #{Date.today.year}")
+      end_date = Date.parse("May 1, #{Date.today.year}")
 
       stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false").
         to_return(:status => 200, :body => @geocode_body, :headers => {})
@@ -186,8 +186,8 @@ describe ProjectsController do
 
     it 'should test for most params' do
       open_application_date = Date.today - 30
-      start_date = Date.today + 30
-      end_date = Date.today + 60
+      start_date = Date.parse("April 1, #{Date.today.year}")
+      end_date = Date.parse("May 1, #{Date.today.year}")
 
       stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false").
         to_return(:status => 200, :body => @geocode_body, :headers => {})
