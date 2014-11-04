@@ -1,3 +1,4 @@
+require 'validates_email_format_of'
 class EmailAddress < Fe::EmailAddress
   include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
