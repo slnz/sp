@@ -13,6 +13,6 @@
 	</ul>
 	
 	<p class="buttons">
-		<%= submit_tag "Submit Payment", :id => 'staff_submit', :class => 'submit_payment button no-left-margin', 'data-url' => application_payments_path(@answer_sheet), :style => 'display:none' %>
+    <%= submit_tag "Submit Payment", :id => 'staff_submit', :class => 'submit_payment button no-left-margin', :style => 'display:none', data: { url: application_payments_path(@answer_sheet), disable_with: "Submitting..." } %>
 	</p>
 <% end %>
