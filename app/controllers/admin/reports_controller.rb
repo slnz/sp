@@ -814,10 +814,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -843,10 +843,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -884,10 +884,10 @@ class Admin::ReportsController < ApplicationController
       @extra_query_parts = ""
       if i == 0
         # male
-        @extra_query_parts += " AND (gender IN (1, '1'))"
+        @extra_query_parts += " AND (gender = '1')"
       elsif i == 1
         # female
-        @extra_query_parts += " AND (gender IN (0, '0'))"
+        @extra_query_parts += " AND (gender = '0')"
       end
       @counts ||= {}
       @counts[i] ||= {}
@@ -951,10 +951,10 @@ class Admin::ReportsController < ApplicationController
       @gender_query_parts = ""
       if i == 0
         # male
-        @gender_query_parts += " AND (gender IN (1, '1'))"
+        @gender_query_parts += " AND (gender = '1')"
       elsif i == 1
         # female
-        @gender_query_parts += " AND (gender IN (0, '0'))"
+        @gender_query_parts += " AND (gender = '0')"
       end
       @counts ||= {}
       @counts[i] ||= {}
@@ -1029,10 +1029,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -1071,10 +1071,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -1099,10 +1099,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -1140,10 +1140,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = " AND sp_projects.name NOT LIKE '%spring%'"
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -1181,10 +1181,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}
@@ -1237,10 +1237,10 @@ class Admin::ReportsController < ApplicationController
       this_scope = scope
       if i == 0
         # male
-        this_scope = scope.where("(gender IN (1, '1'))")
+        this_scope = scope.where("(gender = '1')")
       elsif i == 1
         # female
-        this_scope = scope.where("(gender IN (0, '0'))")
+        this_scope = scope.where("(gender = '0')")
       end
       @counts ||= {}
       @counts[i] ||= {}
@@ -1274,10 +1274,10 @@ class Admin::ReportsController < ApplicationController
       @extra_query_parts = ""
       if i == 0
         # male
-        @extra_query_parts += " AND (gender IN (1, '1'))"
+        @extra_query_parts += " AND (gender = '1')"
       elsif i == 1
         # female
-        @extra_query_parts += " AND (gender IN (0, '0'))"
+        @extra_query_parts += " AND (gender = '0')"
       end
       @counts ||= {}
       @counts[i] ||= {}
@@ -1300,10 +1300,10 @@ class Admin::ReportsController < ApplicationController
       @extra_query_parts = " "
       if i == 0
         # male
-        @extra_query_parts += " AND (gender IN (1, '1'))"
+        @extra_query_parts += " AND (gender = '1')"
       elsif i == 1
         # female
-        @extra_query_parts += " AND (gender IN (0, '0'))"
+        @extra_query_parts += " AND (gender = '0')"
       end
       @counts ||= {}
       @counts[i] ||= {}
@@ -1327,10 +1327,10 @@ class Admin::ReportsController < ApplicationController
         @extra_query_parts = ""
         if i == 0
           # male
-          @extra_query_parts += " AND (gender IN (1, '1'))"
+          @extra_query_parts += " AND (gender = '1')"
         elsif i == 1
           # female
-          @extra_query_parts += " AND (gender IN (0, '0'))"
+          @extra_query_parts += " AND (gender = '0')"
         end
         @counts ||= {}
         @counts[i] ||= {}

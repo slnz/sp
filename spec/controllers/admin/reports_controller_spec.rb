@@ -890,4 +890,45 @@ describe Admin::ReportsController do
       expect(assigns(:applications)).to eq([application, application2])
     end
   end
+
+  context "#total_num_applicants_by_efm" do
+    it 'should render all applications into csv' do
+      create(:sp_national_coordinator, user: user)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+
+      SpApplication.delete_all
+
+      open_application_date = Date.today - 30
+      start_date = 1.month.from_now
+      end_date = 2.months.from_now
+
+      project = create(:sp_project,
+                       year: Date.today.year,
+                       start_date: start_date,
+                       end_date: end_date,
+                       open_application_date: open_application_date
+      )
+
+      # match applicant based on campus
+      applicant = create(:person)
+      application = create(:sp_application,
+                           person_id: applicant.id,
+                           project_id: project.id,
+                           status: 'ready',
+                           year: project.year
+      )
+
+      # match applicant based on campus
+      applicant2 = create(:person)
+      application2 = create(:sp_application,
+                            person_id: applicant2.id,
+                            project_id: project.id,
+                            status: 'ready',
+                            year: project.year
+      )
+
+      get :total_num_applicants_by_efm, format: 'csv'
+    end
+  end
 end
