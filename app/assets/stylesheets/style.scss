@@ -186,7 +186,7 @@ select.ui-datepicker-year[data-handler="selectYear"] {
     text-indent: 0em;
     list-style-position: inside;
     position: relative;
-    
+
     &.active a {
       color: #404040;
     }
@@ -394,12 +394,12 @@ body#applications.apply, body#applications.edit {
     li[id^="element_"] .choice_field.error[id^="fe_choice_field_"] label.choice {
       margin-left: 10px;
     }
-    
+
     li.radio {
       input.radio {
         float: none;
       }
-      
+
       label.choice {
         display: inline;
         margin: 0 10px 0 15px;
@@ -462,14 +462,17 @@ body#applications.show {
 // Question list
 ul.questions#questions_list {
   li {
-  
-  
+
     input.radio {
       float: none;
     }
-    
+
     label.choice {
       display: inline;
     }
+  }
+
+  .radio-set {
+    display: inline-block;
   }
 }
