@@ -60,17 +60,16 @@
 <%= render :partial => 'layouts/ga' %>
 
 <div id="headwrap">
-  <h2 class="center community-title">Summer Missions</h2>
-
   <div id="header">
-    <% if @authentications || logged_in? %>
-        <div id="globalactions">
-          <ul>
-            <li><%= link_to("Log Out", "/logout") %></li>
-            <li></li>
-          </ul>
-        </div>
-    <% end %>
+    <div id="globalactions">
+      <div id="globalactions" class="row">
+        <div class="medium-6 columns logo"><a href="/"></a></div>
+      <% if @authentications || logged_in? %>
+        <div class="medium-6 columns logout"><%= link_to("Log Out", "/logout") %></div>
+      <% end %>
+      </div>
+    </div>
+    <h2 class="center community-title">Summer Missions</h2>
     <!-- anything in here my be custom branded -->
     <a href="/"><%= image_tag("frontend/go_summer_missions_header_01.png", :class => "tile") %></a>
     <!-- END -->
