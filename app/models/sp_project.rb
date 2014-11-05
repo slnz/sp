@@ -102,7 +102,7 @@ class SpProject < ActiveRecord::Base
   # validate date ranges
   validate :end_date_range
 
-  scope :with_partner, proc {|partner| where(["primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", partner, partner, partner])}
+  scope :with_partner, ->(partner) { where(["primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", partner, partner, partner]) }
   scope :show_on_website, -> { where(:show_on_website => true, :project_status => 'open') }
   scope :uses_application, -> { where(:use_provided_application => true) }
   scope :current, -> { where("project_status = 'open' AND open_application_date <= ? AND start_date >= ?", Date.today, Date.today) }
@@ -120,10 +120,11 @@ class SpProject < ActiveRecord::Base
   scope :has_chart_field, -> { where("operating_business_unit is not null AND operating_business_unit <> '' AND operating_operating_unit is not null AND operating_operating_unit <> '' AND operating_department is not null AND operating_department <> ''") }
   scope :missing_chart_field, -> { where("operating_business_unit is null OR operating_business_unit = '' OR operating_operating_unit is null OR operating_operating_unit = '' OR operating_department is null OR operating_department = ''") }
 
-  scope :pd_like, lambda {|name| where(Person.table_name + '.last_name LIKE ? OR ' + Person.table_name + '.first_name LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'PD').joins({:sp_staff => :person})}
-  scope :apd_like, lambda {|name| where(Person.table_name + '.last_name LIKE ? OR ' + Person.table_name + '.first_name LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'APD').joins({:sp_staff => :person})}
-  scope :opd_like, lambda {|name| where(Person.table_name + '.last_name LIKE ? OR ' + Person.table_name + '.first_name LIKE ?', "%#{name}%","%#{name}%").where('sp_staff.type' => 'OPD').joins(:sp_staff)}
-
+  scope :by_name, ->(name) { where("lower(#{Person.table_name}.last_name) LIKE ? OR lower(#{Person.table_name}.first_name) LIKE ?", "%#{name}%","%#{name}%") }
+  scope :by_role, ->(role) { where('sp_staff.type' => role).joins({:sp_staff => :person}) }
+  scope :pd_like, ->(name) { by_name(name).by_role('PD') }
+  scope :apd_like, ->(name) { by_name(name).by_role('APD') }
+  scope :opd_like, ->(name) { by_name(name).by_role('OPD') }
 
   before_create :set_to_open
   before_save :get_coordinates, :calculate_weeks, :set_year, :set_default_apply_date
