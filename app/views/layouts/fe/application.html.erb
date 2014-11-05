@@ -38,14 +38,12 @@
 
 <div id="headwrap">
   <div id="header">
-    <% if @authentications || logged_in? %>
-        <div id="globalactions">
-          <ul>
-            <li><%= link_to("Log Out", "/logout") %></li>
-            <li></li>
-          </ul>
-        </div>
-    <% end %>
+    <div id="globalactions" class="row">
+      <div class="medium-6 columns logo"><a href="/"></a></div>
+      <% if @authentications || logged_in? %>
+        <div class="medium-6 columns logout"><%= link_to("Log Out", "/logout") %></div>
+      <% end %>
+    </div>
   </div>
 </div>
 

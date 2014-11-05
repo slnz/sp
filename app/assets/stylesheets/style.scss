@@ -79,6 +79,44 @@ h1 {
   border-color: #f9b625;
 }
 
+// Header
+#globalactions {
+  .logo {
+    display: inline-block;
+    padding: 5px 0 0 12px;
+    line-height: 77px;
+    vertical-align: middle;
+    text-align: left;
+
+    a {
+      display:inline-block;
+      overflow:hidden;
+      vertical-align:middle;
+      width:74px;
+      height:54px;
+      background:url("//cru.org/images/cru-logo.png");
+      background-image:url("//cru.org/images/cru-logo.svg");
+      background-repeat:no-repeat;
+      background-position:top center;
+      background-size:contain;
+    }
+  }
+
+  .logout {
+    text-align: right;
+    margin-top: 45px;
+    
+    a {
+      color: #404040;
+
+      &:hover {
+        color: #f9b625;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
 #footerwrap {
   ul {
     margin-left: auto;
@@ -142,7 +180,7 @@ a:hover.cru-dark-gray, button:hover.cru-dark-gray, button:focus.cru-dark-gray, a
   text-align: center;
   font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
   font-size: 300;
-  margin-top: 50px;
+  margin-top: 0;
 }
 
 @mixin tile($color) {
@@ -155,7 +193,8 @@ a:hover.cru-dark-gray, button:hover.cru-dark-gray, button:focus.cru-dark-gray, a
 }
 
 .tile {
-  @include tile(rgba(0,0,0,0.2))
+  @include tile(rgba(0,0,0,0.2));
+  background-color: white;
 }
 
 select.ui-datepicker-year[data-handler="selectYear"] {
@@ -405,11 +444,6 @@ body#applications.apply, body#applications.edit {
         margin: 0 10px 0 15px;
       }
     }
-
-  }
-
-  li table tr td:last {
-
   }
 }
 
