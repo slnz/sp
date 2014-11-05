@@ -193,7 +193,8 @@ a:hover.cru-dark-gray, button:hover.cru-dark-gray, button:focus.cru-dark-gray, a
 }
 
 .tile {
-  @include tile(rgba(0,0,0,0.2))
+  @include tile(rgba(0,0,0,0.2));
+  background-color: white;
 }
 
 select.ui-datepicker-year[data-handler="selectYear"] {
