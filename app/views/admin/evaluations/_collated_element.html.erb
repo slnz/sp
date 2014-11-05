@@ -1,4 +1,4 @@
-<% if element.kind == "QuestionGrid" -%>
+<% if element.kind == "Fe::QuestionGrid" -%>
 	<table class="grid">
   	<%- if element.cols -%>
   	<tr>
@@ -11,7 +11,7 @@
   		<%- col_count = 0
   			element.elements.each do |grid_element| -%>
   		<td id="element_<%= element.id %>">
-  			<% unless %w(Paragraph).include?(grid_element.kind) -%>
+  			<% unless %w(Fe::Paragraph).include?(grid_element.kind) -%>
     			<%= grid_element.label + ': ' if grid_element.label.present? %> <%= grid_element.display_response(answer_sheet) %>
   			<% end -%>
   		</td>
