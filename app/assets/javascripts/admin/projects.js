@@ -71,7 +71,7 @@ $(function() {
     }).keyup(function() {
       // Clear the other search fields
       $('#dashboardlist .search').not(this).val('');
-      params = {}
+      params = {closed: params['closed']}
       param = $(this).attr('name');
       params[param] = $(this).val();
       $('#spinner_' + param).show();
