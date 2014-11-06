@@ -4,6 +4,8 @@ class Person < Fe::Person
   include Sidekiq::Worker
   include CruLib::GlobalRegistryMethods
 
+  sidekiq_options unique: true
+
   auto_strip_attributes :first_name, :last_name, :preferred_name, :account_no, :title
 
   self.table_name = "ministry_person"

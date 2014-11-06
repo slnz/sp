@@ -2,6 +2,7 @@ class Address < Fe::Address
   include CruLib::GlobalRegistryMethods
   include Sidekiq::Worker
 
+  sidekiq_options unique: true
   belongs_to :person
 
   def async_push_to_global_registry(parent_id = nil, parent_type = 'person')
