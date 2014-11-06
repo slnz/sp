@@ -170,6 +170,8 @@ class Person < Fe::Person
 
   #set dateChanged and changedBy
   def stamp_changed
+    return unless changed?
+
     self.dateChanged = Time.now
     self.changedBy = ApplicationController.application_name
   end

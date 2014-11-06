@@ -13,7 +13,8 @@ class Admin::PeopleController < ApplicationController
   end
 
   def update
-    @person.update_attributes(person_params)
+    @person.update_attributes!(person_params)
+    @person.current_address.update_attributes!(person_params[:current_address_attributes])
     @project_id = params[:project_id].to_i
     @year = params[:year].to_i
     @application = SpApplication.where(year: params[:year], person_id: @person.id, project_id: @project_id).first
