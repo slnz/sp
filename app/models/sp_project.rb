@@ -120,7 +120,7 @@ class SpProject < ActiveRecord::Base
   scope :has_chart_field, -> { where("operating_business_unit is not null AND operating_business_unit <> '' AND operating_operating_unit is not null AND operating_operating_unit <> '' AND operating_department is not null AND operating_department <> ''") }
   scope :missing_chart_field, -> { where("operating_business_unit is null OR operating_business_unit = '' OR operating_operating_unit is null OR operating_operating_unit = '' OR operating_department is null OR operating_department = ''") }
 
-  scope :by_name, ->(name) { where("lower(#{Person.table_name}.last_name) LIKE ? OR lower(#{Person.table_name}.first_name) LIKE ?", "%#{name}%","%#{name}%") }
+  scope :by_name, ->(name) { where("#{Person.table_name}.last_name ILIKE ? OR #{Person.table_name}.first_name ILIKE ?", "%#{name}%","%#{name}%") }
   scope :by_role, ->(role) { where('sp_staff.type' => role).joins({:sp_staff => :person}) }
   scope :pd_like, ->(name) { by_name(name).by_role('PD') }
   scope :apd_like, ->(name) { by_name(name).by_role('APD') }

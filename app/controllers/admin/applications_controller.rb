@@ -16,11 +16,11 @@ class Admin::ApplicationsController < ApplicationController
     set_up_search_form
     conditions = [[],[]]
     if params[:first_name] && !params[:first_name].empty?
-      conditions[0] << "#{Person.table_name}.first_name like ?"
+      conditions[0] << "#{Person.table_name}.first_name ilike ?"
       conditions[1] << "%#{params[:first_name]}%"
     end
     if params[:last_name] && !params[:last_name].empty?
-      conditions[0] << "#{Person.table_name}.last_name like ?"
+      conditions[0] << "#{Person.table_name}.last_name ilike ?"
       conditions[1] << "%#{params[:last_name]}%"
     end
     if params[:school] && !params[:school].empty?

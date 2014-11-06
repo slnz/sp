@@ -437,13 +437,13 @@ class Admin::ProjectsController < ApplicationController
     end
     case
     when params[:search].present?
-      @base = @base.where("lower(name) like ?", "%#{params[:search].downcase}%")
+      @base = @base.where("name ilike ?", "%#{params[:search]}%")
     when params[:search_pd].present?
-      @base = @base.joins(:sp_staff => :person).pd_like(params[:search_pd].downcase)
+      @base = @base.joins(:sp_staff => :person).pd_like(params[:search_pd])
     when params[:search_apd].present?
-      @base = @base.joins(:sp_staff => :person).apd_like(params[:search_apd].downcase)
+      @base = @base.joins(:sp_staff => :person).apd_like(params[:search_apd])
     when params[:search_opd].present?
-      @base = @base.joins(:sp_staff => :person).opd_like(params[:search_opd].downcase)
+      @base = @base.joins(:sp_staff => :person).opd_like(params[:search_opd])
     end
 
     # Filter based on the user type
