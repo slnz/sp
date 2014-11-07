@@ -29,7 +29,7 @@ module Fe
 
     def high_schools(app=nil)
       unless self.state(app) == ''
-        return Infobase::TargetArea.get('filters[type]' => 'High School').collect(&:name)
+        return Infobase::TargetArea.get('filters[type]' => 'HighSchool').collect(&:name)
       end
       []
     end
