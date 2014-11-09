@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103204936) do
+ActiveRecord::Schema.define(version: 20141109155311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -651,6 +651,7 @@ ActiveRecord::Schema.define(version: 20141103204936) do
     t.integer  "max_length"
     t.string   "conditional_type"
     t.text     "conditional_answer"
+    t.integer  "choice_field_id"
   end
 
   add_index "sp_elements", ["conditional_id"], name: "index_sp_elements_on_conditional_id", using: :btree
