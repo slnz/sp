@@ -9,12 +9,15 @@ module Fe
           @pages << page
         end
       end
-      # put the instructions page first
-      index = @pages.index {|p| p.label == 'Instructions'}
-      if index
-        instructions = @pages.delete_at(index)
-        @pages.insert(0, instructions) if instructions
+      # specify the order of the top 3 pages
+      ['Instructions', 'Basic Information', 'Passport Information'].each_with_index do |page_name, i|
+        index = @pages.index { |p| p.label == page_name }
+        if index
+          page = @pages.delete_at(index)
+          @pages.insert(i, page) if page
+        end
       end
+
       if answer_sheet.respond_to?(:project)
         if answer_sheet.project && answer_sheet.project.project_specific_question_sheet &&
           answer_sheet.project.project_specific_question_sheet.pages.first &&

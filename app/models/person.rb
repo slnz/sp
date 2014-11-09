@@ -4,6 +4,8 @@ class Person < Fe::Person
   include Sidekiq::Worker
   include CruLib::GlobalRegistryMethods
 
+  sidekiq_options unique: true
+
   auto_strip_attributes :first_name, :last_name, :preferred_name, :account_no, :title
 
   self.table_name = "ministry_person"
@@ -168,6 +170,8 @@ class Person < Fe::Person
 
   #set dateChanged and changedBy
   def stamp_changed
+    return unless changed?
+
     self.dateChanged = Time.now
     self.changedBy = ApplicationController.application_name
   end

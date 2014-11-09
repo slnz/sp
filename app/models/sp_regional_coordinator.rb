@@ -18,7 +18,8 @@ class SpRegionalCoordinator < SpUser
     if ministry_mappings.has_key?(partner)
       partner = translations[partner]
     end
-    @scope ||= ['primary_partner like ? OR secondary_partner like ? OR tertiary_partner like ?' , partner, partner, partner]
+    @scope ||= ['primary_partner ilike :partner OR secondary_partner ilike :partner
+                    OR tertiary_partner ilike :partner', partner: partner]
   end
   
   def heading(partner) 

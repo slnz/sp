@@ -71,6 +71,7 @@ $(function() {
     }).keyup(function() {
       // Clear the other search fields
       $('#dashboardlist .search').not(this).val('');
+      params = {closed: params['closed']}
       param = $(this).attr('name');
       params[param] = $(this).val();
       $('#spinner_' + param).show();
@@ -183,7 +184,7 @@ $(function() {
     el.dialog({
       title: name,
       resizable: false,
-      height:525,
+      height:600,
       width:400,
       modal: true,
       buttons: {

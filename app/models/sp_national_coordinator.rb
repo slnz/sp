@@ -25,7 +25,8 @@ class SpNationalCoordinator < SpUser
   
   def scope(partner = nil)
     if partner
-      @scope ||= ['primary_partner like ? OR secondary_partner like ? OR tertiary_partner like ?' , partner, partner, partner]
+      @scope ||= ['primary_partner ilike :partner OR secondary_partner ilike :partner
+                    OR tertiary_partner ilike :partner', partner: partner]
     else
       @scope ||= ['1=1'] # all projects
     end

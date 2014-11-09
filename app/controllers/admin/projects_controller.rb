@@ -437,7 +437,7 @@ class Admin::ProjectsController < ApplicationController
     end
     case
     when params[:search].present?
-      @base = @base.where("name like ?", "%#{params[:search]}%")
+      @base = @base.where("name ilike ?", "%#{params[:search]}%")
     when params[:search_pd].present?
       @base = @base.joins(:sp_staff => :person).pd_like(params[:search_pd])
     when params[:search_apd].present?

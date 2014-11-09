@@ -1137,7 +1137,7 @@ class Admin::ReportsController < ApplicationController
     @counts = {}
     SpProject.current.group_by(&:primary_partner).each_pair do |partner, ps|
       (0..2).each do |i|
-        @extra_query_parts = " AND sp_projects.name NOT LIKE '%spring%'"
+        @extra_query_parts = " AND sp_projects.name NOT ILIKE '%spring%'"
         if i == 0
           # male
           @extra_query_parts += " AND (gender = '1')"

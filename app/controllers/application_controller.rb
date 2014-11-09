@@ -143,9 +143,11 @@ class ApplicationController < ActionController::Base
       query = params[:name].strip.split(' ')
       first, last = query[0].to_s + '%', query[1].to_s + '%'
       if last == '%'
-        conditions = ["preferred_name like ? OR first_name like ? OR last_name like ?", first, first, first]
+        conditions = ["preferred_name ilike :first OR first_name ilike :first OR last_name ilike :first",
+                      first: first]
       else
-        conditions = ["(preferred_name like ? OR first_name like ?) AND last_name like ?", first, first, last]
+        conditions = ["(preferred_name ilike :first OR first_name ilike :first) AND last_name ilike :last",
+                      first: first, last: last]
       end
 
       @people = Person.where(conditions).includes(:user).order("\"isStaff\" desc").order("account_no desc")

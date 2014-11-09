@@ -5,7 +5,7 @@
       <li>
         <label class="desc"><%= raw element.label %></label>
         <div class="tablebgwrap">
-        <% if element.kind == "QuestionGrid" && element.cols.to_s.split(';').length < 1 -%>
+        <% if element.kind == "Fe::QuestionGrid" && element.cols.to_s.split(';').length < 1 -%>
           <% headers = element.cols.to_s.split(';') %>
           <% if headers[0].to_s.strip.present? %>
             <div class="header"><%= headers[0] %></div>
@@ -26,7 +26,7 @@
                 <tr>
                   <td class="col1" nowrap="nowrap">
                     <% if sp_user.can_edit_references? %>
-                      <%= link_to(reference.display_type + ':', edit_reference_sheet_url(reference, :a => reference.access_key), :target => '_blank') %>
+                      <%= link_to(reference.display_type + ':', edit_fe_reference_sheet_url(reference, :a => reference.access_key), :target => '_blank') %>
                     <% else %>
                       <%= reference.display_type %>:
                     <% end %>

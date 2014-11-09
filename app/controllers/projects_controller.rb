@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
             conditions[1] << params[:id].split(',')
           end
           if params[:name] && !params[:name].empty?
-            conditions[0] << "#{SpProject.table_name}.name like ?"
+            conditions[0] << "#{SpProject.table_name}.name ilike ?"
             conditions[1] << "%#{params[:name]}%"
           end
           if params[:city] && !params[:city].empty?
@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
             countries = params[:country].split(',')
             condition = []
             countries.each do |country|
-              condition << "#{SpProject.table_name}.country LIKE ?"
+              condition << "#{SpProject.table_name}.country ILIKE ?"
               conditions[1] << '%'+country+'%'
             end
             conditions[0] << '(' + condition.join(' OR ') + ')'
@@ -68,7 +68,7 @@ class ProjectsController < ApplicationController
             world_regions = params[:world_region].split(',')
             condition = []
             world_regions.each do |world_region|
-              condition << "#{SpProject.table_name}.world_region LIKE ?"
+              condition << "#{SpProject.table_name}.world_region ILIKE ?"
               conditions[1] << '%'+world_region+'%'
             end
             conditions[0] << '(' + condition.join(' OR ') + ')'

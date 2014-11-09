@@ -24,7 +24,7 @@ class ProjectFilter
     end
 
     if @filters[:name_like]
-      filtered_projects = filtered_projects.where("#{SpProject.table_name}.name LIKE ?", "#{@filters[:name_like]}%")
+      filtered_projects = filtered_projects.where("#{SpProject.table_name}.name ILIKE ?", "#{@filters[:name_like]}%")
     end
 
     if @filters[:status]
