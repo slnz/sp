@@ -1,7 +1,7 @@
 require 'aasm'
 
 require 'digest/md5'
-class SpApplication < Fe::AnswerSheet
+class SpApplication < Fe::Application
   #include Fe::AnswerSheetConcern
   include CruLib::GlobalRegistryRelationshipMethods
   include Sidekiq::Worker
