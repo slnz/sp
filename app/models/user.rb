@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
       self.username = omniauth['info']['email']
       self.username = "#{omniauth['uid']}@#{omniauth[:provider]}" unless self.username.present?
     end
-    unless Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
+    unless Authentication.find_by(provider: omniauth['provider'], uid: omniauth['uid'])
       authentication = authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
       authentication.token = omniauth['credentials']['token'] if omniauth['credentials']
       authentication.save!
