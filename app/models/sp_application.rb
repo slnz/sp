@@ -10,9 +10,6 @@ class SpApplication < Fe::Application
   before_create :create_answer_sheet_question_sheet
   after_save :complete
 
-  COST_BEFORE_DEADLINE = 25
-  COST_AFTER_DEADLINE = 25
-
   sidekiq_options unique: true
 
   aasm :initial => :started, :column => :status do
@@ -136,26 +133,13 @@ class SpApplication < Fe::Application
   alias_method :applicant, :person # Fe expects applicant
 
   belongs_to :project, :class_name => 'SpProject', :foreign_key => :project_id
-  # has_one :sp_peer_reference, :class_name => 'SpPeerReference', :foreign_key => :application_id
-  # has_one :sp_spiritual_reference1, :class_name => 'SpSpiritualReference1', :foreign_key => :application_id
-  # has_one :sp_spiritual_reference2, :class_name => 'SpSpiritualReference2', :foreign_key => :application_id
-  # has_one :sp_parent_reference, :class_name => 'SpParentReference', :foreign_key => :application_id
-  #has_many :answers, :class_name => 'Answer', :foreign_key => 'answer_sheet_id', :dependent => :destroy
 
-
-  #has_many :sp_designation_numbers
-  #has_many :donations, through: :sp_designation_numbers
   belongs_to :preference1, :class_name => 'SpProject', :foreign_key => :preference1_id
   belongs_to :preference2, :class_name => 'SpProject', :foreign_key => :preference2_id
   belongs_to :preference3, :class_name => 'SpProject', :foreign_key => :preference3_id
   belongs_to :preference4, :class_name => 'SpProject', :foreign_key => :preference4_id
   belongs_to :preference5, :class_name => 'SpProject', :foreign_key => :preference5_id
   belongs_to :current_project_queue, :class_name => 'SpProject', :foreign_key => :current_project_queue_id
-  # has_many :answers, :foreign_key => :instance_id  do
-  #   def by_question_id(q_id)
-  #     self.detect {|a| a.question_id == q_id}
-  #   end
-  # end
   has_one :evaluation, :class_name => 'SpEvaluation', :foreign_key => :application_id
 
   scope :for_year, proc { |year| where(:year => year) }
@@ -443,15 +427,6 @@ class SpApplication < Fe::Application
   scope :female, -> { where("ministry_person.gender <> '1'").joins(:person) }
 
   delegate :campus, :to => :person
-
-  def self.cost
-    if Time.now < payment_deadline
-      return COST_BEFORE_DEADLINE
-    else
-      return COST_AFTER_DEADLINE
-    end
-  end
-
 
   def self.payment_deadline
     Time.parse("#{SpApplication.year.to_s}-02-25 03:00")
@@ -794,22 +769,6 @@ class SpApplication < Fe::Application
     else
       super(relationship_name: 'summer_project_application', related_name: 'summer_project', related_object: project, base_object: person)
     end
-  end
-
-  def staff_reference
-    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'staff'").first.id)
-  end
-
-  def discipler_reference
-    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'discipler'").first.id)
-  end
-
-  def roommate_reference
-    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'roommate'").first.id)
-  end
-
-  def friend_reference
-    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'friend'").first.id)
   end
 
   def create_in_global_registry(*args)
