@@ -7,6 +7,9 @@ class SpApplication < Fe::Application
   include Sidekiq::Worker
   include AASM
 
+  before_create :create_answer_sheet_question_sheet
+  after_save :complete
+
   COST_BEFORE_DEADLINE = 25
   COST_AFTER_DEADLINE = 25
 
@@ -482,7 +485,7 @@ class SpApplication < Fe::Application
 
   def complete(ref = nil)
     return false unless self.submitted?
-    # Make sure all required references are copmleted
+    # Make sure all required references are completed
     references.each do |reference|
       if reference.required?
         return false unless reference.completed? || reference == ref
@@ -496,7 +499,7 @@ class SpApplication < Fe::Application
     self.su_code = Digest::MD5.hexdigest((object_id + Time.now.to_i).to_s)
   end
 
-  # The :frozen? method lets the QuestionnaireEngine know to not allow
+  # The :frozen? method lets the form engine know to not allow
   # the user to change the answer to a question.
   def frozen?
     !%w(started unsubmitted).include?(self.status)
@@ -793,8 +796,28 @@ class SpApplication < Fe::Application
     end
   end
 
+  def staff_reference
+    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'staff'").first.id)
+  end
+
+  def discipler_reference
+    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'discipler'").first.id)
+  end
+
+  def roommate_reference
+    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'roommate'").first.id)
+  end
+
+  def friend_reference
+    get_reference(Fe::Element.where("kind = 'Fe::ReferenceQuestion' AND style = 'friend'").first.id)
+  end
+
   def create_in_global_registry(*args)
     super(person, 'summer_project_application')
+  end
+
+  def create_answer_sheet_question_sheet
+    self.answer_sheet_question_sheet ||= ::Fe::AnswerSheetQuestionSheet.create(:question_sheet_id => 1) #TODO: NO CONSTANT
   end
 
   def self.push_structure_to_global_registry

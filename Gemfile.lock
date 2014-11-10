@@ -8,8 +8,8 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: 0d6f12a28d9cf8c9b7e18619d009a53b5d5cad84
-  branch: fe
+  revision: 789088461bb3dac6a7254343c847dcea50cf0bbf
+  branch: cleanup_application
   specs:
     fe (0.0.3)
       aasm
