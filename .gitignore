@@ -24,3 +24,4 @@ config/redis.yml
 .env
 .vagrant
 db/summer_missions.dmp
+notes.txt
