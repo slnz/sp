@@ -3,7 +3,7 @@ development: &dev
   encoding: utf8
   reconnect: false
   pool: 5
-  database: global_registry
+  database: summer_missions
   username: <%= ENV['DB_ENV_POSTGRESQL_USER'] %>
   password: <%= ENV['DB_ENV_POSTGRESQL_PASS'] %>
   host: <%= ENV['DB_PORT_5432_TCP_ADDR'] %>
@@ -16,7 +16,7 @@ test:
   adapter: postgresql
   encoding: utf8
   reconnect: false
-  database: global_registry_test
+  database: summer_missions_test
   pool: 5
   username: <%= ENV['DB_ENV_POSTGRESQL_USER'] %>
   password: <%= ENV['DB_ENV_POSTGRESQL_PASS'] %>
