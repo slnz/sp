@@ -16,7 +16,8 @@ docker run --name redis -d redis redis-server --appendonly yes
 docker run -d -p 3000:3000 -v /app:/app --link redis:redis --link postgres:db --name rails rails
 cp -n /app/config/database.example.yml /app/config/database.yml
 cp -n /app/config/redis.example.yml /app/config/redis.yml
-docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm rails bash -c "pg_restore -d summer_missions -U docker -W db/summer_missions.dmp "
+docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm rails bash -c "bundle exec rake db:create"
+docker run -i -t -v /app:/app --link redis:redis --link postgres:db  --rm rails bash -c "pg_restore -h $DB_PORT_5432_TCP_ADDR -d summer_missions -U docker -W db/summer_missions.dmp "
 SCRIPT
 
 # Commands required to ensure correct docker containers
