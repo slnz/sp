@@ -1,6 +1,7 @@
 require 'csv'
 class Admin::ProjectsController < ApplicationController
-  before_filter :cas_filter, :authentication_filter, :check_sp_user, :except => :no
+  before_action :cas_filter, :authentication_filter
+  before_action :check_sp_user, :except => :no
 
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email, :edit]
