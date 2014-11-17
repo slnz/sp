@@ -8,11 +8,11 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: 76bf4f9a11ba9e1ade2f077b7ea80c487cdefa5c
+  revision: 83cde274772fb4401106609cb11a728a5f24fcf0
   branch: fe
   specs:
     fe (0.0.3)
-      aasm (~> 3.4.0)
+      aasm
       activemerchant
       acts_as_list (= 0.4.0)
       carmen (~> 0.2.12)
