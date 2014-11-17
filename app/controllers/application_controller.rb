@@ -18,7 +18,11 @@ class ApplicationController < ActionController::Base
   end
 
   def set_time_zone
-    Time.zone = request.env['rack.timezone.utc_offset'].present? ? request.env['rack.timezone.utc_offset'] : -14400
+    begin
+      Time.zone = request.env['rack.timezone.utc_offset'].present? ? request.env['rack.timezone.utc_offset'] : -14400
+    rescue ArgumentError
+      Time.zone = -14400
+    end
   end
 
   protected
