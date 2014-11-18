@@ -80,6 +80,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'webmock'
+  gem 'mock_redis'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'fuubar'
