@@ -222,8 +222,12 @@ class SpApplication < Fe::Application
 
   def set_designation_number_in_relay
     return if Rails.env.test? # TODO figure out how to properly test this
+    designation_number = get_designation_number
+    return unless designation_number.present? && person.user.globallyUniqueID.present?
 
-     RelayApiClient::Base.set_designation_number(person.user.globallyUniqueID, get_designation_number)
+    unless RelayApiClient::Base.set_designation_number(person.user.globallyUniqueID, designation_number)
+      raise 'failed to set designation number in relay'
+    end
   end
 
   def create_give_site(postfix = '')
