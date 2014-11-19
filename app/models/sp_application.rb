@@ -189,6 +189,7 @@ class SpApplication < Fe::Application
 
   def set_up_give_site
     create_relay_account_if_needed
+    set_designation_number_in_relay
     create_give_site
   end
 
@@ -217,6 +218,12 @@ class SpApplication < Fe::Application
       person.user.username = username
       person.user.save
     end
+  end
+
+  def set_designation_number_in_relay
+    return if Rails.env.test? # TODO figure out how to properly test this
+
+     RelayApiClient::Base.set_designation_number(person.user.globallyUniqueID, get_designation_number)
   end
 
   def create_give_site(postfix = '')
