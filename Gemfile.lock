@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/relay_api_client.git
-  revision: f99ba58ca8e52c724d86dee13d4ca24129562983
+  revision: 5f475921a2973057e70cba5b9894e1b9fe2b6502
   specs:
     relay_api_client (0.0.2)
       identity_linker (~> 1.0.0)
