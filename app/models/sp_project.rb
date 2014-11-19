@@ -126,9 +126,16 @@ class SpProject < ActiveRecord::Base
   scope :apd_like, ->(name) { by_name(name).by_role('APD') }
   scope :opd_like, ->(name) { by_name(name).by_role('OPD') }
 
-  before_create :set_to_open
-  before_save :get_coordinates, :calculate_weeks, :set_year, :set_default_apply_date
+  before_save :get_coordinates, :calculate_weeks, :set_year
   after_save :async_secure_designations_if_necessary, :async_set_up_give_sites
+  after_initialize :defaults
+
+  def defaults
+    self.apply_by_date ||= Date.new(SpApplication.year, 4, 1)
+    self.archive_project_date ||= Date.new(SpApplication.year, 8, 21)
+    self.open_application_date ||= Date.new(Date.today.year, 11, 1)
+    self.project_status ||= 'open'
+  end
 
   begin
     date_setters :apply_by_date, :start_date, :end_date, :date_of_departure, :date_of_return, :staff_start_date, :staff_end_date, :pd_start_date, :pd_end_date,
@@ -320,6 +327,9 @@ class SpProject < ActiveRecord::Base
   def open!
     update_attribute('project_status', 'open')
     update_attribute('year', SpApplication.year)
+    update_attribute('apply_by_date', Date.new(SpApplication.year, apply_by_date.month, apply_by_date.day))
+    update_attribute('archive_project_date', Date.new(SpApplication.year, archive_project_date.month, archive_project_date.day))
+    update_attribute('open_application_date', Date.new(Date.today.year, open_application_date.month, open_application_date.day))
   end
 
   def closed?
@@ -337,10 +347,6 @@ class SpProject < ActiveRecord::Base
     if val && !val.strip.empty? && !(/^http/ =~ val)
       self[:url] = "http://" + val
     end
-  end
-
-  def set_to_open
-    self[:project_status] = 'open'
   end
 
   def calculate_weeks
@@ -595,11 +601,6 @@ class SpProject < ActiveRecord::Base
       project_specific_question_sheet.pages.create!(:label => 'Project Specific Questions', :number => 1)
     end
     project_specific_question_sheet
-  end
-
-  def set_default_apply_date
-    self.apply_by_date ||= Date.new(SpApplication.year, 4, 1)
-    true
   end
 
   def async_push_to_global_registry
