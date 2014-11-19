@@ -141,15 +141,22 @@ Sp2::Application.routes.draw do
       get :closed
       get :apply
     end
-    resources :payments do
-      member do
-        get :approve
-      end
-      collection do
-        post :staff_search
+  end
+
+  namespace "fe" do
+    resources :applications do
+      resources :payments do
+        member do
+          get :approve
+        end
+        collection do
+          post :staff_search
+        end
       end
     end
   end
+  match 'fe/payment_pages/staff_search' => 'fe/payment_pages#staff_search', :as => :payment_page_staff_search, via: [:get, :post]
+
   resources :ministry_focuses
   match '/admin' => "admin/projects#dashboard", via: :get
   match '/apply' => "applications#apply", :as => :apply, via: :get

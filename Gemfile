@@ -56,7 +56,7 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
 
 gem 'fe',
-  github: 'CruGlobal/qe', branch: 'fe'
+  github: 'CruGlobal/qe', branch: 'move_payments'
   # path: '/Users/andrewroth/Development/fe'
   # path: '/Users/josh/htdocs/fe'
   # path: '/Users/Octopus/Git/qe'

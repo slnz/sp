@@ -5,7 +5,7 @@
 	you take a moment right now to write your check and put it in the mail.</p>
 	
 <ol>
-	<li>Make your check or money order for <strong><%= number_to_currency(Fe.cost) %></strong>
+	<li>Make your check or money order for <strong><%= number_to_currency(SpApplication::COST) %></strong>
 		payable to "Cru".</li>					
 	<li>Write your <strong>Full Name</strong> as entered on this
 		application (<%= @answer_sheet.person.full_name %>) on a separate
@@ -21,4 +21,4 @@
 	Orlando, FL 32832</p>
 					
 <p class="buttons">
-	<%= submit_tag "Click here if you have mailed your payment", :class => 'submit_payment button no-left-margin', 'data-url' => application_payments_path(@answer_sheet) %>
+	<%= submit_tag "Click here if you have mailed your payment", :class => 'submit_payment button no-left-margin', 'data-url' => fe_application_payments_path(@answer_sheet) %>

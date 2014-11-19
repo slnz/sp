@@ -7,8 +7,11 @@ class SpApplication < Fe::Application
   include Sidekiq::Worker
   include AASM
 
+  COST = 25
+
   before_create :create_answer_sheet_question_sheet
   after_save :complete
+  has_many :payments, foreign_key: "application_id", class_name: "Fe::Payment"
 
   sidekiq_options unique: true
 
