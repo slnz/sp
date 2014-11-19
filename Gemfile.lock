@@ -23,6 +23,14 @@ GIT
       validates_email_format_of
 
 GIT
+  remote: git://github.com/CruGlobal/relay_api_client.git
+  revision: f99ba58ca8e52c724d86dee13d4ca24129562983
+  specs:
+    relay_api_client (0.0.2)
+      identity_linker (~> 1.0.0)
+      savon (~> 2.1.0)
+
+GIT
   remote: https://github.com/CruGlobal/cru_lib
   revision: 39e875cc252669003ad56027bb7d333805c32f75
   specs:
@@ -35,13 +43,6 @@ GIT
   specs:
     acts_as_versioned (0.6.0)
       activerecord (>= 3.0.9)
-
-PATH
-  remote: /Users/josh/htdocs/relay_api_client
-  specs:
-    relay_api_client (0.0.2)
-      identity_linker (~> 1.0.0)
-      savon (~> 2.1.0)
 
 GEM
   remote: http://rubygems.org/
