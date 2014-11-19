@@ -128,14 +128,11 @@ class SpProject < ActiveRecord::Base
 
   before_save :get_coordinates, :calculate_weeks, :set_year
   after_save :async_secure_designations_if_necessary, :async_set_up_give_sites
-  after_initialize :defaults
 
-  def defaults
-    self.apply_by_date ||= Date.new(SpApplication.year, 4, 1)
-    self.archive_project_date ||= Date.new(SpApplication.year, 8, 21)
-    self.open_application_date ||= Date.new(Date.today.year, 11, 1)
-    self.project_status ||= 'open'
-  end
+  default_value_for :apply_by_date do Date.new(SpApplication.year, 4, 1) end
+  default_value_for :archive_project_date do Date.new(SpApplication.year, 8, 21) end
+  default_value_for :open_application_date do Date.new(Date.today.year, 11, 1) end
+  default_value_for :project_status, :open
 
   begin
     date_setters :apply_by_date, :start_date, :end_date, :date_of_departure, :date_of_return, :staff_start_date, :staff_end_date, :pd_start_date, :pd_end_date,

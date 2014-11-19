@@ -55,6 +55,7 @@ gem 'aasm'
 gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
+gem 'default_value_for'
 
 gem 'fe',
   github: 'CruGlobal/qe', branch: 'fe'
