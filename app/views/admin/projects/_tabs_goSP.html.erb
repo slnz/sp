@@ -7,7 +7,7 @@
 
       <p class="legend">
         Fill out the fields in all four tabs. <br/>
-      	Fields with the <%= image_tag('required.png') %> are required.
+      	Fields with the <%#= image_tag('required.png') %> are required.
      	</p>
 
       <hr />
@@ -210,7 +210,7 @@
           <label for="sp_project_picture">Project Picture</label>
           <div class="picture">
           <% if @project.picture_file_name.present? %>
-            <%= image_tag(@project.picture.url(:thumb)) %>
+            <%#= image_tag(@project.picture.url(:thumb)) %>
           <% end %>
           </div>
           <input type="file" size="1" name="sp_project[picture]" id="sp_project_picture" class="smallinputfile">
@@ -222,7 +222,7 @@
           <label for="sp_project_picture">Project Logo <%= tip('This logo will show up in the application. Recommended dimensions are 270px x 100px') %></label>
           <div class="picture">
           <% if @project.logo_file_name.present? %>
-            <%= image_tag(@project.logo.url(:thumb)) %>
+            <%#= image_tag(@project.logo.url(:thumb)) %>
           <% end %>
           </div>
           <input type="file" size="1" name="sp_project[logo]" id="sp_project_logo" class="smallinputfile">
