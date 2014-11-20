@@ -40,6 +40,7 @@ gem 'whenever', '~> 0.7.3'
 gem 'will_paginate', '~> 3.0.0'
 gem 'gcx_api', git: 'git://github.com/CruGlobal/gcx_api.git'
 gem 'relay_api_client', git: 'git://github.com/CruGlobal/relay_api_client.git'
+# gem 'relay_api_client', path: '/Users/josh/htdocs/relay_api_client'
 gem 'cru_lib', git: 'https://github.com/CruGlobal/cru_lib'
 # gem 'cru_lib', path: '/Users/josh/htdocs/cru_lib'
 gem 'image_science', '~> 1.2.5'
@@ -54,6 +55,7 @@ gem 'aasm'
 gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
+gem 'default_value_for'
 
 gem 'fe',
   github: 'CruGlobal/qe', branch: 'move_payments'

@@ -72,7 +72,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed'
+                       project_status: 'open'
       )
 
       application = create(:sp_application,
@@ -106,7 +106,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs,
                        project_specific_question_sheet: pp_qs
@@ -145,7 +145,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs,
                        project_specific_question_sheet: pp_qs
@@ -224,7 +224,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs
       )
@@ -255,7 +255,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs
       )
@@ -266,7 +266,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs
       )
@@ -300,7 +300,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs
       )
@@ -357,7 +357,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs
       )
@@ -403,7 +403,7 @@ describe ApplicationsController do
                        end_date: 2.months.from_now,
                        open_application_date: 30.days.ago,
                        use_provided_application: true,
-                       project_status: 'closed',
+                       project_status: 'open',
                        basic_info_question_sheet: basic_info_qs,
                        template_question_sheet: template_info_qs
       )
