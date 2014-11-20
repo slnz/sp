@@ -55,7 +55,7 @@ module Fe
                 @payment.errors.add(:card_number, "is invalid.  Check the number and/or the expiration date.")
               end
             when "Mail"
-              @payment.approve!
+              @payment.save
             when "Staff"
               @payment.save
               send_staff_payment_request(@payment)
