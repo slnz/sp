@@ -79,7 +79,7 @@ module Fe
     def approve
       @payment = Fe::Payment.find(params[:id])
       @application = @payment.application
-      @payment.auth_code = si_user.user.person.account_no
+      @payment.auth_code = sp_user.user.person.account_no
       case @payment.payment_type
       when 'Staff'
         staff_approval

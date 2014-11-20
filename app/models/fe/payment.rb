@@ -61,7 +61,7 @@ module Fe
     
     def approve!
       self.status = "Approved"
-      self.auth_code ||= card_number[-4..-1]
+      self.auth_code ||= card_number[-4..-1] if card_number.present?
       self.save!
     end
 
