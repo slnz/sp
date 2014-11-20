@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: 033aef48be1a738b0e30d1c11de9f6ab48ae6d7f
+  revision: 6b02cad744306cd41d4a3f4695a0ceed15d960d4
   branch: move_payments
   specs:
     fe (0.0.4)
