@@ -58,7 +58,7 @@ gem 'infobase'
 gem 'default_value_for'
 
 gem 'fe',
-  github: 'CruGlobal/qe', branch: 'move_payments'
+  github: 'CruGlobal/qe', branch: 'fe'
   # path: '/Users/andrewroth/Development/fe'
   # path: '/Users/josh/htdocs/fe'
   # path: '/Users/Octopus/Git/qe'
