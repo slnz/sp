@@ -70,7 +70,7 @@ h3.critical {
       float: left;
       a {background-image: url("<%= asset_path('buttonbg_search.png') %>"); padding-left: 31px; border: none;}
       a:hover {
-        color: $dark-gray;
+        color: $global-bg;
       }
     }
 
@@ -1082,7 +1082,11 @@ a.AddNewPerson {
   padding: 15px 0 0px 15px;
   div.fieldgroup {
     float: left;
-    margin-right: 20px;
+    margin-right: 100px;
+      .fieldinline {
+          float: none;
+          margin: 5px 0;
+      }
   }
 
   h4#showhide {
