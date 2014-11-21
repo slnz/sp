@@ -1,29 +1,28 @@
 <h1>Payments</h1>
 <%= image_tag("spinner.gif", :id => "page_ajax_spinner", :style => 'display:none') %>
 <table cellpadding="2">
-	<tr><th>Type</th><th>Amount</th><th>Status</th><th>Auth Code</th></tr>
-<% @application.payments.each do |payment| -%>
-	<tr id="<%= dom_id(payment) %>">
-		<td>
-			<%= payment.payment_type %>
-			<% if payment.payment_type == 'Staff' -%>
-				(<%= payment.payment_account_no %>)
-			<% end -%>
-		</td>
-		<td><%= payment.amount %></td>
-		<td>
-			<div id="payment_status<%=payment.id%>">
-			<%= payment.status %>
-			<% if payment.status == 'Pending' && sp_user.can_edit_payments? -%>
-        <%= link_to '[approve payment]', approve_application_payment_path(payment.application, payment), :remote => true, :onclick => "$('#page_ajax_spinner').show()" %>
-			<% end -%>
-      <% if payment.payment_type == 'Waived' && sp_user.can_waive_fee? -%>
-        <%= link_to '[un-waive]', application_payment_path(payment.application, payment), :remote => true,:method => :delete, :onclick => "$('#page_ajax_spinner').show()" %>
-			<% end -%>
-			</div>
-		</td>
-		<td><div id="auth_code<%=payment.id%>"><%= payment.auth_code %></td>
-	</tr>
-<% end -%>
+  <tr><th>Type</th><th>Amount</th><th>Status</th><th>Auth Code</th></tr>
+  <% @application.payments.each do |payment| -%>
+    <tr id="<%= dom_id(payment) %>">
+      <td>
+        <%= payment.payment_type %>
+        <% if payment.payment_type == 'Staff' -%>
+          (<%= payment.payment_account_no %>)
+        <% end -%>
+      </td>
+      <td><%= payment.amount %></td>
+      <td>
+        <div id="payment_status<%=payment.id%>">
+          <%= payment.status %>
+          <% if payment.status == 'Pending' && sp_user.can_edit_payments? -%>
+            <%= link_to '[approve payment]', approve_fe_application_payment_path(payment.application, payment), :remote => true, :onclick => "$('#page_ajax_spinner').show()" %>
+          <% end -%>
+          <% if payment.payment_type == 'Waived' && sp_user.can_waive_fee? -%>
+            <%= link_to '[un-waive]', fe_application_payment_path(payment.application, payment), :remote => true,:method => :delete, :onclick => "$('#page_ajax_spinner').show()" %>
+          <% end -%>
+        </div>
+      </td>
+      <td><div id="auth_code<%=payment.id%>"><%= payment.auth_code %></td>
+    </tr>
+  <% end -%>
 </table>
-

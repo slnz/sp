@@ -8,7 +8,4 @@ module Fe
   
   mattr_accessor :from_email
   self.from_email = 'Summer Missions <summer.missions@cru.org>'
-  
-  mattr_accessor :cost
-  self.cost = 25
 end

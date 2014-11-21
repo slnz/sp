@@ -591,10 +591,10 @@ class Admin::ReportsController < ApplicationController
   def fee_by_staff
     respond_to do |format|
       format.html {
-        @payments = SpPayment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+        @payments = Fe::Payment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
       }
       format.csv {
-        @payments = SpPayment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+        @payments = Fe::Payment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
         csv = ""
         CSV.generate(csv) do |csv|
           csv << ["Account No", "Amount", "First Name", "Last Name", "Payment Status", "Date"]
@@ -613,7 +613,7 @@ class Admin::ReportsController < ApplicationController
   def cc_payments
     respond_to do |format|
       format.csv {
-        @payments = SpPayment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Credit Card'").order("sp_payments.created_at ASC")
+        @payments = Fe::Payment.includes(application: :person).references(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Credit Card'").order("sp_payments.created_at ASC")
         csv = ""
         CSV.generate(csv) do |csv|
           csv << ["Last Name", "First Name", "Amount", "Date", "Auth Code"]
@@ -722,10 +722,10 @@ class Admin::ReportsController < ApplicationController
     if @emails.present?
       respond_to do |format|
         format.html {
-          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
+          @payments = Fe::Payment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
         }
         format.csv {
-          @payments = SpPayment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
+          @payments = Fe::Payment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
           csv = ""
           CSV.generate(csv) do |csv|
             csv << ["Project Name", "Project Start", "Project End", "Male PD Email", "Female PD Email", "OPD Email"]

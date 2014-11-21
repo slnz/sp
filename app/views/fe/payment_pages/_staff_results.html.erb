@@ -1,4 +1,4 @@
-<% if @results.nil? %>
+<% if @results.nil? -%>
 	<strong>Please provide the first and last name of the person you want to search for. Partial names will work too (e.g. John S).</strong>
 <% elsif @results.size == 0 -%>
 	<strong>Sorry, we could not find anyone with the name you specified. Please try again.</strong>
@@ -13,6 +13,6 @@
 	</ul>
 	
 	<p class="buttons">
-    <%= submit_tag "Submit Payment", :id => 'staff_submit', :class => 'submit_payment button no-left-margin', :style => 'display:none', data: { url: application_payments_path(@answer_sheet), disable_with: "Submitting..." } %>
+		<%= submit_tag "Submit Payment", :id => 'staff_submit', :class => 'submit_payment', 'data-url' => fe_application_payments_path(@application), :style => 'display:none' %>
 	</p>
-<% end %>
+<% end -%>

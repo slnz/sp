@@ -1,7 +1,7 @@
 <h3>Credit/Debit Card Payment</h3>
 
 <p>Please fill out your payment information below. NOTE: We will 
-	attempt to bill <strong><%= number_to_currency(Fe.cost) %></strong> to 
+	attempt to bill <strong><%= number_to_currency(SpApplication::COST) %></strong> to 
 	your credit card immediately when you press the 'Submit' 
 	button below.</p>
 	
@@ -44,4 +44,4 @@
 	<%= text_field :payment, :security_code, {:size => "9", :maxlength => "5"} %></p>
 
 <p class="buttons">
-  <%= submit_tag "Submit Payment", :class => 'submit_payment button no-left-margin', data: { url: application_payments_path(@answer_sheet), disable_with: "Submitting..." } %></p>
+  <%= submit_tag "Submit Payment", :class => 'submit_payment button no-left-margin', data: { url: fe_application_payments_path(@answer_sheet), disable_with: "Submitting..." } %></p>

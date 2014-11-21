@@ -19,7 +19,7 @@ describe Admin::PeopleController do
                            project_id: project.id
       )
 
-      designation = SpDesignationNumber.create(person_id: applicant, project_id: project, designation_number: '12345')
+      designation = SpDesignationNumber.create(person_id: applicant, project_id: project, designation_number: '12345', year: project.year)
 
       xhr :get, :show, id: applicant.id, project_id: project.id, year: SpApplication.year
       expect(response.code).to eq('200')
