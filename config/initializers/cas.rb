@@ -7,5 +7,5 @@ CASClient::Frameworks::Rails::Filter.configure(
   :validate_url => "https://signin.relaysso.org/cas/serviceValidate"
 )
 
-# CAS::Filter.login_url = "https://signin.ccci.org/cas/login"
-# CAS::Filter.validate_url = "https://signin.ccci.org/cas/serviceValidate"
+# CAS::Filter.login_url = "https://signin.cru.org/cas/login"
+# CAS::Filter.validate_url = "https://signin.cru.org/cas/serviceValidate"

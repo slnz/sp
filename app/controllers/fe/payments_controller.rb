@@ -50,17 +50,12 @@ module Fe
                   # TODO: Send notification email
                 else
                   @payment.errors.add(:base, "Credit card transaction failed: #{response.message}")
-                  #Send email this way instead of raising error in order to still give an error message to user.
-                  # Fe::Notifier.notification('programmers@cojourners.com', # RECIPIENTS
-                  #                     "sp_error@uscm.org", # FROM
-                  #                     "Credit Card Error", # LIQUID TEMPLATE NAME
-                  #                     {'error' => "Credit card transaction failed: #{response.message} \n #{response.inspect} \n #{creditcard.inspect}"}).deliver
                 end
               else
                 @payment.errors.add(:card_number, "is invalid.  Check the number and/or the expiration date.")
               end
             when "Mail"
-              @payment.approve!
+              @payment.save
             when "Staff"
               @payment.save
               send_staff_payment_request(@payment)
@@ -84,7 +79,7 @@ module Fe
     def approve
       @payment = Fe::Payment.find(params[:id])
       @application = @payment.application
-      @payment.auth_code = si_user.user.person.account_no
+      @payment.auth_code = sp_user.user.person.account_no
       case @payment.payment_type
       when 'Staff'
         staff_approval
@@ -100,7 +95,6 @@ module Fe
     end
 
     def staff_search
-      #@payment = @application.payments.new(params[:payment].slice(:payment_type, :payment_account_no, :auth_code))
       @payment = @application.payments.new(staff_search_payment_params)
       if @payment.staff_first.to_s.strip.empty? || @payment.staff_last.to_s.strip.empty?
         render; return
