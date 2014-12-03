@@ -158,6 +158,12 @@ a:hover.cru-gold, button:hover.cru-gold, a:focus.cru-gold, button:focus.cru-gold
   color: #FFFFFF !important;
 }
 
+a.cru-gold[disabled="disabled"]:hover, button.cru-gold[disabled="disabled"]:hover {
+  background-color: #f9b625;
+  border: 2px solid #f8ae0c;
+  color: white !important;
+}
+
 a.cru-dark-gray {
   background-color: #666062;
   border: 1px solid #595455;
