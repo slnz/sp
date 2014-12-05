@@ -491,7 +491,9 @@ class SpApplication < Fe::Application
   # The :frozen? method lets the form engine know to not allow
   # the user to change the answer to a question.
   def frozen?
-    !%w(started unsubmitted).include?(self.status)
+    return @frozen unless @frozen == nil
+    @frozen = !%w(started unsubmitted).include?(self.status) &&
+                !Thread.current[:user].try(:sp_user).try(:can_su_application?)
   end
 
   def can_change_references?
