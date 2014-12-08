@@ -316,15 +316,15 @@ class SpApplication < Fe::Application
   end
 
   def self.deadline1
-    Time.parse((SpApplication.year - 1).to_s + "/12/10 00:00:00 EST")
+    Time.parse((SpApplication.year - 1).to_s + "/12/11 00:00:00 PST")
   end
 
   def self.deadline2
-    Time.parse(SpApplication.year.to_s + "/01/24 00:00:00 EST")
+    Time.parse(SpApplication.year.to_s + "/01/25 00:00:00 PST")
   end
 
   def self.deadline3
-    Time.parse(SpApplication.year.to_s + "/02/24 00:00:00 EST")
+    Time.parse(SpApplication.year.to_s + "/02/25 00:00:00 PST")
   end
 
   def name
