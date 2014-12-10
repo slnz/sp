@@ -16,10 +16,10 @@ class SpProject < ActiveRecord::Base
                         :project_contact_name, :project_contact_role, :project_contact_phone, :project_contact_email, :url, :url_title, :ds_project_code,
                         :facebook_url, :blog_url, :blog_title, :project_contact2_name, :project_contact2_role, :project_contact2_phone, :project_contact2_email
 
-  has_attached_file :picture, :styles => { medium: '500x300>', thumb: '100x100>' },
+  has_attached_file :picture, :styles => { thumb: '100x100>' },
                     storage: :s3,
                     s3_credentials: Rails.root.join('config/amazon_s3.yml'),
-                    path: 'sp/project/:attachment/:id/:filename'
+                    path: 'sp/project/:attachment/:id/:style/:filename'
 
   has_attached_file :logo, styles: { medium: '300x300>', thumb: '100x100>' },
                     storage: :s3,
@@ -27,8 +27,10 @@ class SpProject < ActiveRecord::Base
                     s3_credentials: Rails.root.join('config/amazon_s3.yml'),
                     path: 'sp/project/:attachment/:id/:filename'
 
-  validates_attachment_size :picture, :less_than => 1.megabyte, :message => "can't be more than 1MB"
-  validates_attachment_size :logo, :less_than => 1.megabyte, :message => "can't be more than 1MB"
+  validates_attachment_size :picture, :less_than => 5.megabytes, :message => "can't be more than 5MB"
+  validates_attachment_size :logo, :less_than => 5.megabytes, :message => "can't be more than 5MB"
+  validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
+  validates_attachment_content_type :picture, :content_type => /\Aimage\/.*\Z/
   #  image_accessor :picture
   #  image_accessor :logo
 
@@ -127,7 +129,7 @@ class SpProject < ActiveRecord::Base
   scope :opd_like, ->(name) { by_name(name).by_role('OPD') }
 
   before_save :get_coordinates, :calculate_weeks, :set_year
-  after_save :async_secure_designations_if_necessary, :async_set_up_give_sites
+  after_save :async_secure_designations_if_necessary #, :async_set_up_give_sites
 
   default_value_for :apply_by_date do Date.new(SpApplication.year, 4, 1) end
   default_value_for :archive_project_date do Date.new(SpApplication.year, 8, 21) end
@@ -152,7 +154,7 @@ class SpProject < ActiveRecord::Base
   end
 
   def set_up_give_sites
-    sp_applications.accepted.for_year(2014).map(&:set_up_give_site)
+    sp_applications.accepted.for_year(SpApplication.year).map(&:set_up_give_site)
   end
 
   def async_secure_designations_if_necessary

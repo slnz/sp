@@ -29,7 +29,7 @@ gem 'newrelic_rpm', '>= 3.5.3.25'
 gem 'omniauth', '~> 1.2.0'
 gem 'omniauth-cas', '~> 1.1.0'
 gem 'omniauth-facebook', '~> 2.0.0'
-gem 'paperclip', '~> 3.5.1'
+gem 'paperclip', '~> 4.2.0'
 gem 'rack-contrib', '~> 1.1.0' # 100ms
 gem 'rb-fsevent', '~> 0.9'
 gem 'retryable-rb', '~> 1.1.0'
@@ -56,6 +56,7 @@ gem 'auto_strip_attributes'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
 gem 'default_value_for'
+gem 'activesupport-json_encoder'
 
 gem 'fe',
   github: 'CruGlobal/qe', branch: 'fe'

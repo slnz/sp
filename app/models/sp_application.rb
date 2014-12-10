@@ -193,7 +193,8 @@ class SpApplication < Fe::Application
   def set_up_give_site
     create_relay_account_if_needed
     set_designation_number_in_relay
-    # create_give_site
+    client = StellentClient.new
+    client.push_to_stellent(self)
   end
 
   def create_relay_account_if_needed
@@ -232,77 +233,6 @@ class SpApplication < Fe::Application
       raise 'failed to set designation number in relay'
     end
   end
-
-  # def create_give_site(postfix = '')
-  #   if !is_secure? && designation_number.present? && project.project_summary.present? && project.full_project_description.present?
-  #     # Try to create a unique gcx community
-  #     unless person.sp_gcx_site.present?
-  #       name = person.informal_full_name.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_\-]/, '') + postfix
-  #       site_attributes = {name: name, domain: "#{APP_CONFIG['spgive_url']}/#{name}", title: 'My Summer Project', privacy: 'public', theme: 'cru-spkick', sitetype: 'campus'}
-  #       site = GcxApi::Site.new(site_attributes)
-  #       unless site.valid?
-  #         # try a different name
-  #         if postfix.blank?
-  #           create_give_site('-' + project.state.downcase)
-  #         else
-  #           create_give_site(postfix + '-')
-  #         end
-  #         return
-  #       end
-  #
-  #       puts site_attributes[:name].inspect
-  #       SpApplication.transaction do
-  #         begin
-  #           site.create
-  #
-  #           person.update_attributes(sp_gcx_site: site_attributes[:name])
-  #
-  #           puts "Created #{site_attributes[:name]}"
-  #
-  #           response = GcxApi::User.create(person.sp_gcx_site, [{relayGuid: person.user.globallyUniqueID, role: 'administrator'}]).first
-  #
-  #           unless response['added'] || ["User is already a member.", "User is already pending."].include?(response['error'])
-  #             raise response.inspect
-  #           end
-  #
-  #           push_content_to_give_site
-  #
-  #           Fe::Notifier.notification(person.email_address, # RECIPIENTS
-  #                                 Fe.from_email, # FROM
-  #                                 "Giving site created", # LIQUID TEMPLATE NAME
-  #                                 {'first_name' => person.nickname,
-  #                                  'site_url' => "#{APP_CONFIG['spgive_url']}/#{person.sp_gcx_site}/",
-  #                                  'username' => person.user.username,
-  #                                  'password' => person.user.password_plain}).deliver
-  #         rescue => e
-  #           # If any part of creating the give site fails, trash the site so we can start over.
-  #           begin
-  #             GcxApi::Site.new.destroy(site_attributes[:name])
-  #           rescue
-  #             # Don't alert if delete fails
-  #           end
-  #           raise e
-  #         end
-  #       end
-  #     end
-  #   end
-  # end
-
-  # def push_content_to_give_site
-  #   site = GcxApi::Site.new(name: person.sp_gcx_site, domain: APP_CONFIG['spgive_url'])
-  #
-  #   site.set_option_values(
-  #       'cru_spkick[spkick_goal]' => project.student_cost,
-  #       'cru_spkick[spkick_current_amount]' => account_balance,
-  #       'cru_spkick[spkick_deadline]' => project.start_date.strftime("%m/%d/%y"),
-  #       'cru_spkick[spkick_tripname]' => project.name,
-  #       'cru_spkick[spkick_description]' => project.project_summary,
-  #       'cru_spkick[spkick_fulldescription]' => project.full_project_description,
-  #       'cru_spkick[spkick_person_name]' => person.informal_full_name,
-  #       'cru_spkick[spkick_designation]' => get_designation_number,
-  #       'cru_spkick[spkick_motivation]' => 'STU000'
-  #   )
-  # end
 
   def validates
     if ((status == 'accepted_as_student_staff' || status == 'accepted_as_participant') && project_id.nil?)
@@ -695,7 +625,6 @@ class SpApplication < Fe::Application
     designation_no = self.get_designation_number
     SpDonation.get_balance(designation_no, year)
   end
-
 
   def self.send_status_emails
     logger.info('Sending application reminder emails')
