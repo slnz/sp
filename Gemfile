@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-# source 'http://gems.rubyonrails.org'
+source 'https://fe25782d:2b14c6ee@gems.contribsys.com/'
 
 gem 'rails', '~> 4.1.6'
 
@@ -44,7 +44,7 @@ gem 'relay_api_client', git: 'git://github.com/CruGlobal/relay_api_client.git'
 gem 'cru_lib', git: 'https://github.com/CruGlobal/cru_lib'
 # gem 'cru_lib', path: '/Users/josh/htdocs/cru_lib'
 gem 'image_science', '~> 1.2.5'
-gem 'sidekiq'
+gem 'sidekiq-pro'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
 gem 'geocoder'
