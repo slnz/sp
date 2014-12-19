@@ -452,7 +452,9 @@ class Admin::ProjectsController < ApplicationController
     when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
       @base = @base.where(:id => current_person.current_staffed_projects.collect(&:id))
     when 'SpRegionalCoordinator'
-      @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", sp_user.partnerships, sp_user.partnerships, sp_user.partnerships) if sp_user.partnerships.present?
+      partnerships = sp_user.partnerships.map{ |partnership| partnership.downcase }
+      @base = @base.where("LOWER(primary_partner) IN(?) OR LOWER(secondary_partner) IN(?) OR LOWER(tertiary_partner) IN(?)",
+                          partnerships, partnerships, partnerships) if partnerships.present?
     when 'SpNationalCoordinator', 'SpDonationServices'
     else
       @base = @base.where('1 <> 1')
