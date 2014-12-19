@@ -213,6 +213,7 @@ class Person < Fe::Person
       EmailAddress.create!(:email => email, :person_id => self.id, :primary => 1)
     end
   end
+  alias_method :email=, :primary_email_address=
 
   # Sets a phone number in the phone_numbers table
   def set_phone_number(phone, location, primary=false, extension=nil)
