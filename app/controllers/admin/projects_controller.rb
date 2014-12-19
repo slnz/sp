@@ -410,7 +410,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def set_up_filters
-    @base = params[:closed] ? SpProject : SpProject.open
+    @base = params[:closed].present? ? SpProject : SpProject.open
     @filter_title = 'All'
     selected_filters = params[:partners]
 
