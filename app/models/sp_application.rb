@@ -195,6 +195,14 @@ class SpApplication < Fe::Application
     set_designation_number_in_relay
     client = StellentClient.new
     client.push_to_stellent(self)
+
+    # Fe::Notifier.notification(person.email_address, # RECIPIENTS
+    #                       Fe.from_email, # FROM
+    #                       "Giving site created", # LIQUID TEMPLATE NAME
+    #                       {'first_name' => person.nickname,
+    #                        'site_url' => "#{APP_CONFIG['spgive_url']}/#{person.sp_gcx_site}/",
+    #                        'username' => person.user.username,
+    #                        'password' => person.user.password_plain}).deliver
   end
 
   def create_relay_account_if_needed
