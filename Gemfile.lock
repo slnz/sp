@@ -24,9 +24,9 @@ GIT
 
 GIT
   remote: git://github.com/CruGlobal/relay_api_client.git
-  revision: 5f475921a2973057e70cba5b9894e1b9fe2b6502
+  revision: b7c02b245cfeb8bca212444ad8ad46cce477f47f
   specs:
-    relay_api_client (0.0.2)
+    relay_api_client (0.0.3)
       identity_linker (~> 1.0.0)
       savon (~> 2.1.0)
 
@@ -200,7 +200,7 @@ GEM
     httpi (2.0.2)
       rack
     i18n (0.6.11)
-    identity_linker (1.0.0)
+    identity_linker (1.0.1)
       savon (~> 2.1.0)
     image_science (1.2.6)
       RubyInline (~> 3.9)

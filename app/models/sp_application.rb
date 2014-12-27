@@ -7,6 +7,8 @@ class SpApplication < Fe::Application
   include Sidekiq::Worker
   include AASM
 
+  STELLENT_ROLE = 'studentContributor'
+
   COST = 25
 
   before_create :create_answer_sheet_question_sheet
@@ -193,6 +195,7 @@ class SpApplication < Fe::Application
   def set_up_give_site
     create_relay_account_if_needed
     set_designation_number_in_relay
+    set_role_in_ldap
     client = StellentClient.new
     client.push_to_stellent(self)
 
@@ -233,12 +236,24 @@ class SpApplication < Fe::Application
   end
 
   def set_designation_number_in_relay
-    return if Rails.env.test? # TODO figure out how to properly test this
+    return if Rails.env.test? # TODO set up web mocks for testing
+
     designation_number = get_designation_number
     return unless designation_number.present? && person.user.globallyUniqueID.present?
 
     unless RelayApiClient::Base.set_designation_number(person.user.globallyUniqueID, designation_number)
       raise 'failed to set designation number in relay'
+    end
+  end
+
+  def set_role_in_ldap
+    return if Rails.env.test? # TODO set up web mocks for testing
+
+    unless RelayApiClient::Base.set_role(ssoguid: person.user.globallyUniqueID,
+                                         role: STELLENT_ROLE,
+                                         system_id: 'missions',
+                                         system_password: APP_CONFIG['ldap_password'])
+      raise 'failed to set role in ldap via relay'
     end
   end
 

@@ -5,6 +5,7 @@ class StellentClient
       endpoint APP_CONFIG['stellent_endpoint']
       namespace 'http://www.stellent.com/CheckIn/'
       basic_auth APP_CONFIG['stellent_username'], APP_CONFIG['stellent_password']
+      ssl_verify_mode :none
     end
   end
 
