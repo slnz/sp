@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Country do
   context '#to_hash_US_first=' do
     it 'should return a hash of all countries with the US first' do
+      Country.delete_all
       create(:country, country: 'Canada', code: 'CA')
       create(:country, country: 'United States', code: 'US')
       countries = Country.to_hash_US_first

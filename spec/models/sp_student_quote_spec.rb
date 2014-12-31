@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe SpStudentQuote do
+  include_examples "global_registry_methods"
+
   before(:all) do
     GlobalRegistry.access_token = 'access_token'
     GlobalRegistry.base_url = 'https://globalregistry.com/'
@@ -27,12 +29,6 @@ describe SpStudentQuote do
         to_return(:status => 200, :body => '{ "entity_types": [ { "fields": [ { "id": "id123" } ] } ] }', :headers => {})
       SpStudentQuote.push_structure_to_global_registry
       expect($push_structure_to_global_registry_reached).to be true
-    end
-  end
-
-  context '#skip_fields_for_gr' do
-    it 'should reutrn an array' do
-      expect(SpStudentQuote.skip_fields_for_gr.class).to be Array
     end
   end
 

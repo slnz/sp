@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe SpProjectMinistryFocus do
+  include_examples "global_registry_methods"
+
   before(:all) do
     GlobalRegistry.access_token = 'access_token'
     GlobalRegistry.base_url = 'https://globalregistry.com/'
@@ -50,12 +52,6 @@ describe SpProjectMinistryFocus do
     it 'should work' do
       SpProjectMinistryFocus.push_structure_to_global_registry
       expect($push_structure_to_global_registry_reached).to be true
-    end
-  end
-
-  context '#skip_fields_for_gr' do
-    it 'should work' do
-      SpProjectMinistryFocus.skip_fields_for_gr
     end
   end
 
