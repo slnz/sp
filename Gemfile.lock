@@ -65,7 +65,7 @@ GEM
       activesupport (= 4.1.8)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active_model_serializers (0.9.2)
+    active_model_serializers (0.9.0)
       activemodel (>= 3.2)
     active_utils (2.2.3)
       activesupport (>= 2.3.11)
@@ -474,7 +474,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
-  active_model_serializers
+  active_model_serializers (= 0.9.0)
   activemerchant (~> 1.28.0)
   activesupport-json_encoder
   acts_as_versioned!
