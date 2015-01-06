@@ -1,17 +1,12 @@
 require 'spec_helper'
 
 describe SpMinistryFocus do
+  include_examples "global_registry_methods"
+
   context '#to_s' do
     it 'should reutrn name' do
       f = SpMinistryFocus.new name: 'name'
       expect(f.to_s).to eq('name')
-    end
-  end
-  context "#skip_fields_for_gr" do
-    it "should return an array of strings" do
-      fields = SpMinistryFocus.skip_fields_for_gr
-      expect(fields.class).to eq(Array)
-      expect(fields.collect(&:class).uniq).to eq([String])
     end
   end
 

@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe SpStudentQuote do
+  include_examples "global_registry_methods"
+
   before(:all) do
     GlobalRegistry.access_token = 'access_token'
     GlobalRegistry.base_url = 'https://globalregistry.com/'
@@ -55,12 +57,6 @@ describe SpStudentQuote do
       expect($push_structure_to_global_registry_args.second).to eq(SpGospelInAction)
       expect($push_structure_to_global_registry_args.third).to eq('project')
       expect($push_structure_to_global_registry_args.fourth).to eq('gospel_in_action')
-    end
-  end
-
-  context 'SpProjectGospelInAction#skip_fields_for_gr' do
-    it 'should return an array' do
-      expect(SpProjectGospelInAction.skip_fields_for_gr.class).to be Array
     end
   end
 end

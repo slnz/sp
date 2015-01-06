@@ -31,7 +31,7 @@ class SpProjectMinistryFocus < ActiveRecord::Base
   end
 
   def self.skip_fields_for_gr
-    super + %w[id created_at updated_at global_registry_id project_id ministry_focus_id]
+    super + %w[project_id ministry_focus_id]
   end
 
   def self.global_registry_entity_type_name

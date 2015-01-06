@@ -277,6 +277,8 @@ describe Admin::ReportsController do
     end
 
     it 'sorts projects by ministry focus' do
+      SpMinistryFocus.delete_all
+
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
