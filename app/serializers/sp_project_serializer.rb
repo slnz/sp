@@ -15,6 +15,6 @@ class SpProjectSerializer < ActiveModel::Serializer
   has_many :applicants
 
   def picture_url
-    object.picture.url(:large)
+    object.picture_url
   end
 end

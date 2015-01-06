@@ -599,6 +599,10 @@ class SpProject < ActiveRecord::Base
     yr == year ? current_students_women : sp_applications.accepted.female.for_year(yr).count
   end
 
+  def picture_url
+    picture.url(:large) if picture
+  end
+
   def initialize_project_specific_question_sheet
     unless project_specific_question_sheet
       update_attribute(:project_specific_question_sheet_id, Fe::QuestionSheet.where(label: 'Project - ' + self.to_s).first_or_create.id)

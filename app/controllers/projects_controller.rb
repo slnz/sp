@@ -185,7 +185,7 @@ class ProjectsController < ApplicationController
                    :methods => [:pd_name, :apd_name,
                                 :pd_email, :apd_email,
                                 :primary_focus_name, :description_with_cdata,
-                                :regional_info],
+                                :regional_info, :picture_url],
                    :include => {:ministry_focuses =>
                                 {:only => :name, :methods => []}}}
     end
