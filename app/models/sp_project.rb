@@ -16,12 +16,12 @@ class SpProject < ActiveRecord::Base
                         :project_contact_name, :project_contact_role, :project_contact_phone, :project_contact_email, :url, :url_title, :ds_project_code,
                         :facebook_url, :blog_url, :blog_title, :project_contact2_name, :project_contact2_role, :project_contact2_phone, :project_contact2_email
 
-  has_attached_file :picture, :styles => { thumb: '100x100>' },
+  has_attached_file :picture, :styles => { large: '800x800>', medium: '300x300>', thumb: '100x100>' },
                     storage: :s3,
                     s3_credentials: Rails.root.join('config/amazon_s3.yml'),
                     path: 'sp/project/:attachment/:id/:style/:filename'
 
-  has_attached_file :logo, styles: { medium: '300x300>', thumb: '100x100>' },
+  has_attached_file :logo, styles: { thumb: '100x100>' },
                     storage: :s3,
                     s3_protocol: 'https',
                     s3_credentials: Rails.root.join('config/amazon_s3.yml'),
