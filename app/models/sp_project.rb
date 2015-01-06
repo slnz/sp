@@ -128,7 +128,7 @@ class SpProject < ActiveRecord::Base
   scope :apd_like, ->(name) { by_name(name).by_role('APD') }
   scope :opd_like, ->(name) { by_name(name).by_role('OPD') }
 
-  before_save :get_coordinates, :calculate_weeks, :set_year
+  before_save :get_coordinates, :calculate_weeks, :set_year, :change_picture_filename
   after_save :async_secure_designations_if_necessary #, :async_set_up_give_sites
 
   default_value_for :apply_by_date do Date.new(SpApplication.year, 4, 1) end
@@ -144,6 +144,13 @@ class SpProject < ActiveRecord::Base
 
 
   @@regions = {}
+
+  def change_picture_filename
+    if picture_file_name_changed?
+      extension = File.extname(picture_file_name).downcase
+      picture.instance_write(:file_name, "#{id}#{extension}")
+    end
+  end
 
   def async_set_up_give_sites
     if (project_summary_changed? || full_project_description_changed?) &&

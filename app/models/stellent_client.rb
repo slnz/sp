@@ -39,16 +39,18 @@ class StellentClient
         file_name: designation_number + '-content.xml',
         file_content: Base64.encode64(xml(@app).gsub("\n",'').strip).gsub("\n",'')
       },
-      extra_props: [
-        { name: 'xHidden', value: 'FALSE' },
-        { name: 'xRegionDefinition', value: 'RD_GIVE_STUDENT' },
-        { name: 'xSearchable', value: 'Yes' },
-        { name: 'xWebsites', value: 'Give' },
-        { name: 'xFriendlyFilename', value: designation_number },
-        { name: 'xWebsiteObjectType', value: 'Data File' },
-        { name: 'xLanguage', value: 'English' },
-        { name: 'xSiebelDesignation', value: designation_number },
-      ]
+      extra_props: {
+        property: [
+          { name: 'xHidden', value: 'FALSE' },
+          { name: 'xRegionDefinition', value: 'RD_GIVE_STUDENT' },
+          { name: 'xSearchable', value: 'Yes' },
+          { name: 'xWebsites', value: 'Give' },
+          { name: 'xFriendlyFilename', value: designation_number },
+          { name: 'xWebsiteObjectType', value: 'Data File' },
+          { name: 'xLanguage', value: 'English' },
+          { name: 'xSiebelDesignation', value: designation_number }
+        ]
+      }
     }
   end
 
