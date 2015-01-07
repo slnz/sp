@@ -600,7 +600,7 @@ class SpProject < ActiveRecord::Base
   end
 
   def picture_url
-    picture.url(:large) if picture
+    picture.url(:large) if picture_file_name
   end
 
   def initialize_project_specific_question_sheet
