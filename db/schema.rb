@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141109155311) do
+ActiveRecord::Schema.define(version: 20150114185740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,13 @@ ActiveRecord::Schema.define(version: 20141109155311) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "global_registry_id"
+  end
+
+  create_table "merge_audits", force: true do |t|
+    t.integer "mergeable_id"
+    t.string  "mergeable_type"
+    t.integer "merge_loser_id"
+    t.string  "merge_loser_type"
   end
 
   create_table "ministries", force: true do |t|
@@ -434,6 +441,168 @@ ActiveRecord::Schema.define(version: 20141109155311) do
   add_index "ministry_targetarea", ["name"], name: "index1", using: :btree
   add_index "ministry_targetarea", ["region"], name: "index6", using: :btree
   add_index "ministry_targetarea", ["state"], name: "index3", using: :btree
+
+  create_table "mpd_contact_actions", force: true do |t|
+    t.integer  "mpd_contact_id"
+    t.integer  "event_id"
+    t.decimal  "gift_amount",          precision: 11, scale: 0
+    t.boolean  "letter_sent",                                   default: false
+    t.boolean  "contacted",                                     default: false
+    t.boolean  "thankyou_sent",                                 default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_selected_letter"
+    t.boolean  "is_selected_call"
+    t.boolean  "is_selected_thankyou"
+    t.boolean  "postproject_sent",                              default: false
+    t.boolean  "partner_financial",                             default: false
+    t.boolean  "partner_prayer",                                default: false
+    t.boolean  "gift_pledged",                                  default: false
+    t.boolean  "gift_received",                                 default: false
+    t.string   "date_received"
+    t.string   "form_received",                                 default: "Not Received"
+  end
+
+  add_index "mpd_contact_actions", ["event_id"], name: "event_id", using: :btree
+  add_index "mpd_contact_actions", ["mpd_contact_id", "event_id"], name: "index_mpd_contact_actions_on_mpd_contact_id_and_event_id", unique: true, using: :btree
+  add_index "mpd_contact_actions", ["mpd_contact_id"], name: "mpd_contact_id", using: :btree
+
+  create_table "mpd_contacts", force: true do |t|
+    t.integer  "mpd_user_id"
+    t.integer  "mpd_priority_id"
+    t.string   "full_name",                  default: "", null: false
+    t.string   "address_1",                  default: ""
+    t.string   "address_2"
+    t.string   "city",                       default: ""
+    t.string   "state",                      default: ""
+    t.string   "zip",             limit: 10, default: ""
+    t.string   "phone",           limit: 15, default: ""
+    t.string   "email_address",              default: ""
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "salutation"
+    t.string   "phone_2",         limit: 25, default: ""
+    t.string   "relationship",               default: ""
+  end
+
+  add_index "mpd_contacts", ["mpd_priority_id"], name: "mpd_contacts_mpd_priority_id_index", using: :btree
+  add_index "mpd_contacts", ["mpd_user_id"], name: "mpd_contacts_mpd_user_id_index", using: :btree
+
+  create_table "mpd_events", force: true do |t|
+    t.string   "name"
+    t.date     "start_date"
+    t.integer  "cost"
+    t.integer  "mpd_user_id"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "current_letter"
+  end
+
+  add_index "mpd_events", ["mpd_user_id"], name: "mpd_user_id", using: :btree
+  add_index "mpd_events", ["project_id"], name: "mpd_events_project_id", using: :btree
+
+  create_table "mpd_expense_types", force: true do |t|
+    t.string  "name",                                                 null: false
+    t.decimal "default_amount", precision: 255, scale: 0, default: 0
+  end
+
+  create_table "mpd_expenses", force: true do |t|
+    t.integer "mpd_user_id"
+    t.integer "mpd_expense_type_id"
+    t.integer "amount",              default: 0, null: false
+    t.integer "mpd_event_id"
+  end
+
+  add_index "mpd_expenses", ["mpd_event_id"], name: "mpd_event_id", using: :btree
+  add_index "mpd_expenses", ["mpd_expense_type_id"], name: "mpd_expenses_mpd_expense_type_id_index", using: :btree
+  add_index "mpd_expenses", ["mpd_user_id"], name: "mpd_expenses_mpd_user_id_index", using: :btree
+
+  create_table "mpd_letter_images", force: true do |t|
+    t.integer  "mpd_letter_id"
+    t.string   "image"
+    t.integer  "parent_id"
+    t.string   "content_type"
+    t.string   "filename"
+    t.string   "thumbnail"
+    t.integer  "size"
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  add_index "mpd_letter_images", ["mpd_letter_id"], name: "mpd_letter_id", using: :btree
+  add_index "mpd_letter_images", ["parent_id"], name: "parent_id", using: :btree
+
+  create_table "mpd_letter_templates", force: true do |t|
+    t.string  "name",                              null: false
+    t.string  "thumbnail_filename",   default: ""
+    t.string  "pdf_preview_filename", default: ""
+    t.text    "description"
+    t.integer "number_of_images",     default: 0
+  end
+
+  create_table "mpd_letters", force: true do |t|
+    t.integer "mpd_letter_template_id"
+    t.date    "date"
+    t.string  "salutation",             default: "Dear [[SALUTATION]],"
+    t.text    "update_section"
+    t.text    "educate_section"
+    t.text    "needs_section"
+    t.text    "involve_section"
+    t.text    "acknowledge_section"
+    t.string  "closing",                default: "Thank you,"
+    t.string  "printed_name"
+    t.integer "mpd_user_id"
+    t.string  "name"
+  end
+
+  add_index "mpd_letters", ["mpd_letter_template_id"], name: "mpd_letters_mpd_letter_template_id_index", using: :btree
+  add_index "mpd_letters", ["mpd_user_id"], name: "mpd_letters_mpd_user_id_index", using: :btree
+
+  create_table "mpd_priorities", force: true do |t|
+    t.integer  "mpd_user_id",              default: 0,  null: false
+    t.integer  "rateable_id",              default: 0,  null: false
+    t.integer  "priority",                 default: 0
+    t.datetime "created_at",                            null: false
+    t.string   "rateable_type", limit: 15, default: "", null: false
+  end
+
+  add_index "mpd_priorities", ["mpd_user_id"], name: "fk_mpd_priorities_mpd_user", using: :btree
+  add_index "mpd_priorities", ["rateable_id"], name: "rateable_id", using: :btree
+
+  create_table "mpd_roles", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "mpd_roles_users", force: true do |t|
+    t.integer "role_id"
+    t.integer "user_id"
+  end
+
+  add_index "mpd_roles_users", ["role_id"], name: "role_id", using: :btree
+  add_index "mpd_roles_users", ["user_id"], name: "user_id", using: :btree
+
+  create_table "mpd_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "mpd_role_id"
+    t.datetime "last_login"
+    t.string   "type"
+    t.boolean  "show_welcome",        default: true
+    t.boolean  "show_follow_up_help", default: true
+    t.boolean  "show_calculator",     default: true
+    t.boolean  "show_thank_help",     default: true
+    t.datetime "created_at"
+    t.integer  "current_event_id"
+  end
+
+  add_index "mpd_users", ["current_event_id"], name: "current_event_id", using: :btree
+  add_index "mpd_users", ["mpd_role_id"], name: "mpd_users_mpd_role_id_index", using: :btree
+  add_index "mpd_users", ["user_id"], name: "mpd_users_ssm_id_index", using: :btree
 
   create_table "phone_numbers", force: true do |t|
     t.string   "number"

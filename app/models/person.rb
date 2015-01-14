@@ -25,6 +25,8 @@ class Person < Fe::Person
   has_many                :directed_projects, :through => :sp_directorships, :source => :sp_project
   has_many                :staffed_projects, :through => :sp_staff, :source => :sp_project
   has_many                :current_staffed_projects, -> { where("sp_staff.year = #{SpApplication.year}").select("sp_projects.*") }, :through => :sp_staff, :source => :sp_project
+  has_one                 :sp_user
+  has_many                :sp_application_moves, foreign_key: 'moved_by_person_id'
 
   belongs_to :user, :foreign_key => "fk_ssmUserId" # TODO need to migrate person columns to be more rails-like
 
@@ -47,8 +49,8 @@ class Person < Fe::Person
   alias_attribute :university_state, :universityState
   alias_attribute :year_in_school, :yearInSchool
   alias_attribute :is_child, :isChild
-  alias_attribute :changed_by, :changedBy
   alias_attribute :user_id, :fk_ssmUserId
+  alias_attribute :changed_by, :changedBy
 
   def emergency_address
     emergency_address1
@@ -378,4 +380,130 @@ class Person < Fe::Person
     'person'
   end
 
+  def self.search_by_name(name, scope = Person)
+    return Person.where('1 = 0') unless name.present?
+    query = name.strip.split(' ')
+    first, last = query[0].to_s + '%', query[1].to_s + '%'
+    if last == '%'
+      conditions = ["preferred_name ilike ? OR first_name ilike ? OR last_name ilike ?", first, first, first]
+    else
+      conditions = ["(preferred_name ilike ? OR first_name ilike ?) AND last_name ilike ?", first, first, last]
+    end
+    scope = scope.where(conditions)
+    scope
+  end
+
+  def smart_merge(other)
+    if user && other.user
+      user.merge(other.user)
+      self
+    elsif other.user
+      other.merge(self)
+      other
+    else
+      merge(other)
+      self
+    end
+  end
+
+  def merge(other)
+    reload
+    Person.transaction do
+      attributes.each do |k, v|
+        next if k == ::Person.primary_key
+        next if v == other.attributes[k]
+        self[k] = case
+                  when other.attributes[k].blank? then v
+                  when v.blank? then other.attributes[k]
+                  else
+                    other_date = other.dateChanged || other.dateCreated
+                    this_date = dateChanged || dateCreated
+                    if other_date && this_date
+                      other_date > this_date ? other.attributes[k] : v
+                    else
+                      v
+                    end
+                  end
+      end
+
+      # Phone Numbers
+      phone_numbers.each do |pn|
+        opn = other.phone_numbers.detect {|oa| oa.number == pn.number && oa.extension == pn.extension}
+        pn.merge(opn) if opn
+      end
+      other.phone_numbers.each {|pn| pn.update_attribute(:person_id, id) unless pn.frozen?}
+
+      # Email Addresses
+      email_addresses.each do |pn|
+        opn = other.email_addresses.detect {|oa| oa.email == pn.email}
+        pn.merge(opn) if opn
+      end
+      emails = email_addresses.collect(&:email)
+      other.email_addresses.each do |pn|
+        if emails.include?(pn.email)
+          pn.destroy
+        else
+          begin
+            pn.update_attribute(:person_id, id) unless pn.frozen?
+          rescue ActiveRecord::RecordNotUnique
+            pn.destroy
+          end
+        end
+      end
+
+      # Addresses
+      addresses.each do |address|
+        addr = Address.find(address.id) # We need an Address object, not Fe::Address
+        other_address = other.addresses.detect {|oa| oa.address_type == addr.address_type}
+        addr.merge(other_address) if other_address
+      end
+      other.addresses do |address|
+        other_address = addresses.detect {|oa| oa.addressType == address.addressType}
+        address.update_attribute(:person_id, id) unless address.frozen? || other_address
+      end
+
+
+      # Summer Project Tool
+      other.sp_applications.each { |ua| ua.update_attribute(:person_id, id) }         # update_all would be faster here, but if want callbacks & update_at field updated, then use use update(aka: update_attributes).
+
+      SpProject.where(["pd_id = ? or apd_id = ? or opd_id = ? or coordinator_id = ?", other.id, other.id, other.id, other.id]).each do |ua|
+        ua.update_attribute(:pd_id, id) if ua.pd_id == other.id
+        ua.update_attribute(:apd_id, id) if ua.apd_id == other.id
+        ua.update_attribute(:opd_id, id) if ua.opd_id == other.id
+        ua.update_attribute(:coordinator_id, id) if ua.coordinator_id == other.id
+      end
+
+      if other.sp_user and sp_user
+        sp_user.merge(other.sp_user)
+      elsif other.sp_user
+        SpUser.where(["person_id = ? or ssm_id = ? or created_by_id = ?", other.id, other.fk_ssmUserId, other.fk_ssmUserId]).each do |ua|
+          ua.update_attribute(:person_id, id) if ua.person_id == other.id
+          ua.update_attribute(:ssm_id, fk_ssmUserId) if ua.ssm_id == other.fk_ssmUserId
+          ua.update_attribute(:created_by_id, fk_ssmUserId) if ua.created_by_id == other.fk_ssmUserId
+        end
+      end
+
+      other.sp_staff.each { |ua| ua.update_attribute(:person_id, id) }
+      other.sp_application_moves.each { |ua| ua.update_attribute(:moved_by_person_id, id) }
+
+      other.sp_designation_numbers.each do |d|
+        begin
+          d.update_attribute(:person_id, id)
+        rescue ActiveRecord::RecordNotUnique
+        end
+      end
+      # end Summer Project Tool
+
+      MergeAudit.create!(mergeable: self, merge_loser: other)
+      other.reload
+      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      other.destroy
+      begin
+        save(validate: false)
+      rescue ActiveRecord::ReadOnlyRecord
+
+      end
+      self
+    end
+  end
 end

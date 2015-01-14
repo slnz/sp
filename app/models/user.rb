@@ -147,7 +147,34 @@ class User < ActiveRecord::Base
     end
     u
   end
+  
+  def merge(other)
+    User.transaction do
+      if !other.globallyUniqueID.blank? && self.globallyUniqueID.blank?
+        self.globallyUniqueID = other.globallyUniqueID
+        other.globallyUniqueID = nil
+      end
 
+      person.merge(other.person) if person && other.person
+
+      # Authentications
+      other.authentications.collect {|oa| oa.update_attribute(:user_id, id)}
+
+      begin
+        other.needs_merge = nil
+        other.save(validate: false)
+        self.needs_merge = nil
+        save(validate: false)
+      rescue ActiveRecord::ReadOnlyRecord
+
+      end
+    end
+
+    MergeAudit.create!(mergeable: self, merge_loser: other)
+    other.reload
+    other.destroy
+  end
+  
   protected
     # not sure why but cas sometimes sends the extra attributes as underscored
     def self.att_from_receipt(atts, key)

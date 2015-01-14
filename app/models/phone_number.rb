@@ -20,4 +20,22 @@ class PhoneNumber < ActiveRecord::Base
   def self.skip_fields_for_gr
     %w[id txt_to_email carrier_id email_updated_at created_at updated_at global_registry_id person_id]
   end
+
+  def merge(other)
+    PhoneNumber.transaction do
+      %w{extension location primary}.each do |k, v|
+        next if v == other.attributes[k]
+        self[k] = case
+                  when other.attributes[k].blank? then v
+                  when v.blank? then other.attributes[k]
+                  else
+                    other.updated_at > updated_at ? other.attributes[k] : v
+                  end
+      end
+      MergeAudit.create!(mergeable: self, merge_loser: other)
+      other.destroy
+      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      save(validate: false)
+    end
+  end
 end

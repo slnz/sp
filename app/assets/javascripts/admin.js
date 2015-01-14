@@ -1,6 +1,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.observe_field
 //= require tinymce-jquery
 //= require fe/fe.common.js
 //= require fe/fe.admin.js
@@ -11,3 +12,4 @@
 //= require admin/users.js
 //= require admin/evaluations.js
 //= require admin/reports.js
+//= require admin/people.js

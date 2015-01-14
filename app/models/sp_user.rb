@@ -105,6 +105,17 @@ class SpUser < ActiveRecord::Base
     base
   end
 
+  def merge(other)
+    roles = %w{SpNationalCoordinator SpDonationServices SpRegionalCoordinator SpDirector SpEvaluator SpProjectStaff SpGeneralStaff SpUser}
+    if other.type != nil && type != nil && roles.index(other.type) < roles.index(type)    # this last '(type)' call refers to self
+      self.type = other.type                                                    # self.type is used explicitly here
+    end
+    other.reload
+    GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+    other.destroy
+    save                                                                  # this call to 'save' refers to self
+  end
+
   protected
     def ministry_lookup(ministry)
       mappings = {

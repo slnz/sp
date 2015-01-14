@@ -1,7 +1,7 @@
 class Admin::PeopleController < ApplicationController
   before_filter :cas_filter, :authentication_filter
   before_filter :get_person, :only => [:edit, :destroy, :update, :show]
-  respond_to :html, :js
+  layout 'admin'
 
   def show
     @project_id = params[:project_id].to_i
@@ -9,7 +9,6 @@ class Admin::PeopleController < ApplicationController
     @application = SpApplication.where(year: params[:year], person_id: @person.id, project_id: @project_id).first
     @designation = @person.sp_designation_numbers.where(:project_id => @project_id, :year => @year).first
     @person.current_address = @person.create_current_address unless @person.current_address
-    respond_with(@person, @application)
   end
 
   def update
@@ -43,6 +42,56 @@ class Admin::PeopleController < ApplicationController
     end
   end
 
+  def search_ids
+    @people = Person.search_by_name(params[:q])
+
+    respond_to do |wants|
+      wants.json { render text: @people.collect(&:id).to_json }
+    end
+  end
+
+  def merge
+    @people = 1.upto(4).collect {|i| Person.find_by_id(params["person#{i}"]) if params["person#{i}"].present?}.compact
+  end
+
+  def confirm_merge
+    @people = 1.upto(4).collect {|i| Person.find_by_id(params["person#{i}"]) if params["person#{i}"].present?}.compact
+
+    unless @people.length >= 2
+      redirect_to merge_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "You must select at least 2 people to merge"
+      return false
+    end
+    @keep = @people.delete_at(params[:keep].to_i)
+    unless @keep
+      redirect_to merge_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "You must specify which person to keep"
+      return false
+    end
+    # If any of the other people have users, the keeper has to have a user
+    unless @keep.user
+      if person = @people.detect(&:user)
+        redirect_to merge_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "Person ID# #{person.id} has a user record, but the person you are trying to keep doesn't. You should keep the record with a user."
+        return false
+      end
+    end
+
+  end
+
+  def merge_preview
+    render :nothing => true and return false unless params[:id].to_i > 0
+    @person = Person.find_by_id(params[:id])
+    respond_to do |wants|
+      wants.js {  }
+    end
+  end
+
+  def do_merge
+    @keep = Person.find(params[:keep_id])
+    params[:merge_ids].each do |id|
+      person = Person.find(id)
+      @keep = @keep.smart_merge(person)
+    end
+    redirect_to merge_admin_people_path, notice: "You've just merged #{params[:merge_ids].length + 1} people"
+  end
   protected
   def get_person
     @person = Person.find(params[:id])

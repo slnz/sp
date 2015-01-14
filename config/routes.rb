@@ -89,7 +89,18 @@ Sp2::Application.routes.draw do
       get :total_num_participants_to_hs_sps
       get :total_num_participants_to_other_ministry_sps
     end
-    resources :people
+    resources :people do
+      collection do
+        get :merge
+        post :confirm_merge
+        post :do_merge
+        get :search_ids
+      end
+      member do
+        get :merge_preview
+      end
+    end
+
     resources :users do
       collection do
         get :search
