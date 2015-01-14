@@ -21,6 +21,7 @@ class Admin::EvaluationsController < ApplicationController
     @page = Fe::Page.find(params[:page_id])
     @answer_sheet = @application
     @pages = @presenter.pages[0..-2]
+    @pages.reject!{|page| !page.has_questions?}
     @next_page = @pages[@pages.index(@page) + 1]
   end
 
