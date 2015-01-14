@@ -13,7 +13,6 @@
 
 <div id="preview">
 <%= form_tag(fe_application_payment_path(@application, @payment), method: :put) do %>
-
   <h2>Staff Account Transfer Payment</h2>
 
   <div class="page" style="padding: 18px;">
@@ -28,11 +27,12 @@
     <p>The applicant's application will not be processed until payment is made.
       Thank you for your help in sending this applicant into the harvest!</p>
 
-    <p>You may contact the applicant by email at <b><%= person.current_address.email %></b>
-      or by phone at <b><%= person.current_address.home_phone %></b>.</p>
+    <p>You may contact the applicant by email at <b><%= person.current_address.try(:email) %></b>
+      or by phone at <b><%= person.current_address.try(:home_phone) %></b>.</p>
 
     <p>Please choose one of the following options:</p>
 
+    <%= error_messages_for :payment %>
     <p style="font-weight: bold;">Choose Payment type:</p>
       <ul class="list-choices">
         <li><%= radio_button :payment, :status, "Denied" %>
@@ -41,7 +41,7 @@
           <label for="payment_status_approved" style="display:inline">I authorize <%= number_to_currency(@payment.amount) %> to be transferred from my account (<%= @payment.payment_account_no %>) for this applicant's application.</label></li>
         <li><%= radio_button :payment, :status, "Other Account" %>
           I authorize <%= number_to_currency(@payment.amount) %> to be transferred from this specific account:<br/>
-          <div style="margin-left: 25px;"><%= text_field_tag :other_account, '', :size => 30 %><br />
+          <div style="margin-left: 25px;"><%= text_field_tag :other_account, @payment.payment_account_no, :size => 30 %><br />
           IMPORTANT: If you enter another account and the number you enter is not a
           valid account, your <strong>PERSONAL</strong> account (<%= @payment.payment_account_no %>)
           will be charged.  The account designation should be in the new format
