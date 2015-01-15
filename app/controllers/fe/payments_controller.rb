@@ -74,6 +74,8 @@ module Fe
       @payment.save!
       staff_payment_processed_email(@payment)
       @payment.application.complete
+    rescue ActiveRecord::RecordInvalid
+      render action: :edit
     end
 
     def approve
@@ -127,7 +129,7 @@ module Fe
                                 {'staff_full_name' => staff.informal_full_name, # HASH OF VALUES FOR REPLACEMENT IN LIQUID TEMPLATE
                                   'applicant_full_name' => @person.informal_full_name,
                                   'applicant_email' => @person.email,
-                                  'applicant_home_phone' => @person.current_address.home_phone,
+                                  'applicant_home_phone' => @person.current_address.try(:home_phone),
                                   'payment_request_url' => url_for(:action => :edit, :application_id => @application.id, :id => @payment.id)},
                                   {:format => :html}).deliver
     end
