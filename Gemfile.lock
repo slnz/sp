@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/CruGlobal/gcx_api.git
-  revision: 2cec4a58cd133871cc36b28f4bc071d5c55a4269
-  specs:
-    gcx_api (0.0.2)
-      ox
-      rest-client
-
-GIT
   remote: git://github.com/CruGlobal/qe.git
   revision: 2150beca24ece0f822b776ae7a07c43524f10649
   branch: fe
@@ -282,7 +274,6 @@ GEM
       multi_json (~> 1.3)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    ox (2.1.6)
     paperclip (4.2.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -496,7 +487,6 @@ DEPENDENCIES
   factory_girl_rails
   fe!
   fuubar
-  gcx_api!
   geocoder
   google-geocode (~> 1.2.1)
   guard-rspec

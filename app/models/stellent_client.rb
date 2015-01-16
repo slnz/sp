@@ -24,8 +24,6 @@ class StellentClient
     client.call('CheckInUniversal', message: attributes)
   end
 
-  private
-
   def attributes
     designation_number = @app.get_designation_number
     @attrs ||= {

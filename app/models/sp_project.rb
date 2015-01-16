@@ -129,7 +129,7 @@ class SpProject < ActiveRecord::Base
   scope :opd_like, ->(name) { by_name(name).by_role('OPD') }
 
   before_save :get_coordinates, :calculate_weeks, :set_year
-  after_save :async_secure_designations_if_necessary# , :async_set_up_give_sites
+  after_save :async_secure_designations_if_necessary, :async_set_up_give_sites
 
   default_value_for :apply_by_date do Date.new(SpApplication.year, 4, 1) end
   default_value_for :archive_project_date do Date.new(SpApplication.year, 8, 21) end

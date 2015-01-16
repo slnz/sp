@@ -52,7 +52,7 @@ describe SpProject do
     it "should work" do
       project = create(:sp_project)
       app = create(:sp_application, year: 2014, project: project, status: "accepted_as_participant")
-      #expect(app).to receive(:set_up_give_site)
+      expect(app).to receive(:set_up_give_site)
       expect_any_instance_of(SpApplication).to receive(:set_up_give_site)
       project.set_up_give_sites
     end

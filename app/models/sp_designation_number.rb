@@ -9,7 +9,7 @@ class SpDesignationNumber < ActiveRecord::Base
 
   before_save :ensure_correct_number_length
   after_save :async_secure_designation, if: :mark_secure_necessary?
-  # after_save :async_set_up_give_site, if: :designation_number_changed?
+  after_save :async_set_up_give_site, if: :designation_number_changed?
 
   def sp_application
     @sp_application ||= SpApplication.where(person_id: person_id, project_id: project_id, year: year).first
