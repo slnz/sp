@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114185740) do
+ActiveRecord::Schema.define(version: 20150116215455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -740,6 +740,7 @@ ActiveRecord::Schema.define(version: 20150114185740) do
     t.boolean  "rm_liability_signed"
     t.date     "start_date"
     t.date     "end_date"
+    t.boolean  "has_give_site",                       default: false
   end
 
   add_index "sp_applications", ["global_registry_id"], name: "index_sp_applications_on_global_registry_id", using: :btree

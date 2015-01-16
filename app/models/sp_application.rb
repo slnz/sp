@@ -195,6 +195,7 @@ class SpApplication < Fe::Application
   def set_up_give_site
     designation = get_designation_number
     return unless designation
+    return if has_give_site?
     
     create_relay_account_if_needed
     set_designation_number_in_relay
@@ -209,6 +210,8 @@ class SpApplication < Fe::Application
                            'site_url' => "#{APP_CONFIG['spgive_url']}/#{designation}",
                            'username' => person.user.username,
                            'password' => person.user.password_plain}).deliver
+
+    update_column(:has_give_site, true)
   end
 
   def create_relay_account_if_needed

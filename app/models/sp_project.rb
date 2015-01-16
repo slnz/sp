@@ -153,9 +153,8 @@ class SpProject < ActiveRecord::Base
   end
 
   def async_set_up_give_sites
-    if (project_summary_changed? || full_project_description_changed?) &&
-       full_project_description.present? &&
-       project_summary.present?
+    if full_project_description_changed? &&
+       full_project_description.present?
       async(:set_up_give_sites)
     end
   end
