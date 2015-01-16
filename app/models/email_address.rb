@@ -28,4 +28,22 @@ class EmailAddress < Fe::EmailAddress
   def self.skip_fields_for_gr
     %w[id email created_at updated_at global_registry_id person_id]
   end
+
+  def merge(other)
+    EmailAddress.transaction do
+      if updated_at && other.primary? && other.updated_at > updated_at
+        person.email_addresses.collect {|e| e.update_attribute(:primary, false)}
+        new_primary = person.email_addresses.detect {|e| e.email == other.email}
+        new_primary.update_attribute(:primary, true) if new_primary
+      end
+      begin
+        MergeAudit.create!(mergeable: self, merge_loser: other)
+      rescue ActiveRecord::RecordNotFound
+        # ???
+      end
+      other.reload
+      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      other.destroy
+    end
+  end
 end

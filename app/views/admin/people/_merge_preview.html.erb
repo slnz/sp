@@ -1,0 +1,32 @@
+<% if person %>
+    <% emails = person.email_addresses.pluck(:email) + person.addresses.pluck(:email)
+       emails = emails.compact.reject(&:empty?).uniq.join(", ")
+       phone_numbers = person.phone_numbers.pluck(:number) + person.addresses.pluck(:home_phone) + person.addresses.pluck(:work_phone) + person.addresses.pluck(:cell_phone)
+       phone_numbers = phone_numbers.compact.reject(&:empty?).uniq.join(", ") %>
+    <strong>Person ID: <%= person.id %></strong><br/>
+    <strong>First Name:</strong> <%= person.first_name %><br/>
+    <strong>Last Name:</strong> <%= person.last_name %><br/>
+    <strong>Preferred Name:</strong> <%= person.preferred_name %><br/>
+    <strong>Gender:</strong> <%= person.gender %><br/>
+    <strong>Account Number:</strong> <%= person.account_no %><br/>
+    <strong>Email Addresses:</strong> <%= emails %><br/>
+    <strong>Phone Numbers:</strong> <%= phone_numbers %><br/>
+    <strong>Campus:</strong> <%= person.campus %><br/>
+    <strong>Birthday:</strong> <%= l(person.birth_date) if person.birth_date %><br/>
+    <strong>Preferred Name:</strong> <%= person.preferred_name %><br/>
+    <strong>Person Created:</strong> <%= l(person.created_at) if person.created_at %><br/>
+    <strong>Person Updated:</strong> <%= l(person.updated_at) if person.updated_at %>
+    <% user = person.user %>
+    <% if user %>
+        <hr>
+        <strong>User ID:</strong> <%= user.userID %><br/>
+        <strong>Username:</strong> <%= user.username %><br/>
+        <strong>Guid:</strong> <%= user.globallyUniqueID %><br/>
+        <strong>User
+          Created:</strong> <%= l(user.createdOn || user.created_at) if user.createdOn || user.created_at %><br/>
+        <strong>User Updated:</strong> <%= l(user.updated_at) if user.updated_at %><br/>
+        <strong>Last Login:</strong> <%= l(user.lastLogin) if user.lastLogin %><br/>
+    <% end %>
+<% else %>
+    No person with ID of <%= params[:id] %>
+<% end %>

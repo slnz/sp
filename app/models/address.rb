@@ -42,4 +42,36 @@ class Address < Fe::Address
   def self.global_registry_entity_type_name
     'address'
   end
+
+  def merge(other)
+    Address.transaction do
+      # We're only interested if the other address has been updated more recently
+      if other.updated_at && updated_at && other.updated_at > updated_at
+        # if any part of they physical address is there, copy all of it
+        physical_address = %w{address1 address2 address3 address4 city state zip country}
+        if other.attributes.slice(*physical_address).any? {|k,v| v.present?}
+          other.attributes.slice(*physical_address).each do |k, v|
+            self[k] = v
+          end
+        end
+        # Now copy the rest as long as they're not blank
+        other_attributes = other.attributes.except(*(%w{id created_at person_id} + physical_address))
+        attributes.each do |k, v|
+          next if v == other_attributes[k]
+          self[k] = case
+                    when other_attributes[k].blank? then v
+                    when v.blank? then other_attributes[k]
+                    else
+                      other.updated_at > updated_at ? other_attributes[k] : v
+                    end
+        end
+        self['changed_by'] = 'MERGE'
+      end
+      MergeAudit.create!(mergeable: self, merge_loser: other)
+      other.reload
+      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      other.destroy
+      save(validate: false)
+    end
+  end
 end
