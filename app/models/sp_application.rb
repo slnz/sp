@@ -193,6 +193,9 @@ class SpApplication < Fe::Application
   end
 
   def set_up_give_site
+    designation = get_designation_number
+    return unless designation
+    
     create_relay_account_if_needed
     set_designation_number_in_relay
     set_role_in_ldap
@@ -203,7 +206,7 @@ class SpApplication < Fe::Application
                           Fe.from_email, # FROM
                           "Giving site created", # LIQUID TEMPLATE NAME
                           {'first_name' => person.nickname,
-                           'site_url' => "#{APP_CONFIG['spgive_url']}/#{get_designation_number}",
+                           'site_url' => "#{APP_CONFIG['spgive_url']}/#{designation}",
                            'username' => person.user.username,
                            'password' => person.user.password_plain}).deliver
   end
