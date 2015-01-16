@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 
   def self.find_or_create_from_guid_or_email(guid, email, first_name, last_name, secure = true)
     if guid
-      u = ::User.where("LOWER(globallyUniqueID) = ?", guid.downcase).first
+      u = ::User.where('LOWER("globallyUniqueID") = ?', guid.downcase).first
     end
 
     # if we have a user by this method, great! update the email address if it doesn't match
