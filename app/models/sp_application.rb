@@ -222,8 +222,8 @@ class SpApplication < Fe::Application
         person.user.save(validate: false)
       rescue ActiveRecord::RecordNotUnique
         # This means we have a duplicate person that we need to merge
-        other_user = SimplesecuritymanagerUser.where(globallyUniqueID: person.user.globallyUniqueID).first
-        this_user = SimplesecuritymanagerUser.find(person.user.id)
+        other_user = User.where(globallyUniqueID: person.user.globallyUniqueID).first
+        this_user = User.find(person.user.id)
         this_user.merge(other_user)
         person.reload
       end
