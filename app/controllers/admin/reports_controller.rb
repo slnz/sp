@@ -496,7 +496,7 @@ class Admin::ReportsController < ApplicationController
         @applications = SpApplication.where(:year => year).where("ministry_person.last_name <> ''").order('ministry_person.last_name, ministry_person.first_name').includes(:project, {:person => :current_address}).paginate(:page => params[:page], :per_page => 50)
       }
       format.csv {
-        csv = []
+        @csv = []
         conn = ActiveRecord::Base.connection.raw_connection
         conn.copy_data('COPY (select projects.name as "Project Applying To", person.first_name as "First Name",
                         person.last_name as "Last Name", apps.status as "Status", person.gender as "Gender",
@@ -510,10 +510,10 @@ class Admin::ReportsController < ApplicationController
                         order by person.last_name, person.first_name)
                         TO STDOUT WITH (FORMAT CSV, HEADER TRUE, FORCE_QUOTE *, ESCAPE E\'\\\\\');') do
           while row = conn.get_copy_data
-            csv.push(row)
+            @csv.push(row)
           end
         end
-        render :text => csv.join
+        render :text => @csv.join
       }
     end
   end

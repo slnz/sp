@@ -889,7 +889,7 @@ describe Admin::ReportsController do
       )
 
       get :applicants, format: 'csv'
-      expect(assigns(:applications)).to eq([application, application2])
+      expect(assigns(:csv).size).to eq([application, application2].size + 1) #CSV should include header row
     end
   end
 
