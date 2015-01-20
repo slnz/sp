@@ -313,8 +313,7 @@ describe Person do
       expect(p.is_secure?).to be false
     end
     it "should work for a secure staff" do
-      p = create(:person)
-      s = create(:staff, person: p, isSecure: 'T')
+      p = create(:person, isSecure: 'T')
       expect(p.is_secure?).to be true
     end
   end
