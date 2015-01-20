@@ -500,8 +500,8 @@ class Admin::ReportsController < ApplicationController
         conn = ActiveRecord::Base.connection.raw_connection
         conn.copy_data('COPY (select projects.name as "Project Applying To", person.first_name as "First Name",
                         person.last_name as "Last Name", apps.status as "Status", person.gender as "Gender",
-                        person.region as "Region", person.campus as "School", address.email as "Email",
-                        address.cell_phone as "Cell Phone"
+                        person.region as "Region", person.campus as "School", person."yearInSchool" as "Year in School",
+                        address.email as "Email", address.cell_phone as "Cell Phone"
                         from sp_applications apps
                         inner join sp_projects projects on apps.project_id = projects.id
                         inner join ministry_person person on apps.person_id = person.id
