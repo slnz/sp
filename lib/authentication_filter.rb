@@ -54,12 +54,7 @@ class AuthenticationFilter
         	})
           if attributes["emplid"].present?
             person.account_no = attributes["emplid"]
-            person.staff = Staff.find_by_accountNo(attributes["emplid"])
             person.isStaff = true
-            if staff = Staff.find_by_accountNo(person.account_no)
-              staff.person = person
-              staff.save!
-            end
           end
           person.save!
         end
