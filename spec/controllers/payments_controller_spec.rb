@@ -43,10 +43,10 @@ describe Fe::PaymentsController do
       expect(assigns(:payment).errors.count).to eq 1
     end
     it "Displays an error if we don't have an email on file for the staff who is supposed to pay" do
-      staff = create(:staff, accountNo: '000991063')
+      staff = create(:person, account_no: '000991063')
 
       xhr :post, :create, application_id: application.id, "payment" => {
-        "payment_account_no" => staff.accountNo,
+        "payment_account_no" => staff.account_no,
         "payment_type" => "Staff",
         "staff_first" => "kazu",
         "staff_last" => "kurihara"

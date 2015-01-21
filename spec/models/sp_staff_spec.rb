@@ -96,12 +96,4 @@ describe SpStaff do
       expect(staff_positions.collect(&:class).uniq).to eq([String])
     end
   end
-
-  context '#specialty_roles' do
-    it 'should work' do
-      s = create(:staff, jobStatus: "Staff Full Time", ministry: "Campus Ministry", removedFromPeopleSoft: "N", jobTitle: "Specialty Title")
-      expect(Staff.specialty_roles.length).to eq(1)
-      expect(Staff.specialty_roles.first).to eq(s)
-    end
-  end
 end

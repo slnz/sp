@@ -13,8 +13,6 @@ class Person < Fe::Person
   # SP-298
   has_many                :sp_designation_numbers, dependent: :destroy
 
-  has_one                 :staff
-
   # Summer Project
   has_many                :sp_applications
   alias_method            :applications, :sp_applications # form engine expects applications association
