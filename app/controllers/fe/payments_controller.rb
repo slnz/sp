@@ -101,7 +101,7 @@ module Fe
       if @payment.staff_first.to_s.strip.empty? || @payment.staff_last.to_s.strip.empty?
         render; return
       end
-      @results = Staff.order('"lastName", "firstName"').where("(\"firstName\" like ? OR \"preferredName\" like ?) AND \"lastName\" like ? and \"removedFromPeopleSoft\" <> 'Y'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%')
+      @results = ::Person.order('"last_name", "first_name"').where("(\"first_name\" like ? OR \"preferred_name\" like ?) AND \"last_name\" like ? and \"isStaff\" = 't'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%')
     end
 
     def destroy
@@ -121,7 +121,7 @@ module Fe
 
     def send_staff_payment_request(payment)
       @person = @application.applicant
-      staff = Staff.find_by(accountNo: payment.payment_account_no)
+      staff = ::Person.find_by(account_no: payment.payment_account_no)
       raise "Invalid staff payment request: " + payment.inspect if staff.nil?
       Fe::Notifier.notification(staff.email, # RECIPIENTS
                                 Fe.from_email, # FROM

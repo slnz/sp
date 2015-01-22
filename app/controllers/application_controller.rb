@@ -161,7 +161,7 @@ class ApplicationController < ActionController::Base
       staff = []
       non_staff = []
       @people.each do |person|
-        if person.staff.present?
+        if person.isStaff?
           staff << person
         else
           non_staff << person

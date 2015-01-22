@@ -134,7 +134,7 @@ class SpApplication < Fe::Application
     end
   end
 
-  belongs_to :person
+  belongs_to :person, class_name: '::Person'
   alias_method :applicant, :person # Fe expects applicant
 
   belongs_to :project, :class_name => 'SpProject', :foreign_key => :project_id
