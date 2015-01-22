@@ -27,10 +27,10 @@
         <%= tip('Shows a list of projects with their evangelism stats') %>
       </li>
       <li>
-        <%- if Date.today >= Date.parse("January 28, #{Date.today.year}") && Date.today <= Date.parse("April 15, #{Date.today.year}") %>
+        <%- if Date.today >= Date.parse("January 20, #{Date.today.year}") && Date.today <= Date.parse("April 15, #{Date.today.year}") %>
           <%= link_to('Projects that have ready apps after project deadline', ready_after_deadline_admin_reports_path) %>
         <%- else %>
-          Projects that have ready apps after project deadline (this report is available only from January 28th to April 15th).
+          Projects that have ready apps after project deadline (this report is available only from January 20th to April 15th).
         <%- end %>
         <%= tip('Shows how many applications are in ready status and past the hear-back deadline') %>
       </li>
