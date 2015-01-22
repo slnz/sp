@@ -718,7 +718,7 @@ class Admin::ReportsController < ApplicationController
                    when 'withdrawn' then
                      'withdrawn'
                  end
-      @emails = SpApplication.where(:status => statuses, :year => year).where(Address.table_name + ".email <> ''").where("\"isStaff\" IS NOT TRUE").includes(:person => :current_address).select('email').collect(&:email).uniq.compact
+      @emails = SpApplication.where(:status => statuses, :year => year).where(Address.table_name + ".email <> ''").where("\"isStaff\" IS NOT TRUE").includes(:person => :current_address).references(:person => :current_address).select('email').collect(&:email).uniq.compact
     else
       @statuses = %w{accepted ready started withdrawn}
     end
