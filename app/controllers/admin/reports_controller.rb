@@ -725,19 +725,13 @@ class Admin::ReportsController < ApplicationController
 
     if @emails.present?
       respond_to do |format|
-        format.html {
-          @payments = Fe::Payment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC").paginate(:page => params[:page], :per_page => 50)
-        }
+        format.html
         format.csv {
-          @payments = Fe::Payment.joins(:application).where("sp_payments.status = 'Approved'").where("sp_applications.year = #{SpApplication.year}").where("sp_payments.payment_type = 'Staff'").order("sp_payments.payment_account_no ASC")
-          csv = ""
+          csv = ''
           CSV.generate(csv) do |csv|
-            csv << ["Project Name", "Project Start", "Project End", "Male PD Email", "Female PD Email", "OPD Email"]
-            @payments.each do |payment|
-              csv << [payment.payment_account_no,
-                      payment.amount, payment.application.person.first_name, payment.application.person.last_name,
-                      payment.status, payment.created_at
-              ]
+            csv << ["Email Address"]
+            @emails.each do |email|
+              csv << [email]
             end
           end
           render :text => csv
