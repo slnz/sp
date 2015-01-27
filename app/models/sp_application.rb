@@ -194,6 +194,7 @@ class SpApplication < Fe::Application
 
   def set_up_give_site
     designation = get_designation_number
+    return if is_secure?
     return unless designation
     return if has_give_site?
     
