@@ -343,9 +343,9 @@ class Admin::ReportsController < ApplicationController
     d3 = Date.parse("Feb 24, #{SpApplication.year}")
     @d3_projects = SpProject.where(:id => project_ids).where(["sp_applications.year = ? AND completed_at > ? AND completed_at <= ?", SpApplication.year, d2, d3]).joins(:sp_applications).group(:project_id).select("MAX(name) as name, count(*) as app_count").where("sp_applications.status" => "ready").group_by { |p| p.name }
 
-    @c1_cutoff = Date.parse("Jan 28, #{SpApplication.year}")
-    @c2_cutoff = Date.parse("Feb 28, #{SpApplication.year}")
-    @c3_cutoff = Date.parse("Mar 28, #{SpApplication.year}")
+    @c1_cutoff = Date.parse("Jan 21, #{SpApplication.year}")
+    @c2_cutoff = Date.parse("Feb 21, #{SpApplication.year}")
+    @c3_cutoff = Date.parse("Mar 21, #{SpApplication.year}")
 
     respond_to do |format|
       format.html
