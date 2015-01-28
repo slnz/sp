@@ -101,7 +101,7 @@ module Fe
       if @payment.staff_first.to_s.strip.empty? || @payment.staff_last.to_s.strip.empty?
         render; return
       end
-      @results = ::Person.order('"last_name", "first_name"').where("(\"first_name\" like ? OR \"preferred_name\" like ?) AND \"last_name\" like ? and \"isStaff\" = 't'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%')
+      @results = ::Person.order('"last_name", "first_name"').where("(\"first_name\" ilike ? OR \"preferred_name\" ilike ?) AND \"last_name\" ilike ? and \"isStaff\" = 't'", @payment.staff_first+'%', @payment.staff_first+'%', @payment.staff_last+'%')
     end
 
     def destroy
