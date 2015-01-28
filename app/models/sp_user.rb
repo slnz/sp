@@ -112,7 +112,7 @@ class SpUser < ActiveRecord::Base
     end
     other.reload
     GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
-    other.destroy
+    other.delete
     save                                                                  # this call to 'save' refers to self
   end
 
