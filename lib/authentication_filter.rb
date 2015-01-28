@@ -23,7 +23,7 @@ class AuthenticationFilter
           end
         else #found user by guid
           if user.username.upcase != cas_user.upcase
-            other_user = User.find_by_username(cas_user)
+            other_user = User.where("LOWER(username) = ?", cas_user.downcase).first
             if other_user
               @logger.info("Sso username different, but new username already exists in SSM table. Marking for merge and moving on.")
               user.needs_merge = "#{guid} - #{cas_user}"
