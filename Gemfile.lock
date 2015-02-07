@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: 0ef66331705611844686c4d16c2aee8a31283930
+  revision: 73537e5faeb9f47fbd538eacb958aaf2a6e2d227
   branch: fe
   specs:
     fe (0.0.4)
