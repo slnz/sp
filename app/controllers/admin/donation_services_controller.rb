@@ -71,7 +71,7 @@ class Admin::DonationServicesController < ApplicationController
       person = Person.find(person_id)
       donor_number = persons_to_update[person_id]
 
-      record = SpApplication.where(:person_id => person_id).where("year >= ?", SpApplication.year).first
+      record = SpApplication.accepted.where(:person_id => person_id).where("year >= ?", SpApplication.year).first
       record ||= SpStaff.where(:person_id => person_id).where("year >= ?", SpApplication.year).first
 
       if record.present?
