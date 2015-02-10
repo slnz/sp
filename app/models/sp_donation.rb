@@ -124,24 +124,6 @@ class SpDonation < ActiveRecord::Base
 
         total_donations += donations.length
       end
-
-      # If there is a give site for this designation number, update it
-      if dn.person.sp_gcx_site.present?
-        balance = get_balance(dn.designation_number, SpApplication.year)
-
-        if balance > 0
-          #site = GcxApi::Site.new(name: dn.person.sp_gcx_site, domain: APP_CONFIG['spgive_url'])
-
-          begin
-            #site.set_option_values(
-            #    'cru_spkick[spkick_current_amount]' => get_balance(dn.designation_number, SpApplication.year)
-            #)
-          rescue RuntimeError
-            # Keep going even if updating gcx failed
-            #Airbrake.notify(e)
-          end
-        end
-      end
     end
 
     total_donations
