@@ -3,8 +3,8 @@ module Fe
     include CruLib::GlobalRegistryMethods
     include Sidekiq::Worker
 
-    attr_accessor :first_name, :last_name, :address, :city, :state, :zip, :card_number,
-                  :expiration_month, :expiration_year, :security_code, :staff_first, :staff_last, :card_type
+    attr_accessor :first_name, :last_name, :address, :city, :state, :zip, :card_number, :encrypted_card_number,
+                  :expiration_month, :expiration_year, :encrypted_security_code, :staff_first, :staff_last, :card_type
 
     belongs_to :application, :class_name => 'SpApplication', :foreign_key => 'application_id'
     
@@ -18,8 +18,8 @@ module Fe
     def credit_card_validation
       if credit?
         errors.add_on_empty([:first_name, :last_name, :address, :city, :state, :zip, :card_number,
-                  :expiration_month, :expiration_year, :security_code])
-        errors.add(:card_number, "is invalid.") if get_card_type.nil?
+                  :expiration_month, :expiration_year])
+        errors.add(:security_code, "can't be blank.") if encrypted_security_code.blank?
       end
     end
 
@@ -63,12 +63,6 @@ module Fe
       self.status = "Approved"
       self.auth_code ||= card_number[-4..-1] if card_number.present?
       self.save!
-    end
-
-    def get_card_type
-      card =  ActiveMerchant::Billing::CreditCard.new(:number => card_number)
-      card.valid?
-      card.type
     end
 
     def async_push_to_global_registry

@@ -30,29 +30,19 @@ module Fe
           if @payment.valid?
             case @payment.payment_type
             when "Credit Card"
-              card_type = params[:payment][:card_type]
+              client = CcpClient.new(APP_CONFIG['ccp_username'], APP_CONFIG['ccp_password'],
+                                     APP_CONFIG['merchant_login'], APP_CONFIG['merchant_password'],
+                                     APP_CONFIG['ccp_url'])
+              response = client.capture(@payment)
 
-              creditcard = ActiveMerchant::Billing::CreditCard.new(
-                :brand       => card_type,
-                :number     => @payment.card_number,
-                :month      => @payment.expiration_month,
-                :year       => @payment.expiration_year,
-                :verification_value => @payment.security_code,
-                :first_name => @payment.first_name,
-                :last_name  => @payment.last_name
-              )
-
-              if creditcard.valid?
-                response = GATEWAY.purchase(@payment.amount * 100, creditcard)
-
-                if response.success?
-                  @payment.approve!
-                  # TODO: Send notification email
-                else
-                  @payment.errors.add(:base, "Credit card transaction failed: #{response.message}")
-                end
+              if response[:success]
+                @payment.auth_code = response['authcode']
+                @payment.transaction_id = response['transactionId']
+                @payment.approve!
+                # TODO: Send notification email
               else
-                @payment.errors.add(:card_number, "is invalid.  Check the number and/or the expiration date.")
+                @payment.errors.add(:base, response['message'].html_safe)
+                Rails.logger.debug response.inspect
               end
             when "Mail"
               @payment.save
@@ -169,7 +159,8 @@ module Fe
 
     def payment_params
       params.require(:payment).permit(:payment_type, :payment_account_no, :auth_code, :first_name, :last_name, :address,
-                                     :city, :state, :zip, :card_number, :card_type, :expiration_month, :expiration_year, :security_code)
+                                     :city, :state, :zip, :card_number, :card_type, :expiration_month, :expiration_year,
+                                     :encrypted_security_code, :encrypted_card_number)
     end
 
     def staff_search_payment_params

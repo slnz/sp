@@ -23,6 +23,12 @@ module ApplicationHelper
     end
   end
 
+  def ccp_public_key
+    Rails.cache.fetch('ccp_public_key', expires_in: 1.week) do
+      RestClient.get(APP_CONFIG['ccp_url'] + '/client-encryption-keys/current').body
+    end
+  end
+
   # Creates a link that alternates between acending and descending. It basically
   # alternates between calling 2 named scopes: "ascend_by_*" and "descend_by_*"
   #
