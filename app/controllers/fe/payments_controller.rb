@@ -36,7 +36,6 @@ module Fe
               response = client.capture(@payment)
 
               if response[:success]
-                @payment.auth_code = response['authcode']
                 @payment.transaction_id = response['transactionId']
                 @payment.approve!
                 # TODO: Send notification email
