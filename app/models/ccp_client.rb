@@ -9,7 +9,6 @@ class CcpClient
     @base_url = base_url || BASE_URL
   end
 
-  # @param [Decimal] amount
   # @param [Payment] Payment object containing all the values from the form post
   def capture(payment)
     body = params(payment).to_json
@@ -25,7 +24,7 @@ class CcpClient
     JSON.parse(response.to_str).merge(success: true)
   rescue RestClient::Exception => e
     response = e.response
-    hash = JSON.parse(response.to_str).merge(success: false)
+    JSON.parse(response.to_str).merge(success: false)
   end
 
   def params(payment)
