@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jsencrypt.min
+//= require lodash.min
+//= require ccp
 //= require fe/jquery.validate.pack.js
 //= require fe/jquery.metadata.js
 //= require fe/fe.common.js

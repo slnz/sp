@@ -1,3 +1,10 @@
+<script>
+  <% unless @ccp_loaded %>
+    ccp.initialize('<%= ccp_public_key.split("\n").join %>');
+    <% @ccp_loaded = true %>
+  <% end %>
+</script>
+
 <h3>Credit/Debit Card Payment</h3>
 
 <p>Please fill out your payment information below. NOTE: We will 
@@ -29,6 +36,8 @@
 
 <p class="field"><label for="payment_card_number" class="required">Credit Card Number</label>
 	<%= text_field :payment, :card_number, {:size => "18", :maxlength => "16"} %> <!-- , :onblur => "checkCard(this.value);" -->
+  <%= hidden_field :payment, :encrypted_card_number %>
+  <%= hidden_field :payment, :encrypted_security_code %>
 	<%= image_tag "cc_visa_on.gif", :class => "cc_type", :id => "cc_visa" %>
 	<%= image_tag "cc_master_on.gif", :class => "cc_type", :id => "cc_master" %>
 	<%= image_tag "cc_american_express_on.gif", :class => "cc_type", :id => "cc_american_express" %>
@@ -41,7 +50,7 @@
 	<%= select :payment, :expiration_year, ((Time.now.year)..(Time.now.year+8)).to_a.map(&:to_s), {:include_blank => true} %></p>
 
 <p class="field"><label for="payment_card_number" class="required">Security Code (3-4 digit code on back of card)</label>
-	<%= text_field :payment, :security_code, {:size => "9", :maxlength => "5"} %></p>
+	<%= text_field_tag :security_code, '', :size => "9", :maxlength => "5" %></p>
 
 <p class="buttons">
   <%= submit_tag "Submit Payment", :class => 'submit_payment button no-left-margin', data: { url: fe_application_payments_path(@answer_sheet), disable_with: "Submitting..." } %></p>

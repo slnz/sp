@@ -56,6 +56,7 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'infobase'
 gem 'default_value_for'
 gem 'activesupport-json_encoder'
+gem 'rest-client'
 
 gem 'fe',
   github: 'CruGlobal/qe', branch: 'fe'

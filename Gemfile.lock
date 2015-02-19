@@ -514,6 +514,7 @@ DEPENDENCIES
   rb-fsevent (~> 0.9)
   redis-session-store
   relay_api_client!
+  rest-client
   retryable-rb (~> 1.1.0)
   rspec-rails
   rubycas-client
