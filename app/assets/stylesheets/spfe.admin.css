@@ -107,6 +107,7 @@ body {
 
 #controls {
   width: 257px;
+  position: static;
 }
 
 .unarchive {
