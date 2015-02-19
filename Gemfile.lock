@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/CruGlobal/qe.git
-  revision: 73537e5faeb9f47fbd538eacb958aaf2a6e2d227
+  revision: bf09b1b0097b7d38ca029dcb446f186a19b0c0a4
   branch: fe
   specs:
     fe (0.0.4)
@@ -11,7 +11,9 @@ GIT
       dynamic_form
       jquery-rails
       jquery-ui-rails
+      liquid
       rails (>= 3.1.0)
+      sass
       validates_email_format_of
 
 GIT
@@ -439,7 +441,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    validates_email_format_of (1.6.1)
+    validates_email_format_of (1.6.2)
       i18n
     versionist (1.4.0)
       activesupport (>= 3)
