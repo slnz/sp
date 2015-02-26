@@ -12,7 +12,6 @@ class SpApplication < Fe::Application
   COST = 25
 
   before_create :create_answer_sheet_question_sheet
-  after_save :complete
   has_many :payments, foreign_key: "application_id", class_name: "Fe::Payment"
 
   sidekiq_options unique: true
@@ -618,6 +617,7 @@ class SpApplication < Fe::Application
                                    'original_chartfield' => old_project.scholarship_chartfield,
                                    'new_project' => new_project.name,
                                    'new_chartfield' => new_project.scholarship_chartfield}).deliver
+        regenerate_give_site
       end
 
       # Update project counts
@@ -626,6 +626,10 @@ class SpApplication < Fe::Application
     end
   end
 
+  def regenerate_give_site
+    self.update_column(:has_give_site, false)
+    async(:set_up_give_site)
+  end
 
   # When an applicant status changes, we need to update the project counts
   def update_project_counts
