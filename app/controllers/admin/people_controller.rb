@@ -58,18 +58,18 @@ class Admin::PeopleController < ApplicationController
     @people = 1.upto(4).collect {|i| Person.find_by_id(params["person#{i}"]) if params["person#{i}"].present?}.compact
 
     unless @people.length >= 2
-      redirect_to merge_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "You must select at least 2 people to merge"
+      redirect_to merge_admin_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "You must select at least 2 people to merge"
       return false
     end
     @keep = @people.delete_at(params[:keep].to_i)
     unless @keep
-      redirect_to merge_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "You must specify which person to keep"
+      redirect_to merge_admin_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "You must specify which person to keep"
       return false
     end
     # If any of the other people have users, the keeper has to have a user
     unless @keep.user
       if person = @people.detect(&:user)
-        redirect_to merge_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "Person ID# #{person.id} has a user record, but the person you are trying to keep doesn't. You should keep the record with a user."
+        redirect_to merge_admin_people_path(params.slice(:person1, :person2, :person3, :person4)), alert: "Person ID# #{person.id} has a user record, but the person you are trying to keep doesn't. You should keep the record with a user."
         return false
       end
     end
