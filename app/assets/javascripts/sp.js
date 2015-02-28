@@ -30,7 +30,7 @@ $(function() {
     // We only want to validate and encrypt if we have a new number.
     // After a failed form submit, the number will contain xxxxxxxxxxxx
     pad_str = 'xxxxxxxxxxxx'
-    if (number.indexOf(pad_str) != 0) {
+    if ($('#payment_payment_type_credit_card').is(":checked") && number.indexOf(pad_str) != 0) {
       var validationError = ccp.validateCardNumber(number);
 
       if (validationError) {
