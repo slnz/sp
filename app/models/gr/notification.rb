@@ -1,9 +1,10 @@
 class Gr::Notification
-  def initialize(notification)
-    @notification = notification
-  end
+  include Sidekiq::Worker
+  sidekiq_options unique: true
 
-  def handle_request
+  def perform(notification)
+    @notification = notification.with_indifferent_access
+
     if @notification[:triggered_by] == 'us_infobase' && @notification['entity_type'] == 'person'
       begin
         @gr_person = GlobalRegistry::Entity.find(@notification[:id], 'filters[owned_by]' => @notification[:triggered_by])

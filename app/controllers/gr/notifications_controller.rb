@@ -2,7 +2,7 @@ class Gr::NotificationsController < ApplicationController
 
   # Global registry will send POST requests to this endpoint
   def create
-    Gr::Notification.new(params[:notification]).handle_request
+    Gr::Notification.perform_async(params[:notification])
     render nothing: true
   end
 end
