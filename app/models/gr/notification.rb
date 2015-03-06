@@ -40,10 +40,14 @@ class Gr::Notification
 
   def update_user
     return unless @gr_person['authentication']
-    user = @person.user || @person.user.new
+    user = @person.user || User.new
     user.username ||= @gr_person['username'] || @gr_person['authentication']['relay_guid']
     user.globallyUniqueID ||= @gr_person['authentication']['relay_guid']
     user.save!
+    unless @person.user
+      @person.user = user
+      @person.save!
+    end
   end
 
   def update_email_addresses
