@@ -48,8 +48,9 @@ class Gr::Notification
 
   def update_email_addresses
     return unless @gr_person['email_address']
-    ea = @gr_person['email_address'].detect { |e| e['primary'] }
-    ea ||= @gr_person['email_address'].first
+    email_addresses = Array.wrap(@gr_person['email_address'])
+    ea = email_addresses.detect { |e| e['primary'] }
+    ea ||= email_addresses.first
     unless @person.email_addresses.where(email: ea['email'])
       @person.email_addresses.create!(email: ea['email'])
     end
@@ -57,8 +58,9 @@ class Gr::Notification
 
   def update_phone_numbers
     return unless @gr_person['phone_number']
-    pn = @gr_person['phone_number'].detect { |e| e['primary'] }
-    pn ||= @gr_person['phone_number'].first
+    phone_numbers = Array.wrap(@gr_person['phone_number'])
+    pn = phone_numbers.detect { |e| e['primary'] }
+    pn ||= phone_numbers.first
     number = pn['number'].gsub(/[^0-9]/, '')
     unless @person.phone_numbers.detect { |p| p.number.gsub(/[^0-9]/, '') =~ /#{number}$/ }
       @person.phone_numbers.create!(number: number, location: ea['location'], extension: ea['extension'])
