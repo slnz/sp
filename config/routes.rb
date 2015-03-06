@@ -1,6 +1,10 @@
 require 'sidekiq/web'
 Sp2::Application.routes.draw do
 
+  namespace :gr do
+    resources :notifications, only: :create
+  end
+
   get "welcome/privacy"
 
   match '/auth/:provider/callback' => 'authentications#create', via: :get
