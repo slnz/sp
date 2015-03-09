@@ -75,7 +75,7 @@ class Gr::Notification
     pn ||= phone_numbers.first
     number = pn['number'].gsub(/[^0-9]/, '')
     unless @person.phone_numbers.detect { |p| p.number.gsub(/[^0-9]/, '') =~ /#{number}$/ }
-      @person.phone_numbers.create!(number: number, location: ea['location'], extension: ea['extension'])
+      @person.phone_numbers.create!(number: number, location: pn['location'], extension: pn['extension'])
     end
   end
 end
