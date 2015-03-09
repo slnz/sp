@@ -9,6 +9,10 @@ class Gr::Notification
       begin
         @gr_person = GlobalRegistry::Entity.find(@notification[:id], 'filters[owned_by]' => @notification[:triggered_by])
         @gr_person = @gr_person['entity']['person']
+
+        # We only want people from infobase if they have logins
+        return false unless @gr_person['authentication'] && @gr_person['authentication']['relay_guid']
+
       rescue RestClient::Exception => e
         raise e.response.to_str
       end
@@ -26,7 +30,7 @@ class Gr::Notification
     cid = @notification[:client_integration_id]
     person = Person.find(cid) if cid
     person ||= Person.find_by(global_registry_id: @notification[:id])
-    if person.nil? && @gr_person['authentication'] && @gr_person['authentication']['relay_guid']
+    unless person
       user = User.find_by(globallyUniqueID: @gr_person['authentication']['relay_guid'])
       person = user.person
       user.destroy unless person
@@ -44,7 +48,6 @@ class Gr::Notification
   end
 
   def update_user
-    return unless @gr_person['authentication']
     user = @person.user || User.new
     user.username ||= @gr_person['username'] || @gr_person['authentication']['relay_guid']
     user.globallyUniqueID ||= @gr_person['authentication']['relay_guid']
