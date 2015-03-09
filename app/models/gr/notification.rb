@@ -32,8 +32,10 @@ class Gr::Notification
     person ||= Person.find_by(global_registry_id: @notification[:id])
     unless person
       user = User.find_by(globallyUniqueID: @gr_person['authentication']['relay_guid'])
-      person = user.person
-      user.destroy unless person
+      if user
+        person = user.person
+        user.destroy unless person
+      end
     end
     person || Person.new
   end
