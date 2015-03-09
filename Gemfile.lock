@@ -160,7 +160,7 @@ GEM
       rspec (~> 3.0)
       ruby-progressbar (~> 1.4)
     geocoder (1.2.6)
-    global_registry (1.0.6)
+    global_registry (1.0.7)
       activesupport
       oj (~> 2.1.0)
       rest-client (~> 1.6.7)

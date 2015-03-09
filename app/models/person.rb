@@ -490,7 +490,7 @@ class Person < Fe::Person
 
       MergeAudit.create!(mergeable: self, merge_loser: other)
       other.reload
-      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      GlobalRegistry::Entity.delete_or_ignore(other.global_registry_id) if other.global_registry_id
       other.destroy
       begin
         save(validate: false)

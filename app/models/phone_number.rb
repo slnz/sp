@@ -34,7 +34,7 @@ class PhoneNumber < ActiveRecord::Base
       end
       MergeAudit.create!(mergeable: self, merge_loser: other)
       other.destroy
-      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      GlobalRegistry::Entity.delete_or_ignore(other.global_registry_id) if other.global_registry_id
       save(validate: false)
     end
   end

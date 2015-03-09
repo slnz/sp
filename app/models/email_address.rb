@@ -42,7 +42,7 @@ class EmailAddress < Fe::EmailAddress
         # ???
       end
       other.reload
-      GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+      GlobalRegistry::Entity.delete_or_ignore(other.global_registry_id) if other.global_registry_id
       other.destroy
     end
   end
