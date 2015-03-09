@@ -26,6 +26,11 @@ class Gr::Notification
     cid = @notification[:client_integration_id]
     person = Person.find(cid) if cid
     person ||= Person.find_by(global_registry_id: @notification[:id])
+    if person.nil? && @gr_person['authentication'] && @gr_person['authentication']['relay_guid']
+      user = User.find_by(globallyUniqueID: @gr_person['authentication']['relay_guid'])
+      person = user.person
+      user.destroy unless person
+    end
     person || Person.new
   end
 
