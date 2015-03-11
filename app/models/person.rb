@@ -93,8 +93,6 @@ class Person < Fe::Person
       when campus.present?
         TargetArea.find_by(name: campus)
       end
-
-    self.school = nil unless self.school.id
   end
 
   def human_gender

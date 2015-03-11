@@ -14,7 +14,9 @@ class TargetArea
     params.each do |k, v|
       filter_params["filters[#{k}]"] = v
     end
-    new(Infobase::TargetArea.get(filter_params).first)
+    ta = new(Infobase::TargetArea.get(filter_params).first)
+    ta = nil unless ta.name
+    ta
   end
 
   def [](key)
