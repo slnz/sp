@@ -284,7 +284,7 @@ class Person < Fe::Person
   end
 
   def check_region
-    if self[:campus] && target_area && self[:region] != target_area.region
+    if !self.isStaff? && self[:campus] && target_area && self[:region] != target_area.region
       self[:region] = target_area.region unless self[:region] == target_area.region
       self.universityState = target_area.state
     end
