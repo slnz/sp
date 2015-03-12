@@ -3,6 +3,9 @@
   <% if sp_user.can_su_application? %>
     <span class="schoolleft"><%= link_to('edit this application', edit_application_path(@application), :target => '_blank') %></span>
     <br />
+    <span class="schoolleft"><%= link_to('set up give site', set_up_give_site_admin_application_path(@application),
+                                         data: { confirm: 'This will replace whatever content is currently on give site for this student, and also notify the student via email.' }) %></span>
+    <br />
   <% end %>
   <% if @person.campus.present? %>
     <br />

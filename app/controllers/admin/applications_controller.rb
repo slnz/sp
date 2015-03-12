@@ -1,6 +1,6 @@
 class Admin::ApplicationsController < ApplicationController
   before_filter :cas_filter, :authentication_filter
-  before_filter :get_application, :only => [:waive_fee, :donations]
+  before_filter :get_application, :only => [:waive_fee, :donations, :set_up_give_site]
   before_filter :can_waive_fee, :only => [:waive_fee]
   before_filter :can_search, :only => [:search]
 
@@ -105,6 +105,12 @@ class Admin::ApplicationsController < ApplicationController
 
   def waive_fee
     @application.waive_fee!
+    redirect_to :back
+  end
+
+  def set_up_give_site
+    @application.has_give_site = false
+    @application.set_up_give_site
     redirect_to :back
   end
 

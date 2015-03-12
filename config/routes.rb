@@ -124,6 +124,7 @@ Sp2::Application.routes.draw do
         get :donations
         get :other_donations
         get :waive_fee
+        get :set_up_give_site
       end
       collection do
         get :search
