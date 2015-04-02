@@ -16,7 +16,8 @@ class Admin::ApplicationsController < ApplicationController
     set_up_search_form
     conditions = [[],[]]
     if params[:first_name] && !params[:first_name].empty?
-      conditions[0] << "#{Person.table_name}.first_name ilike ?"
+      conditions[0] << "(#{Person.table_name}.first_name ilike ? OR #{Person.table_name}.preferred_name ilike ?)"
+      conditions[1] << "%#{params[:first_name]}%"
       conditions[1] << "%#{params[:first_name]}%"
     end
     if params[:last_name] && !params[:last_name].empty?
