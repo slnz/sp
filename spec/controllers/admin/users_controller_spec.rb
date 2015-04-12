@@ -137,12 +137,18 @@ describe Admin::UsersController do
   context '#check_access' do
     it 'verifies sp user can add user -- w/ add rights' do
       sp_user = create(:sp_national_coordinator, user: user, person_id: user.person.id)
-      expect(sp_user.can_add_user?).to eq(true)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+      get :index
+      expect(response.status).to eq(200)
     end
 
     it 'verifies sp user can add user -- w/o add rights' do
       sp_user = create(:sp_regional_coordinator, user: user, person_id: user.person.id)
-      expect(sp_user.can_add_user?).to eq(false)
+      session[:cas_user] = 'foo@example.com'
+      session[:user_id] = user.id
+      get :index
+      expect(response).to redirect_to('/admin')
     end
   end
 end

@@ -17,10 +17,10 @@ class SpUser < ActiveRecord::Base
   def creatable_user_types() []; end
   def can_search?() false; end
   def creatable_user_types_array(types = nil)
-    types.nil? ? [] : SpRole.find(:all, :conditions => "user_class IN (#{types})", :order => 'role').map { |role| [role.role, role.user_class] }
+    types.nil? ? [] : SpRole.where("user_class IN (#{types})").order('role').map { |role| [role.role, role.user_class] }
   end
   def can_edit_project?(project)
-    person.directed_projects.include?(project)
+    person && person.directed_projects.include?(project)
   end
   def can_merge_projects?() false; end
   def can_su_application?() false; end
@@ -103,6 +103,17 @@ class SpUser < ActiveRecord::Base
               nil
             end
     base
+  end
+
+  def merge(other)
+    roles = %w{SpNationalCoordinator SpDonationServices SpRegionalCoordinator SpDirector SpEvaluator SpProjectStaff SpGeneralStaff SpUser}
+    if other.type != nil && type != nil && roles.index(other.type) < roles.index(type)    # this last '(type)' call refers to self
+      self.type = other.type                                                    # self.type is used explicitly here
+    end
+    other.reload
+    GlobalRegistry::Entity.delete(other.global_registry_id) if other.global_registry_id
+    other.delete
+    save                                                                  # this call to 'save' refers to self
   end
 
   protected

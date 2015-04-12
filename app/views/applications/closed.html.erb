@@ -1,39 +1,111 @@
-<!DOCTYPE html>
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-  <title>Sp2</title>
-  <%= stylesheet_link_tag("frontend") %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Summer Mission Application</title>
+
+  <link rel="dns-prefetch" href="//use.typekit.com">
+  <script src="//use.typekit.net/usb5wjy.js" type="text/javascript" async=""></script>
+  <script type="text/javascript">
+      (function () {
+          var config = {
+              kitId: 'usb5wjy',
+              scriptTimeout: 3000
+          };
+          var h = document.getElementsByTagName("html")[0];
+          h.className += " wf-loading";
+          var t = setTimeout(function () {
+              h.className = h.className.replace(/(\s|^)wf-loading(\s|$)/g, " ");
+              h.className += " wf-inactive"
+          }, config.scriptTimeout);
+          var tk = document.createElement("script"), d = false;
+          tk.src = '//use.typekit.net/' + config.kitId + '.js';
+          tk.type = "text/javascript";
+          tk.async = "true";
+          tk.onload = tk.onreadystatechange = function () {
+              var a = this.readyState;
+              if (d || a && a != "complete" && a != "loaded")return;
+              d = true;
+              clearTimeout(t);
+              try {
+                  Typekit.load(config)
+              } catch (b) {
+              }
+          };
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(tk, s)
+      })();
+  </script>
+
+
+
+  <%= javascript_include_tag "application" %>
+
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <script type="text/javascript" charset="utf-8">
+      var answer_sheet_type = '<%= @answer_sheet.class %>'
+  </script>
   <%= csrf_meta_tag %>
-  <%= render :partial => 'layouts/ga' %>
 
+  <script type="text/javascript" charset="utf-8">
+      <%= raw Rack::TimeZone::Javascript %>
+      setTimezoneCookie()
+  </script>
+
+  <link rel="stylesheet" href="http://use.typekit.net/c/8dd504/1w;freight-sans-pro,1,TJ9:P:i3,TJC:P:i4,TJ8:P:n3,TJB:P:n4,TJD:P:n5,TJG:P:n6,TJJ:P:n7;leitura-news,2,Vxv:P:n6/d?3bb2a6e53c9684ffdc9a98f11b5b2a62a68aa48eeef682652ee742d2b0fee8a1dbc0e21530bfe6c684f48e5d865a201dd734d99a239f343214d65edbc6ad0629a227fd2278b21a0b887dd68ccab135c2c8dc2db2c29b946c9f1e73c769383d482d93bb902f8fc67af742aedb4b74b254591b97d5906b6f6759401a046cbf05289aa805564cfd10b918dae522f7697920e274b37f5c63b34c6b7a701feb84df206b710fcb96705cb02f32c1ff2ca8dc2bbf666d17623d526b7a88b0a809b2c982c5fae6535e41541f1caed9445badfae8660f45e253a9efb1a6250cc6be0862480e5e3fccdc7a353c2f016be4023b3e95dfcc2dd4e28668e3a5e43083435daa5ea48cfa9e32e8e047866f8fe5912159">
 </head>
-<body id="application-closed">
+<body id="application-closed" class="<%= params[:action] %>">
+<%= render :partial => 'layouts/ga' %>
 
-<div id="outer">
+<div id="headwrap">
   <div id="header">
-  </div>
-  <div id="body">
-    <a href="/">Go back home</a>
-
-    <div class="content">
-      <% open_date = @project && @project.open_application_date ? l(@project.open_application_date, format: :long) : 'November 1st' %>
-      <h3>The application system is set to open <%= open_date %>. Check back!</h3>
-      <p>We will begin accepting applications for Summer Projects on <%= open_date %>.
-     If you have questions, we are happy to answer them. You can reach us at:</p>
-     <ul class="contacts">
-       <li class="mail"><%= mail_to("projects@studentlife.org.nz") %></li>
-     </p>
-
-     <p><br/>We look forward to serving with you soon!</p>
-
-
-      <%#= yield %>
+    <div id="globalactions">
+      <div id="globalactions" class="row">
+        <div class="medium-6 columns logo"><a href="/"></a></div>
+      <% if @authentications || logged_in? %>
+        <div class="medium-6 columns logout"><%= link_to("Log Out", "/logout") %></div>
+      <% end %>
+      </div>
     </div>
-  </div>
-  <div id="footer">
-    &copy; <%= Time.now.year %> Cru | Summer Project<br/>
+    <!-- anything in here my be custom branded -->
+    <a href="/"><%= image_tag("frontend/go_summer_missions_header_01.png", :class => "tile") %></a>
+    <!-- END -->
   </div>
 </div>
 
+<div class="clear"></div>
+
+<div id="wrapper">
+  <div class="row clearfix">
+
+    <div class="panel tile">
+      <% open_date = @project && @project.open_application_date ? l(@project.open_application_date, format: :long) : 'November 1st' %>
+
+      <h4>The application system is set to open <%= open_date %>. Check back!</h4>
+
+      <p>We will begin accepting applications for Summer Missions on <%= open_date %>.
+        If you have questions, we are happy to answer them. You can reach us at:</p>
+      <ul class="contacts">
+        <li class="mail"><%= mail_to("summer.missions@cru.org") %></li>
+        <li class="phone">1.800.690.0911</li>
+      </ul>
+    </div>
+
+    <%#= yield %>
+  </div>
+</div>
+<div id="footerwrap">
+  <hr class="section-divider">
+  <ul class="inline-list">
+    <li><a href="http://gosummerproject.com/contact/" target="_blank">Issues or Questions</a></li>
+    <li><%= link_to('Privacy Policy', '/welcome/privacy') %></li>
+  </ul>
+
+  <div class="copy">
+    <small class="text-center">©1994-<%= Time.now.year %> Cru. All Rights Reserved.</small>
+  </div>
+</div>
 </body>
 </html>

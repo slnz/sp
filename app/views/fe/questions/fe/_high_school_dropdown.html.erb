@@ -1,0 +1,9 @@
+<%= select_tag "high_school_#{school_picker.id}", 
+      options_for_select([""] + school_picker.high_schools(@answer_sheet), school_picker.response(@answer_sheet)),
+      :class => 'select ' + school_picker.validation_class, :disabled => @answer_sheet.frozen?&&@reference.nil?, :readonly => @answer_sheet.frozen?&&@reference.nil? %>
+<script type="text/javascript" charset="utf-8">
+  $(document).on('change', '#high_school_<%= school_picker.id %>', function() {
+    $('#<%= dom_id(school_picker) %>').val($(this).val());
+    $('#college_<%= school_picker.id %>').val('')
+  })
+</script>

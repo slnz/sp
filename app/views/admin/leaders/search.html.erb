@@ -5,7 +5,7 @@
   <ul>
     <% @people.each do |person| %>
       <li><a href='#' class="new_leader" data-id="<%= person.id %>"><%= person %> (<%= person.user.try(:username) %>)
-        <%= person.staff.present? ? ' <b>(STAFF)</b>'.html_safe : '' %></a></li>
+        <%= person.isStaff? ? ' <b>(STAFF)</b>'.html_safe : '' %></a></li>
     <% end %>
   </ul>
   <% if @total > @people.length %>

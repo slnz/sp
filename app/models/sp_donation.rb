@@ -27,16 +27,12 @@ class SpDonation < ActiveRecord::Base
   # This may be backed by Peoplesoft/Oracle in the future.
   # For now, it is backed by a table that is synchronized with Oracle
   def self.get_balance(designation_number, year = nil)
-    return 0 unless designation_number
+    return 0 unless designation_number.present?
     if year
-      (SpDonation.sum(:amount,
-                      :conditions => ["designation_number = ? AND donation_date > ?",
-                                      designation_number,
-                                      Time.new(year - 1,10,1)]) || 0)
+      SpDonation.where(designation_number: designation_number)
+        .where("donation_date > ?", Time.new(year - 1,10,1)).sum(:amount) || 0
     else
-      (SpDonation.sum(:amount,
-                      :conditions => ["designation_number = ?",
-                                      designation_number]) || 0)
+      SpDonation.where(designation_number: designation_number).sum(:amount) || 0
     end
   end
 
@@ -127,24 +123,6 @@ class SpDonation < ActiveRecord::Base
                   .delete_all if donation_ids.present?
 
         total_donations += donations.length
-      end
-
-      # If there is a give site for this designation number, update it
-      if dn.person.sp_gcx_site.present?
-        balance = get_balance(dn.designation_number, SpApplication.year)
-
-        if balance > 0
-          site = GcxApi::Site.new(name: dn.person.sp_gcx_site, domain: APP_CONFIG['spgive_url'])
-
-          begin
-            site.set_option_values(
-                'cru_spkick[spkick_current_amount]' => get_balance(dn.designation_number, SpApplication.year)
-            )
-          rescue RuntimeError
-            # Keep going even if updating gcx failed
-            #Airbrake.notify(e)
-          end
-        end
       end
     end
 

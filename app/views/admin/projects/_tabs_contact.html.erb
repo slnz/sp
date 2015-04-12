@@ -105,7 +105,7 @@
         </div>
         <div class="field">
           <%= f.label :archive_project_date do
-            raw 'Archive project and re-set for following year on ' + tip('This date is automatically set for September 1 for all summer project mission trips. If you are coordinating a spring semester trip, contact us at projects@studentlife.org.nz to change this date for you so students can continue to apply after September 1.')
+            raw 'Archive project and re-set for following year on ' + tip('This date is automatically set for September 1 for all summer project mission trips. If you are coordinating a spring semester trip, contact us at summer.missions@cru.org to change this date for you so students can continue to apply after September 1.')
             end %>
           <% if sp_user.can_see_rc_reports? %>
             <%= calendar_date_select_tag 'sp_project[archive_project_date]', @project.archive_project_date %>

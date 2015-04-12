@@ -7,7 +7,7 @@ class PhoneNumber < ActiveRecord::Base
     person.async_push_to_global_registry unless person.global_registry_id.present?
     parent_id = person.global_registry_id unless parent_id
 
-    super(parent_id, parent_type)
+    super(parent_id, parent_type, person)
   end
 
   def self.push_structure_to_global_registry
@@ -19,5 +19,23 @@ class PhoneNumber < ActiveRecord::Base
 
   def self.skip_fields_for_gr
     %w[id txt_to_email carrier_id email_updated_at created_at updated_at global_registry_id person_id]
+  end
+
+  def merge(other)
+    PhoneNumber.transaction do
+      %w{extension location primary}.each do |k, v|
+        next if v == other.attributes[k]
+        self[k] = case
+                  when other.attributes[k].blank? then v
+                  when v.blank? then other.attributes[k]
+                  else
+                    other.updated_at > updated_at ? other.attributes[k] : v
+                  end
+      end
+      MergeAudit.create!(mergeable: self, merge_loser: other)
+      other.destroy
+      GlobalRegistry::Entity.delete_or_ignore(other.global_registry_id) if other.global_registry_id
+      save(validate: false)
+    end
   end
 end

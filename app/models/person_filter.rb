@@ -22,11 +22,11 @@ class PersonFilter
     end
 
     if @filters[:first_name_like]
-      filtered_people = filtered_people.where("firstName like ? ", "#{@filters[:first_name_like]}%")
+      filtered_people = filtered_people.where("first_name ilike ? ", "#{@filters[:first_name_like]}%")
     end
 
     if @filters[:last_name_like]
-      filtered_people = filtered_people.where("lastName like ? ", "#{@filters[:last_name_like]}%")
+      filtered_people = filtered_people.where("last_name ilike ? ", "#{@filters[:last_name_like]}%")
     end
 
     if @filters[:name_or_email_like]
@@ -38,10 +38,10 @@ class PersonFilter
           # Names don't typically have @ signs
           @filters[:email_like] = @filters.delete(:name_or_email_like)
         else
-          filtered_people = filtered_people.includes(:email_addresses)
-          .where("concat(firstName,' ',lastName) LIKE :search OR
-                                                  firstName LIKE :search OR lastName LIKE :search OR
-                                                  email_addresses.email LIKE :search",
+          filtered_people = filtered_people.joins(%|LEFT OUTER JOIN "email_addresses" ON "email_addresses"."person_id" = "ministry_person"."id"|)
+          .where("concat(first_name,' ',last_name) ILIKE :search OR
+                                                  first_name ILIKE :search OR last_name ILIKE :search OR
+                                                  email_addresses.email ILIKE :search",
                  {:search => "#{filters[:name_or_email_like]}%"})
       end
     end
@@ -49,30 +49,21 @@ class PersonFilter
     if @filters[:name_like]
       # See if they've typed a first and last name
       if @filters[:name_like].split(/\s+/).length > 1
-        filtered_people = filtered_people.where("concat(firstName,' ',lastName) like ? ", "%#{@filters[:name_like]}%")
+        filtered_people = filtered_people.where("concat(first_name,' ',last_name) ilike ? ", "%#{@filters[:name_like]}%")
       else
-        filtered_people = filtered_people.where("firstName like :search OR lastName like :search",
+        filtered_people = filtered_people.where("first_name ilike :search OR last_name ilike :search",
                                                 {search: "#{@filters[:name_like]}%"})
       end
     end
 
     if @filters[:email_like]
-      filtered_people = filtered_people.includes(:email_addresses)
-      .where("email_addresses.email LIKE :search",
+      filtered_people = filtered_people.joins(%|LEFT OUTER JOIN "email_addresses" ON "email_addresses"."person_id" = "ministry_person"."id" |)
+      .where("email_addresses.email ILIKE :search",
              {:search => "#{filters[:name_or_email_like]}%"})
     end
 
     if @filters[:gender]
-      gender = case
-                 when @filters[:gender].first.downcase == 'm'
-                   1
-                 when @filters[:gender].first.downcase == 'f'
-                   0
-                 else
-                   @filters[:gender]
-               end
-
-      filtered_people = filtered_people.where(gender: gender)
+      filtered_people = filtered_people.where(gender: @filters[:gender].to_s)
     end
 
     if @filters[:strategy]

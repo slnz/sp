@@ -45,7 +45,7 @@ describe Admin::LeadersController do
 
   context '#search' do
     it 'searches for a person to add as a leader' do
-      p = create(:person, firstName: 'John', last_name: 'Doe')
+      p = create(:person, first_name: 'John', last_name: 'Doe')
       xhr :get, :search, name: 'John Doe'
       expect(assigns(:people)).to include(p)
     end
@@ -56,10 +56,16 @@ describe Admin::LeadersController do
 
     it 'creates a new person' do
       expect {
-        xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {firstName: 'Foo', lastName: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', homePhone: '555-555-5555', addressType: 'current'}}
-        expect(assigns(:errors)).to be_nil
+        xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {first_name: 'Foo', last_name: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current'}}
+        expect(subject.request.flash[:error]).to be_nil
         expect(response).to render_template('create')
       }.to change(Person, :count)
+    end
+    it 'renders new with errors if there are fields missing' do
+      # leave out first name
+      xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {last_name: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current'}}
+        expect(subject.request.flash[:error]).to_not be_nil
+      expect(response).to render_template('new')
     end
   end
 end

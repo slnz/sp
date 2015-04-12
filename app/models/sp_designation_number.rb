@@ -47,8 +47,15 @@ class SpDesignationNumber < ActiveRecord::Base
         puts res.inspect
         puts request.inspect
         puts result.inspect
-        if res.code.to_i >= 400
-          raise res.inspect
+        case res.code.to_i
+        when 404
+          if res.to_s.include?('no such designation number')
+            SpDesignationNumber.where(designation_number: designation_number).destroy_all
+          end
+        else
+          if res.code.to_i >= 400
+            raise res.inspect
+          end
         end
         res
       }

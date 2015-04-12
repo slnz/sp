@@ -1,4 +1,4 @@
-AnswerPagesPresenter.class_eval do
+Fe::AnswerPagesPresenter.class_eval do
   def initialize_pages(answer_sheet)
     @pages = []
     answer_sheet.question_sheets.each do |qs|

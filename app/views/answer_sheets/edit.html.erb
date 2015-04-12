@@ -1,88 +1,79 @@
-<div class="page-title row">
-    <div class="col-md-12">
-      <% if @project %>
-        <%= link_to('Apply for a Different Project', '/projects', :class => 'btn btn-default pull-right') %>
-        <span class="text-muted">You're applying for</span>
-        <h3><%= @project.name %></h3>
-      <% end %>
-      <% if @reference_sheet %>
-        <span class="text-muted">Your Reference for</span>
-        <h3><%= @reference_sheet.applicant_answer_sheet.name %></h3>
-      <% end %>
+<div id="controls" class="panel left">
+  <div id="projectlogo">
+    <% if @project && @project.logo_file_name.present? %>
+        <!-- Max size 270w x 100h -->
+        <div id="mission-logo"><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
+    <% else %>
+        <!-- Max size 290w x 150h -->
+        <div id="no-mission-logo"><%= image_tag("frontend/no-mission-logo.png") %></div>
+    <% end %>
+    <% if @reference_sheet %>
+        Reference for <strong><%= @reference_sheet.applicant_answer_sheet.name %></strong>
+    <% end %>
+  </div>
+  <div id="panel">
+    <%= render :partial => 'fe/answer_sheets/pages_list' %>
+  </div>
+  <div id="legend">
+    <%= image_tag('fe/icons/question-balloon.png') %> Rolling over this symbol gives you help<br/>
+    <%= image_tag('fe/icons/star-small.png') %> Marks a required field<br/>
+    <%= image_tag('icons/flag.png') %> Some required questions need answers
   </div>
 </div>
-<div class="row qe">
-  <div id="page_ajax_spinner">
-    <div>
-    <img alt="Ajax loader" src="/assets/qe/ajax-loader.gif"> Loading...
-    </div>
-  </div>
-  <div id="preview" class="col-md-8">
-      <%= render :partial => 'answer_sheets/title' %>
-      <%= render :partial => 'answer_pages/answer_page', :locals => { :show_first => true } %>
-  </div>
-  <div class="col-md-4">
-    <div id="controls" data-spy="affix" data-offset-top="380">
-      <div id="projectlogo">
-    	  <% if @project && @project.logo_file_name.present? %>
-        	<!-- Max size 270w x 100h -->
-        	<div><%= image_tag(@project.logo.url(:medium), :alt => @project.to_s) %></div>
-    		<% end %>
+
+<div id="preview" class="panel">
+  <% if @project %>
+      <div id="projecttitle">
+        <h3><%= @project.name %></h3><br/>
+        <p><%= link_to('Apply To A Different Mission', '/projects', :class => 'button') %></p>
       </div>
-      <div id="panel" class="hidden-xs hidden-sm">
-        <%= render :partial => 'answer_sheets/pages_list' %>
-      </div>
-      <div id="legend">
-        <%= image_tag('qe/icons/question-balloon.png') %> Rolling over this symbol gives you help<br/>
-        <%= image_tag('qe/icons/star-small.png') %> Marks a required field<br/>
-        <%= image_tag('icons/flag.png') %> Some required questions need answers
-      </div>
-    </div>
-  </div>
+  <% end %>
+  <%= render :partial => 'fe/answer_pages/answer_page', :locals => { :show_first => true } %>
 </div>
 
 <script type="text/javascript">
-  $(function() {
-    page_handler = $.qe.pageHandler;
-    page_handler.initialize('<%= @presenter.active_page_link.dom_id %>');
-    // Event.observe(window, 'unload', page_handler.savePage);
+    $(function () {
+        page_handler = $.fe.pageHandler;
+        page_handler.initialize('<%= @presenter.active_page_link.dom_id %>');
+        // Event.observe(window, 'unload', page_handler.savePage);
 
-    // Validation.add('validate-phone', 'Please enter a valid phone number +1-800-555-1234 x102', {
-    //   pattern: /((\(\d{3}\)?)|(\d{3}))((\s|-|\.|\/)?)(\d{3})((\s|-|\.|\/)?)(\d{4})\s*([xX]|[eE][xX][tT])?\.?\s*\d*$/
-    // });
-    // Validation.add('validate-rating', 'Please select one of the above options.', function(v,elm) {
-    //  var p = elm.parentNode.parentNode;
-    //  var options = p.getElementsByTagName('INPUT');
-    //  return $A(options).any(function(elm) {
-    //    return $F(elm);
-    //  });
-    // })
+        // Validation.add('validate-phone', 'Please enter a valid phone number +1-800-555-1234 x102', {
+        //   pattern: /((\(\d{3}\)?)|(\d{3}))((\s|-|\.|\/)?)(\d{3})((\s|-|\.|\/)?)(\d{4})\s*([xX]|[eE][xX][tT])?\.?\s*\d*$/
+        // });
+        // Validation.add('validate-rating', 'Please select one of the above options.', function(v,elm) {
+        //  var p = elm.parentNode.parentNode;
+        //  var options = p.getElementsByTagName('INPUT');
+        //  return $A(options).any(function(elm) {
+        //    return $F(elm);
+        //  });
+        // })
 
-    // global responders for all Ajax requests
-    $(function() {
-    	$('body').bind('ajax:loading', function() {
-    		$('#page_ajax_spinner').show();
-				$('#page_ajax_spinner').css({top: $(window).scrollTop() + 20});
-    	}).bind('ajax:complete', function() {
-    		$('#page_ajax_spinner').hide();
-    	})
+        // global responders for all Ajax requests
+        $(function () {
+            $('body').bind('ajax:loading', function () {
+                $('#page_ajax_spinner').show();
+                $('#page_ajax_spinner').css({top: $(window).scrollTop() + 20});
+            }).bind('ajax:complete', function () {
+                $('#page_ajax_spinner').hide();
+            })
+        });
     });
-  });
-  function updateTotals() {
+    function updateTotals() {
         // Set up js for all question grids with totals
-    <% @page.question_sheet.pages.collect(&:question_grid_with_totals).flatten.each do |question_grid_with_total|
-        question_grid_with_total.total_cols.split(',').collect(&:to_i).each do |col| -%>
-          try {
+        <% @page.question_sheet.pages.collect(&:question_grid_with_totals).flatten.each do |question_grid_with_total|
+            question_grid_with_total.total_cols.split(',').collect(&:to_i).each do |col| -%>
+        try {
             updateTotal('<%= "#{question_grid_with_total.id}_#{col - 1}" %>')
-            $$(".col_<%= "#{question_grid_with_total.id}_#{col - 1}" %>").each(function(e) {
-              Event.observe(e, 'blur', function(event) {
-                updateTotal('<%= "#{question_grid_with_total.id}_#{col - 1}" %>')
-              });
+            $$(".col_<%= "#{question_grid_with_total.id}_#{col - 1}" %>").each(function (e) {
+                Event.observe(e, 'blur', function (event) {
+                    updateTotal('<%= "#{question_grid_with_total.id}_#{col - 1}" %>')
+                });
             });
-          } catch(e) {}
-    <%  end
-      end %>
-  }
+        } catch (e) {
+        }
+        <%  end
+          end %>
+    }
 </script>
 
-<%= hidden_field_tag 'submit_to', submit_answer_sheet_path(@answer_sheet), :id => 'submit_to' %>
+<%= hidden_field_tag 'submit_to', submit_fe_answer_sheet_path(@answer_sheet), :id => 'submit_to' %>

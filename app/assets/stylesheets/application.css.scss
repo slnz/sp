@@ -2,9 +2,14 @@
 *= require_self
 *= require jquery-ui
 *= require jquery-ui-1.8.2.custom
+*= require fe/fe.screen
 *= require message_block
 *= require frontend
 *= require theme
+
+*= require normalize
+*= require foundation
+*= require style.scss
 */
 @import 'font-awesome';
 @import 'bootstrap';

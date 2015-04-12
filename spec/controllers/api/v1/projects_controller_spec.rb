@@ -14,6 +14,19 @@ describe Api::V1::ProjectsController do
       expect(response).to be_success
     end
 
+    it 'can grab the token from header' do
+      request.env['HTTP_AUTHORIZATION'] = "token #{api_key.access_token}"
+      get 'index'
+      expect(response).to be_success
+    end
+
+    it 'can handle an invalid HTTP_AUTHORIZATION value' do
+      request.env['HTTP_AUTHORIZATION'] = "12345"
+      get 'index'
+      json = JSON.parse(response.body)
+      expect(json['error']).to be_present
+    end
+
     it 'returns projects array' do
       get 'index', access_token: api_key.access_token
       json = JSON.parse(response.body)
@@ -43,6 +56,7 @@ describe Api::V1::ProjectsController do
         json = JSON.parse(response.body)
         expect(json['projects'].first['id'].to_i).to eq(project.id)
       end
+
     end
 
     context 'filter by primary_partner' do
@@ -72,6 +86,10 @@ describe Api::V1::ProjectsController do
       get 'show', id: project.id, access_token: api_key.access_token
       json = JSON.parse(response.body)
       expect(json['sp_project']).to be_present
+    end
+    it 'returns 404 if the person is not found' do
+      get 'show', id: 12345, access_token: api_key.access_token
+      expect(response.status).to eq(404)
     end
   end
 

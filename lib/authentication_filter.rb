@@ -7,11 +7,11 @@ class AuthenticationFilter
       if attributes
         cas_user = controller.session[:cas_user]
         guid = attributes["ssoGuid"]
-        user = User.find_by_globallyUniqueID(guid)
+        user = User.where('LOWER("globallyUniqueID") = ?', guid.downcase).first
         if user.nil?
           @logger.info("User not found for ssoGuid: " + guid)
           #check for existing, pre-gcx users.
-          user = User.find_by_username(cas_user)
+          user = User.where("LOWER(username) = ?", cas_user.downcase).first
           if user.nil?
             @logger.info("User not found for user_name: " + cas_user + "; creating new user")
             user = User.create(:username => cas_user, :createdOn => Time.now)
@@ -23,7 +23,7 @@ class AuthenticationFilter
           end
         else #found user by guid
           if user.username.upcase != cas_user.upcase
-            other_user = User.find_by_username(cas_user)
+            other_user = User.where("LOWER(username) = ?", cas_user.downcase).first
             if other_user
               @logger.info("Sso username different, but new username already exists in SSM table. Marking for merge and moving on.")
               user.needs_merge = "#{guid} - #{cas_user}"
@@ -53,18 +53,13 @@ class AuthenticationFilter
         if person.nil?
         	person = user.create_person_and_address({
         		:user => user,
-            :firstName => attributes["firstName"],
-            :lastName => attributes["lastName"],
+            :first_name => attributes["firstName"],
+            :last_name => attributes["lastName"],
             :fk_ssmUserId => user.userID
         	})
           if attributes["emplid"].present?
-            person.accountNo = attributes["emplid"]
-            person.staff = Staff.find_by_accountNo(attributes["emplid"])
+            person.account_no = attributes["emplid"]
             person.isStaff = true
-            if staff = Staff.find_by_accountNo(person.accountNo)
-              staff.person = person
-              staff.save!
-            end
           end
           person.save!
         end

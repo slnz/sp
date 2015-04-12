@@ -1,6 +1,5 @@
-class ApplicationsController < AnswerSheetsController
+class ApplicationsController < Fe::AnswerSheetsController
   prepend_before_filter :ssm_login_required, :except => [:closed]
-#  before_filter :redirect_to_closed, :except => [:closed]
   before_filter :get_application, :only => [:multiple_projects, :done, :edit, :show]
   
   def closed
@@ -55,6 +54,7 @@ class ApplicationsController < AnswerSheetsController
       @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.basic_info_question_sheet_id)
       @application.answer_sheet_question_sheets.create!(:answer_sheet_id => @application.id, :question_sheet_id => @project.template_question_sheet_id)
       @application.reload
+      @answer_sheet = @application
     end
     
     # If they've submitted their application, go to the status page
@@ -64,7 +64,7 @@ class ApplicationsController < AnswerSheetsController
     
     # QE Code
     @answer_sheet = @application 
-    @presenter = AnswerPagesPresenter.new(self, @application)
+    @presenter = Fe::AnswerPagesPresenter.new(self, @application)
     @elements = @presenter.questions_for_page(:first).elements
     @page = @presenter.pages.first
     @presenter.active_page ||= @presenter.new_page_link(@answer_sheet, @page)
@@ -85,20 +85,14 @@ class ApplicationsController < AnswerSheetsController
     @project = @application.project
     render 'answer_sheets/edit'
   end
+
   protected
-    def redirect_to_closed
-      # unless current_user.developer?
-      unless false #current_person.isStaff?
-        redirect_to :action => :closed 
-        return false
-      end
-    end
-    
+   
     def get_application
       if sp_user && sp_user.can_su_application?
-        @application = SpApplication.find(params[:id])
+        @answer_sheet = @application = SpApplication.find(params[:id])
       else
-        @application = current_person.sp_applications.find(params[:id])
+        @answer_sheet = @application = current_person.sp_applications.find(params[:id])
       end
     end
     

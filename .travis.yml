@@ -8,8 +8,9 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libfreeimage-dev
 before_script:
-  - mysql -e 'create database sp_test;'
+  - psql -c 'create database sp_test;' -U postgres
   - cp config/travis/database.yml config/database.yml
+  - cp config/travis/redis.yml config/redis.yml
   - cp config/travis/config.yml config/config.yml
   - cp config/travis/amazon_s3.yml config/amazon_s3.yml
   - cp config/travis/facebook.yml config/facebook.yml
@@ -17,4 +18,3 @@ before_script:
   - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 email:
   - josh.starcher@cru.org
-  - elikem.adadevoh@cru.org

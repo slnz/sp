@@ -1,15 +1,18 @@
 require 'aasm'
-require_dependency 'answer_sheet_concern'
 
 require 'digest/md5'
-class SpApplication < ActiveRecord::Base
-  include AnswerSheetConcern
+class SpApplication < Fe::Application
+  #include Fe::AnswerSheetConcern
   include CruLib::GlobalRegistryRelationshipMethods
   include Sidekiq::Worker
   include AASM
 
-  COST_BEFORE_DEADLINE = 25
-  COST_AFTER_DEADLINE = 25
+  STELLENT_ROLE = 'studentContributor'
+
+  COST = 25
+
+  before_create :create_answer_sheet_question_sheet
+  has_many :payments, foreign_key: "application_id", class_name: "Fe::Payment"
 
   sidekiq_options unique: true
 
@@ -18,9 +21,9 @@ class SpApplication < ActiveRecord::Base
     # State machine stuff
     state :started
     state :submitted, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Submitted"
       ).deliver if app.email.present? # LIQUID TEMPLATE NAME
       app.submitted_at = Time.now
@@ -29,27 +32,27 @@ class SpApplication < ActiveRecord::Base
 
     state :ready, :enter => Proc.new { |app|
       app.completed_at ||= Time.now
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Completed"
       ).deliver if app.email.present?
       app.previous_status = app.status
     }
 
     state :unsubmitted, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Unsubmitted"
       ).deliver if app.email.present?
       app.previous_status = app.status
     }
 
     state :withdrawn, :enter => Proc.new { |app|
-      Notifier.notification(
+      Fe::Notifier.notification(
           app.email, # RECIPIENTS
-          Qe.from_email, # FROM
+          Fe.from_email, # FROM
           "Application Withdrawn"
       ).deliver if app.email.present?
       app.withdrawn_at = Time.now
@@ -130,43 +133,30 @@ class SpApplication < ActiveRecord::Base
     end
   end
 
-  belongs_to :person
+  belongs_to :person, class_name: '::Person'
+  alias_method :applicant, :person # Fe expects applicant
+
   belongs_to :project, :class_name => 'SpProject', :foreign_key => :project_id
-  has_many :sp_references, :class_name => 'ReferenceSheet', :foreign_key => :applicant_answer_sheet_id, :dependent => :destroy
-  # has_one :sp_peer_reference, :class_name => 'SpPeerReference', :foreign_key => :application_id
-  # has_one :sp_spiritual_reference1, :class_name => 'SpSpiritualReference1', :foreign_key => :application_id
-  # has_one :sp_spiritual_reference2, :class_name => 'SpSpiritualReference2', :foreign_key => :application_id
-  # has_one :sp_parent_reference, :class_name => 'SpParentReference', :foreign_key => :application_id
-  has_many :payments, :class_name => "SpPayment", :foreign_key => "application_id"
-  has_many :answers, :class_name => 'Answer', :foreign_key => 'answer_sheet_id', :dependent => :destroy
 
-
-  #has_many :sp_designation_numbers
-  #has_many :donations, through: :sp_designation_numbers
   belongs_to :preference1, :class_name => 'SpProject', :foreign_key => :preference1_id
   belongs_to :preference2, :class_name => 'SpProject', :foreign_key => :preference2_id
   belongs_to :preference3, :class_name => 'SpProject', :foreign_key => :preference3_id
   belongs_to :preference4, :class_name => 'SpProject', :foreign_key => :preference4_id
   belongs_to :preference5, :class_name => 'SpProject', :foreign_key => :preference5_id
   belongs_to :current_project_queue, :class_name => 'SpProject', :foreign_key => :current_project_queue_id
-  # has_many :answers, :foreign_key => :instance_id  do
-  #   def by_question_id(q_id)
-  #     self.detect {|a| a.question_id == q_id}
-  #   end
-  # end
   has_one :evaluation, :class_name => 'SpEvaluation', :foreign_key => :application_id
 
   scope :for_year, proc { |year| where(:year => year) }
-  scope :preferrenced_project, proc { |project_id| {:conditions => ["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]} }
+  scope :preferrenced_project, proc { |project_id| where(["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]) }
 
   scope :preferred_project, proc { |project_id| {:conditions => ["project_id = ?", project_id],
                                                  :include => :person} }
-  scope :not_staff, -> { where("ministry_person.isStaff <> 1 OR ministry_person.isStaff Is Null").joins(:person) }
+  scope :not_staff, -> { where("ministry_person.\"isStaff\" <> 't' OR ministry_person.\"isStaff\" Is Null").joins(:person).references(:person) }
   before_create :set_su_code
   after_save :unsubmit_on_project_change, :complete, :send_acceptance_email, :log_changed_project, :update_project_counts
 
   def next_states_for_events
-    self.class.aasm_events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
+    self.class.aasm.events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
         |e| [e.transitions_from_state(status.to_sym).first.to.to_s.humanize, e.name] }
   end
 
@@ -202,21 +192,41 @@ class SpApplication < ActiveRecord::Base
   end
 
   def set_up_give_site
+    designation = get_designation_number
+    return if is_secure?
+    return unless designation
+    return if has_give_site?
+    
     create_relay_account_if_needed
-    create_give_site
+    set_designation_number_in_relay
+    set_role_in_ldap
+    client = StellentClient.new
+    client.push_to_stellent(self)
+
+    Fe::Notifier.notification(person.email_address, # RECIPIENTS
+                          Fe.from_email, # FROM
+                          "Giving site created", # LIQUID TEMPLATE NAME
+                          {'first_name' => person.nickname,
+                           'site_url' => "#{APP_CONFIG['spgive_url']}/#{designation}",
+                           'username' => person.user.username,
+                           'password' => person.user.password_plain}).deliver
+
+    update_column(:has_give_site, true)
   end
 
   def create_relay_account_if_needed
+    return if Rails.env.test? # TODO figure out how to properly test this
+
     unless person.user.globallyUniqueID.present?
       password = SecureRandom.hex(5) + 'a'
       person.user.password_plain = password
-      person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address.strip, password, person.nickname, person.lastName)
+      person.user.globallyUniqueID = RelayApiClient::Base.create_account(person.email_address.strip, password, person.nickname, person.last_name)
       begin
         person.user.save(validate: false)
       rescue ActiveRecord::RecordNotUnique
         # This means we have a duplicate person that we need to merge
-        other_user = Ccc::SimplesecuritymanagerUser.where(globallyUniqueID: person.user.globallyUniqueID).first
-        this_user = Ccc::SimplesecuritymanagerUser.find(person.user.id)
+        other_user = User.where(globallyUniqueID: person.user.globallyUniqueID).first
+        this_user = User.find(person.user.id)
         this_user.merge(other_user)
         person.reload
       end
@@ -231,75 +241,26 @@ class SpApplication < ActiveRecord::Base
     end
   end
 
-  def create_give_site(postfix = '')
-    if !is_secure? && designation_number.present? && project.project_summary.present? && project.full_project_description.present?
-      # Try to create a unique gcx community
-      unless person.sp_gcx_site.present?
-        name = person.informal_full_name.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_\-]/, '') + postfix
-        site_attributes = {name: name, domain: "#{APP_CONFIG['spgive_url']}/#{name}", title: 'My Summer Project', privacy: 'public', theme: 'cru-spkick', sitetype: 'campus'}
-        site = GcxApi::Site.new(site_attributes)
-        unless site.valid?
-          # try a different name
-          if postfix.blank?
-            create_give_site('-' + project.state.downcase)
-          else
-            create_give_site(postfix + '-')
-          end
-          return
-        end
+  def set_designation_number_in_relay
+    return if Rails.env.test? # TODO set up web mocks for testing
 
-        puts site_attributes[:name].inspect
-        SpApplication.transaction do
-          begin
-            site.create
+    designation_number = get_designation_number
+    return unless designation_number.present? && person.user.globallyUniqueID.present?
 
-            person.update_attributes(sp_gcx_site: site_attributes[:name])
-
-            puts "Created #{site_attributes[:name]}"
-
-            response = GcxApi::User.create(person.sp_gcx_site, [{relayGuid: person.user.globallyUniqueID, role: 'administrator'}]).first
-
-            unless response['added'] || ["User is already a member.", "User is already pending."].include?(response['error'])
-              raise response.inspect
-            end
-
-            push_content_to_give_site
-
-            Notifier.notification(person.email_address, # RECIPIENTS
-                                  Qe.from_email, # FROM
-                                  "Giving site created", # LIQUID TEMPLATE NAME
-                                  {'first_name' => person.nickname,
-                                   'site_url' => "#{APP_CONFIG['spgive_url']}/#{person.sp_gcx_site}/",
-                                   'username' => person.user.username,
-                                   'password' => person.user.password_plain}).deliver
-          rescue => e
-            # If any part of creating the give site fails, trash the site so we can start over.
-            begin
-              GcxApi::Site.new.destroy(site_attributes[:name])
-            rescue
-              # Don't alert if delete fails
-            end
-            raise e
-          end
-        end
-      end
+    unless RelayApiClient::Base.set_designation_number(person.user.globallyUniqueID, designation_number)
+      raise 'failed to set designation number in relay'
     end
   end
 
-  def push_content_to_give_site
-    site = GcxApi::Site.new(name: person.sp_gcx_site, domain: APP_CONFIG['spgive_url'])
+  def set_role_in_ldap
+    return if Rails.env.test? # TODO set up web mocks for testing
 
-    site.set_option_values(
-        'cru_spkick[spkick_goal]' => project.student_cost,
-        'cru_spkick[spkick_current_amount]' => account_balance,
-        'cru_spkick[spkick_deadline]' => project.start_date.strftime("%m/%d/%y"),
-        'cru_spkick[spkick_tripname]' => project.name,
-        'cru_spkick[spkick_description]' => project.project_summary,
-        'cru_spkick[spkick_fulldescription]' => project.full_project_description,
-        'cru_spkick[spkick_person_name]' => person.informal_full_name,
-        'cru_spkick[spkick_designation]' => get_designation_number,
-        'cru_spkick[spkick_motivation]' => 'STU000'
-    )
+    unless RelayApiClient::Base.set_role(ssoguid: person.user.globallyUniqueID,
+                                         role: STELLENT_ROLE,
+                                         system_id: 'missions',
+                                         system_password: APP_CONFIG['ldap_password'])
+      raise 'failed to set role in ldap via relay'
+    end
   end
 
   def validates
@@ -314,15 +275,15 @@ class SpApplication < ActiveRecord::Base
   end
 
   def self.deadline1
-    Time.parse((SpApplication.year - 1).to_s + "/12/10 00:00:00 EST")
+    Time.parse((SpApplication.year - 1).to_s + "/12/11 00:00:00 PST")
   end
 
   def self.deadline2
-    Time.parse(SpApplication.year.to_s + "/01/24 00:00:00 EST")
+    Time.parse(SpApplication.year.to_s + "/01/25 00:00:00 PST")
   end
 
   def self.deadline3
-    Time.parse(SpApplication.year.to_s + "/02/24 00:00:00 EST")
+    Time.parse(SpApplication.year.to_s + "/02/25 00:00:00 PST")
   end
 
   def name
@@ -424,8 +385,8 @@ class SpApplication < ActiveRecord::Base
   scope :descend_by_submitted, -> { order("sp_applications.submitted_at desc") }
   scope :ascend_by_started, -> { order("sp_applications.created_at") }
   scope :descend_by_started, -> { order("sp_applications.created_at desc") }
-  scope :ascend_by_name, -> { joins(:person).order("lastName, firstName") }
-  scope :descend_by_name, -> { joins(:person).order("lastName desc, firstName desc") }
+  scope :ascend_by_name, -> { joins(:person).order("last_name, first_name") }
+  scope :descend_by_name, -> { joins(:person).order("last_name desc, first_name desc") }
   scope :accepted, -> { where('sp_applications.status' => SpApplication.accepted_statuses) }
   scope :accepted_participants, -> { where('sp_applications.status' => 'accepted_as_participant') }
   scope :accepted_student_staff, -> { where('sp_applications.status' => 'accepted_as_student_staff') }
@@ -435,19 +396,10 @@ class SpApplication < ActiveRecord::Base
   scope :not_going, -> { where('sp_applications.status' => SpApplication.not_going_statuses) }
   scope :applicant, -> { where('sp_applications.status' => SpApplication.applied_statuses) }
 
-  scope :male, -> { where('ministry_person.gender = 1').includes(:person) }
-  scope :female, -> { where('ministry_person.gender <> 1').includes(:person) }
+  scope :male, -> { where("ministry_person.gender = '1'").joins(:person) }
+  scope :female, -> { where("ministry_person.gender <> '1'").joins(:person) }
 
   delegate :campus, :to => :person
-
-  def self.cost
-    if Time.now < payment_deadline
-      return COST_BEFORE_DEADLINE
-    else
-      return COST_AFTER_DEADLINE
-    end
-  end
-
 
   def self.payment_deadline
     Time.parse("#{SpApplication.year.to_s}-02-25 03:00")
@@ -455,7 +407,7 @@ class SpApplication < ActiveRecord::Base
 
   def has_paid?
     return true if self.payments.detect(&:approved?)
-    return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(PaymentQuestion) && q.required? }
+    return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(Fe::PaymentQuestion) && q.required? }
     return false
   end
 
@@ -481,8 +433,8 @@ class SpApplication < ActiveRecord::Base
 
   def complete(ref = nil)
     return false unless self.submitted?
-    # Make sure all required references are copmleted
-    sp_references.each do |reference|
+    # Make sure all required references are completed
+    references.each do |reference|
       if reference.required?
         return false unless reference.completed? || reference == ref
       end
@@ -495,10 +447,12 @@ class SpApplication < ActiveRecord::Base
     self.su_code = Digest::MD5.hexdigest((object_id + Time.now.to_i).to_s)
   end
 
-  # The :frozen? method lets the QuestionnaireEngine know to not allow
+  # The :frozen? method lets the form engine know to not allow
   # the user to change the answer to a question.
   def frozen?
-    !%w(started unsubmitted).include?(self.status)
+    return @frozen unless @frozen == nil
+    @frozen = !%w(started unsubmitted).include?(self.status) &&
+                !Thread.current[:user].try(:sp_user).try(:can_su_application?)
   end
 
   def can_change_references?
@@ -642,21 +596,29 @@ class SpApplication < ActiveRecord::Base
       # Notify old and new directors
       old_pds = [old_project.pd, old_project.apd, old_project.opd]
       new_pds = [new_project.pd, new_project.apd, new_project.opd]
-      recipients = old_pds.compact.empty? ? ["projects@studentlife.org.nz"] : old_pds.compact.collect(&:email)
-      recipients += new_pds.compact.empty? ? ["projects@studentlife.org.nz"] : new_pds.compact.collect(&:email)
-      recipients << "projects@studentlife.org.nz" if designation_number.present?
-          Notifier.notification(recipients.compact, # RECIPIENTS
-                                Qe.from_email, # FROM
+      recipients = old_pds.compact.empty? ? ["summer.missions@cru.org"] : old_pds.compact.collect(&:email)
+      recipients += new_pds.compact.empty? ? ["summer.missions@cru.org"] : new_pds.compact.collect(&:email)
+      Fe::Notifier.notification(recipients.compact, # RECIPIENTS
+                                Fe.from_email, # FROM
                                 "Application Moved", # LIQUID TEMPLATE NAME
                                 {'applicant_name' => name,
                                  'moved_by' => current_person.informal_full_name,
                                  'original_project' => old_project.name,
-                                 'new_project' => new_project.name,
-                                 'designation_number' => designation_number,
-                                 'original_chartfield' => old_project.scholarship_chartfield,
-                                 'original_designation' => old_project.scholarship_designation,
-                                 'new_chartfield' => new_project.scholarship_chartfield,
-                                 'new_designation' => new_project.scholarship_designation}).deliver
+                                 'new_project' => new_project.name}).deliver
+
+      if designation_number.present?
+        recipient = "summerprojectdonations@cru.org"
+        Fe::Notifier.notification(recipient, # RECIPIENTS
+                                  Fe.from_email, # FROM
+                                  "Application Moved - Donation Services", # LIQUID TEMPLATE NAME
+                                  {'applicant_name' => name,
+                                   'designation_number' => designation_number,
+                                   'original_project' => old_project.name,
+                                   'original_chartfield' => old_project.scholarship_chartfield,
+                                   'new_project' => new_project.name,
+                                   'new_chartfield' => new_project.scholarship_chartfield}).deliver
+        regenerate_give_site
+      end
 
       # Update project counts
       old_project.update_counts(person)
@@ -664,6 +626,10 @@ class SpApplication < ActiveRecord::Base
     end
   end
 
+  def regenerate_give_site
+    self.update_column(:has_give_site, false)
+    async(:set_up_give_site)
+  end
 
   # When an applicant status changes, we need to update the project counts
   def update_project_counts
@@ -694,7 +660,6 @@ class SpApplication < ActiveRecord::Base
     SpDonation.get_balance(designation_no, year)
   end
 
-
   def self.send_status_emails
     logger.info('Sending application reminder emails')
     uncompleted_apps = SpApplication.select('app.*')
@@ -709,8 +674,8 @@ class SpApplication < ActiveRecord::Base
 
   def send_acceptance_email
     if changed.include?('applicant_notified') and applicant_notified? && status.starts_with?('accept')
-      Notifier.notification(email_address, # RECIPIENTS
-                            Qe.from_email, # FROM
+      Fe::Notifier.notification(email_address, # RECIPIENTS
+                            Fe.from_email, # FROM
                             'Application Accepted', # LIQUID TEMPLATE NAME
                             {'project_name' => project.try(:name)}).deliver
     end
@@ -739,9 +704,9 @@ class SpApplication < ActiveRecord::Base
     # Do any necessary cleanup of references to match new project's requirements
     if project
       logger.debug('has project')
-      reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(ReferenceQuestion) }
-      if sp_references.length > reference_questions.length
-        sp_references.each do |reference|
+      reference_questions = project.template_question_sheet.questions.select { |q| q.is_a?(Fe::ReferenceQuestion) }
+      if references.length > reference_questions.length
+        references.each do |reference|
           # See if this reference's question_id matches any of the questions for the new project
           if question = reference_questions.detect { |rq| rq.id == reference.question_id }
             logger.debug('matched question: ' + question.id.to_s)
@@ -751,7 +716,7 @@ class SpApplication < ActiveRecord::Base
           # AND we don't already have a reference for that question
           # update the reference with the new question_id
           if (reference_question = reference_questions.detect { |rq| rq.related_question_sheet_id == reference.question.related_question_sheet_id }) &&
-              !sp_references.detect { |r| r.question_id == reference_question.id }
+              !references.detect { |r| r.question_id == reference_question.id }
             reference.update_attribute(:question_id, reference_question.id)
             next
           end
@@ -787,6 +752,10 @@ class SpApplication < ActiveRecord::Base
 
   def create_in_global_registry(*args)
     super(person, 'summer_project_application')
+  end
+
+  def create_answer_sheet_question_sheet
+    self.answer_sheet_question_sheet ||= ::Fe::AnswerSheetQuestionSheet.create(:question_sheet_id => 1) #TODO: NO CONSTANT
   end
 
   def self.push_structure_to_global_registry

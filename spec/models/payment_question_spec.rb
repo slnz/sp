@@ -1,12 +1,10 @@
 require 'spec_helper'
 
-describe PaymentQuestion do
-  let(:project) { create(:sp_project) }
-
-  before(:all) do
-    @person = create(:person)
-    @application = create(:sp_application, person: @person, project: @project)
-    @payment_question = PaymentQuestion.new
+describe Fe::PaymentQuestion do
+  before(:each) do
+    @person = create(:fe_person, isStaff: false)
+    @application = create(:sp_application, applicant: @person)
+    @payment_question = Fe::PaymentQuestion.new
   end
 
   describe "when calling 'response' function" do
@@ -15,7 +13,7 @@ describe PaymentQuestion do
       expect(response.new_record?).to be_truthy
     end
     it 'returns the existing application payment if the application already have payments' do
-      payment = create(:sp_payment, application: @application)
+      payment = create(:payment, application: @application)
       response = @payment_question.send(:response, @application).first
       expect(response.id).to be payment.id
     end
@@ -32,7 +30,7 @@ describe PaymentQuestion do
       expect(response).to eq('')
     end
     it 'returns an existing application payment string if the application already have payments' do
-      payment = create(:sp_payment, application: @application)
+      payment = create(:payment, application: @application)
       expect(@payment_question).to receive(:response).with(@application).and_return(payment)
       response = @payment_question.send(:display_response, @application)
       expect(response).not_to be_blank
@@ -55,7 +53,7 @@ describe PaymentQuestion do
       #response.should be false
     #end
     #it "returns a boolean 'true' if the application already have payments" do
-      #payment = create(:sp_payment, application: @application)
+      #payment = create(:payment, application: @application)
       #response = @payment_question.send(:has_response?, @application)
       #response.should be true
     #end

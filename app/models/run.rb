@@ -37,12 +37,12 @@ class Run
 
   #This method changes the year of projects in their archive process, but SpApplication.year determines the current year for applications.
   def self.change_sp_year
-    last_years = SpProject.where(archive_project_date: Date.today)
+    last_years = SpProject.where("archive_project_date <= ?", Date.today)
     last_years.each do |new_project|
       new_project.save(:validate => false)
       new_project.year = Date.today.year + 1   #set year to next year (check if this will be a problem for semester projects) 
-      new_project.start_date = new_project.start_date + 1.year if new_project.start_date && new_project.project_status == 'open'
-      new_project.end_date = new_project.end_date + 1.year if new_project.end_date && new_project.project_status == 'open'
+      new_project.start_date = new_project.start_date + 1.year if new_project.start_date
+      new_project.end_date = new_project.end_date + 1.year if new_project.end_date
       new_project.date_of_departure = new_project.date_of_departure + 1.year if new_project.date_of_departure
       new_project.date_of_return = new_project.date_of_return + 1.year if new_project.date_of_return
       new_project.apply_by_date = new_project.apply_by_date + 1.year if new_project.apply_by_date
@@ -180,7 +180,7 @@ class Run
   end
 
   def self.move_birthdates
-    answers = SpAnswer.find_all_by_question_id(404)
+    answers = Fe::Answer.find_all_by_question_id(404)
     answers.each do |answer|
       if !answer.answer.blank?
         app = SpApplication.find(answer.instance_id)

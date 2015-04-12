@@ -17,8 +17,18 @@
       </div>
 
       <div class="field required">
+        <%= f.label :show_on_website, 'Show On Public Website' %>
+        <%= f.select :show_on_website, [['No',false],['Yes',true]] %>
+      </div>
+
+      <div class="field required">
+        <%= f.label :job, 'Can students get a job?' %>
+        <%= f.select :job, [['No',false],['Yes',true]] %>
+      </div>
+
+      <div class="field required">
         <%= f.label(:display_location) do
-          raw 'Location: City, Country ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
+          raw 'Location: City, State ' + tip('This is the location of your project that students will see. If your project is in a secure location, putting something like "Middle East" will give them a general idea.')
           end %>
         <%= f.text_field :display_location %>
       </div>
@@ -35,8 +45,18 @@
         <%= f.text_field :city %>
       </div>
       <div class="field required">
+        <%= f.label :state do
+          raw 'State' + tip('Required if your project is in the US or Canada. Leave it blank for other international projects.')
+        end %>
+        <%= f.select :state, State::NAMES + ['Ontario'], :include_blank => true %>
+      </div>
+      <div class="field required">
         <%= f.label :country %>
-        <%= f.select :country, @countries.map {|c| [c.country]}, :include_blank => true %>
+        <%= f.select :country, @countries.collect {|c| [c.country]}, :include_blank => true %>
+      </div>
+      <div class="field required">
+        <%= f.label :world_region, 'Region of the World' %>
+        <%= f.select :world_region, SpWorldRegion.all.collect {|a| [a.name]}, :include_blank => true %>
       </div>
 
       <div class="multifield">
@@ -53,6 +73,37 @@
           <p>Please see important date information on the Risk Management Tab since it has financial implications related to insurance.</p>
         </div>
         <div class="clear"></div>
+      </div>
+
+      <div class="field select">
+        <%= f.label(:primary_ministry_focus_id) do
+          raw 'Primary Ministry Focus ' + tip('This is helpful for students who are looking for a certain type of summer experience.')
+          end %>
+        <%= f.select :primary_ministry_focus_id, SpMinistryFocus.all.collect {|sf| [sf.name, sf.id]}, :include_blank => true %>
+      </div>
+
+      <div class="field checkvertical">
+        <label>Other Ministry Foci:</label>
+        <div class="checkboxes">
+          <% SpMinistryFocus.all.each do |sf| %>
+            <div id="sp_project_ministry_focus_ids_<%= sf.id %>_row" class="<%= 'selected' if !@project.new_record? && @project.ministry_focuses.to_a.include?(sf) %>">
+              <input type="checkbox" name="sp_project[ministry_focus_ids][]" id="sp_project_ministry_focus_ids_<%= sf.id %>" value="<%= sf.id %>" <%= !@project.new_record? && @project.ministry_focuses.include?(sf) ? 'checked="checked"' : '' %>>
+              <%= f.label "ministry_focus_ids_#{sf.id}", sf.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="field checkvertical">
+        <label>Gospel in Action <%= tip('This information will not show up on gosummerproject.com, but will help track where good news and good deeds are happening on our summer mission projects.') %></label>
+        <div class="checkboxes">
+        <% SpGospelInAction.all.each do |ga| %>
+          <div class="<%= 'selected' if !@project.new_record? && @project.gospel_in_actions.to_a.include?(ga) %>">
+            <input type="checkbox" name="sp_project[gospel_in_action_ids][]" id="sp_project_gospel_in_action_ids_<%= ga.id %>" value="<%= ga.id %>" <%= !@project.new_record? && @project.gospel_in_actions.include?(ga) ? 'checked="checked"' : '' %>>
+            <%= f.label "gospel_in_action_ids_#{ga.id}", ga.name %>
+          </div>
+        <% end %>
+        </div>
       </div>
 
       <hr />
@@ -104,22 +155,37 @@
 
       <div class="field required">
         <%= f.label :description, 'Project Description' %>
-        <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'tinymce') %>
-      </div>
+        <div class="inlinetip">
+          <div id="explain1" class="explanation">
 
-
-      <div class="multifield">
-        <div class="field">
-          <%= f.label :youtube_video_id, 'Youtube Video ID' %>
-          <%= f.text_field :youtube_video_id %>
+            <b>Remember students will want to know what it is like to be on your
+      			project help them experience that in your by casting vision for your project.  See the examples below to help you get good ideas for your project description. Do not use the "%" symbol in your description or it will not display your text.</b><br /><br />
+      			<b><u>Things to include in your description:</u></b><br>
+      			<ul><li>Introduce the project and build vision.</li></ul>
+      			<span class="sub">Daytona Beach Summer Project is located right on the "World's Most Famous Beach." It is a destination spot for thousands over the Summer and Spring Break and it's about an hour's drive from all the attractions in Orlando. Cru has had a long history at Daytona Beach. The Summer Project has been active there for over 30 summers. (Daytona)
+      			<br /><br />
+      			The country we are going to is the largest unreached nation in the world according to Operation World. Their are 73 million people and only an estimated 2,000 believers. (4th Journey)
+      			<br /><br /></span>
+      			<ul><li>Mention various training students will receive on this project, ways they will be invested in, or how they will return to campus equipped for ministry.</li></ul>
+      			<span class="sub">We will also train you in how to reach internationals from many different people groups and religions in your own settings. (New York Tribeca  Bridges)
+      			<br /><br />
+      			We will do lots of evangelism and follow-up, along with plenty of relationship building and encouraging of local Aussie students. Project participants will be able to take the training and experience directly back to their campuses in the US. Join us down under as we reach out to Australian students and help to establish campus ministries. (Australia  Melbourne)
+      			<br /><br /></span>
+      			<ul><li>Ministry Focus Details  help them experience what the outreach they will be doing looks like.</li></ul>
+      			<span class="sub">One of the strategic aspects of our outreaches is that each summer graduating seniors from the surrounding states come to Ocean City, so we find ourselves talking to next year's freshman class! (Ocean City)
+      			<br /><br />
+      			We will be taking some Russian Class, building relationships with students on campus,and inviting them to learn English with us. Through these relationships, we'll have an opportunity to share our faith.  (Russia, RR)
+      			</span>
+          </div>
+          <span id="readmoreless" rel="explain1">Read More</span>
         </div>
-        <div class="clear"></div>
+        <%= f.text_area(:description, :cols => 90, :rows => 10, :class => 'tinymce') %>
       </div>
 
       <% @project.student_quotes.each_with_index do |quote, i| %>
         <%= f.fields_for :student_quotes, quote do |sqf| %>
           <div class="multifield" style="<%= (i != 0 && quote.quote.blank?) ? 'display:none' : '' -%>" id="quote_<%= i %>">
-            <label>Quotes/Testimonials from Students or Other Participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email projects@studentlife.org.nz.') %></label>
+            <label>Quotes/Testimonials from Students or Other Participants <%= tip('Students like to hear what their peers had to say about their project experience. There may be some quotes on file  email summer.missions@cru.org.') %></label>
 
             <div class="field quote">
               <div>
@@ -138,7 +204,7 @@
       <% end %>
 
 
-      <!--div class="multifield" style="margin-top: 20px;">
+      <div class="multifield" style="margin-top: 20px;">
 
         <div class="field">
           <label for="sp_project_picture">Project Picture</label>
@@ -163,7 +229,7 @@
           <%#= f.file_field(:logo, :size => "2") %>
         </div>
         <div class="clear"></div>
-      </div-->
+      </div>
 
       <button type="submit" class="save"><span>Save</span></button>
       <button type="button" class="save" onclick="$('.tabs li a').get(1).click();window.scrollTo(0,0)"><span>Next >></span></button>

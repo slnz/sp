@@ -1,0 +1,26 @@
+development: &common
+  adapter: postgresql
+  host: 127.0.0.1
+  username: andrewroth
+  password: 
+  database: uscm_summer_missions
+
+test:
+  adapter: postgresql
+  host: 127.0.0.1
+  database: uscm_test
+  username: root
+  password: 
+
+production:
+  adapter: mysql2
+  host: 127.0.0.1
+  username: root
+  password: 
+  database: uscm
+
+peoplesoft:
+  <<: *common
+
+donor:
+  <<: *common

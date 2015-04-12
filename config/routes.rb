@@ -1,10 +1,17 @@
 require 'sidekiq/web'
 Sp2::Application.routes.draw do
 
+  namespace :gr do
+    resources :notifications, only: :create
+  end
+
+  get "welcome/privacy"
+
   match '/auth/:provider/callback' => 'authentications#create', via: :get
   match '/auth/failure' => 'authentications#failed', via: :get
   match '/sos' => 'admin/projects#sos', via: [:get, :post]
   match '/admin/sos' => 'admin/projects#sos', via: [:get, :post]
+  #post '/fe/applications/:application_id/submit_page' => 'fe/submit_pages#submit'
   resources :authentications
 
   resources :campuses do
@@ -86,7 +93,18 @@ Sp2::Application.routes.draw do
       get :total_num_participants_to_hs_sps
       get :total_num_participants_to_other_ministry_sps
     end
-    resources :people
+    resources :people do
+      collection do
+        get :merge
+        post :confirm_merge
+        post :do_merge
+        get :search_ids
+      end
+      member do
+        get :merge_preview
+      end
+    end
+
     resources :users do
       collection do
         get :search
@@ -106,6 +124,7 @@ Sp2::Application.routes.draw do
         get :donations
         get :other_donations
         get :waive_fee
+        get :set_up_give_site
       end
       collection do
         get :search
@@ -121,7 +140,14 @@ Sp2::Application.routes.draw do
     end
   end
 
-  resources :projects
+  resources :users
+
+  resources :projects do
+    collection do
+      get :markers
+    end
+  end
+
   resources :applications do
     member do
       get :multiple_projects
@@ -131,15 +157,22 @@ Sp2::Application.routes.draw do
       get :closed
       get :apply
     end
-    resources :payments do
-      member do
-        get :approve
-      end
-      collection do
-        post :staff_search
+  end
+
+  namespace "fe" do
+    resources :applications do
+      resources :payments do
+        member do
+          get :approve
+        end
+        collection do
+          post :staff_search
+        end
       end
     end
   end
+  match 'fe/payment_pages/staff_search' => 'fe/payment_pages#staff_search', :as => :payment_page_staff_search, via: [:get, :post]
+
   resources :ministry_focuses
   match '/admin' => "admin/projects#dashboard", via: :get
   match '/apply' => "applications#apply", :as => :apply, via: :get

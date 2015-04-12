@@ -22,6 +22,9 @@
   #leftside {
     float: left;
     width: 235px;
+    h2 {
+      padding-bottom: 10px;
+    }
     ul {
       list-style: none;
       padding: 0;
@@ -201,3 +204,7 @@
 
 }
 .ui-helper-hidden-accessible {display:none;}
+
+body#admin_evaluations #evalcontent table.datatable tr.question table td label {
+  min-width: 64px;
+}

@@ -1,6 +1,6 @@
 class Admin::ApplicationsController < ApplicationController
   before_filter :cas_filter, :authentication_filter
-  before_filter :get_application, :only => [:waive_fee, :donations]
+  before_filter :get_application, :only => [:waive_fee, :donations, :set_up_give_site]
   before_filter :can_waive_fee, :only => [:waive_fee]
   before_filter :can_search, :only => [:search]
 
@@ -16,11 +16,12 @@ class Admin::ApplicationsController < ApplicationController
     set_up_search_form
     conditions = [[],[]]
     if params[:first_name] && !params[:first_name].empty?
-      conditions[0] << "#{Person.table_name}.firstName like ?"
+      conditions[0] << "(#{Person.table_name}.first_name ilike ? OR #{Person.table_name}.preferred_name ilike ?)"
+      conditions[1] << "%#{params[:first_name]}%"
       conditions[1] << "%#{params[:first_name]}%"
     end
     if params[:last_name] && !params[:last_name].empty?
-      conditions[0] << "#{Person.table_name}.lastName like ?"
+      conditions[0] << "#{Person.table_name}.last_name ilike ?"
       conditions[1] << "%#{params[:last_name]}%"
     end
     if params[:school] && !params[:school].empty?
@@ -35,7 +36,8 @@ class Admin::ApplicationsController < ApplicationController
       if @schools.empty?
         conditions[0] << " 1 <> 1 "
       else
-        conditions[0] << "#{Person.table_name}.campus IN (\"#{@schools.join("\",\"")}\")"
+        conditions[0] << "#{Person.table_name}.campus IN (?)"
+        conditions[1] << @schools
       end
     end
     if params[:region] && !params[:region].empty?
@@ -70,14 +72,14 @@ class Admin::ApplicationsController < ApplicationController
       conditions[1] << params[:preference].to_i
     end
     conditions[0] = conditions[0].join(' AND ')
-    conditions.flatten!
+    conditions.flatten!(1)
     if conditions[0].empty?
       flash[:notice] = "You must use at least one search criteria."
       redirect_to search_admin_applications_path
     else
       search = SpApplication.where(conditions)
                             .includes([:project, {:person => :current_address}])
-                            .order("#{SpApplication.table_name}.year desc, ministry_person.lastName, ministry_person.firstName")
+                            .order("#{SpApplication.table_name}.year desc, ministry_person.last_name, ministry_person.first_name")
                             .references([:project, {:person => :current_address}])
       if params[:page] == "all"
         @applications = search.paginate(:page => 1)
@@ -107,11 +109,17 @@ class Admin::ApplicationsController < ApplicationController
     redirect_to :back
   end
 
+  def set_up_give_site
+    @application.has_give_site = false
+    @application.set_up_give_site
+    redirect_to :back
+  end
+
   protected
     def set_up_search_form
-      @region_options = Region.order('region')
-      @team_options = Team.where("lane = 'FS'").order('name')
-      @school_options = TargetArea.select("DISTINCT(name)").where("country = 'USA'").order('name')
+      @region_options = Region.all
+      @team_options = Infobase::Team.get('filters[lane]' => 'FS')
+      @school_options = Infobase::TargetArea.get('filters[country]' => 'USA','per_page' => '30000').collect(&:name).uniq.sort
       @project_options = SpProject.current.order(:name)
     end
 

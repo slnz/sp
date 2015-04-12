@@ -1,6 +1,6 @@
 test:
-  adapter: mysql2
+  adapter: postgresql
   database: sp_test
-  username: travis
+  username: postgres
   encoding: utf8
 

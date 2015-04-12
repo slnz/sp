@@ -3,7 +3,8 @@ require_dependency 'cru_enhancements'
 class SpProjectSerializer < ActiveModel::Serializer
   include CruEnhancements
 
-  attributes :id, :name, :primary_partner, :secondary_partner, :partner_region_only, :city, :country, :world_region, :display_location, :description
+  attributes :id, :name, :primary_partner, :secondary_partner, :partner_region_only, :city, :country, :world_region,
+             :display_location, :description, :picture_url
 
   has_one :pd
   has_one :apd
@@ -12,4 +13,8 @@ class SpProjectSerializer < ActiveModel::Serializer
   has_many :staff
   has_many :volunteers
   has_many :applicants
+
+  def picture_url
+    object.picture_url
+  end
 end

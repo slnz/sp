@@ -70,7 +70,7 @@ h3.critical {
       float: left;
       a {background-image: url("<%= asset_path('buttonbg_search.png') %>"); padding-left: 31px; border: none;}
       a:hover {
-        color: $dark-gray;
+        color: $global-bg;
       }
     }
 
@@ -113,6 +113,8 @@ h3.critical {
     position:absolute;
     width:36px;
     display: none;
+    padding: 0px;
+    border-top: 0px;
     }
   table {
     border-collapse: collapse;
@@ -166,8 +168,13 @@ h3.critical {
       margin-left: 5px;
       }
     }
+  .rollovershow_nostyle {
+  }
 
   .rollovershow:hover {
+    display: block;
+    }
+  .rollovershow_nostyle:hover {
     display: block;
     }
   }
@@ -473,7 +480,9 @@ div.module {
     div.buttons {
       float: right;
       margin-right: 7px;
-      a.delete {margin-left: 10px;}
+      a.delete {margin-left: 4px;}
+      padding: 0px;
+      border-top: 0px;
       }
 
     }
@@ -508,10 +517,12 @@ div.applicantdata {
 .add {
   background: url("<%= asset_path('icons/plus-button.png') %>") no-repeat 0 50%;
   padding-left: 20px;
+  display: inline-block;
   }
 
 .module h3 span {
   float: left;
+  padding-top: 3px;
   }
 
 
@@ -683,7 +694,7 @@ a.close {text-indent: 0px; width: auto;}
   }
 
   .poptions {
-    width: 620px;
+    width: 800px;
     min-height: 200px;
     background: $global-bg;
     position: absolute;
@@ -696,6 +707,7 @@ a.close {text-indent: 0px; width: auto;}
     ul {
       @include strip-list;
       float: left;
+      margin-right: 20px;
     }
     ul li {
       float: none;
@@ -838,7 +850,7 @@ a.close {text-indent: 0px; width: auto;}
 .hybriddropinline {
   a {
     float: left;
-    margin: 0 8px 0 0;
+    margin: -10px 8px 0 0;
   }
 }
 
@@ -893,6 +905,10 @@ table.people {
   td {
     a {color: $dark-blue;}
     border-bottom: 1px solid $global-bg;
+    font-size: 12px;
+  }
+  td.evaluate {
+      text-align: center;
   }
   .gender {}
   .name {width: 23%;}
@@ -1067,7 +1083,11 @@ a.AddNewPerson {
   padding: 15px 0 0px 15px;
   div.fieldgroup {
     float: left;
-    margin-right: 20px;
+    margin-right: 60px;
+      .fieldinline {
+          float: none;
+          margin: 5px 0;
+      }
   }
 
   h4#showhide {
@@ -1183,4 +1203,45 @@ a.AddNewPerson {
 .right_label {
   width: 60%;
   float: right;
+}
+
+#status {
+  height: auto !important;
+  width: auto !important;
+  position: static !important;
+}
+
+.actions.unarchive {
+  min-width: 90px;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+    font-size: 11px;
+}
+
+#evalcontent table {
+    border-collapse: separate !important;
+}
+
+body#admin_projects .sidebar .module .controls {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 0 auto;
+    padding: 0 auto;
+}
+
+div.merge.person {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+  width: 270px;
+}
+
+div.merge.person.preview {
+  float:right;
+}
+
+.confirm_merge div.merge.person {
+  float:left;
 }

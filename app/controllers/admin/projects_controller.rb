@@ -1,6 +1,7 @@
 require 'csv'
 class Admin::ProjectsController < ApplicationController
-  before_filter :cas_filter, :authentication_filter, :check_sp_user, :except => :no
+  before_action :cas_filter, :authentication_filter
+  before_action :check_sp_user, :except => :no
 
   before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
   before_filter :get_year, :only => [:show, :email, :edit]
@@ -154,16 +155,16 @@ class Admin::ProjectsController < ApplicationController
      "GraduationDate", "Applied for leadership", "Passport Number", "T-Shirt Size"]
 
     sheet1.row(r += 1).concat(applicant_column_headers)
-    applications = SpApplication.find(:all, :conditions => ["status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year], :include => :person )
-    question_passport_id = Element.where(slug: 'passport').pluck(:id)
-    question_tshirt_id = Element.where(slug: 'tshirt').pluck(:id)
+    applications = SpApplication.where("status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year).includes(:person)
+    question_passport_id = Fe::Element.where(slug: 'passport').pluck(:id)
+    question_tshirt_id = Fe::Element.where(slug: 'tshirt').pluck(:id)
 
     applications.each do |app|
       values = set_values_from_person(app.person)
       values["Applied for leadership"] = app.apply_for_leadership.to_s
 
-      values["Passport Number"] = SpAnswer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
-      values["T-Shirt Size"] = SpAnswer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
+      values["Passport Number"] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
+      values["T-Shirt Size"] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
 
       row = []
       applicant_column_headers.each do |header|
@@ -260,7 +261,7 @@ class Admin::ProjectsController < ApplicationController
               ProjectMailer.team_email(recipient, params[:from], params[:reply_to], '', files.compact, params[:subject], params[:body]).deliver
               email_success << recipient
             rescue => e
-              raise e.inspect
+              #raise e.inspect
               email_failed << recipient
             end
           end
@@ -334,7 +335,7 @@ class Admin::ProjectsController < ApplicationController
               end
             end
             if p
-              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, staff.type]).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
               writer << row
@@ -343,7 +344,7 @@ class Admin::ProjectsController < ApplicationController
                 row = []
                 date_start = l((project.pd_close_start_date || project.staff_start_date || project.start_date), :format => :ps)
                 date_end = l((project.pd_close_end_date || project.staff_end_date || project.end_date), :format => :ps)
-                (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, staff.type]).each do |val|
+                (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, staff.type]).each do |val|
                   row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
                 end
                 writer << row
@@ -364,7 +365,7 @@ class Admin::ProjectsController < ApplicationController
                   date_end = l(project.end_date, :format => :ps)
                 end
               end
-              (row_start + [date_start, date_end] + row_more + [p.personID, p.accountNo, p.lastName, p.firstName, 'Applicant']).each do |val|
+              (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, 'Applicant']).each do |val|
                 row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
               end
             end
@@ -409,7 +410,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def set_up_filters
-    @base = params[:closed] ? SpProject : SpProject.open
+    @base = params[:closed].present? ? SpProject : SpProject.open
     @filter_title = 'All'
     selected_filters = params[:partners]
 
@@ -437,13 +438,13 @@ class Admin::ProjectsController < ApplicationController
     end
     case
     when params[:search].present?
-      @base = @base.where("name like ?", "%#{params[:search]}%")
+      @base = @base.where("name ilike ?", "%#{params[:search]}%")
     when params[:search_pd].present?
-      @base = @base.includes(:sp_staff => :person).pd_like(params[:search_pd])
+      @base = @base.joins(:sp_staff => :person).pd_like(params[:search_pd])
     when params[:search_apd].present?
-      @base = @base.includes(:sp_staff => :person).apd_like(params[:search_apd])
+      @base = @base.joins(:sp_staff => :person).apd_like(params[:search_apd])
     when params[:search_opd].present?
-      @base = @base.includes(:sp_staff => :person).opd_like(params[:search_opd])
+      @base = @base.joins(:sp_staff => :person).opd_like(params[:search_opd])
     end
 
     # Filter based on the user type
@@ -451,7 +452,9 @@ class Admin::ProjectsController < ApplicationController
     when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
       @base = @base.where(:id => current_person.current_staffed_projects.collect(&:id))
     when 'SpRegionalCoordinator'
-      @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", sp_user.partnerships, sp_user.partnerships, sp_user.partnerships) if sp_user.partnerships.present?
+      partnerships = sp_user.partnerships.map{ |partnership| partnership.downcase }
+      @base = @base.where("LOWER(primary_partner) IN(?) OR LOWER(secondary_partner) IN(?) OR LOWER(tertiary_partner) IN(?)",
+                          partnerships, partnerships, partnerships) if partnerships.present?
     when 'SpNationalCoordinator', 'SpDonationServices'
     else
       @base = @base.where('1 <> 1')
@@ -473,9 +476,9 @@ class Admin::ProjectsController < ApplicationController
 
   def set_values_from_person(person)
     values = Hash.new
-    values["First Name"] = person.firstName
-    values["Last Name"] = person.lastName
-    values["Preferred Name"] = person.preferredName
+    values["First Name"] = person.first_name
+    values["Last Name"] = person.last_name
+    values["Preferred Name"] = person.preferred_name
     values["Gender"] = person.gender == "1" ? "M" : "F"
     values["Birthday"] = person.birth_date.present? ? l(person.birth_date) : ''
     values["Age"] = person.birth_date.present? ? ((Date.today.to_time - person.birth_date.to_time) / 1.year).floor : ''
@@ -487,22 +490,22 @@ class Admin::ProjectsController < ApplicationController
       values["City"] = person.current_address.city
       values["State"] = person.current_address.state
       values["Zip"] = person.current_address.zip
-      values["Phone"] = person.current_address.homePhone
-      values["Cell"] = person.current_address.cellPhone
+      values["Phone"] = person.current_address.home_phone
+      values["Cell"] = person.current_address.cell_phone
     end
     values["Campus"] = person.campus
-    values["AccountNo"] = person.accountNo
+    values["AccountNo"] = person.account_no
     values["Designation No"] = person.current_application.try(:designation_number)
     values["Marital Status"] = person.maritalStatus
     if (person.emergency_address)
-      values["Emergency Contact"] = person.emergency_address.contactName
-      values["Emergency Relationship"] = person.emergency_address.contactRelationship
+      values["Emergency Contact"] = person.emergency_address.contact_name
+      values["Emergency Relationship"] = person.emergency_address.contact_relationship
       values["Emergency Address"] = person.emergency_address.address1
       values["Emergency City"] = person.emergency_address.city
       values["Emergency State"] = person.emergency_address.state
       values["Emergency Zip"] = person.emergency_address.zip
-      values["Emergency Phone"] = person.emergency_address.homePhone
-      values["Emergency Work Phone"] = person.emergency_address.workPhone
+      values["Emergency Phone"] = person.emergency_address.home_phone
+      values["Emergency Work Phone"] = person.emergency_address.work_phone
       values["Emergency Email"] = person.emergency_address.email
     end
     values["Participant's Campus Region"] = person.region
@@ -532,21 +535,21 @@ class Admin::ProjectsController < ApplicationController
         applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant')"
         include_applicants = true
       when 'accepted_men'
-        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 1"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = '1'"
         include_applicants = true
       when 'accepted_women'
-        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = 0"
+        applicant_conditions = "status IN ('accepted_as_student_staff', 'accepted_as_participant') AND ministry_person.gender = '0'"
         include_applicants = true
       when 'staff_and_interns'
         applicant_conditions = "status IN ('accepted_as_student_staff')"
         include_applicants = true
         include_staff = true
       when 'men_staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = 1"
+        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = '1'"
         include_applicants = true
         include_staff = true
       when 'women_staff_and_interns'
-        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = 0"
+        applicant_conditions = "status IN ('accepted_as_student_staff') AND ministry_person.gender = '0'"
         include_applicants = true
         include_staff = true
       when 'parent_refs'
@@ -560,7 +563,7 @@ class Admin::ProjectsController < ApplicationController
       end
       people = []
       if include_applicants
-        accepted_applications = SpApplication.find(:all, :conditions => ["#{applicant_conditions} and (project_id = ? OR (preference1_id = ? AND (project_id IS NULL OR project_id = ?))) and year = ?", @project.id, @project.id, @project.id, @year], :include => :person)
+        accepted_applications = SpApplication.where("#{applicant_conditions} and (project_id = ? OR (preference1_id = ? AND (project_id IS NULL OR project_id = ?))) and year = ?", @project.id, @project.id, @project.id, @year).joins(:person)
         accepted_applications.each do |app|
           people << app.person
         end
@@ -572,21 +575,21 @@ class Admin::ProjectsController < ApplicationController
           people += [@project.pd(@year)] if @project.pd(@year).is_male?
           people += [@project.apd(@year)] if @project.apd(@year).is_male?
           people += [@project.opd(@year)] if @project.opd(@year).is_male?
-          people += @project.staff(@year).where(:gender => 1)
-          people += @project.volunteers(@year).where(:gender => 1)
+          people += @project.staff(@year).where(gender: '1')
+          people += @project.volunteers(@year).where(gender: '1')
         when 'women_staff_and_interns'
           people += [@project.pd(@year)] if !@project.pd(@year).is_male?
           people += [@project.apd(@year)] if !@project.apd(@year).is_male?
           people += [@project.opd(@year)] if !@project.opd(@year).is_male?
-          people += @project.staff(@year).where(:gender => 0)
-          people += @project.volunteers(@year).where(:gender => 0)
+          people += @project.staff(@year).where(gender: '0')
+          people += @project.volunteers(@year).where(gender: '0')
         else
           people += [@project.pd(@year)] + [@project.apd(@year)] + [@project.opd(@year)] + @project.staff(@year) + @project.volunteers(@year)
         end
       end
 
       if parent_refs
-        addresses = ReferenceSheet.where('sp_applications.project_id' => @project.id, 'sp_elements.style' => 'parent').includes(:applicant_answer_sheet, :question).collect(&:email)
+        addresses = Fe::ReferenceSheet.where('sp_applications.project_id' => @project.id, 'sp_elements.style' => 'parent').includes(:applicant_answer_sheet, :question).collect(&:email)
         addresses.reject!(&:blank?)
         addresses.uniq!
       else
@@ -622,7 +625,7 @@ class Admin::ProjectsController < ApplicationController
     @custom_page = @project.initialize_project_specific_question_sheet.pages.first
     @questions = @custom_page.elements.to_a
     (5 - @questions.length).times do
-      @questions << TextField.new
+      @questions << Fe::TextField.new
     end
   end
 
@@ -630,7 +633,7 @@ class Admin::ProjectsController < ApplicationController
     if params[:questions].present?
       initialize_questions
       params[:questions].each do |i, attribs|
-        if attribs[:id].present? && question = Element.find_by_id(attribs[:id])
+        if attribs[:id].present? && question = Fe::Element.find_by_id(attribs[:id])
           if attribs[:label].present?
             question.update_attribute(:label, attribs[:label])
           else
@@ -638,8 +641,8 @@ class Admin::ProjectsController < ApplicationController
           end
         else
           if attribs[:label].present?
-            e = TextField.create!(:label => attribs[:label])
-            PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
+            e = Fe::TextField.create!(:label => attribs[:label])
+            Fe::PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
           end
         end
       end

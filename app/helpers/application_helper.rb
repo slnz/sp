@@ -1,6 +1,6 @@
 module ApplicationHelper
-  include AnswerPagesHelper
-  include QeHelper
+  include Fe::AnswerPagesHelper
+
   def embed_params(include_action = false)
     params_to_js = params.dup
     unless include_action
@@ -20,6 +20,12 @@ module ApplicationHelper
       val.to_time.in_time_zone('EST').to_date
     else
       val
+    end
+  end
+
+  def ccp_public_key
+    Rails.cache.fetch('ccp_public_key', expires_in: 1.week) do
+      RestClient.get(APP_CONFIG['ccp_url'] + '/client-encryption-keys/current').body
     end
   end
 

@@ -1,5 +1,7 @@
 class Api::V1::BaseController < ApplicationController
   before_filter :restrict_access
+  before_filter :cors_preflight_check
+  after_filter :cors_set_access_control_headers
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -57,7 +59,6 @@ class Api::V1::BaseController < ApplicationController
 
   # Each controller should override this method
   def available_includes
-    []
   end
 
   def render_options(collection, order = nil)

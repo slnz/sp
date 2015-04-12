@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- <%= current_user.id %> -->
   <title>Sp2</title>
   <%= javascript_include_tag 'admin' %>
 
   <%= stylesheet_link_tag 'admin_manifest' %>
   <!--[if IE 7]>
     <%= stylesheet_link_tag 'ie7-admin' %>
-  <![endif]-->
+  <![endif]--> 
   <%= csrf_meta_tag %>
   <%= embed_params %>
   <%#= tiny_mce_init %>
   <!-- <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> -->
-
+  
   <%= yield :head %>
 
 
-  <%= render :partial => 'layouts/ga' %>
-
-
-  <meta name="application-name" content="Summer Projects Admin"/>
-	<meta name="msapplication-tooltip" content="Go to Summer Project Admin"/>
+  <%= render :partial => 'layouts/ga' %>  
+  
+  
+  <meta name="application-name" content="Summer Missions Admin"/>
+	<meta name="msapplication-tooltip" content="Go to Summer Missions Admin"/>
 	<meta name="msapplication-starturl" content="/admin"/>
 	<meta name="msapplication-window" content="width=800;height=600"/>
 	<meta name="msapplication-task" content="name=Projects;action-uri=/admin/projects;icon-uri=/assets/projects.ico"/>
@@ -29,6 +30,10 @@
 	<meta name="msapplication-task" content="name=Forms;action-uri=/admin/question_sheets;icon-uri=/assets/form.ico"/>
 	<meta name="msapplication-task" content="name=Emails;action-uri=/admin/email_templates;icon-uri=/assets/email.ico"/>
 	<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+
+  <%= javascript_include_tag "fe/admin.js" %>
+  <%= stylesheet_link_tag "fe/fe.screen.css", :media => "all" %>
+  <%= stylesheet_link_tag "spfe.admin", :media => "all" %>
 
 </head>
 <body id="<%= params[:controller].gsub('/','_')%>" class="<%= params[:action] %>">
@@ -44,9 +49,9 @@
   </div>
 </div>
 
-<div id="status" style="display: none;"><%= image_tag('qe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
+<div id="status" style="display: none;"><%= image_tag('fe/status.gif', :id => "status-img" ) %> <span id="status-msg">Please Wait...</span></div>
 
-<div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('projects@studentlife.org.nz') %></div>
+<div id="feedback"><h2>We listen!</h2><p>Have some feedback on how we can improve the Summer Project Tool? Send us an email: <%= mail_to('summer.missions@cru.org') %></div>
 <%= tinymce %>
 </body>
 </html>

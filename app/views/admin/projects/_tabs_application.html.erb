@@ -1,31 +1,86 @@
+<%# encoding: utf-8 %>
+      <!--
+    
+      <div class="field">
+        <label>References <%= tip('Choose which references, and the quantity, that you require for each student. \'Lite\' refers to a shortened version.') %></label>
+      </div>
+    
+      
+      <h3>Risk Management forms <%= tip('All participants on Cru summer mission projects are required to fill out a risk management form. Choose which form best suits your project. If you have questions, email Debbie.Brown@uscm.org. A link to the form will appear in the application.') %></h3>
+      
+      
+      (Can we create some way for the Project List to be generated/accessed by RM? They want:
+        1. Project name (including location)
+        2. Project chart field to charge insurance to
+        3. List of project participates
+        4. Project start and end dates
+        5. Project directors contact name and phone number) 
+    
+    
+    
+      
+
+      <div class="field">
+        <label>Upload portfolio or audition <%= tip('If your project requires a student to upload a ---file or --- file in order to be accepted on the project, check this option.') %></label>
+        <input type="checkbox" /> Check to include option for students to upload files
+      </div>
+          
+      
+      
+      <div class="field">
+        <label>Background check form  for projects that focus on childcare</label>
+        <input type="checkbox" /> Check to include form in application (I'm still waiting for Debbie to clarify which form this is - it's probably a pdf)
+      </div>
+
+      <div class="field">      
+        <label>The required fields are:</label>
+          <div class="field"><input type="radio" name="field1"> Yes <input type="radio" name="field1"> No - Are you using the USCM summer project online application we provide?</div>
+          <div class="field"><input type="radio" name="field1"> Yes <input type="radio" name="field1"> No - Accept students from partner region/ministry(s) only</div>
+          <div class="field"><input type="radio" name="field1"> Yes <input type="radio" name="field1"> No - Date Students Must Apply By</div>
+          (I want to make all except the last 2 questions required if a director chooses "Yes" to the first question about using the USCM app... but I'm not sure if this would cause an issue for a few projects)...
+      </div>
+    
+    
+    
+    
+     -->
+    
     <p class="legend">
       	Fields with the <%= image_tag('required.png') %> are required.
    	</p>
-
+    
     <hr />
-
+    
+    <div class="field required">
+      <%= f.label :use_provided_application, 'Are you using the USCM Summer Project Online Application we provide?' %>
+      <%= f.select :use_provided_application, [['No',false],['Yes',true]] %>
+    </div>
+      
     <div id="application_questions" style="<%= @project.use_provided_application? ? '' : 'display:none' %>">
-
-      <%= hidden_field_tag 'sp_project[partner_region_only]', false %>
+  
+      <div class="field required">
+        <%= f.label :partner_region_only, 'Accept from Partner Region(s) Only' %>
+        <%= f.select :partner_region_only, [['No',false],['Yes',true]] %>
+      </div>
       <div class="field required">
         <%= f.label :apply_by_date, 'Date Students Must Apply By' %>
         <%= calendar_date_select_tag 'sp_project[apply_by_date]', @project.apply_by_date %>
       </div>
-
+        
       <h3>Basic information <%= tip('This includes name, address, contact information, emergency contact information, etc. The international version asks additional questions related to passport information.] (automatically populate US or international, but make it editable') %></h3>
-
-      <%= f.select :basic_info_question_sheet_id, QuestionSheet.active.where("label like '%Basic%'").order('label').collect {|qs| [qs.label, qs.id]} %>
-
-      <h3>Application questions <%= tip('Choose the template that best matches your type of project. While most questions are the same, there are variations based on different types of projects. If there is a need to create a new template  email projects@studentlife.org.nz') %> </h3>
-
-      <%= f.select :template_question_sheet_id, QuestionSheet.active.where("label like '%Template%'").order('label').collect {|qs| [qs.label, qs.id]} %>
-
-      <h3>Customizable project-specific questions <%= tip('You can add up to five customizable questions to the application that are specific only for your summer project. A few thoughts: Clarify if the question is for acceptance (required by all), or is just for further information – for example: “Optional: Do you have lifeguard certification?” Please remember that questions need to not be biased or discriminatory. If you have any questions, ask your regional or ministry summer project coordinator or email projects@studentlife.org.nz') %></h3>
+      
+      <%= f.select :basic_info_question_sheet_id, Fe::QuestionSheet.active.where("label like '%Basic%'").order('label').collect {|qs| [qs.label, qs.id]} %>
+          
+      <h3>Application questions <%= tip('Choose the template that best matches your type of project. While most questions are the same, there are variations based on different types of projects. If there is a need to create a new template  email summer.missions@cru.org') %> </h3>
+      
+      <%= f.select :template_question_sheet_id, Fe::QuestionSheet.active.where("label like '%Template%'").order('label').collect {|qs| [qs.label, qs.id]} %>
+      
+      <h3>Customizable project-specific questions <%= tip('You can add up to five customizable questions to the application that are specific only for your summer project. A few thoughts: Clarify if the question is for acceptance (required by all), or is just for further information – for example: “Optional: Do you have lifeguard certification?” Please remember that questions need to not be biased or discriminatory. If you have any questions, ask your regional or ministry summer project coordinator or email summer.missions@cru.org') %></h3>
       <% if @project.new_record? %>
         After you save this new project, you can add custom questions.
       <% else %>
-        <% if sp_user.can_edit_questionnaire? %>
-
+        <% if sp_user.can_edit_questionnaire? %>  
+      
           <% @questions.each_with_index do |question, i| %>
             <div class="multifield" style="<%= (i != 0 && question.label.blank?) ? 'display:none' : '' -%>" id="question_<%= i %>">
               <label>Custom Question:</label>

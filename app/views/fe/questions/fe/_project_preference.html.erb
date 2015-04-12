@@ -1,0 +1,4 @@
+<%= select_tag "answers[#{project_preference.id}]",
+  options_for_select([""] + SpProject.uses_application.open.order('name').collect {|p| [p.name, p.id]}, project_preference.response(@answer_sheet)),
+  :class => 'select ' + project_preference.validation_class(@answer_sheet), :disabled => @answer_sheet.frozen?&&@reference.nil?, :readonly => @answer_sheet.frozen?&&@reference.nil?,
+  :onchange => "$('##{dom_id(project_preference)}').val($(this).val())" %>

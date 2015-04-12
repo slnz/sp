@@ -71,6 +71,7 @@ $(function() {
     }).keyup(function() {
       // Clear the other search fields
       $('#dashboardlist .search').not(this).val('');
+      params = {closed: params['closed']}
       param = $(this).attr('name');
       params[param] = $(this).val();
       $('#spinner_' + param).show();
@@ -84,10 +85,10 @@ $(function() {
 
   // Row hover actions
   $(document).on('mouseenter', '.project_row', function() {
-    $('.rollovershow', this).show();
+    $('.rollovershow, .rollovershow_nostyle', this).show();
   }).on('mouseleave', '.project_row', function() {
-      $('.rollovershow', this).hide();
-    });
+    $('.rollovershow, .rollovershow_nostyle', this).hide();
+  });
   // END row hover actions
 
   // Edit checkboxes
@@ -167,12 +168,6 @@ $(function() {
   });
   // END Leader Info
 
-  $(document).on('mouseenter', 'td:not(.sidebar) > .leader_cell', function() {
-    $('.buttons', this).show();
-  }).on('mouseleave', function() {
-      $('.buttons', this).hide();
-    });
-
   // Edit Leader
   $(document).on('click', "a.edit-leader", function() {
     id = $(this).attr('data-id');
@@ -189,7 +184,7 @@ $(function() {
     el.dialog({
       title: name,
       resizable: false,
-      height:525,
+      height:600,
       width:400,
       modal: true,
       buttons: {
@@ -205,8 +200,6 @@ $(function() {
     source: function(request, response) {
       // var term = request.term;
       $('#spinner_leader_search').show();
-      console.log(form.serialize())
-      console.log($('#leader_search_results'))
       $.ajax({url: form.attr('action'),
         data: form.serialize(),
         dataType: 'html',

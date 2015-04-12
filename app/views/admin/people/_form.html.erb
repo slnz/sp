@@ -1,17 +1,17 @@
 <% person = f.object %>
 <%= error_messages_for person %>
-<table border="0" cellspacing="0" cellpadding="0" class="modal_person_info">
+<table border="0" cellspacing="0" cellpadding="0" class="bmodal_person_info">
   <tr>
     <td class="left">First:</td>
-    <td><%= f.text_field :firstName %></td>
+    <td><%= f.text_field :first_name %></td>
   </tr>
   <tr>
     <td class="left">Last:</td>
-    <td><%= f.text_field :lastName %></td>
+    <td><%= f.text_field :last_name %></td>
   </tr>
   <tr>
     <td class="left">Preferred:</td>
-    <td><%= f.text_field :preferredName %></td>
+    <td><%= f.text_field :preferred_name %></td>
   </tr>
   <% if @project_id && @project_id != 0 %>
       <tr>
@@ -40,14 +40,14 @@
       <tr>
         <td class="left">Phone:</td>
         <td>
-          <%= af.text_field :homePhone %> (home)<br/>
-          <%= af.text_field :cellPhone %> (cell)<br/>
-          <%= af.text_field :workPhone %> (work)
+          <%= af.text_field :home_phone %> (home)<br/>
+          <%= af.text_field :cell_phone %> (cell)<br/>
+          <%= af.text_field :work_phone %> (work)
         </td>
       </tr>
       <tr>
         <td class="left">Email:</td>
-        <td><%= af.text_field :email %></td>
+        <td><%= f.text_field :email %></td>
       </tr>
       <tr>
         <td class="left">Address:</td>

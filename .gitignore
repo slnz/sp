@@ -19,3 +19,8 @@ coverage
 vendor/ruby
 public/cache
 public/assets
+config/redis.yml
+.env
+.vagrant
+db/summer_missions.dmp
+notes.txt

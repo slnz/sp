@@ -2,11 +2,17 @@
 development:
   session_secret: ENV['session_secret']
   siebel_token: siebel_token
+  infobase_url: 'https://infobase.uscm.org/api/v1'
+  infobase_token: '43ff2e0asdf1345g0f95c49a67a13c356'
 
 test:
   session_secret: ENV['session_secret']
   siebel_token: siebel_token
+  infobase_url: 'https://infobase.uscm.org/api/v1'
+  infobase_token: '43ff2e0asdf1345g0f95c49a67a13c356'
 
 production:
   session_secret: ENV['session_secret']
   siebel_token: siebel_token
+  infobase_url: 'https://infobase.uscm.org/api/v1'
+  infobase_token: '43ff2e0asdf1345g0f95c49a67a13c356'

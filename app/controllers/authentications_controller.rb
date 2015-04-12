@@ -1,6 +1,7 @@
 class AuthenticationsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
   skip_before_filter :ssm_login_required, :check_authorization, :except => :destroy
+
   def index
     if params[:ticket].present? 
       login_from_cas_ticket
@@ -13,14 +14,14 @@ class AuthenticationsController < ApplicationController
   
   def create
     omniauth = request.env["omniauth.auth"]
-    unless omniauth['info']
+    unless omniauth && omniauth['info']
       redirect_to '/' and return
     end
     omniauth['info']['email'] ||= omniauth['extra']['raw_info']['email'] if omniauth['extra'] && omniauth['extra']['raw_info']
     if omniauth
       authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid']) 
       Authentication.transaction do
-        if authentication
+        if authentication && authentication.user
           authentication.update_attribute(:token, omniauth['credentials']['token']) if omniauth['credentials']
           flash[:notice] = "Signed in successfully."
           authentication.user.create_person_from_omniauth(omniauth['info'])
@@ -30,13 +31,16 @@ class AuthenticationsController < ApplicationController
           flash[:notice] = "Authentication successful."
           redirect_to authentications_url and return
         else
-          user = User.new
-          user.apply_omniauth(omniauth)
+          authentication.destroy if authentication
           # If we have an email address, we should see if there's an existing account with that email.
-          if user.username.present? && old_user = User.find_by_username(user.username)
+          username = omniauth['info']['email']
+          username = "#{omniauth['uid']}@#{omniauth[:provider]}" if !username.present?
+          if old_user = User.find_by(username: [username, username.downcase, username.upcase])
             user = old_user
-            user.apply_omniauth(omniauth)
+          else
+            user = User.new
           end
+          user.apply_omniauth(omniauth)
           if user.save && (user.person || omniauth['info']['first_name'])
             user.create_person_from_omniauth(omniauth['info'])
             flash[:notice] = "Signed in successfully."

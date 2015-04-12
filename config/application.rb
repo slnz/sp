@@ -16,10 +16,11 @@ module Sp2
     config.autoload_paths += %W(#{config.root}/app/controllers/concerns )
     config.assets.enabled = true
     config.assets.version = '1.0'
+
     # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
     #config.assets.precompile += [/(?:\/|\\|\A).*\.css/]
     config.assets.precompile += [/\A[a-z0-9]\w+.(css|js)\z/]
-    config.assets.precompile += ['ie7-admin.css', 'admin_manifest.css', 'qe_admin.css']
+    config.assets.precompile += ['ie7-admin.css', 'admin_manifest.css', 'qe_admin.css', 'print.css', 'spfe.admin.css']
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -52,6 +53,10 @@ module Sp2
     rescue
       config.cache_store = :dalli_store, '127.0.0.1'
     end
+
+    config.action_dispatch.default_headers = {
+        'X-XSS-Protection' => '1; mode=block',
+    }
 
   end
 end
