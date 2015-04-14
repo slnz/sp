@@ -4,8 +4,7 @@ rescue LoadError
   # do nothing
 end
 class SpDonation < ActiveRecord::Base
-
-  scope :for_year, lambda {|year| where(["donation_date > ?", Time.new(year - 1,10,1)])}
+  scope :for_year, lambda { |year| where(['donation_date > ?', Time.new(year - 1, 10, 1)]) }
   MEDIUMS = {
     'AE'  => 'American Express',
     'CCK' => 'Cashiers Check',
@@ -30,28 +29,28 @@ class SpDonation < ActiveRecord::Base
     return 0 unless designation_number.present?
     if year
       SpDonation.where(designation_number: designation_number)
-        .where("donation_date > ?", Time.new(year - 1,10,1)).sum(:amount) || 0
+        .where('donation_date > ?', Time.new(year - 1, 10, 1)).sum(:amount) || 0
     else
       SpDonation.where(designation_number: designation_number).sum(:amount) || 0
     end
   end
 
   def self.get_balances(designation_numbers)
-    return [] unless !designation_numbers.empty?
+    return [] if designation_numbers.empty?
     sums = SpDonation.sum(:amount,
-      :conditions => ["designation_number in (?)", designation_numbers],
-      :group => :designation_number)
-    balances = Hash.new
+                          conditions: ['designation_number in (?)', designation_numbers],
+                          group: :designation_number)
+    balances = {}
     sums.each do |designation_number, amount|
       balances[designation_number] = amount
     end
-    return balances
+    balances
   end
 
   def self.update_from_siebel
     total_donations = 0
-    start_date = 2.years.ago.strftime("%Y-%m-%d")
-    end_date = Time.now.strftime("%Y-%m-%d")
+    start_date = 2.years.ago.strftime('%Y-%m-%d')
+    end_date = Time.now.strftime('%Y-%m-%d')
 
     # last_date = SpDonation.maximum(:donation_date) || 2.years.ago
     SpDesignationNumber.where(year: SpApplication.year).find_each do |dn|
@@ -67,17 +66,17 @@ class SpDonation < ActiveRecord::Base
           next
         end
 
-        donors = Hash[SiebelDonations::Donor.find(having_given_to_designations: dn.designation_number).collect {|sd| [sd.id, sd] }]
+        donors = Hash[SiebelDonations::Donor.find(having_given_to_designations: dn.designation_number).collect { |sd| [sd.id, sd] }]
 
         donations.each do |donation|
           attributes = {
-                         designation_number: donation.designation,
-                         amount: donation.amount,
-                         medium_type: donation.payment_method,
-                         donation_id: donation.id
-                       }
+            designation_number: donation.designation,
+            amount: donation.amount,
+            medium_type: donation.payment_method,
+            donation_id: donation.id
+          }
 
-          Retryable.retryable :on => [ActiveRecord::RecordNotUnique], :times => 3 do
+          Retryable.retryable on: [ActiveRecord::RecordNotUnique], times: 3 do
             if old_donation = SpDonation.find_by_donation_id(donation.id)
               old_donation.update_attributes(attributes)
             else
@@ -97,7 +96,7 @@ class SpDonation < ActiveRecord::Base
               email_address = contact.primary_email_address || SiebelDonations::EmailAddress.new
               phone_number = contact.primary_phone_number || SiebelDonations::PhoneNumber.new
 
-              attributes.merge!({
+              attributes.merge!(
                 people_id: donor.id,
                 donor_name: donor.account_name,
                 donation_date: donation.donation_date,
@@ -108,8 +107,8 @@ class SpDonation < ActiveRecord::Base
                 state: address.state,
                 zip: address.zip,
                 phone: phone_number.phone,
-                email_address: email_address.email,
-              })
+                email_address: email_address.email
+              )
 
               SpDonation.create(attributes)
             end
@@ -119,8 +118,8 @@ class SpDonation < ActiveRecord::Base
 
         # Remove any donations not found in the update
         SpDonation.where(designation_number: dn.designation_number)
-                  .where("donation_date > ? AND donation_id NOT IN(?)", 2.years.ago, donation_ids)
-                  .delete_all if donation_ids.present?
+          .where('donation_date > ? AND donation_id NOT IN(?)', 2.years.ago, donation_ids)
+          .delete_all if donation_ids.present?
 
         total_donations += donations.length
       end
@@ -129,15 +128,13 @@ class SpDonation < ActiveRecord::Base
     total_donations
   end
 
-
-	def	medium
-		MEDIUMS[medium_type]
-	end
+  def	medium
+    MEDIUMS[medium_type]
+  end
 
   def address
     street = [address1, address2, address3]
     street.reject!(&:blank?)
     "#{street.join('<br/>')}<br/>#{city}, #{state} #{zip}"
   end
-
 end

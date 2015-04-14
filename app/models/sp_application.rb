@@ -2,7 +2,7 @@ require 'aasm'
 
 require 'digest/md5'
 class SpApplication < Fe::Application
-  #include Fe::AnswerSheetConcern
+  # include Fe::AnswerSheetConcern
   include CruLib::GlobalRegistryRelationshipMethods
   include Sidekiq::Worker
   include AASM
@@ -12,169 +12,171 @@ class SpApplication < Fe::Application
   COST = 25
 
   before_create :create_answer_sheet_question_sheet
-  has_many :payments, foreign_key: "application_id", class_name: "Fe::Payment"
+  has_many :payments, foreign_key: 'application_id', class_name: 'Fe::Payment'
 
   sidekiq_options unique: true
 
-  aasm :initial => :started, :column => :status do
-
+  aasm initial: :started, column: :status do
     # State machine stuff
     state :started
-    state :submitted, :enter => Proc.new { |app|
+    state :submitted, enter: proc { |app|
       Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
-          "Application Submitted"
+          'Application Submitted'
       ).deliver if app.email.present? # LIQUID TEMPLATE NAME
       app.submitted_at = Time.now
       app.previous_status = app.status
     }
 
-    state :ready, :enter => Proc.new { |app|
+    state :ready, enter: proc { |app|
       app.completed_at ||= Time.now
       Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
-          "Application Completed"
+          'Application Completed'
       ).deliver if app.email.present?
       app.previous_status = app.status
     }
 
-    state :unsubmitted, :enter => Proc.new { |app|
+    state :unsubmitted, enter: proc { |app|
       Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
-          "Application Unsubmitted"
+          'Application Unsubmitted'
       ).deliver if app.email.present?
       app.previous_status = app.status
     }
 
-    state :withdrawn, :enter => Proc.new { |app|
+    state :withdrawn, enter: proc { |app|
       Fe::Notifier.notification(
           app.email, # RECIPIENTS
           Fe.from_email, # FROM
-          "Application Withdrawn"
+          'Application Withdrawn'
       ).deliver if app.email.present?
       app.withdrawn_at = Time.now
       app.previous_status = app.status
     }
 
-    state :accepted_as_student_staff, :enter => Proc.new { |app|
+    state :accepted_as_student_staff, enter: proc { |app|
       app.accept
     }
 
-    state :accepted_as_participant, :enter => Proc.new { |app|
+    state :accepted_as_participant, enter: proc { |app|
       app.accept
     }
 
-    state :declined, :enter => Proc.new { |app|
+    state :declined, enter: proc { |app|
       app.previous_status = app.status
     }
 
     event :submit do
-      transitions :to => :submitted, :from => :started
-      transitions :to => :submitted, :from => :unsubmitted
-      transitions :to => :submitted, :from => :withdrawn
-      transitions :to => :submitted, :from => :ready
+      transitions to: :submitted, from: :started
+      transitions to: :submitted, from: :unsubmitted
+      transitions to: :submitted, from: :withdrawn
+      transitions to: :submitted, from: :ready
       # Handle when user clicks to edit references, then clicks submit
-      transitions :to => :submitted, :from => :submitted
+      transitions to: :submitted, from: :submitted
     end
 
     event :withdraw do
-      transitions :to => :withdrawn, :from => :started
-      transitions :to => :withdrawn, :from => :submitted
-      transitions :to => :withdrawn, :from => :ready
-      transitions :to => :withdrawn, :from => :unsubmitted
-      transitions :to => :withdrawn, :from => :declined
-      transitions :to => :withdrawn, :from => :accepted_as_student_staff
-      transitions :to => :withdrawn, :from => :accepted_as_participant
+      transitions to: :withdrawn, from: :started
+      transitions to: :withdrawn, from: :submitted
+      transitions to: :withdrawn, from: :ready
+      transitions to: :withdrawn, from: :unsubmitted
+      transitions to: :withdrawn, from: :declined
+      transitions to: :withdrawn, from: :accepted_as_student_staff
+      transitions to: :withdrawn, from: :accepted_as_participant
     end
 
     event :unsubmit do
-      transitions :to => :unsubmitted, :from => :submitted
-      transitions :to => :unsubmitted, :from => :withdrawn
-      transitions :to => :unsubmitted, :from => :ready
+      transitions to: :unsubmitted, from: :submitted
+      transitions to: :unsubmitted, from: :withdrawn
+      transitions to: :unsubmitted, from: :ready
     end
 
     event :complete do
-      transitions :to => :ready, :from => :submitted, :guard => :has_paid?
-      transitions :to => :ready, :from => :unsubmitted, :guard => :has_paid?
-      transitions :to => :ready, :from => :started, :guard => :has_paid?
-      transitions :to => :ready, :from => :withdrawn, :guard => :has_paid?
-      transitions :to => :ready, :from => :declined, :guard => :has_paid?
-      transitions :to => :ready, :from => :accepted_as_student_staff, :guard => :has_paid?
-      transitions :to => :ready, :from => :accepted_as_participant, :guard => :has_paid?
+      transitions to: :ready, from: :submitted, guard: :has_paid?
+      transitions to: :ready, from: :unsubmitted, guard: :has_paid?
+      transitions to: :ready, from: :started, guard: :has_paid?
+      transitions to: :ready, from: :withdrawn, guard: :has_paid?
+      transitions to: :ready, from: :declined, guard: :has_paid?
+      transitions to: :ready, from: :accepted_as_student_staff, guard: :has_paid?
+      transitions to: :ready, from: :accepted_as_participant, guard: :has_paid?
     end
 
     event :accept_as_student_staff do
-      transitions :to => :accepted_as_student_staff, :from => :ready, :guard => :has_paid?
-      transitions :to => :accepted_as_student_staff, :from => :started, :guard => :has_paid?
-      transitions :to => :accepted_as_student_staff, :from => :withdrawn, :guard => :has_paid?
-      transitions :to => :accepted_as_student_staff, :from => :declined, :guard => :has_paid?
-      transitions :to => :accepted_as_student_staff, :from => :submitted, :guard => :has_paid?
-      transitions :to => :accepted_as_student_staff, :from => :accepted_as_participant, :guard => :has_paid?
+      transitions to: :accepted_as_student_staff, from: :ready, guard: :has_paid?
+      transitions to: :accepted_as_student_staff, from: :started, guard: :has_paid?
+      transitions to: :accepted_as_student_staff, from: :withdrawn, guard: :has_paid?
+      transitions to: :accepted_as_student_staff, from: :declined, guard: :has_paid?
+      transitions to: :accepted_as_student_staff, from: :submitted, guard: :has_paid?
+      transitions to: :accepted_as_student_staff, from: :accepted_as_participant, guard: :has_paid?
     end
 
     event :accept_as_participant do
-      transitions :to => :accepted_as_participant, :from => :ready, :guard => :has_paid?
-      transitions :to => :accepted_as_participant, :from => :started, :guard => :has_paid?
-      transitions :to => :accepted_as_participant, :from => :withdrawn, :guard => :has_paid?
-      transitions :to => :accepted_as_participant, :from => :declined, :guard => :has_paid?
-      transitions :to => :accepted_as_participant, :from => :submitted, :guard => :has_paid?
-      transitions :to => :accepted_as_participant, :from => :accepted_as_student_staff, :guard => :has_paid?
+      transitions to: :accepted_as_participant, from: :ready, guard: :has_paid?
+      transitions to: :accepted_as_participant, from: :started, guard: :has_paid?
+      transitions to: :accepted_as_participant, from: :withdrawn, guard: :has_paid?
+      transitions to: :accepted_as_participant, from: :declined, guard: :has_paid?
+      transitions to: :accepted_as_participant, from: :submitted, guard: :has_paid?
+      transitions to: :accepted_as_participant, from: :accepted_as_student_staff, guard: :has_paid?
     end
 
     event :decline do
-      transitions :to => :declined, :from => :started
-      transitions :to => :declined, :from => :submitted
-      transitions :to => :declined, :from => :ready
-      transitions :to => :declined, :from => :accepted_as_student_staff
-      transitions :to => :declined, :from => :accepted_as_participant
+      transitions to: :declined, from: :started
+      transitions to: :declined, from: :submitted
+      transitions to: :declined, from: :ready
+      transitions to: :declined, from: :accepted_as_student_staff
+      transitions to: :declined, from: :accepted_as_participant
     end
   end
 
   belongs_to :person, class_name: '::Person'
   alias_method :applicant, :person # Fe expects applicant
 
-  belongs_to :project, :class_name => 'SpProject', :foreign_key => :project_id
+  belongs_to :project, class_name: 'SpProject', foreign_key: :project_id
 
-  belongs_to :preference1, :class_name => 'SpProject', :foreign_key => :preference1_id
-  belongs_to :preference2, :class_name => 'SpProject', :foreign_key => :preference2_id
-  belongs_to :preference3, :class_name => 'SpProject', :foreign_key => :preference3_id
-  belongs_to :preference4, :class_name => 'SpProject', :foreign_key => :preference4_id
-  belongs_to :preference5, :class_name => 'SpProject', :foreign_key => :preference5_id
-  belongs_to :current_project_queue, :class_name => 'SpProject', :foreign_key => :current_project_queue_id
-  has_one :evaluation, :class_name => 'SpEvaluation', :foreign_key => :application_id
+  belongs_to :preference1, class_name: 'SpProject', foreign_key: :preference1_id
+  belongs_to :preference2, class_name: 'SpProject', foreign_key: :preference2_id
+  belongs_to :preference3, class_name: 'SpProject', foreign_key: :preference3_id
+  belongs_to :preference4, class_name: 'SpProject', foreign_key: :preference4_id
+  belongs_to :preference5, class_name: 'SpProject', foreign_key: :preference5_id
+  belongs_to :current_project_queue, class_name: 'SpProject', foreign_key: :current_project_queue_id
+  has_one :evaluation, class_name: 'SpEvaluation', foreign_key: :application_id
 
-  scope :for_year, proc { |year| where(:year => year) }
-  scope :preferrenced_project, proc { |project_id| where(["project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?", project_id, project_id, project_id, project_id]) }
+  scope :for_year, proc { |year| where(year: year) }
+  scope :preferrenced_project, proc { |project_id| where(['project_id = ? OR preference1_id = ? OR preference2_id = ? OR preference3_id = ?', project_id, project_id, project_id, project_id]) }
 
-  scope :preferred_project, proc { |project_id| {:conditions => ["project_id = ?", project_id],
-                                                 :include => :person} }
+  scope :preferred_project, proc { |project_id|
+    { conditions: ['project_id = ?', project_id],
+      include: :person }
+  }
   scope :not_staff, -> { where("ministry_person.\"isStaff\" <> 't' OR ministry_person.\"isStaff\" Is Null").joins(:person).references(:person) }
   before_create :set_su_code
   after_save :unsubmit_on_project_change, :complete, :send_acceptance_email, :log_changed_project, :update_project_counts
 
   def next_states_for_events
-    self.class.aasm.events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(("may_" + event.name.to_s + "?").to_sym) }.collect {
-        |e| [e.transitions_from_state(status.to_sym).first.to.to_s.humanize, e.name] }
+    self.class.aasm.events.values.select { |event| event.transitions_from_state?(status.to_sym) && send(('may_' + event.name.to_s + '?').to_sym) }.collect do
+        |e| [e.transitions_from_state(status.to_sym).first.to.to_s.humanize, e.name]
+    end
   end
 
   def designation_number=(val)
-    if designation = SpDesignationNumber.where(:person_id => self.person_id, :project_id => self.project_id, :year => SpApplication.year).first
+    if designation = SpDesignationNumber.where(person_id: person_id, project_id: project_id, year: SpApplication.year).first
       designation.designation_number = val
     else
       designation = SpDesignationNumber.new(
-          :person_id => self.person_id,
-          :project_id => self.project_id,
-          :designation_number => val,
-          :year => SpApplication.year)
+          person_id: person_id,
+          project_id: project_id,
+          designation_number: val,
+          year: SpApplication.year)
     end
     designation.save!
   end
 
   def designation_number(year = SpApplication.year)
-    if designation = SpDesignationNumber.where(:person_id => self.person_id, :project_id => self.project_id, :year => year).first
+    if designation = SpDesignationNumber.where(person_id: person_id, project_id: project_id, year: year).first
       designation.designation_number.to_s
     else
       nil
@@ -182,12 +184,12 @@ class SpApplication < Fe::Application
   end
 
   def donations
-    SpDonation.where(:designation_number => SpDesignationNumber.where(:person_id => self.person_id, :project_id => self.project_id).collect(&:designation_number))
+    SpDonation.where(designation_number: SpDesignationNumber.where(person_id: person_id, project_id: project_id).collect(&:designation_number))
   end
 
   def accept
     self.accepted_at = Time.now
-    self.previous_status = self.status
+    self.previous_status = status
     async(:create_relay_account_if_needed)
   end
 
@@ -196,7 +198,7 @@ class SpApplication < Fe::Application
     return if is_secure?
     return unless designation
     return if has_give_site?
-    
+
     create_relay_account_if_needed
     set_designation_number_in_relay
     set_role_in_ldap
@@ -204,12 +206,12 @@ class SpApplication < Fe::Application
     client.push_to_stellent(self)
 
     Fe::Notifier.notification(person.email_address, # RECIPIENTS
-                          Fe.from_email, # FROM
-                          "Giving site created", # LIQUID TEMPLATE NAME
-                          {'first_name' => person.nickname,
-                           'site_url' => "#{APP_CONFIG['spgive_url']}/#{designation}",
-                           'username' => person.user.username,
-                           'password' => person.user.password_plain}).deliver
+                              Fe.from_email, # FROM
+                              'Giving site created', # LIQUID TEMPLATE NAME
+                              'first_name' => person.nickname,
+                              'site_url' => "#{APP_CONFIG['spgive_url']}/#{designation}",
+                              'username' => person.user.username,
+                              'password' => person.user.password_plain).deliver
 
     update_column(:has_give_site, true)
   end
@@ -248,7 +250,7 @@ class SpApplication < Fe::Application
     return unless designation_number.present? && person.user.globallyUniqueID.present?
 
     unless RelayApiClient::Base.set_designation_number(person.user.globallyUniqueID, designation_number)
-      raise 'failed to set designation number in relay'
+      fail 'failed to set designation number in relay'
     end
   end
 
@@ -259,13 +261,13 @@ class SpApplication < Fe::Application
                                          role: STELLENT_ROLE,
                                          system_id: 'missions',
                                          system_password: APP_CONFIG['ldap_password'])
-      raise 'failed to set role in ldap via relay'
+      fail 'failed to set role in ldap via relay'
     end
   end
 
   def validates
-    if ((status == 'accepted_as_student_staff' || status == 'accepted_as_participant') && project_id.nil?)
-      errors.add_to_base("You must specify which project you are accepting this applicant to.")
+    if (status == 'accepted_as_student_staff' || status == 'accepted_as_participant') && project_id.nil?
+      errors.add_to_base('You must specify which project you are accepting this applicant to.')
     end
   end
 
@@ -275,15 +277,15 @@ class SpApplication < Fe::Application
   end
 
   def self.deadline1
-    Time.parse((SpApplication.year - 1).to_s + "/12/11 00:00:00 PST")
+    Time.parse((SpApplication.year - 1).to_s + '/12/11 00:00:00 PST')
   end
 
   def self.deadline2
-    Time.parse(SpApplication.year.to_s + "/01/25 00:00:00 PST")
+    Time.parse(SpApplication.year.to_s + '/01/25 00:00:00 PST')
   end
 
   def self.deadline3
-    Time.parse(SpApplication.year.to_s + "/02/25 00:00:00 PST")
+    Time.parse(SpApplication.year.to_s + '/02/25 00:00:00 PST')
   end
 
   def name
@@ -306,7 +308,7 @@ class SpApplication < Fe::Application
         return 3
       end
     end
-    return 0
+    0
   end
 
   def project_cost
@@ -320,16 +322,16 @@ class SpApplication < Fe::Application
   # Get project_id (project_id | preference1_id | preference2_id | preference3_id | preference4_id | preference5_id)
   def get_project_id
     unless project_id = self.project_id
-      if self.preference5_id
-        project_id = self.preference5_id
-      elsif self.preference4_id
-        project_id = self.preference4_id
-      elsif self.preference3_id
-        project_id = self.preference3_id
-      elsif self.preference2_id
-        project_id = self.preference2_id
-      elsif self.preference1_id
-        project_id = self.preference1_id
+      if preference5_id
+        project_id = preference5_id
+      elsif preference4_id
+        project_id = preference4_id
+      elsif preference3_id
+        project_id = preference3_id
+      elsif preference2_id
+        project_id = preference2_id
+      elsif preference1_id
+        project_id = preference1_id
       end
     end
     project_id
@@ -337,7 +339,7 @@ class SpApplication < Fe::Application
 
   # Get designation_number
   def get_designation_number(year = SpApplication.year)
-    SpDesignationNumber.find_by_person_id_and_project_id_and_year(self.person_id, self.get_project_id, year).try(:designation_number)
+    SpDesignationNumber.find_by_person_id_and_project_id_and_year(person_id, get_project_id, year).try(:designation_number)
   end
 
   # The statuses that mean an application has NOT been submitted
@@ -377,16 +379,16 @@ class SpApplication < Fe::Application
     SpApplication.unsubmitted_statuses | SpApplication.not_ready_statuses | SpApplication.ready_statuses | SpApplication.accepted_statuses | SpApplication.not_going_statuses
   end
 
-  scope :ascend_by_accepted, -> { order("sp_applications.accepted_at") }
-  scope :descend_by_accepted, -> { order("sp_applications.accepted_at desc") }
-  scope :ascend_by_ready, -> { order("sp_applications.completed_at") }
-  scope :descend_by_ready, -> { order("sp_applications.completed_at desc") }
-  scope :ascend_by_submitted, -> { order("sp_applications.submitted_at") }
-  scope :descend_by_submitted, -> { order("sp_applications.submitted_at desc") }
-  scope :ascend_by_started, -> { order("sp_applications.created_at") }
-  scope :descend_by_started, -> { order("sp_applications.created_at desc") }
-  scope :ascend_by_name, -> { joins(:person).order("last_name, first_name") }
-  scope :descend_by_name, -> { joins(:person).order("last_name desc, first_name desc") }
+  scope :ascend_by_accepted, -> { order('sp_applications.accepted_at') }
+  scope :descend_by_accepted, -> { order('sp_applications.accepted_at desc') }
+  scope :ascend_by_ready, -> { order('sp_applications.completed_at') }
+  scope :descend_by_ready, -> { order('sp_applications.completed_at desc') }
+  scope :ascend_by_submitted, -> { order('sp_applications.submitted_at') }
+  scope :descend_by_submitted, -> { order('sp_applications.submitted_at desc') }
+  scope :ascend_by_started, -> { order('sp_applications.created_at') }
+  scope :descend_by_started, -> { order('sp_applications.created_at desc') }
+  scope :ascend_by_name, -> { joins(:person).order('last_name, first_name') }
+  scope :descend_by_name, -> { joins(:person).order('last_name desc, first_name desc') }
   scope :accepted, -> { where('sp_applications.status' => SpApplication.accepted_statuses) }
   scope :accepted_participants, -> { where('sp_applications.status' => 'accepted_as_participant') }
   scope :accepted_student_staff, -> { where('sp_applications.status' => 'accepted_as_student_staff') }
@@ -399,16 +401,16 @@ class SpApplication < Fe::Application
   scope :male, -> { where("ministry_person.gender = '1'").joins(:person) }
   scope :female, -> { where("ministry_person.gender <> '1'").joins(:person) }
 
-  delegate :campus, :to => :person
+  delegate :campus, to: :person
 
   def self.payment_deadline
-    Time.parse("#{SpApplication.year.to_s}-02-25 03:00")
+    Time.parse("#{SpApplication.year}-02-25 03:00")
   end
 
   def has_paid?
-    return true if self.payments.detect(&:approved?)
+    return true if payments.detect(&:approved?)
     return true unless question_sheets.collect(&:questions).flatten.detect { |q| q.is_a?(Fe::PaymentQuestion) && q.required? }
-    return false
+    false
   end
 
   def accepted?
@@ -416,19 +418,19 @@ class SpApplication < Fe::Application
   end
 
   def paid_at
-    self.payments.each do |payment|
+    payments.each do |payment|
       return payment.updated_at if payment.approved?
     end
-    return nil
+    nil
   end
 
   def waive_fee!
-    self.payments.create!(:status => "Approved", :payment_type => 'Waived')
-    self.complete #Check to see if application is complete
+    payments.create!(status: 'Approved', payment_type: 'Waived')
+    complete # Check to see if application is complete
   end
 
-  def self.questionnaire()
-    @@questionnaire ||= Questionnaire.find_by_id(1, :include => :pages, :order => 'sp_questionnaire_pages.position')
+  def self.questionnaire
+    @@questionnaire ||= Questionnaire.find_by_id(1, include: :pages, order: 'sp_questionnaire_pages.position')
   end
 
   def complete(ref = nil)
@@ -440,7 +442,7 @@ class SpApplication < Fe::Application
       end
     end
     return false unless self.has_paid?
-    return self.complete!
+    self.complete!
   end
 
   def set_su_code
@@ -450,13 +452,13 @@ class SpApplication < Fe::Application
   # The :frozen? method lets the form engine know to not allow
   # the user to change the answer to a question.
   def frozen?
-    return @frozen unless @frozen == nil
-    @frozen = !%w(started unsubmitted).include?(self.status) &&
-                !Thread.current[:user].try(:sp_user).try(:can_su_application?)
+    return @frozen unless @frozen.nil?
+    @frozen = !%w(started unsubmitted).include?(status) &&
+              !Thread.current[:user].try(:sp_user).try(:can_su_application?)
   end
 
   def can_change_references?
-    %w(started unsubmitted submitted).include?(self.status)
+    %w(started unsubmitted submitted).include?(status)
   end
 
   def available_date
@@ -496,11 +498,11 @@ class SpApplication < Fe::Application
   end
 
   def continuing_school?
-    @continuing_school ||= is_true(get_answer(57)) ? "Yes" : "No"
+    @continuing_school ||= is_true(get_answer(57)) ? 'Yes' : 'No'
   end
 
   def has_passport?
-    @has_passport ||= is_true(get_answer(409)) ? "Yes" : "No"
+    @has_passport ||= is_true(get_answer(409)) ? 'Yes' : 'No'
   end
 
   def activities_on_campus
@@ -585,38 +587,38 @@ class SpApplication < Fe::Application
       current_person = Thread.current[:user].try(:person) || Person.new
       old_project = SpProject.find(changes['project_id'].first)
       new_project = SpProject.find(changes['project_id'].last)
-      SpApplicationMove.create!(:application_id => id, :old_project_id => old_project.id, :new_project_id => new_project.id,
-                                :moved_by_person_id => current_person.id)
+      SpApplicationMove.create!(application_id: id, old_project_id: old_project.id, new_project_id: new_project.id,
+                                moved_by_person_id: current_person.id)
 
       # Move designation number
-      dn = SpDesignationNumber.where(:person_id => person_id, :project_id => old_project.id, :year => year).first
+      dn = SpDesignationNumber.where(person_id: person_id, project_id: old_project.id, year: year).first
       dn.update_attribute(:project_id, new_project.id) if dn
       designation_number = dn.present? ? dn.designation_number : nil
 
       # Notify old and new directors
       old_pds = [old_project.pd, old_project.apd, old_project.opd]
       new_pds = [new_project.pd, new_project.apd, new_project.opd]
-      recipients = old_pds.compact.empty? ? ["summer.missions@cru.org"] : old_pds.compact.collect(&:email)
-      recipients += new_pds.compact.empty? ? ["summer.missions@cru.org"] : new_pds.compact.collect(&:email)
+      recipients = old_pds.compact.empty? ? ['summer.missions@cru.org'] : old_pds.compact.collect(&:email)
+      recipients += new_pds.compact.empty? ? ['summer.missions@cru.org'] : new_pds.compact.collect(&:email)
       Fe::Notifier.notification(recipients.compact, # RECIPIENTS
                                 Fe.from_email, # FROM
-                                "Application Moved", # LIQUID TEMPLATE NAME
-                                {'applicant_name' => name,
-                                 'moved_by' => current_person.informal_full_name,
-                                 'original_project' => old_project.name,
-                                 'new_project' => new_project.name}).deliver
+                                'Application Moved', # LIQUID TEMPLATE NAME
+                                'applicant_name' => name,
+                                'moved_by' => current_person.informal_full_name,
+                                'original_project' => old_project.name,
+                                'new_project' => new_project.name).deliver
 
       if designation_number.present?
-        recipient = "summerprojectdonations@cru.org"
+        recipient = 'summerprojectdonations@cru.org'
         Fe::Notifier.notification(recipient, # RECIPIENTS
                                   Fe.from_email, # FROM
-                                  "Application Moved - Donation Services", # LIQUID TEMPLATE NAME
-                                  {'applicant_name' => name,
-                                   'designation_number' => designation_number,
-                                   'original_project' => old_project.name,
-                                   'original_chartfield' => old_project.scholarship_chartfield,
-                                   'new_project' => new_project.name,
-                                   'new_chartfield' => new_project.scholarship_chartfield}).deliver
+                                  'Application Moved - Donation Services', # LIQUID TEMPLATE NAME
+                                  'applicant_name' => name,
+                                  'designation_number' => designation_number,
+                                  'original_project' => old_project.name,
+                                  'original_chartfield' => old_project.scholarship_chartfield,
+                                  'new_project' => new_project.name,
+                                  'new_chartfield' => new_project.scholarship_chartfield).deliver
         regenerate_give_site
       end
 
@@ -627,7 +629,7 @@ class SpApplication < Fe::Application
   end
 
   def regenerate_give_site
-    self.update_column(:has_give_site, false)
+    update_column(:has_give_site, false)
     async(:set_up_give_site)
   end
 
@@ -644,9 +646,9 @@ class SpApplication < Fe::Application
     if project
       project.current_students_men -= 1 if person.is_male?
       project.current_students_women -= 1 unless person.is_male?
-      project.save(:validate => false)
+      project.save(validate: false)
     end
-    return project
+    project
   end
 
   def email_address
@@ -656,15 +658,15 @@ class SpApplication < Fe::Application
   alias_method :email, :email_address
 
   def account_balance
-    designation_no = self.get_designation_number
+    designation_no = get_designation_number
     SpDonation.get_balance(designation_no, year)
   end
 
   def self.send_status_emails
     logger.info('Sending application reminder emails')
     uncompleted_apps = SpApplication.select('app.*')
-    .where(['app.status in (?) and app.year = ? and proj.start_date > ?', SpApplication.uncompleted_statuses, SpApplication.year, Time.now])
-    .joins('as app inner join sp_projects as proj on (proj.id = app.preference1_id)')
+                       .where(['app.status in (?) and app.year = ? and proj.start_date > ?', SpApplication.uncompleted_statuses, SpApplication.year, Time.now])
+                       .joins('as app inner join sp_projects as proj on (proj.id = app.preference1_id)')
     uncompleted_apps.each do |app|
       if app.person.informal_full_name && app.email_address && app.email_address != ''
         SpApplicationMailer.deliver_status(app)
@@ -675,9 +677,9 @@ class SpApplication < Fe::Application
   def send_acceptance_email
     if changed.include?('applicant_notified') and applicant_notified? && status.starts_with?('accept')
       Fe::Notifier.notification(email_address, # RECIPIENTS
-                            Fe.from_email, # FROM
-                            'Application Accepted', # LIQUID TEMPLATE NAME
-                            {'project_name' => project.try(:name)}).deliver
+                                Fe.from_email, # FROM
+                                'Application Accepted', # LIQUID TEMPLATE NAME
+                                'project_name' => project.try(:name)).deliver
     end
   end
 
@@ -688,8 +690,8 @@ class SpApplication < Fe::Application
         old_project, new_project = SpProject.find_by_id(changes['project_id'][0]), SpProject.find_by_id(changes['project_id'][1])
         if old_project && new_project
           if old_project.basic_info_question_sheet != new_project.basic_info_question_sheet ||
-              old_project.template_question_sheet != new_project.template_question_sheet ||
-              (new_project.project_specific_question_sheet && new_project.project_specific_question_sheet.questions.present?)
+             old_project.template_question_sheet != new_project.template_question_sheet ||
+             (new_project.project_specific_question_sheet && new_project.project_specific_question_sheet.questions.present?)
             if submitted? || ready? || withdrawn?
               unsubmit!
             end
@@ -716,7 +718,7 @@ class SpApplication < Fe::Application
           # AND we don't already have a reference for that question
           # update the reference with the new question_id
           if (reference_question = reference_questions.detect { |rq| rq.related_question_sheet_id == reference.question.related_question_sheet_id }) &&
-              !references.detect { |r| r.question_id == reference_question.id }
+             !references.detect { |r| r.question_id == reference_question.id }
             reference.update_attribute(:question_id, reference_question.id)
             next
           end
@@ -743,19 +745,19 @@ class SpApplication < Fe::Application
       attributes_to_push['preference3_id'] = preference3 ? preference3.global_registry_id : nil
       attributes_to_push['preference4_id'] = preference4 ? preference4.global_registry_id : nil
       attributes_to_push['preference5_id'] = preference5 ? preference5.global_registry_id : nil
-      attributes_to_push.reject! { |a| a.blank? }
+      attributes_to_push.reject!(&:blank?)
       attributes_to_push
     else
       super(relationship_name: 'summer_project_application', related_name: 'summer_project', related_object: project, base_object: person)
     end
   end
 
-  def create_in_global_registry(*args)
+  def create_in_global_registry(*_args)
     super(person, 'summer_project_application')
   end
 
   def create_answer_sheet_question_sheet
-    self.answer_sheet_question_sheet ||= ::Fe::AnswerSheetQuestionSheet.create(:question_sheet_id => 1) #TODO: NO CONSTANT
+    self.answer_sheet_question_sheet ||= ::Fe::AnswerSheetQuestionSheet.create(question_sheet_id: 1) # TODO: NO CONSTANT
   end
 
   def self.push_structure_to_global_registry

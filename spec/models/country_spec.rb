@@ -7,7 +7,7 @@ describe Country do
       create(:country, country: 'Canada', code: 'CA')
       create(:country, country: 'United States', code: 'US')
       countries = Country.to_hash_US_first
-      expect(countries.to_a).to eq([['United States', 'US'], ['Canada', 'CA']])
+      expect(countries.to_a).to eq([['United States', 'US'], %w(Canada CA)])
     end
   end
 

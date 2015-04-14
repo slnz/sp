@@ -12,18 +12,18 @@ class PhoneNumber < ActiveRecord::Base
 
   def self.push_structure_to_global_registry
     parent_id = GlobalRegistry::EntityType.get(
-        {'filters[name]' => 'person'}
+        'filters[name]' => 'person'
     )['entity_types'].first['id']
     super(parent_id)
   end
 
   def self.skip_fields_for_gr
-    %w[id txt_to_email carrier_id email_updated_at created_at updated_at global_registry_id person_id]
+    %w(id txt_to_email carrier_id email_updated_at created_at updated_at global_registry_id person_id)
   end
 
   def merge(other)
     PhoneNumber.transaction do
-      %w{extension location primary}.each do |k, v|
+      %w(extension location primary).each do |k, v|
         next if v == other.attributes[k]
         self[k] = case
                   when other.attributes[k].blank? then v

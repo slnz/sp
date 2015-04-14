@@ -6,7 +6,7 @@ class EmailAddress < Fe::EmailAddress
 
   def async_push_to_global_registry(parent_id = nil, parent_type = 'person')
     return unless person
-    
+
     person.async_push_to_global_registry unless person.global_registry_id.present?
     parent_id = person.global_registry_id unless parent_id
 
@@ -20,20 +20,20 @@ class EmailAddress < Fe::EmailAddress
 
   def self.push_structure_to_global_registry
     parent_id = GlobalRegistry::EntityType.get(
-        {'filters[name]' => 'person'}
+        'filters[name]' => 'person'
     )['entity_types'].first['id']
     super(parent_id)
   end
 
   def self.skip_fields_for_gr
-    %w[id email created_at updated_at global_registry_id person_id]
+    %w(id email created_at updated_at global_registry_id person_id)
   end
 
   def merge(other)
     EmailAddress.transaction do
       if updated_at && other.primary? && other.updated_at > updated_at
-        person.email_addresses.collect {|e| e.update_attribute(:primary, false)}
-        new_primary = person.email_addresses.detect {|e| e.email == other.email}
+        person.email_addresses.collect { |e| e.update_attribute(:primary, false) }
+        new_primary = person.email_addresses.detect { |e| e.email == other.email }
         new_primary.update_attribute(:primary, true) if new_primary
       end
       begin

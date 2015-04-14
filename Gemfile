@@ -57,8 +57,12 @@ gem 'rest-client'
 gem 'bootstrap-sass'
 gem 'font-awesome-rails'
 
-gem 'fe',
-    github: 'CruGlobal/qe', branch: 'fe'
+gem 'fe', github: 'CruGlobal/qe', branch: 'fe'
+
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
 
 group :development, :test do
   gem 'rspec', '~> 3.0'
@@ -66,14 +70,14 @@ group :development, :test do
   gem 'awesome_print'
   gem 'mailcatcher'
   gem 'meta_request'
-  gem 'better_errors'
-  gem 'binding_of_caller'
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'guard-spork'
   gem 'guard-rspec'
   gem 'guard-bundler'
   gem 'guard-puma'
+  gem 'guard-rubocop'
+  gem 'dotenv'
 end
 
 group :test do
@@ -84,7 +88,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'fuubar'
   gem 'simplecov', require: false
-  gem 'spork-rails' # , '~> 3.2.0'
   gem 'xray-rails'
   gem 'thin'
 end

@@ -19,13 +19,13 @@ describe Admin::DonationServicesController do
   context '#upload' do
     let(:person) { create(:person, user: user) }
     before do
-      person.update_column(:id, 123456)
+      person.update_column(:id, 123_456)
       @application = create(:sp_application, person: person, project: create(:sp_project), year: SpApplication.year,
-                            status: 'accepted_as_participant')
+                                             status: 'accepted_as_participant')
     end
 
     it 'receives a file from DSG and assigns designation numbers' do
-      post 'upload', upload: {upload: fixture_file_upload('/donation_services_upload.txt', 'text/csv')}
+      post 'upload', upload: { upload: fixture_file_upload('/donation_services_upload.txt', 'text/csv') }
       expect(response).to render_template('upload')
       expect(assigns(:error_messages)).to eq([])
       expect(@application.reload.designation_number(SpApplication.year)).to eq('005508771')
@@ -34,10 +34,10 @@ describe Admin::DonationServicesController do
     it 'assigns the designation number to an accepted application' do
       @application.update_column(:status, 'withdrawn')
       @application2 = create(:sp_application, person: person, project: create(:sp_project), year: SpApplication.year,
-                            status: 'started')
+                                              status: 'started')
       @application3 = create(:sp_application, person: person, project: create(:sp_project), year: SpApplication.year,
-                             status: 'accepted_as_participant')
-      post 'upload', upload: {upload: fixture_file_upload('/donation_services_upload.txt', 'text/csv')}
+                                              status: 'accepted_as_participant')
+      post 'upload', upload: { upload: fixture_file_upload('/donation_services_upload.txt', 'text/csv') }
       expect(response).to render_template('upload')
       expect(assigns(:error_messages)).to eq([])
       expect(@application.reload.designation_number(SpApplication.year)).to be_nil

@@ -1,11 +1,11 @@
 require 'csv'
 class Admin::ProjectsController < ApplicationController
   before_action :cas_filter, :authentication_filter
-  before_action :check_sp_user, :except => :no
+  before_action :check_sp_user, except: :no
 
-  before_filter :get_project, :only => [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
-  before_filter :get_year, :only => [:show, :email, :edit]
-  before_filter :get_countries, :only => [:new, :edit, :update, :create]
+  before_action :get_project, only: [:edit, :destroy, :update, :close, :open, :show, :email, :download, :send_email]
+  before_action :get_year, only: [:show, :email, :edit]
+  before_action :get_countries, only: [:new, :edit, :update, :create]
   respond_to :html, :js
 
   layout 'admin'
@@ -14,7 +14,7 @@ class Admin::ProjectsController < ApplicationController
     set_up_filters
     set_order
 
-    @projects = @base.paginate(:page => params[:page], :per_page => @per_page)
+    @projects = @base.paginate(page: params[:page], per_page: @per_page)
     respond_with(@products)
   end
 
@@ -29,18 +29,18 @@ class Admin::ProjectsController < ApplicationController
     update_questions
     @project.update_attributes(project_params)
     respond_with(@project) do |format|
-      format.html {@project.errors.empty? ? redirect_to(dashboard_path, :notice => "#{@project} project was updated successfully.") : render(:edit)}
+      format.html { @project.errors.empty? ? redirect_to(dashboard_path, notice: "#{@project} project was updated successfully.") : render(:edit) }
     end
   end
 
   def create
-    @project = SpProject.create(project_params.merge({:year => SpApplication.year}))
+    @project = SpProject.create(project_params.merge(year: SpApplication.year))
     respond_with(@project) do |format|
       format.html do
         if @project.new_record?
           render :new
         else
-          redirect_to admin_projects_path, :notice => "#{@project} project was created successfully."
+          redirect_to admin_projects_path, notice: "#{@project} project was created successfully."
         end
       end
     end
@@ -50,14 +50,14 @@ class Admin::ProjectsController < ApplicationController
     @project.destroy if sp_user.can_delete_project?
     respond_with(@project) do |format|
       format.html do
-        redirect_to admin_projects_path, :notice => "#{@project} project was deleted."
+        redirect_to admin_projects_path, notice: "#{@project} project was deleted."
       end
     end
   end
 
   def show
     params[:order] = 'name' and params[:direction] = 'ascend' unless params[:order] && params[:direction]
-    applications = @project.sp_applications.includes({:person => :current_address})
+    applications = @project.sp_applications.includes(person: :current_address)
     staffs = @project.sp_staff
 
     @accepted_participants = applications.accepted_participants.for_year(@year)
@@ -66,9 +66,9 @@ class Admin::ProjectsController < ApplicationController
     @accepted_student_staff = @accepted_student_staff.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
     @ready_to_evaluate = applications.ready_to_evaluate.for_year(@year)
     @ready_to_evaluate = @ready_to_evaluate.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
-    @other = Array.new
+    @other = []
     staffs.other_involved.year(@year).each do |staff|
-      @other << staff if !staff.person.isStaff?
+      @other << staff unless staff.person.isStaff?
     end
     @submitted = applications.submitted.for_year(@year)
     @submitted = @submitted.send("#{params[:direction]}_by_#{params[:order]}".downcase.to_sym)
@@ -82,29 +82,29 @@ class Admin::ProjectsController < ApplicationController
     year = get_year
 
     book = Spreadsheet::Workbook.new
-    sheet1 = book.create_worksheet(name: "Team DB")
+    sheet1 = book.create_worksheet(name: 'Team DB')
 
     r = -1
 
     sheet1.row(r += 1).concat([@project.name])
 
-    sheet1.row(r += 1).concat([ "City:", @project.city])
-    sheet1.row(r += 1).concat([ "Country:", @project.country])
-    sheet1.row(r += 1).concat([ "Primary partner:", @project.primary_partner])
-    sheet1.row(r += 1).concat([ "Secondary partner:", @project.secondary_partner]) if @project.secondary_partner.present?
-    sheet1.row(r += 1).concat([ "Tertiary partner:", @project.tertiary_partner]) if @project.tertiary_partner.present?
-    sheet1.row(r += 1).concat([ "Staff Start Date:", (@project.staff_start_date || "N/A").to_s])
-    sheet1.row(r += 1).concat([ "Staff End Date:", (@project.staff_end_date || "N/A").to_s])
-    sheet1.row(r += 1).concat([ "Student Start Date:", (@project.start_date || "N/A").to_s])
-    sheet1.row(r += 1).concat([ "Student Stop Date:", (@project.end_date || "N/A").to_s])
-    staff_column_headers =  ["First Name", "Last Name", "Preferred Name", "Gender",
-     "Birthday", "Email", "Address", "Address2", "City", "State",
-     "Zip", "Phone", "Cell", "Campus", "AccountNo", "Marital Status",
-     "Emergency Contact", "Emergency Relationship",  "Emergency Address", "Emergency City", "Emergency State",
-     "Emergency Zip", "Emergency Phone", "Emergency WorkPhone", "Emergency Email"];
+    sheet1.row(r += 1).concat(['City:', @project.city])
+    sheet1.row(r += 1).concat(['Country:', @project.country])
+    sheet1.row(r += 1).concat(['Primary partner:', @project.primary_partner])
+    sheet1.row(r += 1).concat(['Secondary partner:', @project.secondary_partner]) if @project.secondary_partner.present?
+    sheet1.row(r += 1).concat(['Tertiary partner:', @project.tertiary_partner]) if @project.tertiary_partner.present?
+    sheet1.row(r += 1).concat(['Staff Start Date:', (@project.staff_start_date || 'N/A').to_s])
+    sheet1.row(r += 1).concat(['Staff End Date:', (@project.staff_end_date || 'N/A').to_s])
+    sheet1.row(r += 1).concat(['Student Start Date:', (@project.start_date || 'N/A').to_s])
+    sheet1.row(r += 1).concat(['Student Stop Date:', (@project.end_date || 'N/A').to_s])
+    staff_column_headers =  ['First Name', 'Last Name', 'Preferred Name', 'Gender',
+                             'Birthday', 'Email', 'Address', 'Address2', 'City', 'State',
+                             'Zip', 'Phone', 'Cell', 'Campus', 'AccountNo', 'Marital Status',
+                             'Emergency Contact', 'Emergency Relationship',  'Emergency Address', 'Emergency City', 'Emergency State',
+                             'Emergency Zip', 'Emergency Phone', 'Emergency WorkPhone', 'Emergency Email']
 
     sheet1.row(r += 1).concat([])
-    sheet1.row(r += 1).concat(["Directors:"])
+    sheet1.row(r += 1).concat(['Directors:'])
     sheet1.row(r += 1).concat(staff_column_headers)
 
     [@project.pd(year), @project.apd(year), @project.opd(year), @project.coordinator(year)].each do |person|
@@ -112,10 +112,10 @@ class Admin::ProjectsController < ApplicationController
         row = []
         values = set_values_from_person(person)
         staff_column_headers.each do |header|
-          if (values[header] && values[header] != "")
-            row << values[header].to_s.gsub(/[\t\r\n]/, " ")
+          if values[header] && values[header] != ''
+            row << values[header].to_s.gsub(/[\t\r\n]/, ' ')
           else
-            row << "N/A"
+            row << 'N/A'
           end
         end
         sheet1.row(r += 1).concat(row)
@@ -123,36 +123,34 @@ class Admin::ProjectsController < ApplicationController
     end
 
     sheet1.row(r += 1).concat([])
-    sheet1.row(r += 1).concat(["Staff and Volunteers:"])
-
+    sheet1.row(r += 1).concat(['Staff and Volunteers:'])
 
     sheet1.row(r += 1).concat(staff_column_headers)
 
     @project.staff_and_volunteers(year).each do |person|
-
       values = set_values_from_person(person)
 
       row = []
       staff_column_headers.each do |header|
-        if (values[header] && values[header] != "")
-          row << values[header].to_s.gsub(/[\t\r\n]/, " ")
+        if values[header] && values[header] != ''
+          row << values[header].to_s.gsub(/[\t\r\n]/, ' ')
         else
-          row << "N/A"
+          row << 'N/A'
         end
       end
       sheet1.row(r += 1).concat(row)
     end
 
     sheet1.row(r += 1).concat([])
-    sheet1.row(r += 1).concat([ "Accepted Applicants:"])
+    sheet1.row(r += 1).concat(['Accepted Applicants:'])
 
-    applicant_column_headers = ["First Name", "Last Name", "Preferred Name", "Gender",
-     "Birthday", 'Age', "Accepted On", "Email", "Address", "Address2", "City", "State",
-     "Zip", "Phone", "Cell", "Campus", "Designation No", "Marital Status",
-     "Emergency Contact", "Emergency Relationship", "Emergency Address", "Emergency City", "Emergency State",
-     "Emergency Zip", "Emergency Phone", "Emergency Work Phone", "Emergency Email",
-     "Participant's Campus Region", "Date Became A Christian", "Major", "Class",
-     "GraduationDate", "Applied for leadership", "Passport Number", "T-Shirt Size"]
+    applicant_column_headers = ['First Name', 'Last Name', 'Preferred Name', 'Gender',
+                                'Birthday', 'Age', 'Accepted On', 'Email', 'Address', 'Address2', 'City', 'State',
+                                'Zip', 'Phone', 'Cell', 'Campus', 'Designation No', 'Marital Status',
+                                'Emergency Contact', 'Emergency Relationship', 'Emergency Address', 'Emergency City', 'Emergency State',
+                                'Emergency Zip', 'Emergency Phone', 'Emergency Work Phone', 'Emergency Email',
+                                "Participant's Campus Region", 'Date Became A Christian', 'Major', 'Class',
+                                'GraduationDate', 'Applied for leadership', 'Passport Number', 'T-Shirt Size']
 
     sheet1.row(r += 1).concat(applicant_column_headers)
     applications = SpApplication.where("status IN ('accepted_as_student_staff', 'accepted_as_participant') and project_id = ? and year = ?", @project.id, year).includes(:person)
@@ -161,27 +159,27 @@ class Admin::ProjectsController < ApplicationController
 
     applications.each do |app|
       values = set_values_from_person(app.person)
-      values["Applied for leadership"] = app.apply_for_leadership.to_s
+      values['Applied for leadership'] = app.apply_for_leadership.to_s
 
-      values["Passport Number"] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
-      values["T-Shirt Size"] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
+      values['Passport Number'] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_passport_id).pluck(:value).first
+      values['T-Shirt Size'] = Fe::Answer.where(answer_sheet_id: app.id, question_id: question_tshirt_id).pluck(:value).first
 
       row = []
       applicant_column_headers.each do |header|
-        if (values[header] && values[header] != "")
-            row << values[header].to_s.gsub(/[\t\r\n]/, "").gsub(/,/, " ")
+        if values[header] && values[header] != ''
+          row << values[header].to_s.gsub(/[\t\r\n]/, '').gsub(/,/, ' ')
         else
-          row << "N/A"
+          row << 'N/A'
         end
       end
       sheet1.row(r += 1).concat(row)
     end
     sio = StringIO.new
     book.write(sio)
-    headers['Content-Type'] = "application/vnd.ms-excel"
+    headers['Content-Type'] = 'application/vnd.ms-excel'
     headers['Content-Disposition'] = "attachment; filename=\"#{@project.name} - Roster - #{year}.xls\""
     headers['Cache-Control'] = ''
-    send_data(sio.string, :type =>  "application/vnd.ms-excel", :filename => "#{@project.name} - Roster - #{year}.xls")
+    send_data(sio.string, type: 'application/vnd.ms-excel', filename: "#{@project.name} - Roster - #{year}.xls")
   end
 
   def dashboard
@@ -189,20 +187,19 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def no
-
   end
 
   def close
     @project.close!
-    redirect_to :back, :notice => "#{@project.name} has been closed."
+    redirect_to :back, notice: "#{@project.name} has been closed."
   end
 
   def open
     if @project.valid?
       @project.open!
-      redirect_to :back, :notice => "#{@project.name} has been re-opened."
+      redirect_to :back, notice: "#{@project.name} has been re-opened."
     else
-      redirect_to edit_admin_project_path(@project), :notice => 'Please update all necessary fields for this project, then try Re-Opening it again.'
+      redirect_to edit_admin_project_path(@project), notice: 'Please update all necessary fields for this project, then try Re-Opening it again.'
     end
   end
 
@@ -215,30 +212,30 @@ class Admin::ProjectsController < ApplicationController
 
   def email
     @group_options = [
-      ['',''],
-      ['Staff/S. Staff + Accepted Students (Team)','team'],
-      ['All Applicants (except withdrawn/denied)','all_applicants'],
-      ['All Accepted Students','all_accepted'],
-      ['Accepted Men','accepted_men'],
-      ['Accepted Women','accepted_women'],
-      ['All Staff and S. Staff','staff_and_interns'],
-      ['Men Staff and S. Staff','men_staff_and_interns'],
-      ['Submitted Applicants','all_submitted'],
-      ['Started Applicants','all_started'],
-      ['Women Staff and S. Staff','women_staff_and_interns']
+      ['', ''],
+      ['Staff/S. Staff + Accepted Students (Team)', 'team'],
+      ['All Applicants (except withdrawn/denied)', 'all_applicants'],
+      ['All Accepted Students', 'all_accepted'],
+      ['Accepted Men', 'accepted_men'],
+      ['Accepted Women', 'accepted_women'],
+      ['All Staff and S. Staff', 'staff_and_interns'],
+      ['Men Staff and S. Staff', 'men_staff_and_interns'],
+      ['Submitted Applicants', 'all_submitted'],
+      ['Started Applicants', 'all_started'],
+      ['Women Staff and S. Staff', 'women_staff_and_interns']
     ]
-    @group_options << ['Parent References','parent_refs'] if @project.primary_partner == 'MK2MK'
+    @group_options << ['Parent References', 'parent_refs'] if @project.primary_partner == 'MK2MK'
     build_email_hash
   end
 
   def send_email
-    if params[:from].blank? || !params[:from].end_with?("@studentlife.org.nz")
+    if params[:from].blank? || !params[:from].end_with?('@studentlife.org.nz')
       flash[:notice] = 'You must specify a "From" address that ends with @studentlife.org.nz'
       redirect_to :back
     else
       to = params[:to].split(/,|;/)
-      recipients = Array.new
-      invalid_emails = Array.new
+      recipients = []
+      invalid_emails = []
       to.each do |t|
         email = get_email(t.strip)
         if email =~ /\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,4}\z/
@@ -249,10 +246,10 @@ class Admin::ProjectsController < ApplicationController
       end
 
       files = (params[:file] || {}).values
-      recipients << params[:from] unless params[:from] == "projects@studentlife.org.nz"
+      recipients << params[:from] unless params[:from] == 'projects@studentlife.org.nz'
       recipients << params[:reply_to] if params[:reply_to]
-      email_success = Array.new
-      email_failed = Array.new
+      email_success = []
+      email_failed = []
 
       if to.size > 0
         if recipients.count > 0
@@ -261,15 +258,15 @@ class Admin::ProjectsController < ApplicationController
               ProjectMailer.team_email(recipient, params[:from], params[:reply_to], '', files.compact, params[:subject], params[:body]).deliver
               email_success << recipient
             rescue => e
-              #raise e.inspect
+              # raise e.inspect
               email_failed << recipient
             end
           end
           if recipients.size == email_success.size
-            notice = "Your email has been sent"
+            notice = 'Your email has been sent'
             if invalid_emails.count > 0
               notice += " except to the following invalid email address#{'es' if invalid_emails.count > 1}: "
-              invalid_emails_notice = invalid_emails.join(", ")
+              invalid_emails_notice = invalid_emails.join(', ')
               notice += invalid_emails_notice
             end
           else
@@ -279,12 +276,12 @@ class Admin::ProjectsController < ApplicationController
                 email_failed << invemail
               end
             end
-            invalid_emails_notice = email_failed.join(", ")
+            invalid_emails_notice = email_failed.join(', ')
             notice += invalid_emails_notice
           end
           Rails.logger.info ">>>>>>>> #{notice}"
         end
-        redirect_to admin_project_path(@project), :notice => notice
+        redirect_to admin_project_path(@project), notice: notice
       else
         flash[:notice] = 'You must specify a "To" address'
         redirect_to :back
@@ -295,9 +292,9 @@ class Admin::ProjectsController < ApplicationController
   def sos
     if request.post?
       # find all projects with starting dates in the given range
-      projects = SpProject.open.has_chart_field.where(["start_date between ? and ?", params[:start], params[:end]]).includes({:sp_staff => :person}).order('name')
-      out = ""
-      CSV.generate(out, {:col_sep => "\t", :row_sep => "\n"}) do |writer|
+      projects = SpProject.open.has_chart_field.where(['start_date between ? and ?', params[:start], params[:end]]).includes(sp_staff: :person).order('name')
+      out = ''
+      CSV.generate(out, col_sep: "\t", row_sep: "\n") do |writer|
         projects.each do |project|
           contact = project.contact || Person.new
           row_start = [
@@ -318,34 +315,34 @@ class Admin::ProjectsController < ApplicationController
             project.operating_project
           ]
 
-          date_start = project.international? == "Yes" ? l((project.date_of_departure || project.start_date), :format => :ps) : nil
-          date_end = project.international? == "Yes" ? l((project.date_of_return || project.end_date), :format => :ps) : nil
+          date_start = project.international? == 'Yes' ? l((project.date_of_departure || project.start_date), format: :ps) : nil
+          date_end = project.international? == 'Yes' ? l((project.date_of_return || project.end_date), format: :ps) : nil
 
           project.sp_staff.year(SpApplication.year).where("type NOT IN ('Evaluator', 'Coordinator')").each do |staff|
             row = []
             p = staff.person
             # Getting Dates
-            unless project.international? == "Yes"
-              if staff.type == "PD"
-                date_start = l((project.pd_start_date || (project.staff_start_date || project.start_date)), :format => :ps)
-                date_end = l((project.pd_end_date || (project.staff_end_date || project.end_date)), :format => :ps)
+            unless project.international? == 'Yes'
+              if staff.type == 'PD'
+                date_start = l((project.pd_start_date || (project.staff_start_date || project.start_date)), format: :ps)
+                date_end = l((project.pd_end_date || (project.staff_end_date || project.end_date)), format: :ps)
               else
-                date_start = l((project.staff_start_date || project.start_date), :format => :ps)
-                date_end = l((project.staff_end_date || project.end_date), :format => :ps)
+                date_start = l((project.staff_start_date || project.start_date), format: :ps)
+                date_end = l((project.staff_end_date || project.end_date), format: :ps)
               end
             end
             if p
               (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, staff.type]).each do |val|
-                row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+                row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, ' ') : nil)
               end
               writer << row
               # Store Another Record for Closing
-              if project.pd_close_start_date.present? && staff.type == "PD"
+              if project.pd_close_start_date.present? && staff.type == 'PD'
                 row = []
-                date_start = l((project.pd_close_start_date || project.staff_start_date || project.start_date), :format => :ps)
-                date_end = l((project.pd_close_end_date || project.staff_end_date || project.end_date), :format => :ps)
+                date_start = l((project.pd_close_start_date || project.staff_start_date || project.start_date), format: :ps)
+                date_end = l((project.pd_close_end_date || project.staff_end_date || project.end_date), format: :ps)
                 (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, staff.type]).each do |val|
-                  row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+                  row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, ' ') : nil)
                 end
                 writer << row
               end
@@ -356,30 +353,30 @@ class Admin::ProjectsController < ApplicationController
             p = applicant.person
             if p
               # Getting Dates
-              unless project.international? == "Yes"
+              unless project.international? == 'Yes'
                 if applicant.status == 'accepted_as_student_staff'
-                  date_start = l((project.student_staff_start_date || project.start_date), :format => :ps)
-                  date_end = l((project.student_staff_end_date || project.end_date), :format => :ps)
+                  date_start = l((project.student_staff_start_date || project.start_date), format: :ps)
+                  date_end = l((project.student_staff_end_date || project.end_date), format: :ps)
                 else
-                  date_start = l(project.start_date, :format => :ps)
-                  date_end = l(project.end_date, :format => :ps)
+                  date_start = l(project.start_date, format: :ps)
+                  date_end = l(project.end_date, format: :ps)
                 end
               end
               (row_start + [date_start, date_end] + row_more + [p.id, p.account_no, p.last_name, p.first_name, 'Applicant']).each do |val|
-                row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, " ") : nil)
+                row << (val.present? ? val.to_s.gsub(/[\t\r\n]/, ' ') : nil)
               end
             end
             writer << row
           end
         end
       end
-      send_data(out, :filename => "sos.txt", :type => 'text/tab' )
+      send_data(out, filename: 'sos.txt', type: 'text/tab')
     end
   end
 
   def sos_exceptions
-    applications = SpApplication.where("start_date is not null OR end_date is not null")
-      .where(year: SpApplication.year)
+    applications = SpApplication.where('start_date is not null OR end_date is not null')
+                   .where(year: SpApplication.year)
     @exceptions = {}
     applications.each do |app|
       if app.read_attribute(:start_date).present? && app.start_date.year == SpApplication.year
@@ -400,6 +397,7 @@ class Admin::ProjectsController < ApplicationController
   end
 
   protected
+
   def get_project
     @project = SpProject.find(params[:id])
   end
@@ -415,14 +413,14 @@ class Admin::ProjectsController < ApplicationController
     selected_filters = params[:partners]
 
     if selected_filters.present?
-      report_stats_to_query = Array.new
-      if selected_filters.include?("US Campus")
-        selected_filters = selected_filters.select{|x| x != "US Campus"}
+      report_stats_to_query = []
+      if selected_filters.include?('US Campus')
+        selected_filters = selected_filters.select { |x| x != 'US Campus' }
         report_stats_to_query << "report_stats_to = 'Campus Ministry - US summer project'"
       end
 
-      if selected_filters.include?("Non-USCM SPs")
-        selected_filters = selected_filters.select{|x| x != "Non-USCM SPs"}
+      if selected_filters.include?('Non-USCM SPs')
+        selected_filters = selected_filters.select { |x| x != 'Non-USCM SPs' }
         report_stats_to_query << "report_stats_to = 'Other Cru ministry'"
       end
 
@@ -431,29 +429,29 @@ class Admin::ProjectsController < ApplicationController
       end
 
       if selected_filters.present?
-        @base = @base.where("primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)", selected_filters, selected_filters, selected_filters)
+        @base = @base.where('primary_partner IN(?) OR secondary_partner IN(?) OR tertiary_partner IN(?)', selected_filters, selected_filters, selected_filters)
       end
 
       @filter_title = params[:partners].sort.join(', ')
     end
     case
     when params[:search].present?
-      @base = @base.where("name ilike ?", "%#{params[:search]}%")
+      @base = @base.where('name ilike ?', "%#{params[:search]}%")
     when params[:search_pd].present?
-      @base = @base.joins(:sp_staff => :person).pd_like(params[:search_pd])
+      @base = @base.joins(sp_staff: :person).pd_like(params[:search_pd])
     when params[:search_apd].present?
-      @base = @base.joins(:sp_staff => :person).apd_like(params[:search_apd])
+      @base = @base.joins(sp_staff: :person).apd_like(params[:search_apd])
     when params[:search_opd].present?
-      @base = @base.joins(:sp_staff => :person).opd_like(params[:search_opd])
+      @base = @base.joins(sp_staff: :person).opd_like(params[:search_opd])
     end
 
     # Filter based on the user type
     case sp_user.class.to_s
     when 'SpDirector', 'SpProjectStaff', 'SpEvaluator'
-      @base = @base.where(:id => current_person.current_staffed_projects.collect(&:id))
+      @base = @base.where(id: current_person.current_staffed_projects.collect(&:id))
     when 'SpRegionalCoordinator'
-      partnerships = sp_user.partnerships.map{ |partnership| partnership.downcase }
-      @base = @base.where("LOWER(primary_partner) IN(?) OR LOWER(secondary_partner) IN(?) OR LOWER(tertiary_partner) IN(?)",
+      partnerships = sp_user.partnerships.map(&:downcase)
+      @base = @base.where('LOWER(primary_partner) IN(?) OR LOWER(secondary_partner) IN(?) OR LOWER(tertiary_partner) IN(?)',
                           partnerships, partnerships, partnerships) if partnerships.present?
     when 'SpNationalCoordinator', 'SpDonationServices'
     else
@@ -475,44 +473,44 @@ class Admin::ProjectsController < ApplicationController
   end
 
   def set_values_from_person(person)
-    values = Hash.new
-    values["First Name"] = person.first_name
-    values["Last Name"] = person.last_name
-    values["Preferred Name"] = person.preferred_name
-    values["Gender"] = person.gender == "1" ? "M" : "F"
-    values["Birthday"] = person.birth_date.present? ? l(person.birth_date) : ''
-    values["Age"] = person.birth_date.present? ? ((Date.today.to_time - person.birth_date.to_time) / 1.year).floor : ''
-    values["Accepted On"] = (person.current_application && person.current_application.accepted_at.present? ? l(person.current_application.accepted_at) : '')
-    if (person.current_address)
-      values["Email"] = person.current_address.email
-      values["Address"] = person.current_address.address1
-      values["Address2"] = person.current_address.address2
-      values["City"] = person.current_address.city
-      values["State"] = person.current_address.state
-      values["Zip"] = person.current_address.zip
-      values["Phone"] = person.current_address.home_phone
-      values["Cell"] = person.current_address.cell_phone
+    values = {}
+    values['First Name'] = person.first_name
+    values['Last Name'] = person.last_name
+    values['Preferred Name'] = person.preferred_name
+    values['Gender'] = person.gender == '1' ? 'M' : 'F'
+    values['Birthday'] = person.birth_date.present? ? l(person.birth_date) : ''
+    values['Age'] = person.birth_date.present? ? ((Date.today.to_time - person.birth_date.to_time) / 1.year).floor : ''
+    values['Accepted On'] = (person.current_application && person.current_application.accepted_at.present? ? l(person.current_application.accepted_at) : '')
+    if person.current_address
+      values['Email'] = person.current_address.email
+      values['Address'] = person.current_address.address1
+      values['Address2'] = person.current_address.address2
+      values['City'] = person.current_address.city
+      values['State'] = person.current_address.state
+      values['Zip'] = person.current_address.zip
+      values['Phone'] = person.current_address.home_phone
+      values['Cell'] = person.current_address.cell_phone
     end
-    values["Campus"] = person.campus
-    values["AccountNo"] = person.account_no
-    values["Designation No"] = person.current_application.try(:designation_number)
-    values["Marital Status"] = person.maritalStatus
-    if (person.emergency_address)
-      values["Emergency Contact"] = person.emergency_address.contact_name
-      values["Emergency Relationship"] = person.emergency_address.contact_relationship
-      values["Emergency Address"] = person.emergency_address.address1
-      values["Emergency City"] = person.emergency_address.city
-      values["Emergency State"] = person.emergency_address.state
-      values["Emergency Zip"] = person.emergency_address.zip
-      values["Emergency Phone"] = person.emergency_address.home_phone
-      values["Emergency Work Phone"] = person.emergency_address.work_phone
-      values["Emergency Email"] = person.emergency_address.email
+    values['Campus'] = person.campus
+    values['AccountNo'] = person.account_no
+    values['Designation No'] = person.current_application.try(:designation_number)
+    values['Marital Status'] = person.maritalStatus
+    if person.emergency_address
+      values['Emergency Contact'] = person.emergency_address.contact_name
+      values['Emergency Relationship'] = person.emergency_address.contact_relationship
+      values['Emergency Address'] = person.emergency_address.address1
+      values['Emergency City'] = person.emergency_address.city
+      values['Emergency State'] = person.emergency_address.state
+      values['Emergency Zip'] = person.emergency_address.zip
+      values['Emergency Phone'] = person.emergency_address.home_phone
+      values['Emergency Work Phone'] = person.emergency_address.work_phone
+      values['Emergency Email'] = person.emergency_address.email
     end
     values["Participant's Campus Region"] = person.region
-    values["Date Became A Christian"] = person.date_became_christian.present? ? l(person.date_became_christian) : ''
-    values["Major"] = person.major
-    values["Class"] = person.yearInSchool
-    values["GraduationDate"] = person.graduation_date.present? ? l(person.graduation_date) : ''
+    values['Date Became A Christian'] = person.date_became_christian.present? ? l(person.date_became_christian) : ''
+    values['Major'] = person.major
+    values['Class'] = person.yearInSchool
+    values['GraduationDate'] = person.graduation_date.present? ? l(person.graduation_date) : ''
     values
   end
 
@@ -578,9 +576,9 @@ class Admin::ProjectsController < ApplicationController
           people += @project.staff(@year).where(gender: '1')
           people += @project.volunteers(@year).where(gender: '1')
         when 'women_staff_and_interns'
-          people += [@project.pd(@year)] if !@project.pd(@year).is_male?
-          people += [@project.apd(@year)] if !@project.apd(@year).is_male?
-          people += [@project.opd(@year)] if !@project.opd(@year).is_male?
+          people += [@project.pd(@year)] unless @project.pd(@year).is_male?
+          people += [@project.apd(@year)] unless @project.apd(@year).is_male?
+          people += [@project.opd(@year)] unless @project.opd(@year).is_male?
           people += @project.staff(@year).where(gender: '0')
           people += @project.volunteers(@year).where(gender: '0')
         else
@@ -597,7 +595,7 @@ class Admin::ProjectsController < ApplicationController
           if person
             email = person.email_address
             if email
-              addresses << person.informal_full_name + " <" + email + ">";
+              addresses << person.informal_full_name + ' <' + email + '>'
             end
           end
         end
@@ -606,15 +604,15 @@ class Admin::ProjectsController < ApplicationController
     end
 
     @from = params[:from] || current_person.email
-    unless @from.end_with?("@studentlife.org.nz")
-      @from = "projects@studentlife.org.nz"
+    unless @from.end_with?('@studentlife.org.nz')
+      @from = 'projects@studentlife.org.nz'
     end
   end
 
   def get_email(str)
-    if str.index("<")
-      first = str.index("<") + 1
-      last = str.index(">") ? str.index(">") - 1 : str.size - 1
+    if str.index('<')
+      first = str.index('<') + 1
+      last = str.index('>') ? str.index('>') - 1 : str.size - 1
       str[first..last]
     else
       str
@@ -632,7 +630,7 @@ class Admin::ProjectsController < ApplicationController
   def update_questions
     if params[:questions].present?
       initialize_questions
-      params[:questions].each do |i, attribs|
+      params[:questions].each do |_i, attribs|
         if attribs[:id].present? && question = Fe::Element.find_by_id(attribs[:id])
           if attribs[:label].present?
             question.update_attribute(:label, attribs[:label])
@@ -641,8 +639,8 @@ class Admin::ProjectsController < ApplicationController
           end
         else
           if attribs[:label].present?
-            e = Fe::TextField.create!(:label => attribs[:label])
-            Fe::PageElement.create!(:element_id => e.id, :page_id => @custom_page.id)
+            e = Fe::TextField.create!(label: attribs[:label])
+            Fe::PageElement.create!(element_id: e.id, page_id: @custom_page.id)
           end
         end
       end
@@ -654,5 +652,4 @@ class Admin::ProjectsController < ApplicationController
   def project_params
     params.fetch(:sp_project).permit!
   end
-
 end

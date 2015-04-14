@@ -1,5 +1,4 @@
 class Api::V1::UsersController < Api::V1::BaseController
-
   def index
     users = add_includes_and_order(User.all)
     render render_options(users)
@@ -15,5 +14,4 @@ class Api::V1::UsersController < Api::V1::BaseController
   def available_includes
     []
   end
-
 end

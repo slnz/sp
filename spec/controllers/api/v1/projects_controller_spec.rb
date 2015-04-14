@@ -21,7 +21,7 @@ describe Api::V1::ProjectsController do
     end
 
     it 'can handle an invalid HTTP_AUTHORIZATION value' do
-      request.env['HTTP_AUTHORIZATION'] = "12345"
+      request.env['HTTP_AUTHORIZATION'] = '12345'
       get 'index'
       json = JSON.parse(response.body)
       expect(json['error']).to be_present
@@ -35,12 +35,12 @@ describe Api::V1::ProjectsController do
     end
 
     it 'returns invalid token msg' do
-      get 'index', access_token: "1234"
+      get 'index', access_token: '1234'
       json = JSON.parse(response.body)
       expect(json['error']).to be_present
     end
 
-    %w{applicants pd apd opd staff volunteers}.each do |incl|
+    %w(applicants pd apd opd staff volunteers).each do |incl|
       context "include #{incl}" do
         it "returns project w/ #{incl}" do
           get 'index', include: incl, access_token: api_key.access_token
@@ -52,16 +52,15 @@ describe Api::V1::ProjectsController do
 
     context 'filter by id' do
       it 'returns specific person' do
-        get 'index', filters: {id: project.id}, access_token: api_key.access_token
+        get 'index', filters: { id: project.id }, access_token: api_key.access_token
         json = JSON.parse(response.body)
         expect(json['projects'].first['id'].to_i).to eq(project.id)
       end
-
     end
 
     context 'filter by primary_partner' do
       it 'returns specific person' do
-        get 'index', filters: {primary_partner: 'String'}, access_token: api_key.access_token
+        get 'index', filters: { primary_partner: 'String' }, access_token: api_key.access_token
         json = JSON.parse(response.body)
         expect(json['projects'].first['primary_partner']).to eq('String')
       end
@@ -69,7 +68,7 @@ describe Api::V1::ProjectsController do
 
     context 'filter by not_primary_partner' do
       it 'returns specific person' do
-        get 'index', filters: {not_primary_partner: 'String'}, access_token: api_key.access_token
+        get 'index', filters: { not_primary_partner: 'String' }, access_token: api_key.access_token
         json = JSON.parse(response.body)
         expect(json['projects'].count).to eq(0)
       end
@@ -88,9 +87,8 @@ describe Api::V1::ProjectsController do
       expect(json['sp_project']).to be_present
     end
     it 'returns 404 if the person is not found' do
-      get 'show', id: 12345, access_token: api_key.access_token
+      get 'show', id: 12_345, access_token: api_key.access_token
       expect(response.status).to eq(404)
     end
   end
-
 end

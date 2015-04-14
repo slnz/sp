@@ -1,10 +1,9 @@
 class Run
-
   def self.weekly_tasks
-    #send_leader_reminder_emails
-#    send_stats_reminder_emails -- This is now in the infobase
-    #send_reference_reminder_emails
-    #send_app_status_emails
+    # send_leader_reminder_emails
+    #    send_stats_reminder_emails -- This is now in the infobase
+    # send_reference_reminder_emails
+    # send_app_status_emails
   end
 
   def self.daily_tasks
@@ -29,38 +28,36 @@ class Run
   end
 
   def self.check_apps_for_completion
-    apps_to_check = SpApplication.find_all_by_status("submitted")
-    apps_to_check.each do |app|
-      app.complete
-    end
+    apps_to_check = SpApplication.find_all_by_status('submitted')
+    apps_to_check.each(&:complete)
   end
 
-  #This method changes the year of projects in their archive process, but SpApplication.year determines the current year for applications.
+  # This method changes the year of projects in their archive process, but SpApplication.year determines the current year for applications.
   def self.change_sp_year
-    last_years = SpProject.where("archive_project_date <= ?", Date.today)
+    last_years = SpProject.where('archive_project_date <= ?', Date.today)
     last_years.each do |new_project|
-      new_project.save(:validate => false)
-      new_project.year = Date.today.year + 1   #set year to next year (check if this will be a problem for semester projects) 
+      new_project.save(validate: false)
+      new_project.year = Date.today.year + 1   # set year to next year (check if this will be a problem for semester projects)
       new_project.start_date = new_project.start_date + 1.year if new_project.start_date
       new_project.end_date = new_project.end_date + 1.year if new_project.end_date
       new_project.date_of_departure = new_project.date_of_departure + 1.year if new_project.date_of_departure
       new_project.date_of_return = new_project.date_of_return + 1.year if new_project.date_of_return
       new_project.apply_by_date = new_project.apply_by_date + 1.year if new_project.apply_by_date
-      new_project.pd_start_date = nil   #new_project.pd_start_date + 1.year if new_project.pd_start_date
-      new_project.pd_end_date = nil     #new_project.pd_end_date + 1.year if new_project.pd_end_date
-      new_project.pd_close_start_date = nil   #new_project.pd_close_start_date + 1.year if new_project.pd_close_start_date
-      new_project.pd_close_end_date = nil     #new_project.pd_close_end_date + 1.year if new_project.pd_close_end_date
-      new_project.student_staff_start_date = nil   #new_project.student_staff_start_date + 1.year if new_project.student_staff_start_date
-      new_project.student_staff_end_date = nil     #new_project.student_staff_end_date + 1.year if new_project.student_staff_end_date
-      new_project.staff_start_date = nil   #new_project.staff_start_date + 1.year if new_project.staff_start_date
-      new_project.staff_end_date = nil     #new_project.staff_end_date + 1.year if new_project.staff_end_date
+      new_project.pd_start_date = nil   # new_project.pd_start_date + 1.year if new_project.pd_start_date
+      new_project.pd_end_date = nil     # new_project.pd_end_date + 1.year if new_project.pd_end_date
+      new_project.pd_close_start_date = nil   # new_project.pd_close_start_date + 1.year if new_project.pd_close_start_date
+      new_project.pd_close_end_date = nil     # new_project.pd_close_end_date + 1.year if new_project.pd_close_end_date
+      new_project.student_staff_start_date = nil   # new_project.student_staff_start_date + 1.year if new_project.student_staff_start_date
+      new_project.student_staff_end_date = nil     # new_project.student_staff_end_date + 1.year if new_project.student_staff_end_date
+      new_project.staff_start_date = nil   # new_project.staff_start_date + 1.year if new_project.staff_start_date
+      new_project.staff_end_date = nil     # new_project.staff_end_date + 1.year if new_project.staff_end_date
       new_project.archive_project_date = new_project.archive_project_date + 1.year if new_project.archive_project_date
       new_project.open_application_date = new_project.open_application_date + 1.year if new_project.open_application_date
       new_project.current_students_men = 0
       new_project.current_students_women = 0
       new_project.current_applicants_men = 0
       new_project.current_applicants_women = 0
-      new_project.save(:validate => false)
+      new_project.save(validate: false)
     end
     nil
   end
@@ -75,13 +72,11 @@ class Run
       project.update_attribute('display_location', project.name)
     end
     projects = SpProject.find_all_by_version(nil)
-    projects.each do |project|
-      project.save!
-    end
+    projects.each(&:save!)
   end
 
   def self.zero_projects
-    projects = SpProject.find_all_by_year_and_project_status("2010", "open")
+    projects = SpProject.find_all_by_year_and_project_status('2010', 'open')
     projects.each do |project|
       project.current_students_men = 0
       project.current_students_women = 0
@@ -174,7 +169,7 @@ class Run
 
   def self.add_sp_users_to_mpd_tool
     users = SpUser.where("type IN ('SpNationalCoordinator', 'SpRegionalCoordinator', 'SpDirector')")
-    users.each do |user|
+    users.each do |_user|
       # MpdUser.create(:ssm_id => user.ssm_id)
     end
   end
@@ -182,7 +177,7 @@ class Run
   def self.move_birthdates
     answers = Fe::Answer.find_all_by_question_id(404)
     answers.each do |answer|
-      if !answer.answer.blank?
+      unless answer.answer.blank?
         app = SpApplication.find(answer.instance_id)
         person = app.person
         person.birth_date = answer.answer

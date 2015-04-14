@@ -1,21 +1,21 @@
-# require 'spork'
-#uncomment the following line to use spork with the debugger
-#require 'spork/ext/ruby-debug'
+  # require 'spork'
+  # uncomment the following line to use spork with the debugger
+  # require 'spork/ext/ruby-debug'
 
-# Spork.prefork do
+  # Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
 
-  ENV["RAILS_ENV"] ||= 'test'
-  require File.expand_path("../../config/environment", __FILE__)
+  ENV['RAILS_ENV'] ||= 'test'
+  require File.expand_path('../../config/environment', __FILE__)
   require 'rspec/rails'
-  #require 'webmock/rspec'
+  # require 'webmock/rspec'
 
   require 'simplecov'
   require 'webmock/rspec'
   SimpleCov.start 'rails' do
-    add_filter "vendor"
+    add_filter 'vendor'
   end
 
   require 'sidekiq/testing'
@@ -23,7 +23,7 @@
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
-  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
   RSpec.configure do |config|
     # ## Mock Framework
@@ -52,18 +52,18 @@
     config.filter_run :focus
     config.filter_run_excluding :broken
     config.run_all_when_everything_filtered = true
-    #config.include Devise::TestHelpers, :type => :controller
+    # config.include Devise::TestHelpers, :type => :controller
     config.include FactoryGirl::Syntax::Methods
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
-      #DatabaseCleaner.clean_with(:truncation)
+      # DatabaseCleaner.clean_with(:truncation)
     end
 
     config.before(:all) do
       # this is much easier than stub_request for all the global registry calls
       # and mocks/stubs aren't working because the calls in the methods are super
-      
+
       CruLib::GlobalRegistryMethods.class_eval do
         def async_push_to_global_registry(*args)
           $async_push_to_global_registry_reached = true
@@ -122,7 +122,7 @@
 
       DatabaseCleaner.start
       Rails.cache.clear
-      @geocode_body ||= %|
+      @geocode_body ||= %(
 {
    "results" : [
       {
@@ -182,16 +182,16 @@
    ],
    "status" : "OK"
 }
-|
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,String&language=en&sensor=false").
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+
+)
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=String,String&language=en&sensor=false')
+        .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' })
+        .to_return(status: 200, body: @geocode_body, headers: {})
     end
 
     config.after(:each) do
       DatabaseCleaner.clean
     end
-
   end
 #
 # end

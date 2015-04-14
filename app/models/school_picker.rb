@@ -2,8 +2,8 @@
 # - a two-part question to search for the user's school
 
 class SchoolPicker < Question
-  def state(app=nil)
-    if !app.nil?
+  def state(app = nil)
+    unless app.nil?
       # try to get state from the applicant
       state = app.person.universityState
       unless state.present?
@@ -16,23 +16,23 @@ class SchoolPicker < Question
       end
     end
     state.to_s
-  end  
-  
-  def colleges(app=nil)
+  end
+
+  def colleges(app = nil)
     unless state(app) == ''
       return Campus.where("type = 'College' AND (isClosed is null or isClosed <> 'T') AND state = ?", state(app))
-                   .order(:name).pluck(:name)
+        .order(:name).pluck(:name)
     end
     []
   end
-  
-  def high_schools(app=nil)
-    unless self.state(app) == ''
+
+  def high_schools(app = nil)
+    unless state(app) == ''
       return Campus.where(type: 'HighSchool').order(:name).pluck(:name)
     end
     []
   end
-  
+
   def validation_class
     if self.required?
       'validate-selection required'

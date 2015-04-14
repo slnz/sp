@@ -19,16 +19,16 @@
 
 set :output, '/tmp/cron.log'
 
-job_type :rake,    "cd :path && PATH=/usr/local/bin:$PATH RAILS_ENV=:environment /usr/local/bin/bundle exec rake :task --silent :output"
-job_type :rails,    "cd :path && PATH=/usr/local/bin:$PATH RAILS_ENV=:environment /usr/local/bin/bundle exec rails :task --silent :output"
-job_type :runner,    "cd :path && PATH=/usr/local/bin:$PATH RAILS_ENV=:environment /usr/local/bin/bundle exec rails runner :task --silent :output"
+job_type :rake,    'cd :path && PATH=/usr/local/bin:$PATH RAILS_ENV=:environment /usr/local/bin/bundle exec rake :task --silent :output'
+job_type :rails,    'cd :path && PATH=/usr/local/bin:$PATH RAILS_ENV=:environment /usr/local/bin/bundle exec rails :task --silent :output'
+job_type :runner,    'cd :path && PATH=/usr/local/bin:$PATH RAILS_ENV=:environment /usr/local/bin/bundle exec rails runner :task --silent :output'
 
 every 1.week do
-  runner "Run.weekly_tasks"
+  runner 'Run.weekly_tasks'
 end
 every 1.day do
-  runner "Run.daily_tasks"
-  runner "Run.change_sp_year"
+  runner 'Run.daily_tasks'
+  runner 'Run.change_sp_year'
 end
 
 # Learn more: http://github.com/javan/whenever

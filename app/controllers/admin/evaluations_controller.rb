@@ -1,13 +1,13 @@
 class Admin::EvaluationsController < ApplicationController
-  before_filter :cas_filter, :authentication_filter
-  before_filter :get_evaluation, :only => [:update, :page, :references, :print, :payments]
-  before_filter :get_presenter, :only => [:evaluate, :page]
-  before_filter :check_access
+  before_action :cas_filter, :authentication_filter
+  before_action :get_evaluation, only: [:update, :page, :references, :print, :payments]
+  before_action :get_presenter, only: [:evaluate, :page]
+  before_action :check_access
   layout 'admin'
 
   def update
     @evaluation.update_attributes(evaluation_params)
-    update_evaluation and return
+    update_evaluation && return
   end
 
   def evaluate
@@ -21,7 +21,7 @@ class Admin::EvaluationsController < ApplicationController
     @page = Fe::Page.find(params[:page_id])
     @answer_sheet = @application
     @pages = @presenter.pages[0..-2]
-    @pages.reject!{|page| !page.has_questions?}
+    @pages.reject! { |page| !page.has_questions? }
     @next_page = @pages[@pages.index(@page) + 1]
   end
 
@@ -31,7 +31,6 @@ class Admin::EvaluationsController < ApplicationController
   end
 
   def payments
-
   end
 
   def print
@@ -43,22 +42,23 @@ class Admin::EvaluationsController < ApplicationController
     if params[:references] == 'true'
       set_up_reference_elements
     end
-    render :layout => 'print'
+    render layout: 'print'
   end
 
   protected
+
   def update_evaluation
     @project = @application.project
     if event_param && event_param != ''
       @application.send("#{event_param}!".to_sym) if @application.send("may_#{event_param}?".to_sym)
     end
     if application_params[:project_id].blank?
-      flash[:error] = "This applicant must be assigned to a project to be evaluated"
-      redirect_to :back and return
+      flash[:error] = 'This applicant must be assigned to a project to be evaluated'
+      redirect_to(:back) && return
     end
     if application_params[:applicant_notified] == 'true' && !SpApplication.accepted_statuses.include?(@application.status)
       flash[:error] = "You said you notified the application of acceptance, but haven't marked them as accepted yet. Please mark this applicant as accepted."
-      redirect_to :back and return
+      redirect_to(:back) && return
     end
     @application.update_attributes(application_params)
     redirect_to @project ? admin_project_path(@project) : dashboard_path
@@ -71,7 +71,7 @@ class Admin::EvaluationsController < ApplicationController
 
   def get_presenter
     @application = SpApplication.includes(:person).find(params[:application_id])
-    @evaluation = @application.evaluation || SpEvaluation.create(:application_id => @application.id)
+    @evaluation = @application.evaluation || SpEvaluation.create(application_id: @application.id)
     @person = @application.person
     @answer_sheet = @application
     @presenter = Fe::AnswerPagesPresenter.new(self, @application)
@@ -80,7 +80,7 @@ class Admin::EvaluationsController < ApplicationController
   def set_up_reference_elements
     @elements = []
     @references = @application.reference_sheets.to_a
-    @references.reject! {|r| !r.question_sheet}
+    @references.reject! { |r| !r.question_sheet }
     @references.each do |reference|
       @elements = @elements | reference.question_sheet.elements
     end
@@ -107,5 +107,4 @@ class Admin::EvaluationsController < ApplicationController
   def event_param
     params.permit(:event)[:event]
   end
-
 end

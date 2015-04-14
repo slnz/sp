@@ -1,12 +1,11 @@
 module Fe
   class PaymentQuestion < Question
-
-    def response(answer_sheet=nil)
+    def response(answer_sheet = nil)
       return Payment.new unless answer_sheet
-      answer_sheet.payments || [Payment.new(:answer_sheetlication_id => answer_sheet.id) ]
+      answer_sheet.payments || [Payment.new(answer_sheetlication_id: answer_sheet.id)]
     end
 
-    def display_response(answer_sheet=nil)
+    def display_response(answer_sheet = nil)
       response(answer_sheet).to_s
     end
 
@@ -17,6 +16,5 @@ module Fe
         false
       end
     end
-
   end
 end

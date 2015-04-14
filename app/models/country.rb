@@ -1,5 +1,4 @@
 class Country < ActiveRecord::Base
-
   def self.to_hash_US_first
     result = {}
     top = where('country = ?', 'United States').first
@@ -10,7 +9,7 @@ class Country < ActiveRecord::Base
     end
     result
   end
-  
+
   def self.full_name(code)
     result = nil
     country = where('code = ?', code).first

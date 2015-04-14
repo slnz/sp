@@ -36,10 +36,10 @@ describe Admin::LeadersController do
     let(:person) { create(:person) }
 
     it 'removes a leader from a project' do
-      project.sp_staff.create(:type => 'Kid', year: project.year, person_id: person.id)
-      expect {
+      project.sp_staff.create(type: 'Kid', year: project.year, person_id: person.id)
+      expect do
         xhr :delete, :destroy, id: project.id, person_id: person.id, leader: 'kid'
-      }.to change(project.sp_staff, :count).by(-1)
+      end.to change(project.sp_staff, :count).by(-1)
     end
   end
 
@@ -55,16 +55,16 @@ describe Admin::LeadersController do
     let(:project) { create(:sp_project) }
 
     it 'creates a new person' do
-      expect {
-        xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {first_name: 'Foo', last_name: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current'}}
+      expect do
+        xhr :post, :add_person, project_id: project.id, leader: 'pd', person: { first_name: 'Foo', last_name: 'bar', gender: '1', current_address_attributes: { email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current' } }
         expect(subject.request.flash[:error]).to be_nil
         expect(response).to render_template('create')
-      }.to change(Person, :count)
+      end.to change(Person, :count)
     end
     it 'renders new with errors if there are fields missing' do
       # leave out first name
-      xhr :post, :add_person, project_id: project.id, leader: 'pd', person: {last_name: 'bar', gender: '1', current_address_attributes: {email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current'}}
-        expect(subject.request.flash[:error]).to_not be_nil
+      xhr :post, :add_person, project_id: project.id, leader: 'pd', person: { last_name: 'bar', gender: '1', current_address_attributes: { email: 'somewhere@foo.com', home_phone: '555-555-5555', address_type: 'current' } }
+      expect(subject.request.flash[:error]).to_not be_nil
       expect(response).to render_template('new')
     end
   end

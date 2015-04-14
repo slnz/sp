@@ -1,5 +1,4 @@
 class Api::V1::PeopleController < Api::V1::BaseController
-
   def index
     order = params[:order] || 'last_name, first_name'
 
@@ -20,5 +19,4 @@ class Api::V1::PeopleController < Api::V1::BaseController
   def available_includes
     [:current_address, :email_addresses, :phone_numbers]
   end
-
 end

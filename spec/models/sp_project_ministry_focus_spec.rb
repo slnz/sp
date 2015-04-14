@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SpProjectMinistryFocus do
-  include_examples "global_registry_methods"
+  include_examples 'global_registry_methods'
 
   before(:all) do
     GlobalRegistry.access_token = 'access_token'
@@ -30,7 +30,7 @@ describe SpProjectMinistryFocus do
 
   context '#attributes_to_push' do
     it 'should set attributes when there is a global_registry_id value already' do
-      @sp_project_ministry_focus.update_attribute(:global_registry_id, 12345)
+      @sp_project_ministry_focus.update_attribute(:global_registry_id, 12_345)
       atts = @sp_project_ministry_focus.attributes_to_push
       expect($attributes_to_push_args).to eq([])
     end

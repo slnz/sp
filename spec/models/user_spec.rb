@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User do
   context '#find_or_create_from_guid_or_email' do
-    it "creates a person associated with the new user" do
+    it 'creates a person associated with the new user' do
       user = User.find_or_create_from_guid_or_email('a', 'a@example.com', 'John', 'Doe')
       user.reload
       expect(user.person).to_not be_nil
@@ -40,7 +40,7 @@ describe User do
     it 'should create a new authentication' do
       u = create(:user)
       allow(Authentication).to receive(:find_by_provider_and_uid).with('provider', 'uid').and_return(false)
-      u.apply_omniauth({'info' => { 'email' => 'a@b.com' }, 'provider' => 'provider', 'uid' => 'uid' })
+      u.apply_omniauth('info' => { 'email' => 'a@b.com' }, 'provider' => 'provider', 'uid' => 'uid')
       u.reload
       expect(u.authentications.length).to be 1
     end
@@ -66,7 +66,7 @@ describe User do
   context '#create_person_and_address' do
     it 'should create a new user, person and address' do
       u = create(:user)
-      u.create_person_and_address({ first_name: 'first_name' })
+      u.create_person_and_address(first_name: 'first_name')
       u.reload
       expect(u.person).to_not be_nil
       expect(u.person.current_address).to_not be_nil
@@ -77,7 +77,7 @@ describe User do
   context '#create_person_and_address' do
     it 'should create a new user, person and address' do
       u = create(:user)
-      u.create_person_and_address({ first_name: 'first_name' })
+      u.create_person_and_address(first_name: 'first_name')
       u.reload
       expect(u.person).to_not be_nil
       expect(u.person.current_address).to_not be_nil
@@ -88,7 +88,7 @@ describe User do
   context '#create_person_from_omniauth' do
     it 'should create a new user, person and address' do
       u = create(:user)
-      u.create_person_from_omniauth({ 'first_name' => 'first_name', 'last_name' => 'last_name' })
+      u.create_person_from_omniauth('first_name' => 'first_name', 'last_name' => 'last_name')
       u.reload
       expect(u.person).to_not be_nil
       expect(u.person.current_address).to_not be_nil
@@ -98,7 +98,7 @@ describe User do
 
   context '#create_new_user_from_cas' do
     it 'should create a new user, person and address' do
-      u = User.create_new_user_from_cas('username@email.com', { 'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name' })
+      u = User.create_new_user_from_cas('username@email.com',  'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name')
       u.reload
       expect(u.person).to_not be_nil
       expect(u.person.current_address).to_not be_nil
@@ -106,19 +106,19 @@ describe User do
     end
     it 'should find an existing user when only the username matches' do
       u = create(:user, username: 'username@email.com')
-      User.create_new_user_from_cas('username@email.com', { 'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name' })
+      User.create_new_user_from_cas('username@email.com',  'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name')
       u.reload
       expect(u.globallyUniqueID).to eq('guid')
     end
     it 'should find an existing user by guid' do
       u = create(:user, username: 'nomatch', globallyUniqueID: 'guid')
-      User.create_new_user_from_cas('username@email.com', { 'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name' })
+      User.create_new_user_from_cas('username@email.com',  'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name')
       u.reload
       expect(u.username).to eq('username@email.com')
     end
     it 'should find an existing user by guid' do
       u = create(:user, username: 'nomatch', globallyUniqueID: 'guid')
-      User.create_new_user_from_cas('username@email.com', { 'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name' })
+      User.create_new_user_from_cas('username@email.com',  'ssoGuid' => 'guid', 'firstName' => 'first_name', 'lastName' => 'last_name')
       u.reload
       expect(u.username).to eq('username@email.com')
     end

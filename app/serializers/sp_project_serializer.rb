@@ -14,7 +14,5 @@ class SpProjectSerializer < ActiveModel::Serializer
   has_many :volunteers
   has_many :applicants
 
-  def picture_url
-    object.picture_url
-  end
+  delegate :picture_url, to: :object
 end

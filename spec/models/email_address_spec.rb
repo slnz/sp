@@ -19,17 +19,17 @@ describe EmailAddress do
   context '#columns_to_push' do
     it 'should have email' do
       columns = EmailAddress.columns_to_push
-      expect(columns.detect{ |c| c[:name] == 'email' }[:name]).to eq('email')
+      expect(columns.detect { |c| c[:name] == 'email' }[:name]).to eq('email')
     end
   end
 
   context '#push_structure_to_global_registry' do
     it 'should work' do
-      stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=person").
-        to_return(:status => 200, :body => '{ "entity_types": [ { "id": 12345 } ] }', :headers => {})
+      stub_request(:get, 'https://globalregistry.com/entity_types?filters%5Bname%5D=person')
+        .to_return(status: 200, body: '{ "entity_types": [ { "id": 12345 } ] }', headers: {})
       EmailAddress.push_structure_to_global_registry
       expect($push_structure_to_global_registry_reached).to be true
-      expect($push_structure_to_global_registry_args.first).to eq(12345)
+      expect($push_structure_to_global_registry_args.first).to eq(12_345)
     end
   end
 end

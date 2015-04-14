@@ -13,7 +13,7 @@ describe SpUser do
     it 'should allow someone to edit a project they are directing' do
       user = create(:user)
       person = create(:person, user: user)
-      sp_user = create(:sp_user, person: person, user: user, type: "SpDirector")
+      sp_user = create(:sp_user, person: person, user: user, type: 'SpDirector')
       project = create(:sp_project)
       sp_staff = create(:sp_staff_pd, sp_project: project, person: person)
       sp_user.reload
@@ -22,7 +22,7 @@ describe SpUser do
     it 'should not allow someone to edit a project they are not directing' do
       user = create(:user)
       person = create(:person, user: user)
-      sp_user = create(:sp_user, person: person, user: user, type: "SpDirector")
+      sp_user = create(:sp_user, person: person, user: user, type: 'SpDirector')
       project = create(:sp_project)
       project2 = create(:sp_project)
       sp_staff = create(:sp_staff_pd, sp_project: project, person: person)
@@ -34,8 +34,8 @@ describe SpUser do
   context '#region' do
     it 'should work' do
       user = create(:user)
-      person = create(:person, user: user, region: "GL")
-      sp_user = create(:sp_user, person: person, user: user, type: "SpDirector")
+      person = create(:person, user: user, region: 'GL')
+      sp_user = create(:sp_user, person: person, user: user, type: 'SpDirector')
       sp_user.region
     end
   end
@@ -43,8 +43,8 @@ describe SpUser do
   context '#region' do
     it 'should work' do
       user = create(:user)
-      person = create(:person, user: user, region: "GL")
-      sp_user = create(:sp_user, person: person, user: user, type: "SpDirector")
+      person = create(:person, user: user, region: 'GL')
+      sp_user = create(:sp_user, person: person, user: user, type: 'SpDirector')
       sp_user.region
     end
   end

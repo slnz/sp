@@ -4,8 +4,8 @@ class SpDesignationNumber < ActiveRecord::Base
   sidekiq_options unique: true
 
   belongs_to :person
-  belongs_to :project, :class_name => 'SpProject'
-  has_many :donations, -> { order('donation_date desc') }, :class_name => "SpDonation", :primary_key => "designation_number"
+  belongs_to :project, class_name: 'SpProject'
+  has_many :donations, -> { order('donation_date desc') }, class_name: 'SpDonation', primary_key: 'designation_number'
 
   before_save :ensure_correct_number_length
   after_save :async_secure_designation, if: :mark_secure_necessary?
@@ -24,6 +24,7 @@ class SpDesignationNumber < ActiveRecord::Base
   end
 
   private
+
   # if this person is going to a secure location, mark them as secure in siebel
   def secure_designation
     parameters = {
@@ -34,7 +35,6 @@ class SpDesignationNumber < ActiveRecord::Base
     SpDesignationNumber.update_designation_security(designation_number, parameters)
   end
 
-
   def self.wsapi_url(designation_number)
     base_url = APP_CONFIG['designation_base_url']
     "#{base_url}/designations/#{designation_number}/secureStatus"
@@ -43,7 +43,7 @@ class SpDesignationNumber < ActiveRecord::Base
   def self.update_designation_security(designation_number, parameters, security = :secure)
     case security
     when :secure
-      RestClient::Request.execute(:method => :post, :url => wsapi_url(designation_number), :payload => parameters, headers: {'Authorization' => "Bearer #{APP_CONFIG['designation_access_token']}"}, :timeout => -1) { |res, request, result, &block|
+      RestClient::Request.execute(method: :post, url: wsapi_url(designation_number), payload: parameters, headers: { 'Authorization' => "Bearer #{APP_CONFIG['designation_access_token']}" }, timeout: -1) do |res, request, result, &_block|
         puts res.inspect
         puts request.inspect
         puts result.inspect
@@ -54,21 +54,21 @@ class SpDesignationNumber < ActiveRecord::Base
           end
         else
           if res.code.to_i >= 400
-            raise res.inspect
+            fail res.inspect
           end
         end
         res
-      }
+      end
     when :unsecure
-      RestClient::Request.execute(:method => :delete, :url => wsapi_url(designation_number), headers: {'Authorization' => "Bearer #{APP_CONFIG['designation_access_token']}"}, :timeout => -1) { |res, request, result, &block|
+      RestClient::Request.execute(method: :delete, url: wsapi_url(designation_number), headers: { 'Authorization' => "Bearer #{APP_CONFIG['designation_access_token']}" }, timeout: -1) do |res, request, result, &_block|
         puts res.inspect
         puts request.inspect
         puts result.inspect
         if res.code.to_i >= 400
-          raise res.inspect
+          fail res.inspect
         end
         res
-      }
+      end
     end
   end
 
@@ -83,5 +83,4 @@ class SpDesignationNumber < ActiveRecord::Base
       end
     end
   end
-
 end

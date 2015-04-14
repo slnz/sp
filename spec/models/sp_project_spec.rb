@@ -3,70 +3,70 @@ require 'spec_helper'
 describe SpProject do
   before(:each) do
   end
-  
-  context "#end_date_range" do
-    it "should valiate start date is before end date" do
+
+  context '#end_date_range' do
+    it 'should valiate start date is before end date' do
       project = SpProject.new
       project.start_date = 1.month.from_now
       project.end_date = 1.week.from_now
       project.valid?
-      expect(project.errors[:base]).to include("goSP.com tab: Student Start Date must be before Student End Date")
+      expect(project.errors[:base]).to include('goSP.com tab: Student Start Date must be before Student End Date')
     end
-    it "should valiate pd start date is pd before end date" do
+    it 'should valiate pd start date is pd before end date' do
       project = SpProject.new
       project.pd_start_date = 1.month.from_now
       project.pd_end_date = 1.week.from_now
       project.valid?
-      expect(project.errors[:base]).to include("Risk Management tab: PD Start Date must be before PD End Date")
+      expect(project.errors[:base]).to include('Risk Management tab: PD Start Date must be before PD End Date')
     end
   end
 
-  context "#statistics" do
-    it "should work" do
+  context '#statistics' do
+    it 'should work' do
       project = SpProject.new
-      stub_request(:get, "https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bevent_id%5D=&filters%5Bsp_year%5D=2014&per_page=0").
-        to_return(:status => 200, :body => { "statistics" => [ ] }.to_json, :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bevent_id%5D=&filters%5Bsp_year%5D=2014&per_page=0')
+        .to_return(status: 200, body: { 'statistics' => [] }.to_json, headers: {})
       project.statistics(2014)
     end
   end
 
-  context "class-level #statistics" do
-    it "should work" do
-      stub_request(:get, "https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bsp_year%5D=2014&per_page=0").
-        to_return(:status => 200, :body => { "statistics" => [ ] }.to_json, :headers => {})
+  context 'class-level #statistics' do
+    it 'should work' do
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bsp_year%5D=2014&per_page=0')
+        .to_return(status: 200, body: { 'statistics' => [] }.to_json, headers: {})
       SpProject.statistics(2014)
     end
   end
 
-  context "#async_set_up_give_sites" do
-    it "should work" do
+  context '#async_set_up_give_sites' do
+    it 'should work' do
       project = create(:sp_project)
       project.save!
-      project.project_summary = "this has now changed"
-      project.full_project_description = "this has now changed"
+      project.project_summary = 'this has now changed'
+      project.full_project_description = 'this has now changed'
       project.async_set_up_give_sites
     end
   end
 
-  context "#set_up_give_sites", :broken do
-    it "should work" do
+  context '#set_up_give_sites', :broken do
+    it 'should work' do
       project = create(:sp_project)
-      app = create(:sp_application, year: 2014, project: project, status: "accepted_as_participant")
+      app = create(:sp_application, year: 2014, project: project, status: 'accepted_as_participant')
       expect(app).to receive(:set_up_give_site)
       expect_any_instance_of(SpApplication).to receive(:set_up_give_site)
       project.set_up_give_sites
     end
   end
 
-  context "#async_secure_designations_if_necessary" do
-    it "should work when going unsecure" do
+  context '#async_secure_designations_if_necessary' do
+    it 'should work when going unsecure' do
       project = create(:sp_project, secure: true)
       project.secure = false
       expect(project).to receive(:async).with(:unsecure_designations)
       project.async_secure_designations_if_necessary
     end
 
-    it "should work when going secure" do
+    it 'should work when going secure' do
       project = create(:sp_project, secure: false)
       project.secure = true
       expect(project).to receive(:async).with(:secure_designations)
@@ -77,7 +77,7 @@ describe SpProject do
   context '#secure_designations' do
     it 'should work' do
       project = create(:sp_project, secure: false)
-      expect(project).to receive(:update_designations_security).with({ startDate: Date.today.to_s(:db), endDate: 1.year.from_now.to_date.to_s(:db)}, :secure)
+      expect(project).to receive(:update_designations_security).with({ startDate: Date.today.to_s(:db), endDate: 1.year.from_now.to_date.to_s(:db) }, :secure)
       project.secure_designations
     end
   end
@@ -93,8 +93,8 @@ describe SpProject do
   context '#update_designations_security' do
     it 'should work' do
       project = create(:sp_project)
-      app = create(:sp_application, year: SpApplication.year, project: project, status: "accepted_as_participant", designation_number: '00000dn')
-      #stub_request(:post, "http:///designations/00000dn/secureStatus").
+      app = create(:sp_application, year: SpApplication.year, project: project, status: 'accepted_as_participant', designation_number: '00000dn')
+      # stub_request(:post, "http:///designations/00000dn/secureStatus").
       #  to_return(:status => 200, :body => "", :headers => {})
       expect(SpDesignationNumber).to receive(:update_designation_security).with('00000dn', {}, :secure)
       project.update_designations_security({}, :secure)
@@ -113,7 +113,7 @@ describe SpProject do
       g1 = create(:sp_gospel_in_action)
       g2 = create(:sp_gospel_in_action)
       project = create(:sp_project)
-      project.gospel_in_action_ids = [ g1.id, g2.id ]
+      project.gospel_in_action_ids = [g1.id, g2.id]
       expect(project.gospel_in_actions).to eq([g1, g2])
     end
   end
@@ -185,12 +185,12 @@ describe SpProject do
       p.date_of_departure = 5.days.from_now
       p.date_of_return = 2.days.from_now
       p.end_date_range
-      expect(p.errors[:base].detect{ |e| e =~ /Student Start Date must be before Student End Date/ }.present?).to be true
-      expect(p.errors[:base].detect{ |e| e =~ /Risk Management tab: PD Start Date must be before PD End Date/ }.present?).to be true
-      expect(p.errors[:base].detect{ |e| e =~ /Risk Management tab: PD Start Date \(for closing\) must be before PD Close End Date \(for closing\)/ }.present?).to be true
-      expect(p.errors[:base].detect{ |e| e =~ /Risk Management tab: Staff Start Date must be before Staff End Date/ }.present?).to be true
-      expect(p.errors[:base].detect{ |e| e =~ /Risk Management tab: Student Staff Start Date must be before Student Staff End Date/ }.present?).to be true
-      expect(p.errors[:base].detect{ |e| e =~ /Risk Management tab: Departure \(from the US\) Date must be before Arrival \(in the US\) Date/ }.present?).to be true
+      expect(p.errors[:base].detect { |e| e =~ /Student Start Date must be before Student End Date/ }.present?).to be true
+      expect(p.errors[:base].detect { |e| e =~ /Risk Management tab: PD Start Date must be before PD End Date/ }.present?).to be true
+      expect(p.errors[:base].detect { |e| e =~ /Risk Management tab: PD Start Date \(for closing\) must be before PD Close End Date \(for closing\)/ }.present?).to be true
+      expect(p.errors[:base].detect { |e| e =~ /Risk Management tab: Staff Start Date must be before Staff End Date/ }.present?).to be true
+      expect(p.errors[:base].detect { |e| e =~ /Risk Management tab: Student Staff Start Date must be before Student Staff End Date/ }.present?).to be true
+      expect(p.errors[:base].detect { |e| e =~ /Risk Management tab: Departure \(from the US\) Date must be before Arrival \(in the US\) Date/ }.present?).to be true
     end
   end
 
@@ -302,20 +302,20 @@ describe SpProject do
 
   context '#international' do
     it 'should return No if country is United States' do
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,MN,United%20States&language=en&sensor=false").
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=String,MN,United%20States&language=en&sensor=false')
+        .to_return(status: 200, body: @geocode_body, headers: {})
       p = create(:sp_project, country: 'United States', state: 'MN')
       expect(p.international).to eq('No')
     end
     it 'should return Yes if country is Canada' do
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,Canada&language=en&sensor=false").
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=String,Canada&language=en&sensor=false')
+        .to_return(status: 200, body: @geocode_body, headers: {})
       p = create(:sp_project, country: 'Canada')
       expect(p.international).to eq('Yes')
     end
     it 'should return No if country is not set' do
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=String,Canada&language=en&sensor=false").
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=String,Canada&language=en&sensor=false')
+        .to_return(status: 200, body: @geocode_body, headers: {})
       p = SpProject.new
       expect(p.international).to eq('No')
     end
@@ -399,8 +399,8 @@ describe SpProject do
       pd = create(:sp_staff, year: project.year, type: 'PD', project_id: project.id, person_id: create(:person).id)
       allow(project).to receive(:pd).and_return(pd.person)
       a = pd.person.create_current_address
-      a.update_attribute :email, "email@email.com"
-      expect(project.pd_email_non_secure).to eq("email@email.com")
+      a.update_attribute :email, 'email@email.com'
+      expect(project.pd_email_non_secure).to eq('email@email.com')
     end
   end
 
@@ -410,18 +410,18 @@ describe SpProject do
       apd = create(:sp_staff, year: project.year, type: 'APD', project_id: project.id, person_id: create(:person).id)
       allow(project).to receive(:apd).and_return(apd.person)
       a = apd.person.create_current_address
-      a.update_attribute :email, "email@email.com"
-      expect(project.apd_email_non_secure).to eq("email@email.com")
+      a.update_attribute :email, 'email@email.com'
+      expect(project.apd_email_non_secure).to eq('email@email.com')
     end
   end
 
   context '#regional_info' do
     it 'should return an info blob about the region' do
-      primary_partner = "PP"
+      primary_partner = 'PP'
       project = create(:sp_project, primary_partner: primary_partner)
       region_stub = Region.new(spPhone: 'sp_phone', name: 'Name', email: 'email')
-      allow(SpProject).to receive(:get_region).with("PP").and_return(region_stub)
-      expect(project.regional_info).to eq("Name Regional Office: Phone - sp_phone, Email - email")
+      allow(SpProject).to receive(:get_region).with('PP').and_return(region_stub)
+      expect(project.regional_info).to eq('Name Regional Office: Phone - sp_phone, Email - email')
     end
   end
 
@@ -446,8 +446,8 @@ describe SpProject do
       apd = create(:sp_staff, year: year, type: 'PD', project_id: project1.id, person_id: create(:person).id)
       opd = create(:sp_staff, year: year, type: 'PD', project_id: project2.id, person_id: create(:person).id)
       # only the first two projects have apd/opds
-      expect(ProjectMailer).to receive(:deliver_leader_reminder).with(satisfy{ |p| p == project1 })
-      expect(ProjectMailer).to receive(:deliver_leader_reminder).with(satisfy{ |p| p == project2 })
+      expect(ProjectMailer).to receive(:deliver_leader_reminder).with(satisfy { |p| p == project1 })
+      expect(ProjectMailer).to receive(:deliver_leader_reminder).with(satisfy { |p| p == project2 })
       SpProject.send_leader_reminder_emails
     end
   end

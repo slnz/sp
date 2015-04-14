@@ -1,7 +1,7 @@
 class Api::V1::BaseController < ApplicationController
-  before_filter :restrict_access
-  before_filter :cors_preflight_check
-  after_filter :cors_set_access_control_headers
+  before_action :restrict_access
+  before_action :cors_preflight_check
+  after_action :cors_set_access_control_headers
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -11,7 +11,7 @@ class Api::V1::BaseController < ApplicationController
   def restrict_access
     api_key = ApiKey.find_by(access_token: oauth_access_token)
     unless api_key
-      render json: {error: "You either didn't pass in an access token, or the token you did pass in was wrong."},
+      render json: { error: "You either didn't pass in an access token, or the token you did pass in was wrong." },
              status: :unauthorized,
              callback: params[:callback]
       return false
@@ -30,7 +30,7 @@ class Api::V1::BaseController < ApplicationController
 
   # grabs access_token from header if one is present
   def oauth_access_token_from_header
-    auth_header = request.env["HTTP_AUTHORIZATION"]||""
+    auth_header = request.env['HTTP_AUTHORIZATION'] || ''
     match = auth_header.match(/^token\s(.*)/) || auth_header.match(/^Bearer\s(.*)/)
     return match[1] if match.present?
     false
@@ -47,7 +47,7 @@ class Api::V1::BaseController < ApplicationController
       resource = resource.includes(available_includes) if available_includes.present?
     end
     resource = resource.where("#{resource.table.name}.updated_at > ?", Time.at(params[:since].to_i)) if params[:since].to_i > 0
-    resource = resource.paginate(:page => params[:page] || 1, per_page: params[:per_page] || 100)
+    resource = resource.paginate(page: params[:page] || 1, per_page: params[:per_page] || 100)
     resource = resource.order(options[:order]) if options[:order]
     resource
   end
@@ -70,12 +70,12 @@ class Api::V1::BaseController < ApplicationController
       json: collection,
       callback: params[:callback],
       include: includes,
-      scope: {include: includes, since: params[:since]}
+      scope: { include: includes, since: params[:since] }
     }
     if collection.respond_to?(:total_entries)
-      res.merge!(meta: {total: collection.total_entries, from: collection.offset + 1,
-                        to: collection.offset + collection.length, page: (params[:page] || 1).to_i})
+      res.merge!(meta: { total: collection.total_entries, from: collection.offset + 1,
+                         to: collection.offset + collection.length, page: (params[:page] || 1).to_i })
     end
-    return res
+    res
   end
 end

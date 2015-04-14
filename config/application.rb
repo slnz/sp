@@ -18,7 +18,7 @@ module Sp2
     config.assets.version = '1.0'
 
     # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-    #config.assets.precompile += [/(?:\/|\\|\A).*\.css/]
+    # config.assets.precompile += [/(?:\/|\\|\A).*\.css/]
     config.assets.precompile += [/\A[a-z0-9]\w+.(css|js)\z/]
     config.assets.precompile += ['ie7-admin.css', 'admin_manifest.css', 'qe_admin.css', 'print.css', 'spfe.admin.css']
 
@@ -38,10 +38,10 @@ module Sp2
     # config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    #config.action_view.javascript_expansions[:defaults] = %w()
+    # config.action_view.javascript_expansions[:defaults] = %w()
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
@@ -55,9 +55,8 @@ module Sp2
     end
 
     config.action_dispatch.default_headers = {
-        'X-XSS-Protection' => '1; mode=block',
+      'X-XSS-Protection' => '1; mode=block'
     }
-
   end
 end
 ActionController::Base.config.relative_url_root = ''

@@ -4,8 +4,8 @@ require 'infobase/target_area'
 
 module Fe
   class SchoolPicker < Question
-    def state(app=nil)
-      if !app.nil?
+    def state(app = nil)
+      unless app.nil?
         # try to get state from the applicant
         state = app.person.universityState
         unless state.present?
@@ -18,22 +18,22 @@ module Fe
         end
       end
       state.to_s
-    end  
-    
-    def colleges(app=nil)
+    end
+
+    def colleges(app = nil)
       unless state(app) == ''
         return Infobase::TargetArea.get('filters[type]' => 'College', 'filters[state]' => state(app)).collect(&:name)
       end
       []
     end
 
-    def high_schools(app=nil)
-      unless self.state(app) == ''
+    def high_schools(app = nil)
+      unless state(app) == ''
         return Infobase::TargetArea.get('filters[type]' => 'HighSchool').collect(&:name)
       end
       []
     end
-    
+
     def validation_class
       if self.required?
         'validate-selection required'

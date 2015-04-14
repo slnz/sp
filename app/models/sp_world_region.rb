@@ -3,7 +3,7 @@ class SpWorldRegion < ActiveRecord::Base
   include Sidekiq::Worker
 
   def self.skip_fields_for_gr
-    %w[id created_at updated_at global_registry_id]
+    %w(id created_at updated_at global_registry_id)
   end
 
   def self.global_registry_entity_type_name

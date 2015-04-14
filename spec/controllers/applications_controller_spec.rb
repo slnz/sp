@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ApplicationsController do
-  context "closed" do
-    it "should run" do
+  context 'closed' do
+    it 'should run' do
       user = create(:user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
@@ -90,12 +90,12 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs, label: 'Questions')
       create(:page, question_sheet: basic_info_qs, label: 'Instructions')
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
-      pp_qs = create(:question_sheet, label: "project_specific_question_sheet")
+      pp_qs = create(:question_sheet, label: 'project_specific_question_sheet')
       pp_qs_page = create(:page, question_sheet: pp_qs)
       pp_qs_element = create(:text_field_element)
       create(:page_element, page: pp_qs_page, element: pp_qs_element)
@@ -132,9 +132,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
-      pp_qs = create(:question_sheet, label: "project_specific_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
+      pp_qs = create(:question_sheet, label: 'project_specific_question_sheet')
       pp_qs_page = create(:page, question_sheet: pp_qs)
       pp_qs_element = create(:text_field_element)
       create(:page_element, page: pp_qs_page, element: pp_qs_element)
@@ -170,9 +170,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -202,9 +202,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -219,14 +219,14 @@ describe ApplicationsController do
       )
 
       project2 = create(:sp_project,
-                       year: Date.today.year,
-                       start_date: 1.month.from_now,
-                       end_date: 2.months.from_now,
-                       open_application_date: 30.days.ago,
-                       use_provided_application: true,
-                       project_status: 'open',
-                       basic_info_question_sheet: basic_info_qs,
-                       template_question_sheet: template_info_qs
+                        year: Date.today.year,
+                        start_date: 1.month.from_now,
+                        end_date: 2.months.from_now,
+                        open_application_date: 30.days.ago,
+                        use_provided_application: true,
+                        project_status: 'open',
+                        basic_info_question_sheet: basic_info_qs,
+                        template_question_sheet: template_info_qs
       )
 
       application = create(:sp_application,
@@ -235,7 +235,7 @@ describe ApplicationsController do
                            status: 'started'
       )
 
-      expect(get(:apply, p: project2.id)).to redirect_to(multiple_projects_application_path(application, :p => project2.id))
+      expect(get(:apply, p: project2.id)).to redirect_to(multiple_projects_application_path(application, p: project2.id))
     end
 
     it 'should change the project when forced' do
@@ -244,9 +244,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -261,14 +261,14 @@ describe ApplicationsController do
       )
 
       project2 = create(:sp_project,
-                       year: Date.today.year,
-                       start_date: 1.month.from_now,
-                       end_date: 2.months.from_now,
-                       open_application_date: 30.days.ago,
-                       use_provided_application: true,
-                       project_status: 'open',
-                       basic_info_question_sheet: basic_info_qs,
-                       template_question_sheet: template_info_qs
+                        year: Date.today.year,
+                        start_date: 1.month.from_now,
+                        end_date: 2.months.from_now,
+                        open_application_date: 30.days.ago,
+                        use_provided_application: true,
+                        project_status: 'open',
+                        basic_info_question_sheet: basic_info_qs,
+                        template_question_sheet: template_info_qs
       )
 
       application = create(:sp_application,
@@ -289,9 +289,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -305,7 +305,7 @@ describe ApplicationsController do
                        template_question_sheet: template_info_qs
       )
 
-      #create(:email_template, name: 'Application Moved')
+      # create(:email_template, name: 'Application Moved')
 
       get(:apply, p: project.id)
       expect(assigns(:application).project).to eq(project)
@@ -317,12 +317,12 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
-      #create(:email_template, name: 'Application Moved')
+      # create(:email_template, name: 'Application Moved')
 
       expect(get(:apply, p: '123')).to redirect_to(projects_path)
     end
@@ -335,9 +335,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -352,14 +352,14 @@ describe ApplicationsController do
       )
 
       project2 = create(:sp_project,
-                       year: Date.today.year,
-                       start_date: 1.month.from_now,
-                       end_date: 2.months.from_now,
-                       open_application_date: 30.days.ago,
-                       use_provided_application: true,
-                       project_status: 'open',
-                       basic_info_question_sheet: basic_info_qs,
-                       template_question_sheet: template_info_qs
+                        year: Date.today.year,
+                        start_date: 1.month.from_now,
+                        end_date: 2.months.from_now,
+                        open_application_date: 30.days.ago,
+                        use_provided_application: true,
+                        project_status: 'open',
+                        basic_info_question_sheet: basic_info_qs,
+                        template_question_sheet: template_info_qs
       )
 
       application = create(:sp_application,
@@ -381,9 +381,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = logged_in_user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -398,14 +398,14 @@ describe ApplicationsController do
       )
 
       project2 = create(:sp_project,
-                       year: Date.today.year,
-                       start_date: 1.month.from_now,
-                       end_date: 2.months.from_now,
-                       open_application_date: 30.days.ago,
-                       use_provided_application: true,
-                       project_status: 'open',
-                       basic_info_question_sheet: basic_info_qs,
-                       template_question_sheet: template_info_qs
+                        year: Date.today.year,
+                        start_date: 1.month.from_now,
+                        end_date: 2.months.from_now,
+                        open_application_date: 30.days.ago,
+                        use_provided_application: true,
+                        project_status: 'open',
+                        basic_info_question_sheet: basic_info_qs,
+                        template_question_sheet: template_info_qs
       )
 
       application = create(:sp_application,
@@ -426,9 +426,9 @@ describe ApplicationsController do
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
-      basic_info_qs = create(:question_sheet, label: "basic_info_question_sheet")
+      basic_info_qs = create(:question_sheet, label: 'basic_info_question_sheet')
       create(:page, question_sheet: basic_info_qs)
-      template_info_qs = create(:question_sheet, label: "template_question_sheet")
+      template_info_qs = create(:question_sheet, label: 'template_question_sheet')
       create(:page, question_sheet: template_info_qs)
 
       project = create(:sp_project,
@@ -453,5 +453,5 @@ describe ApplicationsController do
 
       get :edit, id: application.id
     end
-  end 
+  end
 end

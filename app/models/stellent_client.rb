@@ -1,5 +1,4 @@
 class StellentClient
-
   def client
     @client ||= Savon.client do
       endpoint APP_CONFIG['stellent_endpoint']
@@ -35,7 +34,7 @@ class StellentClient
       d_doc_account: 'Shared-dss-staff-' + designation_number,
       primary_file: {
         file_name: designation_number + '-content.xml',
-        file_content: Base64.encode64(xml(@app).gsub("\n",'').strip).gsub("\n",'')
+        file_content: Base64.encode64(xml(@app).gsub("\n", '').strip).gsub("\n", '')
       },
       extra_props: {
         property: [

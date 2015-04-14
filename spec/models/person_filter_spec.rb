@@ -23,7 +23,7 @@ describe PersonFilter do
       p.primary_email_address = 'a@b.com'
       filter = PersonFilter.new(id: p.id, ids: "#{p.id}, 12345", name_or_email_like: 'fir')
       expect(filter.filter(Person.all).to_a).to eq([p])
-       filter = PersonFilter.new(id: p.id, ids: "#{p.id}, 12345", name_or_email_like: 'las')
+      filter = PersonFilter.new(id: p.id, ids: "#{p.id}, 12345", name_or_email_like: 'las')
       expect(filter.filter(Person.all).to_a).to eq([p])
     end
 

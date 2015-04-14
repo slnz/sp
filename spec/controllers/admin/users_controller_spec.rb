@@ -63,9 +63,9 @@ describe Admin::UsersController do
       user = create(:user, person: create(:person))
       regional_coordinator = create(:sp_regional_coordinator, user: user, person_id: user.person.id)
 
-      expect {
+      expect do
         delete :destroy, id: regional_coordinator.id
-      }.to change(SpUser, :count).by(-1)
+      end.to change(SpUser, :count).by(-1)
 
       expect(response).to redirect_to(admin_users_path)
     end
@@ -102,9 +102,9 @@ describe Admin::UsersController do
       user_for_sp_user = create(:user, person: create(:person))
       sp_user = create(:sp_regional_coordinator, user: user_for_sp_user, person_id: user_for_sp_user.person.id)
 
-      expect {
+      expect do
         xhr :get, :create, type: 'national', person_id: sp_user.person.id
-      }.to change(SpRegionalCoordinator, :count).by(-1) && change(SpNationalCoordinator, :count).by(+1)
+      end.to change(SpRegionalCoordinator, :count).by(-1) && change(SpNationalCoordinator, :count).by(+1)
     end
 
     it 'should create corresponding type -- regional' do
@@ -115,9 +115,9 @@ describe Admin::UsersController do
       user_for_sp_user = create(:user, person: create(:person))
       sp_user = create(:sp_national_coordinator, user: user_for_sp_user, person_id: user_for_sp_user.person.id)
 
-      expect {
+      expect do
         xhr :get, :create, type: 'regional', person_id: sp_user.person.id
-      }.to change(SpRegionalCoordinator, :count).by(+1) && change(SpNationalCoordinator, :count).by(-1)
+      end.to change(SpRegionalCoordinator, :count).by(+1) && change(SpNationalCoordinator, :count).by(-1)
     end
 
     it 'should create corresponding type -- donation' do
@@ -128,9 +128,9 @@ describe Admin::UsersController do
       user_for_sp_user = create(:user, person: create(:person))
       sp_user = create(:sp_national_coordinator, user: user_for_sp_user, person_id: user_for_sp_user.person.id)
 
-      expect {
+      expect do
         xhr :get, :create, type: 'donation_services', person_id: sp_user.person.id
-      }.to change(SpDonationServices, :count).by(+1) && change(SpNationalCoordinator, :count).by(-1)
+      end.to change(SpDonationServices, :count).by(+1) && change(SpNationalCoordinator, :count).by(-1)
     end
   end
 

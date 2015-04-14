@@ -67,8 +67,8 @@ describe Admin::ReportsController do
 
       applicant = create(:person, gender: '1')
       application = create(:sp_application,
-                            person_id: applicant.id,
-                            project_id: project.id
+                           person_id: applicant.id,
+                           project_id: project.id
       )
       application.update_attributes(status: 'accepted_as_participant')
 
@@ -139,8 +139,8 @@ describe Admin::ReportsController do
 
       applicant = create(:person, gender: '1')
       application = create(:sp_application,
-                            person_id: applicant.id,
-                            project_id: project.id
+                           person_id: applicant.id,
+                           project_id: project.id
       )
       application.update_attribute('status', 'accepted_as_participant')
 
@@ -190,7 +190,6 @@ describe Admin::ReportsController do
       )
       application.update_attributes(status: 'accepted_as_participant')
 
-
       get :female_openings
       expect(assigns(:percentages)['0-50']).to include(project)
     end
@@ -225,7 +224,6 @@ describe Admin::ReportsController do
       )
       application1.update_attributes(status: 'accepted_as_participant')
       application2.update_attributes(status: 'accepted_as_participant')
-
 
       get :female_openings
       expect(assigns(:percentages)['51-99']).to include(project)
@@ -424,7 +422,7 @@ describe Admin::ReportsController do
       application.update_attribute('status', 'accepted_as_participant')
 
       get :mpd_summary
-      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+      expect(assigns(:projects)).to eq(SpProject.current.order('name ASC'))
     end
 
     it 'list applications by mpd summary via HTML -- SpRegionalCoordinator' do
@@ -508,16 +506,16 @@ describe Admin::ReportsController do
         year = project.year
         staff = create(:sp_staff, person_id: user.person.id, project_id: project.id, type: 'PD')
 
-        stub_request(:get, "https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bevent_id%5D=#{project.id}&filters%5Bsp_year%5D=&per_page=1").
-          to_return(:status => 200, :body => '{"statistics":[{"sp_year":"year"}]}', :headers => {})
+        stub_request(:get, "https://infobase.uscm.org/api/v1/statistics?filters%5Bactivity_type%5D=SP&filters%5Bevent_id%5D=#{project.id}&filters%5Bsp_year%5D=&per_page=1")
+          .to_return(status: 200, body: '{"statistics":[{"sp_year":"year"}]}', headers: {})
 
         get :evangelism, project_id: project.id, format: 'csv'
       end
     end
     context '#evangelism_combined' do
       it 'list applications by evangelism summary via HTML with params[:partner present]' do
-        stub_request(:get, "https://infobase.uscm.org/api/v1//statistics/sp_evangelism_combined?partner=NW").
-          to_return(:status => 200, :body => '{"statistics":[{"sp_year":"year"}]}', :headers => {})
+        stub_request(:get, 'https://infobase.uscm.org/api/v1//statistics/sp_evangelism_combined?partner=NW')
+          .to_return(status: 200, body: '{"statistics":[{"sp_year":"year"}]}', headers: {})
 
         session[:cas_user] = 'foo@example.com'
         session[:user_id] = user.id
@@ -542,7 +540,7 @@ describe Admin::ReportsController do
     end
   end
 
-  context "#emergency_contact" do
+  context '#emergency_contact' do
     it 'lists all emergency contacts' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
@@ -568,11 +566,11 @@ describe Admin::ReportsController do
       application.update_attribute('status', 'accepted_as_participant')
 
       get :emergency_contact, format: 'csv'
-      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+      expect(assigns(:projects)).to eq(SpProject.current.order('name ASC'))
     end
   end
 
-  context "#ready_after_deadline" do
+  context '#ready_after_deadline' do
     it 'for a national coordinator, it lists all applications ready after the deadlines' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
@@ -603,39 +601,37 @@ describe Admin::ReportsController do
       )
       # match second deadline
       project2 = create(:sp_project,
-                       start_date: start_date,
-                       end_date: end_date,
-                       open_application_date: open_application_date
+                        start_date: start_date,
+                        end_date: end_date,
+                        open_application_date: open_application_date
       )
       applicant1 = create(:person)
       application1 = create(:sp_application,
-                           person_id: applicant.id,
-                           project_id: project2.id,
-                           status: 'ready',
-                           completed_at: d2
+                            person_id: applicant.id,
+                            project_id: project2.id,
+                            status: 'ready',
+                            completed_at: d2
       )
       # match third deadline
       project3 = create(:sp_project,
-                       start_date: start_date,
-                       end_date: end_date,
-                       open_application_date: open_application_date
+                        start_date: start_date,
+                        end_date: end_date,
+                        open_application_date: open_application_date
       )
       applicant2 = create(:person)
       application2 = create(:sp_application,
-                           person_id: applicant.id,
-                           project_id: project3.id,
-                           status: 'ready',
-                           completed_at: d3
+                            person_id: applicant.id,
+                            project_id: project3.id,
+                            status: 'ready',
+                            completed_at: d3
       )
 
-
-
       get :ready_after_deadline, format: 'csv'
-      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+      expect(assigns(:projects)).to eq(SpProject.current.order('name ASC'))
     end
   end
 
-  context "#applications_by_status" do
+  context '#applications_by_status' do
     it 'should show applications by status' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
@@ -666,37 +662,37 @@ describe Admin::ReportsController do
       )
       # match second deadline
       project2 = create(:sp_project,
-                       start_date: start_date,
-                       end_date: end_date,
-                       open_application_date: open_application_date
+                        start_date: start_date,
+                        end_date: end_date,
+                        open_application_date: open_application_date
       )
       applicant2 = create(:person)
       application2 = create(:sp_application,
-                           person_id: applicant2.id,
-                           project_id: project2.id,
-                           status: 'accepted_as_participant',
-                           completed_at: d2
+                            person_id: applicant2.id,
+                            project_id: project2.id,
+                            status: 'accepted_as_participant',
+                            completed_at: d2
       )
       # match third deadline
       project3 = create(:sp_project,
-                       start_date: start_date,
-                       end_date: end_date,
-                       open_application_date: open_application_date
+                        start_date: start_date,
+                        end_date: end_date,
+                        open_application_date: open_application_date
       )
       applicant3 = create(:person)
       application3 = create(:sp_application,
-                           person_id: applicant3.id,
-                           project_id: project3.id,
-                           status: 'accepted_as_student_staff',
-                           completed_at: d3
+                            person_id: applicant3.id,
+                            project_id: project3.id,
+                            status: 'accepted_as_student_staff',
+                            completed_at: d3
       )
 
       get :applications_by_status, format: 'csv'
-      expect(assigns(:projects)).to eq(SpProject.current.order("name ASC"))
+      expect(assigns(:projects)).to eq(SpProject.current.order('name ASC'))
     end
   end
 
-  context "#region" do
+  context '#region' do
     it 'should report applications by region' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
@@ -718,7 +714,7 @@ describe Admin::ReportsController do
       d2 = Date.parse("Jan 25, #{SpApplication.year}")
       d3 = Date.parse("Feb 25, #{SpApplication.year}")
       # match first deadline
-      applicant = create(:person, region: "GL")
+      applicant = create(:person, region: 'GL')
       application = create(:sp_application,
                            person_id: applicant.id,
                            project_id: project.id,
@@ -727,29 +723,29 @@ describe Admin::ReportsController do
       )
       # match second deadline
       project2 = create(:sp_project,
-                       start_date: start_date,
-                       end_date: end_date,
-                       open_application_date: open_application_date
+                        start_date: start_date,
+                        end_date: end_date,
+                        open_application_date: open_application_date
       )
-      applicant2 = create(:person, region: "GP")
+      applicant2 = create(:person, region: 'GP')
       application2 = create(:sp_application,
-                           person_id: applicant2.id,
-                           project_id: project2.id,
-                           status: 'accepted_as_participant',
-                           completed_at: d2
+                            person_id: applicant2.id,
+                            project_id: project2.id,
+                            status: 'accepted_as_participant',
+                            completed_at: d2
       )
       # match third deadline
       project3 = create(:sp_project,
-                       start_date: start_date,
-                       end_date: end_date,
-                       open_application_date: open_application_date
+                        start_date: start_date,
+                        end_date: end_date,
+                        open_application_date: open_application_date
       )
-      applicant3 = create(:person, region: "GL")
+      applicant3 = create(:person, region: 'GL')
       application3 = create(:sp_application,
-                           person_id: applicant3.id,
-                           project_id: project3.id,
-                           status: 'accepted_as_student_staff',
-                           completed_at: d3
+                            person_id: applicant3.id,
+                            project_id: project3.id,
+                            status: 'accepted_as_student_staff',
+                            completed_at: d3
       )
 
       get :region, region: 'GL', format: 'csv'
@@ -757,24 +753,24 @@ describe Admin::ReportsController do
     end
   end
 
-  context "#missional_team" do
+  context '#missional_team' do
     it 'should render all applications for a specific team into csv' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
       # called from first applicant (person) create below
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=UW").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=UW')
+        .to_return(status: 200, body: '{"target_areas":[{"name":"UW"}]}', headers: {})
       # called from second applicant (person) create below
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=ABC").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"ABC"}]}', :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=ABC')
+        .to_return(status: 200, body: '{"target_areas":[{"name":"ABC"}]}', headers: {})
       # called from Infobase::TargetArea.get in reports
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bteam_id%5D=UW").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/target_areas?filters%5Bteam_id%5D=UW')
+        .to_return(status: 200, body: '{"target_areas":[{"name":"UW"}]}', headers: {})
       # called from Infobase::Team.find in reports
-      stub_request(:get, "https://infobase.uscm.org/api/v1/teams/UW").
-        to_return(:status => 200, :body => '{"teams":[{"name":"UW"}]}', :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/teams/UW')
+        .to_return(status: 200, body: '{"teams":[{"name":"UW"}]}', headers: {})
 
       open_application_date = Date.today - 30
       start_date = 1.month.from_now
@@ -787,7 +783,7 @@ describe Admin::ReportsController do
       )
 
       # match applicant based on campus
-      applicant = create(:person, campus: "UW")
+      applicant = create(:person, campus: 'UW')
       application = create(:sp_application,
                            person_id: applicant.id,
                            project_id: project.id,
@@ -795,30 +791,30 @@ describe Admin::ReportsController do
       )
 
       # match applicant based on campus
-      applicant2 = create(:person, campus: "ABC")
+      applicant2 = create(:person, campus: 'ABC')
       application2 = create(:sp_application,
                             person_id: applicant2.id,
                             project_id: project.id,
                             status: 'ready'
       )
 
-      get :missional_team, team: "UW", format: 'csv'
+      get :missional_team, team: 'UW', format: 'csv'
       expect(assigns(:applications)).to eq([application])
     end
   end
 
-  context "#school" do
+  context '#school' do
     it 'should render all applications for a specific school into csv' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
       session[:user_id] = user.id
 
       # called from first applicant (person) create below
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=UW").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"UW"}]}', :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=UW')
+        .to_return(status: 200, body: '{"target_areas":[{"name":"UW"}]}', headers: {})
       # called from second applicant (person) create below
-      stub_request(:get, "https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=ABC").
-        to_return(:status => 200, :body => '{"target_areas":[{"name":"ABC"}]}', :headers => {})
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/target_areas?filters%5Bname%5D=ABC')
+        .to_return(status: 200, body: '{"target_areas":[{"name":"ABC"}]}', headers: {})
 
       open_application_date = Date.today - 30
       start_date = 1.month.from_now
@@ -831,7 +827,7 @@ describe Admin::ReportsController do
       )
 
       # match applicant based on campus
-      applicant = create(:person, campus: "UW")
+      applicant = create(:person, campus: 'UW')
       application = create(:sp_application,
                            person_id: applicant.id,
                            project_id: project.id,
@@ -839,19 +835,19 @@ describe Admin::ReportsController do
       )
 
       # match applicant based on campus
-      applicant2 = create(:person, campus: "ABC")
+      applicant2 = create(:person, campus: 'ABC')
       application2 = create(:sp_application,
                             person_id: applicant2.id,
                             project_id: project.id,
                             status: 'ready'
       )
 
-      get :school, school: "UW", format: 'csv'
+      get :school, school: 'UW', format: 'csv'
       expect(assigns(:applications)).to eq([application])
     end
   end
 
-  context "#applicants" do
+  context '#applicants' do
     it 'should render all applications into csv' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'
@@ -889,11 +885,11 @@ describe Admin::ReportsController do
       )
 
       get :applicants, format: 'csv'
-      expect(assigns(:csv).size).to eq([application, application2].size + 1) #CSV should include header row
+      expect(assigns(:csv).size).to eq([application, application2].size + 1) # CSV should include header row
     end
   end
 
-  context "#total_num_applicants_by_efm" do
+  context '#total_num_applicants_by_efm' do
     it 'should render all applications into csv' do
       create(:sp_national_coordinator, user: user)
       session[:cas_user] = 'foo@example.com'

@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
   force_ssl(if: :ssl_configured?, except: :lb)
-  around_filter :do_with_current_user
-  before_filter :set_time_zone
+  around_action :do_with_current_user
+  before_action :set_time_zone
   protect_from_forgery
 
   def self.application_name
@@ -18,19 +18,18 @@ class ApplicationController < ActionController::Base
   end
 
   def set_time_zone
-    begin
-      Time.zone = request.env['rack.timezone.utc_offset'].present? ? request.env['rack.timezone.utc_offset'] : -14400
-    rescue ArgumentError
-      Time.zone = -14400
-    end
+    Time.zone = request.env['rack.timezone.utc_offset'].present? ? request.env['rack.timezone.utc_offset'] : -14_400
+  rescue ArgumentError
+    Time.zone = -14_400
   end
 
   protected
+
   # For all responses in this controller, return the CORS access control headers.
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-    headers['Access-Control-Max-Age'] = "1728000"
+    headers['Access-Control-Max-Age'] = '1728000'
   end
 
   # If this is a preflight OPTIONS request, then short-circuit the
@@ -60,7 +59,7 @@ class ApplicationController < ActionController::Base
     @partners ||= begin
       @partners = Region.where("region <> ''").collect(&:region)
       @partners += Ministry.all.collect(&:name)
-      @partners += ["US Campus", "Non-USCM SPs"]
+      @partners += ['US Campus', 'Non-USCM SPs']
     end
   end
   helper_method :partners
@@ -86,7 +85,7 @@ class ApplicationController < ActionController::Base
 
   def current_person
     unless @current_person
-      raise "no user" unless current_user
+      fail 'no user' unless current_user
       # Get their user, or create a new one if theirs doesn't exist
       @current_person = current_user.person
       if @current_person.nil? && session[:cas_extra_attributes]
@@ -103,7 +102,7 @@ class ApplicationController < ActionController::Base
     return SpUser.new unless current_user
     @sp_user ||= SpUser.find_by_ssm_id(current_user.id)
     if @sp_user.nil? && current_person.isStaff?
-      @sp_user = SpGeneralStaff.create(:ssm_id => current_user.id, :created_by_id => current_user.id, :person_id => current_person.id)
+      @sp_user = SpGeneralStaff.create(ssm_id: current_user.id, created_by_id: current_user.id, person_id: current_person.id)
     end
     unless session[:login_stamped] || @sp_user.nil?
       @sp_user.update_attribute(:last_login, Time.now)
@@ -131,13 +130,13 @@ class ApplicationController < ActionController::Base
     unless sp_user
       # Some people don't have sp users who should. Before blocking them, let's try creating one
       return true if @sp_user = SpUser.create_max_role(current_person.id) if current_person
-      redirect_to :controller => :projects, :action => :no
+      redirect_to controller: :projects, action: :no
       return false
     end
   end
 
   def leader_types
-    %w{pd apd opd coordinator}
+    %w(pd apd opd coordinator)
   end
   helper_method :leader_types
 
@@ -147,14 +146,14 @@ class ApplicationController < ActionController::Base
       query = params[:name].strip.split(' ')
       first, last = query[0].to_s + '%', query[1].to_s + '%'
       if last == '%'
-        conditions = ["preferred_name ilike :first OR first_name ilike :first OR last_name ilike :first",
+        conditions = ['preferred_name ilike :first OR first_name ilike :first OR last_name ilike :first',
                       first: first]
       else
-        conditions = ["(preferred_name ilike :first OR first_name ilike :first) AND last_name ilike :last",
+        conditions = ['(preferred_name ilike :first OR first_name ilike :first) AND last_name ilike :last',
                       first: first, last: last]
       end
 
-      @people = Person.where(conditions).includes(:user).order("\"isStaff\" desc").order("account_no desc")
+      @people = Person.where(conditions).includes(:user).order("\"isStaff\" desc").order('account_no desc')
       @people = @people.limit(10) unless params[:show_all].to_s == 'true'
 
       # Put staff at the top of the list
@@ -174,7 +173,7 @@ class ApplicationController < ActionController::Base
         format.js
       end
     else
-      render :nothing => true
+      render nothing: true
     end
   end
 

@@ -14,11 +14,10 @@ describe SpDonation do
       d = create(:sp_donation, designation_number: dn.designation_number)
       donation_json_body = '[ { "id": "XGF5T", "amount": "10.00", "designation": "0588176", "donorId": "000457337", "donationDate": "2007-10-21", "paymentMethod": "Credit Card", "paymentType": "Visa", "channel": "Recurring", "campaignCode": "CCWBST" } ]'
 
-      stub_request(:get, "https://wsapi.cru.org/wsapi/rest/donations?designations=0588176&end_date=#{Time.now.strftime("%Y-%m-%d")}&response_timeout=60000&start_date=#{2.years.ago.strftime("%Y-%m-%d")}").
-        to_return(status: 200, body: donation_json_body, :headers => {})
+      stub_request(:get, "https://wsapi.cru.org/wsapi/rest/donations?designations=0588176&end_date=#{Time.now.strftime('%Y-%m-%d')}&response_timeout=60000&start_date=#{2.years.ago.strftime('%Y-%m-%d')}")
+        .to_return(status: 200, body: donation_json_body, headers: {})
 
-
-      donors_response = %|
+      donors_response = %(
 [
     {
         "id": "000457337",
@@ -115,9 +114,9 @@ describe SpDonation do
         ],
         "type": "Household"
     }
-]|
-      stub_request(:get, "https://wsapi.cru.org/wsapi/rest/donors?having_given_to_designations=0588176&response_timeout=60000").
-        to_return(:status => 200, :body => donors_response, :headers => {})
+])
+      stub_request(:get, 'https://wsapi.cru.org/wsapi/rest/donors?having_given_to_designations=0588176&response_timeout=60000')
+        .to_return(status: 200, body: donors_response, headers: {})
 
       SpDonation.update_from_siebel
     end

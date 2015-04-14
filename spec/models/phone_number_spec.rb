@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PhoneNumber do
-  include_examples "global_registry_methods"
+  include_examples 'global_registry_methods'
 
   before(:all) do
     GlobalRegistry.access_token = 'access_token'
@@ -26,10 +26,10 @@ describe PhoneNumber do
   context '#push_structure_to_global_registry' do
     it 'should work' do
       $super_reached = false
-      stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=person").
-        to_return(:status => 200, :body => '{ "entity_types": [ { "fields": [ { "name": "something" } ] } ] }', :headers => {})
-      stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=phone_number&filters%5Bparent_id%5D=12345").
-        to_return(:status => 200, :body => '{ "entity_types": [ { "fields": [ { "name": "something" } ] } ] }', :headers => {})
+      stub_request(:get, 'https://globalregistry.com/entity_types?filters%5Bname%5D=person')
+        .to_return(status: 200, body: '{ "entity_types": [ { "fields": [ { "name": "something" } ] } ] }', headers: {})
+      stub_request(:get, 'https://globalregistry.com/entity_types?filters%5Bname%5D=phone_number&filters%5Bparent_id%5D=12345')
+        .to_return(status: 200, body: '{ "entity_types": [ { "fields": [ { "name": "something" } ] } ] }', headers: {})
       PhoneNumber.push_structure_to_global_registry
       expect($push_structure_to_global_registry_reached).to be true
     end

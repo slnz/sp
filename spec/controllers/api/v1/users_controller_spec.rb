@@ -22,7 +22,7 @@ describe Api::V1::UsersController do
     end
 
     it 'returns invalid token msg' do
-      get 'index', access_token: "1234"
+      get 'index', access_token: '1234'
       json = JSON.parse(response.body)
       expect(json['error']).to be_present
     end
@@ -40,6 +40,4 @@ describe Api::V1::UsersController do
       expect(json['user']).to be_present
     end
   end
-
-
 end

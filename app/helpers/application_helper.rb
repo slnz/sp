@@ -50,8 +50,8 @@ module ApplicationHelper
   # * <tt>:params_scope</tt> - the name of the params key to scope the order condition by, defaults to :search
   def order(search, options = {}, html_options = {})
     options[:params_scope] ||= :search
-    if !options[:as]
-      id = options[:by].to_s.downcase == "id"
+    unless options[:as]
+      id = options[:by].to_s.downcase == 'id'
       options[:as] = id ? options[:by].to_s.upcase : options[:by].to_s.humanize
     end
     options[:ascend_scope] ||= "ascend_by_#{options[:by]}"
@@ -60,18 +60,18 @@ module ApplicationHelper
     new_scope = ascending ? options[:descend_scope] : options[:ascend_scope]
     selected = [options[:ascend_scope], options[:descend_scope]].include?(search.order.to_s)
     if selected
-      css_classes = html_options[:class] ? html_options[:class].split(" ") : []
+      css_classes = html_options[:class] ? html_options[:class].split(' ') : []
       if ascending
         options[:as] = "&#9650;&nbsp;#{options[:as]}"
-        css_classes << "ascending"
+        css_classes << 'ascending'
       else
         options[:as] = "&#9660;&nbsp;#{options[:as]}"
-        css_classes << "descending"
+        css_classes << 'descending'
       end
-      html_options[:class] = css_classes.join(" ")
+      html_options[:class] = css_classes.join(' ')
     end
     url_options = {
-      options[:params_scope] => search.conditions.merge( { :order => new_scope } )
+      options[:params_scope] => search.conditions.merge(order: new_scope)
     }.deep_merge(options[:params] || {})
 
     options[:as] = raw(options[:as]) if defined?(RailsXss)
@@ -79,7 +79,7 @@ module ApplicationHelper
     link_to options[:as], url_for(url_options), html_options
   end
 
-  def sort_by(column, title = column.titleize, options = {})
+  def sort_by(column, title = column.titleize, _options = {})
     if title.is_a?(Hash)
       options = title
       title = column.titleize
@@ -100,11 +100,11 @@ module ApplicationHelper
 
   def spinner(extra = nil)
     e = extra ? "spinner_#{extra}" : 'spinner'
-    image_tag('spinner.gif', :id => e, :style => 'display:none', :class => 'spinner')
+    image_tag('spinner.gif', id: e, style: 'display:none', class: 'spinner')
   end
 
   def calendar_date_select_tag(name, value = nil, options = {})
-    options.merge!({'data-calendar' => true})
+    options.merge!('data-calendar' => true)
     value = case
           when value.is_a?(Time) || value.is_a?(DateTime)
             l(value.to_date)
@@ -113,6 +113,6 @@ module ApplicationHelper
           else
             value
           end
-    text_field_tag(name, value, options )
+    text_field_tag(name, value, options)
   end
 end

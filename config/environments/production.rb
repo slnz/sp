@@ -55,24 +55,24 @@ Sp2::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.default_url_options= { :host => 'projects.studentlife.org.nz' }
+  config.action_mailer.default_url_options = { host: 'projects.studentlife.org.nz' }
 
   config.cache_store = :dalli_store,
-                    (ENV["MEMCACHIER_SERVERS"] || "").split(","),
-                    {:username => ENV["MEMCACHIER_USERNAME"],
-                     :password => ENV["MEMCACHIER_PASSWORD"],
-                     :failover => true,
-                     :socket_timeout => 1.5,
-                     :socket_failure_delay => 0.2
-                    }
+                       (ENV['MEMCACHIER_SERVERS'] || '').split(','),
+                       { username: ENV['MEMCACHIER_USERNAME'],
+                         password: ENV['MEMCACHIER_PASSWORD'],
+                         failover: true,
+                         socket_timeout: 1.5,
+                         socket_failure_delay: 0.2
+                       }
 
   ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.sendgrid.net',
-    :port           => '587',
-    :authentication => :plain,
-    :user_name      => ENV['SENDGRID_USERNAME'],
-    :password       => ENV['SENDGRID_PASSWORD'],
-    :domain         => 'heroku.com',
-    :enable_starttls_auto => true
+    address: 'smtp.sendgrid.net',
+    port: '587',
+    authentication: :plain,
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    domain: 'heroku.com',
+    enable_starttls_auto: true
   }
 end

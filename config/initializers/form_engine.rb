@@ -8,5 +8,4 @@ module Qe
 
   mattr_accessor :from_email
   self.from_email = 'Summer Projects <projects@studentlife.org.nz>'
-
 end

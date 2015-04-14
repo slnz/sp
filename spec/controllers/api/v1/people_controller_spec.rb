@@ -22,12 +22,12 @@ describe Api::V1::PeopleController do
     end
 
     it 'returns invalid token msg' do
-      get 'index', access_token: "1234"
+      get 'index', access_token: '1234'
       json = JSON.parse(response.body)
       expect(json['error']).to be_present
     end
 
-    %w{email_addresses phone_numbers}.each do |incl|
+    %w(email_addresses phone_numbers).each do |incl|
       context "include #{incl}" do
         it "returns people w/ #{incl}" do
           get 'index', include: incl, access_token: api_key.access_token
@@ -39,7 +39,7 @@ describe Api::V1::PeopleController do
 
     context 'filter by id' do
       it 'returns specific person' do
-        get 'index', filters: {id: person.id}, access_token: api_key.access_token
+        get 'index', filters: { id: person.id }, access_token: api_key.access_token
         json = JSON.parse(response.body)
         expect(json['people'].first['id'].to_i).to eq(person.id)
       end

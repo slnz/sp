@@ -10,7 +10,7 @@ describe Admin::PeopleController do
   end
 
   context '#show' do
-    it {
+    it do
       project = create(:sp_project)
 
       applicant = create(:person)
@@ -24,7 +24,7 @@ describe Admin::PeopleController do
       xhr :get, :show, id: applicant.id, project_id: project.id, year: SpApplication.year
       expect(response.code).to eq('200')
       expect(assigns(:application)).to eq(application)
-    }
+    end
   end
 
   context '#update' do

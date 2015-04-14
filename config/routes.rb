@@ -1,17 +1,16 @@
 require 'sidekiq/web'
 Sp2::Application.routes.draw do
-
   namespace :gr do
     resources :notifications, only: :create
   end
 
-  get "welcome/privacy"
+  get 'welcome/privacy'
 
   match '/auth/:provider/callback' => 'authentications#create', via: :get
   match '/auth/failure' => 'authentications#failed', via: :get
   match '/sos' => 'admin/projects#sos', via: [:get, :post]
   match '/admin/sos' => 'admin/projects#sos', via: [:get, :post]
-  #post '/fe/applications/:application_id/submit_page' => 'fe/submit_pages#submit'
+  # post '/fe/applications/:application_id/submit_page' => 'fe/submit_pages#submit'
   resources :authentications
 
   resources :campuses do
@@ -20,8 +19,8 @@ Sp2::Application.routes.draw do
     end
   end
 
-  namespace :api, defaults: {format: 'json'} do
-    api_version(module: 'v1', header: {name: 'API-VERSION', value: 'v1'}, parameter: {name: "version", value: 'v1'}, path: {value: 'v1'}) do
+  namespace :api, defaults: { format: 'json' } do
+    api_version(module: 'v1', header: { name: 'API-VERSION', value: 'v1' }, parameter: { name: 'version', value: 'v1' }, path: { value: 'v1' }) do
       resources :users, only: [:index, :show]
       resources :people, only: [:index, :show]
       resources :projects, only: [:index, :show]
@@ -159,7 +158,7 @@ Sp2::Application.routes.draw do
     end
   end
 
-  namespace "fe" do
+  namespace 'fe' do
     resources :applications do
       resources :payments do
         member do
@@ -174,31 +173,31 @@ Sp2::Application.routes.draw do
   match 'fe/payment_pages/staff_search' => 'fe/payment_pages#staff_search', :as => :payment_page_staff_search, via: [:get, :post]
 
   resources :ministry_focuses
-  match '/admin' => "admin/projects#dashboard", via: :get
-  match '/apply' => "applications#apply", :as => :apply, via: :get
+  match '/admin' => 'admin/projects#dashboard', via: :get
+  match '/apply' => 'applications#apply', :as => :apply, via: :get
 
-  match '/references/done' => "reference_sheets#done", via: [:get, :post]
+  match '/references/done' => 'reference_sheets#done', via: [:get, :post]
 
-  match '/logout' => "sessions#destroy", :as => :logout, via: [:get, :post, :delete]
-  match '/login' => "sessions#new", :as => :login, via: :get
+  match '/logout' => 'sessions#destroy', :as => :logout, via: [:get, :post, :delete]
+  match '/login' => 'sessions#new', :as => :login, via: :get
 
- # match '/media(/:dragonfly)', :to => Dragonfly[:images]
+  # match '/media(/:dragonfly)', :to => Dragonfly[:images]
 
-  constraint = lambda { |request| request.session['user_id'] and
-                                  User.find(request.session['user_id']).developer? }
+  constraint = lambda do |request|
+    request.session['user_id'] &&
+    User.find(request.session['user_id']).developer?
+  end
   constraints constraint do
     mount Sidekiq::Web => '/sidekiq'
   end
 
   get 'monitors/lb' => 'monitors#lb'
 
-  root :to => "applications#apply"
+  root to: 'applications#apply'
 
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
-
-
 end

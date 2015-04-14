@@ -1,19 +1,19 @@
 class Statistic < ActiveRecord::Base
-  self.table_name = "ministry_statistic"
-  self.primary_key = "StatisticID"
-  belongs_to :activity, :foreign_key => "fk_Activity"
+  self.table_name = 'ministry_statistic'
+  self.primary_key = 'StatisticID'
+  belongs_to :activity, foreign_key: 'fk_Activity'
 
   validates_numericality_of :spiritual_conversations, :evangelisticOneOnOne, :evangelisticGroup, :exposuresViaMedia,
                             :holySpiritConversations, :decisionsHelpedByOneOnOne, :decisionsHelpedByGroup, :decisionsHelpedByMedia,
                             :laborersSent, :faculty_sent, :multipliers, :studentLeaders, :invldStudents, :faculty_involved,
-                            :faculty_engaged, :faculty_leaders, :ongoingEvangReln, :dollars_raised, :only_integer => true, :allow_nil => true
+                            :faculty_engaged, :faculty_leaders, :ongoingEvangReln, :dollars_raised, only_integer: true, allow_nil: true
 
   after_save :change_activity_status
 
   alias_attribute :activity_id, :fk_Activity
   alias_attribute :period_begin, :periodBegin
   alias_attribute :period_end, :periodEnd
-  #alias_attribute :spiritual_conversations, :spiritual_conversations
+  # alias_attribute :spiritual_conversations, :spiritual_conversations
   alias_attribute :personal_exposures, :evangelisticOneOnOne
   alias_attribute :personal_evangelism, :evangelisticOneOnOne
   alias_attribute :group_exposures, :evangelisticGroup
@@ -29,18 +29,18 @@ class Statistic < ActiveRecord::Base
   alias_attribute :students_involved, :invldStudents
   alias_attribute :students_engaged, :multipliers
   alias_attribute :student_leaders, :studentLeaders
-  #alias_attribute :faculty_involved, :faculty_involved
-  #alias_attribute :faculty_engaged, :faculty_engaged
-  #alias_attribute :facutly_leaders, :facutly_leaders
+  # alias_attribute :faculty_involved, :faculty_involved
+  # alias_attribute :faculty_engaged, :faculty_engaged
+  # alias_attribute :facutly_leaders, :facutly_leaders
   alias_attribute :seekers, :ongoingEvangReln
 
-  #Scopes
+  # Scopes
   def self.before_date(date)
-    where(Statistic.table_name + ".periodBegin <= ?", date)
+    where(Statistic.table_name + '.periodBegin <= ?', date)
   end
 
   def self.after_date(date)
-    where(Statistic.table_name + ".periodEnd >= ?", date)
+    where(Statistic.table_name + '.periodEnd >= ?', date)
   end
 
   def self.between_dates(from_date, to_date)
@@ -67,28 +67,28 @@ class Statistic < ActiveRecord::Base
             fk_Activity,
             '#{from_date.to_s(:db)}' as period_begin,
             '#{to_date.to_s(:db)}' as period_end")
-    .between_dates(from_date, to_date)
+      .between_dates(from_date, to_date)
   end
 
-  #Constants
+  # Constants
   def self.weekly_stats # Order matters! Reports rely on correct order, if changed here, change Infobase app/views/reports/_report_header_bar.html.erb
-    ["evangelisticOneOnOne", "decisionsHelpedByOneOnOne", "evangelisticGroup", "decisionsHelpedByGroup", "exposuresViaMedia", "decisionsHelpedByMedia", "spiritual_conversations", "holySpiritConversations", "laborersSent", "faculty_sent"]
+    %w(evangelisticOneOnOne decisionsHelpedByOneOnOne evangelisticGroup decisionsHelpedByGroup exposuresViaMedia decisionsHelpedByMedia spiritual_conversations holySpiritConversations laborersSent faculty_sent)
   end
 
   def self.semester_stats # Order matters! Reports rely on correct order, if changed here, change Infobase app/views/reports/_report_header_bar.html.erb
-    ["invldStudents", "multipliers", "studentLeaders", "faculty_involved", "faculty_engaged", "faculty_leaders"]
+    %w(invldStudents multipliers studentLeaders faculty_involved faculty_engaged faculty_leaders)
   end
 
   def self.all_stats
-    Statistic.weekly_stats + Statistic.semester_stats + ["dollars_raised"]
+    Statistic.weekly_stats + Statistic.semester_stats + ['dollars_raised']
   end
 
   def self.event_stats
-    Statistic.weekly_stats + ["invldStudents", "dollars_raised"]
+    Statistic.weekly_stats + %w(invldStudents dollars_raised)
   end
 
   def self.people_groups
-    ["(Other Internationals)", "East Asian", "Ishmael Project", "Japanese", "South Asian"]
+    ['(Other Internationals)', 'East Asian', 'Ishmael Project', 'Japanese', 'South Asian']
   end
 
   def self.uses_seekers
@@ -107,7 +107,7 @@ class Statistic < ActiveRecord::Base
     activity.try(:target_area)
   end
 
-  #Instance Methods
+  # Instance Methods
   def prefill_semester_stats
     prev_stat = get_previous_stat
     if prev_stat
@@ -132,11 +132,11 @@ class Statistic < ActiveRecord::Base
     attribs = attributes.clone
 
     # Don't care about these attributes
-    attribs.delete("periodBegin")
-    attribs.delete("periodEnd")
-    attribs.delete("fk_Activity")
-    attribs.delete("peopleGroup")
-    attribs.delete("updated_by")
+    attribs.delete('periodBegin')
+    attribs.delete('periodEnd')
+    attribs.delete('fk_Activity')
+    attribs.delete('peopleGroup')
+    attribs.delete('updated_by')
 
     # Need to compare the semester/quarter stats to previous stat record
     prev_stat = get_previous_stat
@@ -158,11 +158,11 @@ class Statistic < ActiveRecord::Base
   def get_previous_stat
     result = nil
     stats = activity.statistics
-    if activity.strategy == "BR"
-      stats = stats.where(:peopleGroup => peopleGroup)
+    if activity.strategy == 'BR'
+      stats = stats.where(peopleGroup: peopleGroup)
     end
     index = stats.index(self)
-    if index == nil
+    if index.nil?
       result = stats.last
     elsif index > 0
       result = stats[index - 1]
@@ -182,24 +182,24 @@ class Statistic < ActiveRecord::Base
   def change_activity_status
     # Check to make sure this is the last stat record
     if activity.statistics.order(:periodBegin).last == self
-      total_involvement = self.students_involved.to_i + self.faculty_involved.to_i
-      total_leader_involvement = self.student_leaders.to_i + self.faculty_leaders.to_i
+      total_involvement = students_involved.to_i + faculty_involved.to_i
+      total_leader_involvement = student_leaders.to_i + faculty_leaders.to_i
       case
         when total_involvement > Activity::MULITPLYING_INVOLVEMENT_LEVEL && total_leader_involvement > Activity::MULITPLYING_LEADER_INVOLVEMENT_LEVEL
-          new_status = "MU"
+          new_status = 'MU'
         when total_leader_involvement > Activity::LAUNCHED_LEADER_INVOLVEMENT_LEVEL
-          new_status = "LA"
+          new_status = 'LA'
         when total_leader_involvement >= Activity::KEYLEADER_LEADER_INVOLVEMENT_LEVEL
-          new_status = "KE"
+          new_status = 'KE'
         when total_leader_involvement == Activity::PIONEERING_LEADER_INVOLVEMENT_LEVEL
-          new_status = "PI"
+          new_status = 'PI'
         else
           new_status = nil
       end
       if new_status != activity.status
         user = User.find(session[:user_id]).userID if session[:user_id].present?
         user ||= session[:api_user] if session[:api_user].present?
-        activity.update_attributes_add_history({status: new_status, periodBegin: Time.now}, user)
+        activity.update_attributes_add_history({ status: new_status, periodBegin: Time.now }, user)
       end
     end
   end

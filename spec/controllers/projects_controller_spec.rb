@@ -3,16 +3,16 @@ require 'spec_helper'
 describe ProjectsController do
   context '#show' do
     it 'responds to JSON with 200' do
-      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
-         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/regions')
+        .to_return(status: 200, body: File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
       get :show, id: create(:sp_project).id.to_s, format: :json
       expect(response.status).to eq(200)
     end
 
     it 'responds to XML with 200' do
-      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
-         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/regions')
+        .to_return(status: 200, body: File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
       get :show, id: create(:sp_project).id.to_s, format: :xml
       expect(response.status).to eq(200)
@@ -34,7 +34,7 @@ describe ProjectsController do
     end
 
     it "should list all the projects when a parameter is passed that isn't one of the filters" do
-      get :index, :a => 1
+      get :index, a: 1
       should render_template('index')
     end
 
@@ -47,8 +47,8 @@ describe ProjectsController do
       project = create(:sp_project, start_date: Date.new(2013, 6, 1), end_date: Date.new(2013, 8, 1))
       project2 = create(:sp_project, start_date: Date.new(2013, 6, 1), end_date: Date.new(2013, 8, 1))
 
-      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
-         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/regions')
+        .to_return(status: 200, body: File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
       get :index, id: "#{project.id},#{project2.id}", format: :json
       expect(assigns(:projects)).to eq([project, project2])
@@ -65,8 +65,8 @@ describe ProjectsController do
                        end_date: Date.new(2013, 8, 1)
       )
 
-      stub_request(:get, "https://infobase.uscm.org/api/v1/regions").
-         to_return(:status => 200, :body => File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
+      stub_request(:get, 'https://infobase.uscm.org/api/v1/regions')
+        .to_return(status: 200, body: File.read(Rails.root.join('spec', 'fixtures', 'regions.txt')))
 
       get :index, year: '2013', start_month: '5', id: project.id.to_s, format: :json
       expect(assigns(:projects)).to eq([project])
@@ -107,8 +107,8 @@ describe ProjectsController do
       start_date = Date.parse("April 1, #{Date.today.year}")
       end_date = Date.parse("May 1, #{Date.today.year}")
 
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,Canada&language=en&sensor=false").
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,Canada&language=en&sensor=false')
+        .to_return(status: 200, body: @geocode_body, headers: {})
 
       focus = SpMinistryFocus.create(name: 'Coders')
       project = create(:sp_project,
@@ -124,7 +124,7 @@ describe ProjectsController do
                        job: 1
       )
 
-      #ministry_focus = SpProjectMinistryFocus.create(project_id: project.id, ministry_focus_id: focus.id)
+      # ministry_focus = SpProjectMinistryFocus.create(project_id: project.id, ministry_focus_id: focus.id)
 
       get :index,
           start_month: 3,
@@ -148,8 +148,8 @@ describe ProjectsController do
       start_date = Date.parse("April 1, #{Date.today.year}")
       end_date = Date.parse("May 1, #{Date.today.year}")
 
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false").
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false')
+        .to_return(status: 200, body: @geocode_body, headers: {})
 
       focus = SpMinistryFocus.create(name: 'Coders')
       project = create(:sp_project,
@@ -165,7 +165,7 @@ describe ProjectsController do
                        job: 1
       )
 
-      #ministry_focus = SpProjectMinistryFocus.create(project_id: project.id, ministry_focus_id: focus.id)
+      # ministry_focus = SpProjectMinistryFocus.create(project_id: project.id, ministry_focus_id: focus.id)
 
       get :index,
           start_month: 3,
@@ -189,8 +189,8 @@ describe ProjectsController do
       start_date = Date.parse("April 1, #{Date.today.year}")
       end_date = Date.parse("May 1, #{Date.today.year}")
 
-      stub_request(:get, "http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false").
-        to_return(:status => 200, :body => @geocode_body, :headers => {})
+      stub_request(:get, 'http://maps.googleapis.com/maps/api/geocode/json?address=Orlando,FL,United%20States&language=en&sensor=false')
+        .to_return(status: 200, body: @geocode_body, headers: {})
 
       project = create(:sp_project,
                        open_application_date: open_application_date,

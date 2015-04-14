@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :campus, :class => TargetArea do
+  factory :campus, class: TargetArea do
     name 'String'
     city 'String'
     country 'String'

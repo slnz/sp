@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SpMinistryFocus do
-  include_examples "global_registry_methods"
+  include_examples 'global_registry_methods'
 
   context '#to_s' do
     it 'should reutrn name' do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SpStudentQuote do
-  include_examples "global_registry_methods"
+  include_examples 'global_registry_methods'
 
   before(:all) do
     GlobalRegistry.access_token = 'access_token'

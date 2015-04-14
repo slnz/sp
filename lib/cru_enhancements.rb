@@ -10,8 +10,7 @@ module CruEnhancements
 
   def attributes
     hash = super
-    hash.delete_if {|k, v| v.blank?}
+    hash.delete_if { |_k, v| v.blank? }
     hash
   end
-
 end

@@ -33,7 +33,7 @@ class CcpClient
       encryptedCardSecurityCode: payment.encrypted_security_code,
       expirationDate: "#{payment.expiration_year}-#{payment.expiration_month}",
       amount: payment.amount,
-      currencyCode: "USD",
+      currencyCode: 'USD',
       billing: {
         firstName: payment.first_name,
         lastName: payment.last_name,
@@ -44,11 +44,11 @@ class CcpClient
       },
 
       invoice: {
-        description: "Cru Summer Mission application",
+        description: 'Cru Summer Mission application',
         number: payment.application.id
       },
 
-      merchantEmail: "summer.missions@cru.org",
+      merchantEmail: 'summer.missions@cru.org',
 
       gatewayAuthentication: {
         apiId: @authnet_username,

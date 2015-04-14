@@ -1,5 +1,4 @@
 class Api::V1::ProjectsController < Api::V1::BaseController
-
   def index
     projects = ProjectFilter.new(params[:filters]).filter(SpProject.all)
     render render_options(projects, params[:order] || 'name')

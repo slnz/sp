@@ -21,7 +21,7 @@ class Address < Fe::Address
 
   def self.push_structure_to_global_registry
     parent_id = GlobalRegistry::EntityType.get(
-      {'filters[name]' => 'person'}
+      'filters[name]' => 'person'
     )['entity_types'].first['id']
     super(parent_id)
   end
@@ -48,14 +48,14 @@ class Address < Fe::Address
       # We're only interested if the other address has been updated more recently
       if other.updated_at && updated_at && other.updated_at > updated_at
         # if any part of they physical address is there, copy all of it
-        physical_address = %w{address1 address2 address3 address4 city state zip country}
-        if other.attributes.slice(*physical_address).any? {|k,v| v.present?}
+        physical_address = %w(address1 address2 address3 address4 city state zip country)
+        if other.attributes.slice(*physical_address).any? { |_k, v| v.present? }
           other.attributes.slice(*physical_address).each do |k, v|
             self[k] = v
           end
         end
         # Now copy the rest as long as they're not blank
-        other_attributes = other.attributes.except(*(%w{id created_at person_id} + physical_address))
+        other_attributes = other.attributes.except(*(%w(id created_at person_id) + physical_address))
         attributes.each do |k, v|
           next if v == other_attributes[k]
           self[k] = case

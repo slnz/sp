@@ -1,10 +1,10 @@
 class SpProjectMinistryFocus < ActiveRecord::Base
-  self.table_name = "sp_project_ministry_focuses"
+  self.table_name = 'sp_project_ministry_focuses'
   include Sidekiq::Worker
   include CruLib::GlobalRegistryRelationshipMethods
 
-  belongs_to :ministry_focus, :class_name => "SpMinistryFocus", :foreign_key => "ministry_focus_id"
-  belongs_to :project, :class_name => "SpProject", :foreign_key => "project_id"
+  belongs_to :ministry_focus, class_name: 'SpMinistryFocus', foreign_key: 'ministry_focus_id'
+  belongs_to :project, class_name: 'SpProject', foreign_key: 'project_id'
 
   def async_push_to_global_registry
     return unless ministry_focus && project
@@ -22,7 +22,7 @@ class SpProjectMinistryFocus < ActiveRecord::Base
     end
   end
 
-  def create_in_global_registry(*args)
+  def create_in_global_registry(*_args)
     super(project, 'ministry_focus')
   end
 
@@ -31,7 +31,7 @@ class SpProjectMinistryFocus < ActiveRecord::Base
   end
 
   def self.skip_fields_for_gr
-    super + %w[project_id ministry_focus_id]
+    super + %w(project_id ministry_focus_id)
   end
 
   def self.global_registry_entity_type_name

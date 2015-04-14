@@ -20,8 +20,8 @@ module Fe
 
       if answer_sheet.respond_to?(:project)
         if answer_sheet.project && answer_sheet.project.project_specific_question_sheet &&
-          answer_sheet.project.project_specific_question_sheet.pages.first &&
-          answer_sheet.project.project_specific_question_sheet.pages.first.elements.count > 0
+           answer_sheet.project.project_specific_question_sheet.pages.first &&
+           answer_sheet.project.project_specific_question_sheet.pages.first.elements.count > 0
           begin
             @pages.insert(-2, answer_sheet.project.project_specific_question_sheet.pages.first)
           rescue IndexError

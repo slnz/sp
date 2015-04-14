@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SpStudentQuote do
-  include_examples "global_registry_methods"
+  include_examples 'global_registry_methods'
 
   before(:all) do
     GlobalRegistry.access_token = 'access_token'
@@ -25,8 +25,8 @@ describe SpStudentQuote do
   context '#push_structure_to_global_registry' do
     it 'should work' do
       $super_reached = false
-      stub_request(:get, "https://globalregistry.com/entity_types?filters%5Bname%5D=summer_project").
-        to_return(:status => 200, :body => '{ "entity_types": [ { "fields": [ { "id": "id123" } ] } ] }', :headers => {})
+      stub_request(:get, 'https://globalregistry.com/entity_types?filters%5Bname%5D=summer_project')
+        .to_return(status: 200, body: '{ "entity_types": [ { "fields": [ { "id": "id123" } ] } ] }', headers: {})
       SpStudentQuote.push_structure_to_global_registry
       expect($push_structure_to_global_registry_reached).to be true
     end
